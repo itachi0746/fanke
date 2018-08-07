@@ -1,0 +1,34 @@
+<!DOCTYPE html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>答题抽奖</title><style>/* 简单进行默认样式重置 */
+
+    * {
+      margin: 0;
+      padding: 0
+    }
+
+    li {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    img {
+      vertical-align: middle;
+    }
+    html,body {
+      height: 100%;
+    }</style><link href=./static/css/app.0ed213f0cc189eabe965f479bea1013c.css rel=stylesheet></head><body><div id=app></div><script>(function (doc, win) {
+    let docEl = doc.documentElement,
+      resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+      recalc = function () {
+        let clientWidth = docEl.clientWidth;
+        if (!clientWidth) return;
+        // 改变DOM根节点fontSize大小的值;
+        // (屏幕宽度/设计图宽度) = 缩放或扩大的比例值;
+        docEl.style.fontSize = 40 * (clientWidth / 750) + 'px';
+      };
+    if (!doc.addEventListener) return;
+    win.addEventListener(resizeEvt, recalc, false);
+    doc.addEventListener('DOMContentLoaded', recalc, false);
+  })(document, window);</script><script type=text/javascript src=./static/js/manifest.3ad1d5771e9b13dbdad2.js></script><script type=text/javascript src=./static/js/vendor.0431d9f79e529bdef3b3.js></script><script type=text/javascript src=./static/js/app.7c9cbae6e9af7a8c9207.js></script></body></html>
