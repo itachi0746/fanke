@@ -1,4 +1,13 @@
-<!DOCTYPE html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>答题抽奖</title><style>/* 简单进行默认样式重置 */
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>答题抽奖</title>
+  <style>
+    /* 简单进行默认样式重置 */
 
     * {
       margin: 0;
@@ -18,7 +27,17 @@
     }
     html,body {
       height: 100%;
-    }</style><link href=./static/css/app.0ed213f0cc189eabe965f479bea1013c.css rel=stylesheet></head><body><div id=app></div><script>(function (doc, win) {
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <!--<audio id="music" :src="BGMsrc" loop="loop" autoplay="autoplay"></audio>-->
+
+  </div>
+<script>
+  (function (doc, win) {
     let docEl = doc.documentElement,
       resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
       recalc = function () {
@@ -31,4 +50,9 @@
     if (!doc.addEventListener) return;
     win.addEventListener(resizeEvt, recalc, false);
     doc.addEventListener('DOMContentLoaded', recalc, false);
-  })(document, window);</script><script type=text/javascript src=./static/js/manifest.3ad1d5771e9b13dbdad2.js></script><script type=text/javascript src=./static/js/vendor.0431d9f79e529bdef3b3.js></script><script type=text/javascript src=./static/js/app.7c9cbae6e9af7a8c9207.js></script></body></html>
+  })(document, window);
+</script>
+  <!-- built files will be auto injected -->
+</body>
+
+</html>

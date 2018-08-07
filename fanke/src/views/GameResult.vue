@@ -42,19 +42,19 @@
         <p>{{Desc}}</p>
         <p>最佳成绩为: {{BestScore}}分</p>
         <p>最佳排名为: NO.{{Rank}}</p>
-        <router-link to="/gamePage">
-          <div class="result-button main-btn" @click="">
+        <router-link :to="{name: 'gamePage'}">
+          <div class="result-button main-btn">
             再玩一次
           </div>
         </router-link>
         <div class="buttonBox">
           <router-link to="/gamePage/gameResult/actInfo/actRank">
-            <div class="result-button rank-btn" @click="">
+            <div class="result-button rank-btn">
               排行榜
             </div>
           </router-link>
           <router-link to="/home">
-            <div class="result-button home-btn">
+            <div class="result-button home-btn" @click="hideMusic">
               返回首页
             </div>
           </router-link>
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-  //  import {EventBus} from '../eventBus/eventBus'
+    import {EventBus} from '../eventBus/eventBus'
 
 
   export default {
@@ -90,11 +90,11 @@
 //
 //  computed: {},
 //
-    methods: {},
-//    created() {
-//
-//    },
-//
+    methods: {
+      hideMusic() {
+      }
+    },
+
     created: function () {
       const url = '/exam/ExamResult';
 

@@ -14,7 +14,6 @@ import QList from '../views/QList.vue'
 import GameResult from '../views/GameResult.vue'
 import Shake from '../views/Shake.vue'
 import AwardResult from '../views/AwardResult.vue'
-import AwardDetail from '../views/AwardDetail.vue'
 import LoadingPage from '../views/LoadingPage.vue'
 
 Vue.use(VueRouter);
@@ -83,7 +82,7 @@ export default new VueRouter({
               children: [
                 {
                   path: 'actDesc',
-                  name: 'actDesc',
+                  name: 'actDesc2',
                   component: ActDesc,
                   meta: {
                     keepAlive: true
@@ -121,7 +120,7 @@ export default new VueRouter({
               children: [
                 {
                   path: 'actDesc',
-                  name: 'actDesc',
+                  name: 'actDesc3',
                   component: ActDesc,
                   meta: {
                     keepAlive: true

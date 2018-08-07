@@ -3,16 +3,18 @@
    <div class="gamePart">
      <div class="bg2"></div>
      <UserImg></UserImg>
-     <Music></Music>
+     <!--<Music></Music>-->
      <router-view></router-view>
    </div>
 </template>
 
 <script>
   import UserImg from '../components/UserImg.vue'
-  import Music from '../components/Music.vue'
+//  import Music from '../components/Music.vue'
+  import {EventBus} from '../eventBus/eventBus';
 
-export default {
+
+  export default {
   data: function () {
     return {
       questions: []
@@ -21,8 +23,7 @@ export default {
 //
   components: {
     UserImg,
-    Music
-//    QList
+//    Music
   },
 //
 //  computed: {},
@@ -30,7 +31,6 @@ export default {
 //  methods: {}
 //
   mounted: function() {
-
 
     // 请求问题数据
     const url2 = '/exam/GetQuestions';
@@ -86,7 +86,7 @@ export default {
     top: 0;
     left: 0;
     z-index: 10;
-    /*display: none;*/
+    overflow: hidden;
   }
   .bg2 {
     height: 100%;

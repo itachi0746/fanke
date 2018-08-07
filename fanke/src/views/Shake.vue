@@ -1,6 +1,7 @@
 <template>
   <div class="Mask2 yao">
-    <img id="yaoImg" :class="{animated:true,_headShake:isShake}" src="../assets/yao.png"/>
+    <audio id="yao" :src="YAOsrc"></audio>
+    <img id="yaoImg" :class="{animated:true,shake:isShake}" src="../assets/yao.png"/>
     <router-view></router-view>
   </div>
 </template>
@@ -21,7 +22,9 @@
         shakeSpeed: 1500,//设置阈值
         winPrize: false,
         prizeData: {},
-        isShake: false
+        isShake: false,
+        YAOsrc: require('../assets/music/yyy.mp3'),
+        yao: null
       }
     },
 
@@ -45,12 +48,7 @@
           let speed = Math.abs(this.x + this.y + this.z - this.lastX - this.lastY - this.lastZ) / diffTime * 10000;
           if (speed > this.shakeSpeed) {//如果计算出来的速度超过了阈值，那么就算作用户成功摇一摇
             //这里就是放置如果用户成功的摇一摇，将要触发的事件，例如提示摇到了谁，摇到了多少金币等等
-            this.isShake = true;
-
-            this.timer = setTimeout(()=> {
-              this.$router.replace({name: 'awardResult', params: { winPrize: this.winPrize, prizeData: this.prizeData }});
-
-            },2000)
+            this.shakeAction();
 
           }
           this.lastX = this.x;//赋值，为下一次计算做准备
@@ -60,14 +58,7 @@
       },
 
       test() {
-        setTimeout(()=> {
-          this.isShake = true;
-
-          this.timer = setTimeout(()=> {
-            this.$router.push({name: 'awardResult', params: { winPrize: this.winPrize, prizeData: this.prizeData }});
-
-          },2000)
-        },1000)
+        this.shakeAction()
       },
 
       doDraw: function () {
@@ -79,36 +70,56 @@
           method: 'post',//请求方式
           //这里可以添加axios文档中的各种配置
         }).then(res => {
-          console.log(res.data, '请求中奖成功');
-          this.winPrize = true;
+          console.log(res.data, '请求中奖数据成功');
+          this.winPrize = res.data.Success;  // 是否中奖
 
-          this.prizeData = res.data.Data
+          this.prizeData = res.data.Data;  // 中奖的数据
+
+          this.addEvent();
 
         }).catch(err => {
           console.log(err, '请求错误');
-          this.winPrize = false
-
+//          this.winPrize = false;
+//          this.addEvent();
         });
 
-        this.test();
+//        this.test();
 
+      },
+
+      shakeAction() {
+        if(!this.isShake) {  // 开关 避免重复触发摇一摇
+
+          this.yao.play();
+          this.isShake = true;
+
+          this.timer = setTimeout(()=> {
+            this.$router.replace({name: 'awardResult', params: { winPrize: this.winPrize, prizeData: this.prizeData }});
+
+          },2000)
+
+        }
+
+      },
+
+      addEvent() {
+
+        if (window.DeviceMotionEvent) {//判断设备是否支持运动传感事件。
+//            this.doDraw();
+
+          window.addEventListener('devicemotion', this._shake, false);//如果支持，那么就绑定shake方法到事件上
+        } else {
+          alert('本设备不支持摇一摇功能, 将自动为您抽奖');
+//            this.doDraw();
+          this.shakeAction()
+        }
       }
 
     },
 
     mounted: function () {
-
-//      console.log(document.querySelector('#yaoImg'))
-
-      if (window.DeviceMotionEvent) {//判断设备是否支持运动传感事件。
-        this.doDraw();
-
-        window.addEventListener('devicemotion', this._shake, false);//如果支持，那么就绑定shake方法到事件上
-      } else {
-        alert('本设备不支持摇一摇功能, 将自动为您抽奖');
-        this.doDraw();
-
-      }
+      this.yao = document.querySelector('#yao');
+      this.doDraw()
 
 
     },

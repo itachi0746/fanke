@@ -1,6 +1,6 @@
 <template>
-  <div class="musicBox">
-    <audio id="music" :src="BGMsrc" loop="loop" autoplay="autoplay"></audio>
+  <div :class="{musicBox: true, hide: _musicHide}">
+    <audio id="music" :src="localBGMsrc" loop="loop" autoplay="autoplay"></audio>
 
     <div v-if="music">
       <img @click="musicControl" src="../assets/musicOn.png"/>
@@ -15,11 +15,15 @@
   import {EventBus} from '../eventBus/eventBus';
 
   export default {
+    props: ['musicHide'],
+
     data: function () {
       return {
         music: true,
-        BGMsrc: '',
-        BGM: document.querySelector("#music")
+        localBGMsrc: require('../assets/music/bg_music.mp3'),
+        serverBGMsrc: '',
+        BGM: null,
+        _musicHide: true
       }
     },
 
@@ -28,16 +32,21 @@
 //  computed: {},
 
     methods: {
-      musicControl: function () {
+      musicControl: function () { // 音乐按钮点击
         this.music = !this.music;
-        console.log(this.BGM)
-        this.music ? this.BGM.play() : this.BGM.pause()
+        this.music ? this.BGM.play() : this.BGM.pause();
+//        console.log(this.BGM.paused)
       }
     },
 
     mounted() {
-      this.BGM = EventBus.music
+      this.BGM = document.querySelector("#music");
+      this._musicHide = this.musicHide
+//      console.log(EventBus.musicShow)
     },
+    watch: {
+
+    }
 
 //  beforeDestroy: function() {}
   }
@@ -48,11 +57,16 @@
     position: absolute;
     top: 1rem;
     right: 1rem;
-    z-index: 5;
+    z-index: 11;
+    /*display: none;*/
+
   }
 
   .musicBox img {
     width: 2rem;
 
+  }
+  .hide {
+    display: none;
   }
 </style>

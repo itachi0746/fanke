@@ -83,7 +83,7 @@
       },
 
       checkAnswer: function () {
-        console.log('this.questions', this.questions);
+//        console.log('this.questions', this.questions);
 //        console.log('checkAnswer');
 
         this.flag = false;
@@ -150,7 +150,7 @@
       $route(to, from) {
         this.isSlide = false;
         this.flag = true;
-        console.log('flag:', this.flag);
+//        console.log('flag:', this.flag);
 
         this.Num++;
         this._event.target.style.background = '';
@@ -176,7 +176,7 @@
 
   .question {
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 11rem;

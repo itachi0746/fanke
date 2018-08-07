@@ -22,7 +22,7 @@
         </div>
 
         <router-link to="/home">
-          <div class="menuBack">
+          <div class="menuBack" @click="hideMusic">
             返回首页
           </div>
         </router-link>
@@ -44,11 +44,11 @@
         </router-link>
         <br>
         <router-link to="/home">
-          <div class="menuBack">返回首页</div>
+          <div class="menuBack" @click="hideMusic">返回首页</div>
         </router-link>
 
         <!--<div>-->
-          <!--<a class="followBtn">关注我们</a>-->
+        <!--<a class="followBtn">关注我们</a>-->
         <!--</div>-->
       </div>
 
@@ -59,12 +59,13 @@
 </template>
 
 <script>
+  import {EventBus} from '../eventBus/eventBus';
 
   export default {
     data: function () {
       return {
         winPrize: false,
-        prizeData : {},
+        prizeData: {},
         img1: require('../assets/faiImg2-2.png'),
         img2: require('../assets/gift.png')
 
@@ -75,7 +76,10 @@
 //
 //  computed: {},
 //
-//  methods: {}
+    methods: {
+      hideMusic() {
+      }
+    },
 
     beforeCreate() {
 //      this.winPrize = this.$router.params.winPrize;
@@ -83,8 +87,10 @@
     },
 
     created() {
-      this.winPrize = this.$router.params.winPrize;
-      this.prizeData = this.$router.params.prizeData;
+      console.log(this.$route.params)
+
+      this.winPrize = this.$route.params.winPrize;  // 是否中奖
+      this.prizeData = this.$route.params.prizeData;  // 中奖的数据
     }
 //
 //  beforeDestroy: function() {}

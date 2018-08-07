@@ -6,7 +6,7 @@ import axios from 'axios'
 import router from './router'
 import VueLazyload from 'vue-lazyload'
 import animate from 'animate.css'
-// import {EventBus} from './eventBus/eventBus'
+import {EventBus} from './eventBus/eventBus'
 
 const err = require('./assets/error.png');
 const ld = require('./assets/loading2.gif');
@@ -28,7 +28,7 @@ Vue.prototype.$http = axios;
 // Vue.prototype.$isActInfo = true;
 
 /* eslint-disable no-new */
-new Vue({
+let myVue = new Vue({
   el: '#app',
   components: {App},
   template: '<App/>',
@@ -43,37 +43,37 @@ new Vue({
           data
         }
       })
+    },
+    _handler() {
+      console.log('我监听到了浏览器的返回按钮事件啦');
+
+      let userAgent = navigator.userAgent;
+      if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") != -1) {
+
+        if (EventBus.$isActInfo) {
+          console.log('关闭网页', EventBus.$isActInfo);
+
+          WeixinJSBridge.call('closeWindow');
+        } else {
+          console.log('不关闭网页', EventBus.$isActInfo);
+          EventBus.$isActInfo = true;
+
+        }
+      } else if (userAgent.indexOf('Android') > -1 || userAgent.indexOf('Linux') > -1) {
+        window.opener = null;
+        window.open('about:blank', '_self', '').close();
+        console.log(222)
+      } else {
+        console.log(333)
+      }
     }
+
   },
+
+
 });
 
-// window.addEventListener("popstate", function (e) {
-//   console.log('我监听到了浏览器的返回按钮事件啦');
-//
-//   let userAgent = navigator.userAgent;
-//   if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") != -1) {
-//
-//
-//
-//     // Vue.prototype.$isActInfo ? '' : WeixinJSBridge.call('closeWindow')
-//     // if(!Vue.prototype.$isActInfo){
-//     //   console.log('关闭网页')
-//     //   // console.log(EventBus.$isActInfo)
-//     //
-//     //   WeixinJSBridge.call('closeWindow');
-//     // }else {
-//     //   console.log('不关闭网页')
-//     //   // console.log(EventBus.$isActInfo)
-//     //
-//     // }
-//     // WeixinJSBridge.call('closeWindow');  // 微信浏览器关闭当前页面
-//   } else if (userAgent.indexOf('Android') > -1 || userAgent.indexOf('Linux') > -1) {
-//     window.opener = null;
-//     window.open('about:blank', '_self', '').close();
-//     console.log(222)
-//   } else {
-//
-//     console.log(333)
-//   }
-//
-// }, false);
+// console.log('myVue',myVue,myVue._handler)
+window.addEventListener("popstate", myVue._handler, false);
+
+
