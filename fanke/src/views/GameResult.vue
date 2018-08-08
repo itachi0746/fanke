@@ -19,7 +19,7 @@
 
         <div class="buttonBox">
           <router-link :to="{name: 'actRank'}">
-            <div class="result-button rank-btn" @click="">
+            <div class="result-button rank-btn">
               排行榜
             </div>
           </router-link>

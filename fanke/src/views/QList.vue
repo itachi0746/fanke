@@ -2,14 +2,14 @@
   <!--问题-->
   <div class="QBox">
     <div class="question">
-      <div :class="{ animated: true, slideOutUp: isSlide, delayOfWrong: isDelay }" v-if="questions">
+      <div class="animated" :class="{ slideOutUp: isSlide, delayOfWrong: isDelay }" v-if="questions">
         <p class="questionNum">{{ questions[Num].QuestionNo + '/' + questions.length }}</p>
         <p class="questionText">{{ questions[Num].QuestionDesc }}</p>
         <img v-lazy="questions[Num].QuestionImage" alt="题目图片"
              @click.prevent :key="questions[Num].QuestionImage">
 
       </div>
-      <div :class="{ animated: true, optionBox: true, slideOutDown: isSlide, delayOfWrong: isDelay }" v-if="questions">
+      <div class="animated optionBox" :class="{ slideOutDown: isSlide, delayOfWrong: isDelay }" v-if="questions">
         <!--选项-->
         <div class="option" v-for="(item, index) in questions[Num].Items" :key="index">
           <p class="normalP" @touchstart.passive="flag && checkAnswer($event)" :id="questions[Num].Items[index].ItemId">
@@ -140,6 +140,9 @@
 
         }).catch(err => {
           console.log(err, '请求错误');
+          alert('出现了一点问题, 将返回主页')
+          this.$router.push({name: 'home'})
+
         });
       },
       afterCheck(isRight) {
@@ -199,7 +202,7 @@
 
   .question {
     position: absolute;
-    top: 45%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 11rem;
@@ -216,7 +219,7 @@
   }
 
   .option {
-    margin-bottom: 1rem;
+    margin-bottom: .7rem;
     width: 10.75rem;
     height: 1.75rem;
   }
@@ -255,7 +258,7 @@
 
   .questionText {
     word-wrap: break-word;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: rgb(112, 0, 252);
     text-shadow: rgb(255, 255, 255) -1px -1px 0px, rgb(255, 255, 255) 0px -1px 0px, rgb(255, 255, 255) 1px -1px 0px, rgb(255, 255, 255) 1px 0px 0px, rgb(255, 255, 255) 1px 1px 0px, rgb(255, 255, 255) 0px 1px 0px, rgb(255, 255, 255) -1px 1px 0px, rgb(255, 255, 255) -1px 0px 0px;
   }
