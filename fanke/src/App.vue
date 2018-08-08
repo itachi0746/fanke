@@ -22,19 +22,19 @@
     components: {
       Music
     },
-    watch: {
-      // 检测动态路由来回切换 并修改数据
-      $route(to, from) {
-        console.log('home:',to.name)
-        console.log('home:',from.name)
-        if(to.name==='gamePage') {
-          this.musicHide = false
-        }
-        if(to.name==='home') {
-          this.musicHide = true
-        }
-      }
-    }
+//    watch: {
+//      // 检测动态路由来回切换 并修改数据
+//      $route(to, from) {
+//        console.log('home:',to.name)
+//        console.log('home:',from.name)
+//        if(to.name==='gamePage') {
+//          this.musicHide = false
+//        }
+//        if(to.name==='home') {
+//          this.musicHide = true
+//        }
+//      }
+//    }
 
   }
 

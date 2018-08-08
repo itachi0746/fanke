@@ -1,6 +1,6 @@
 <template>
   <div class="bottom">
-    <div v-if="true">
+    <div v-if="success">
       <!--<router-link :to="{name: 'gamePage', params: {questions: questions}}" replace>-->
         <!--<img class="animated tada" src="../assets/startBtn.png"/>-->
       <!--</router-link>-->

@@ -22,6 +22,7 @@ export default new VueRouter({
   routes: [
     {
       path: '/home',
+      name: 'home',
       component: Home,
       children: [
         {
@@ -94,7 +95,8 @@ export default new VueRouter({
                 },
                 {
                   path: 'actRank',
-                  component: ActRank
+                  component: ActRank,
+                  name: 'actRank'
                 },
                 {
                   path: 'actAward',

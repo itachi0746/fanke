@@ -2,17 +2,17 @@
   <!--问题-->
   <div class="QBox">
     <div class="question">
-      <div :class="{ animated: true, slideOutUp: isSlide }" v-if="questions">
+      <div :class="{ animated: true, slideOutUp: isSlide, delayOfWrong: isDelay }" v-if="questions">
         <p class="questionNum">{{ questions[Num].QuestionNo + '/' + questions.length }}</p>
         <p class="questionText">{{ questions[Num].QuestionDesc }}</p>
         <img v-lazy="questions[Num].QuestionImage" alt="题目图片"
-             @click.stop="imgClick($event)" :key="questions[Num].QuestionImage">
+             @click.prevent :key="questions[Num].QuestionImage">
 
       </div>
-      <div :class="{ animated: true, optionBox: true, slideOutDown: isSlide }" v-if="questions">
+      <div :class="{ animated: true, optionBox: true, slideOutDown: isSlide, delayOfWrong: isDelay }" v-if="questions">
         <!--选项-->
         <div class="option" v-for="(item, index) in questions[Num].Items" :key="index">
-          <p class="normalP" @click="flag && checkAnswer()" :id="questions[Num].Items[index].ItemId">
+          <p class="normalP" @touchstart.passive="flag && checkAnswer($event)" :id="questions[Num].Items[index].ItemId">
             {{item.ItemDesc}}</p>
 
         </div>
@@ -39,8 +39,8 @@
         Num: 0,  // 第几条问题
         flag: true,  // 点击开关
         btnRight: require('../assets/btnRight.png'),
-        btnWrong: require('../assets/btnWrong.png')
-
+        btnWrong: require('../assets/btnWrong.png'),
+        isDelay: false
       }
     },
     computed: {
@@ -65,7 +65,7 @@
 //      console.log('beforeMount:',this.$route.params.questions,'and',this.questions)
 //    },
 //
-    mounted () {
+    mounted() {
 //      console.log('mounted:',this.$route.params.questions,'and',this.questions)
 
     },
@@ -82,16 +82,16 @@
         this.$router.replace({name: 'question', params: {questions: this.questions, id: this._id}});
       },
 
-      checkAnswer: function () {
+      checkAnswer: function (event) {
 //        console.log('this.questions', this.questions);
 //        console.log('checkAnswer');
 
         this.flag = false;
         // `event` 是原生 DOM 事件
-        this._event = event;
+        this.Event = event;
 //        this.hasAnswer = true;
         const questionId = this.questions[this.Num].QuestionId;
-        const itemId = this._event.target.id;
+        const itemId = this.Event.target.id;
         console.log(questionId, itemId);
 
         //请求问题答案
@@ -109,38 +109,60 @@
 //          console.log(res.data.Data, '请求成功');
 //        正确答案
           const rightAnswer = res.data.Data.Items[0].ItemId;
-          if (event) {
-            if (this._event.target.id === rightAnswer) {  // 回答正确
+          const isRightAnswer = itemId === rightAnswer;
+//          console.log('isRight',isRight)
+          if (this.Event) {
+            if (isRightAnswer) {  // 回答正确
 
-              this._event.target.style.background = 'url(' + this.btnRight + ') 0% 0% / 100% 100% no-repeat';
-
+              this.Event.target.style.background = 'url(' + this.btnRight + ') 0% 0% / 100% 100% no-repeat';
+              this.isDelay = false
             } else {  // 错误
-
-              this._event.target.style.background = 'url(' + this.btnWrong + ') 0% 0% / 100% 100% no-repeat';
-              this._event.target.classList.add('shakeLR');
+              this.Event.target.style.background = 'url(' + this.btnWrong + ') 0% 0% / 100% 100% no-repeat';
+              this.Event.target.classList.add('shakeLR');
+              this.isDelay = true;
 
             }
-            this.isSlide = true;
-            if (this._id <= this.questions.length) {   // 题目还未答完
-//              console.log(1);
-              this.timer = setTimeout(() => {
-                this.nextQ();
-              }, 1400)
 
-            } else {  // 题目答完 转去答题结果页
-//              console.log('this._id:',this._id)
-//              console.log(2);
-              setTimeout(() => {
-                this.$router.push('/gamePage/gameResult')
-              }, 1400)
-//              this.$router.push({ name: 'question', params: {questions: this.questions, id: this._id}});
-            }
+            this.afterCheck(isRightAnswer)
+//            this.isSlide = true;
+//            if (this._id <= this.questions.length) {   // 题目还未答完
+//              this.timer = setTimeout(() => {
+//                this.nextQ();
+//              }, 1400)
+//
+//            } else {  // 题目答完 转去答题结果页
+//              setTimeout(() => {
+//                this.$router.push('/gamePage/gameResult')
+//              }, 1400)
+//            }
 
           }
 
         }).catch(err => {
           console.log(err, '请求错误');
         });
+      },
+      afterCheck(isRight) {
+        this.isSlide = true;
+
+        if (this._id <= this.questions.length) {   // 题目还未答完
+
+          if (isRight) {
+            this.timer = setTimeout(() => {
+              this.nextQ();
+            }, 700)
+          } else {
+            this.timer = setTimeout(() => {
+              this.nextQ();
+            }, 1400)
+          }
+
+
+        } else {  // 题目答完 转去答题结果页
+          setTimeout(() => {
+            this.$router.push('/gamePage/gameResult')
+          }, 1400)
+        }
       }
 
 
@@ -149,12 +171,13 @@
       // 检测动态路由来回切换 并修改数据
       $route(to, from) {
         this.isSlide = false;
+        this.isDelay = false;
         this.flag = true;
 //        console.log('flag:', this.flag);
 
         this.Num++;
-        this._event.target.style.background = '';
-        this._event.target.classList.remove('shakeLR');
+        this.Event.target.style.background = '';
+        this.Event.target.classList.remove('shakeLR');
 
       }
     }
@@ -162,7 +185,7 @@
 </script>
 
 <style>
-  .QBox .animated {
+  .QBox .delayOfWrong {
     -webkit-animation-delay: 0.7s;
     animation-delay: 0.7s;
   }
@@ -176,7 +199,7 @@
 
   .question {
     position: absolute;
-    top: 40%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 11rem;
@@ -231,7 +254,7 @@
   }
 
   .questionText {
-    word-wrap : break-word;
+    word-wrap: break-word;
     font-size: 0.8rem;
     color: rgb(112, 0, 252);
     text-shadow: rgb(255, 255, 255) -1px -1px 0px, rgb(255, 255, 255) 0px -1px 0px, rgb(255, 255, 255) 1px -1px 0px, rgb(255, 255, 255) 1px 0px 0px, rgb(255, 255, 255) 1px 1px 0px, rgb(255, 255, 255) 0px 1px 0px, rgb(255, 255, 255) -1px 1px 0px, rgb(255, 255, 255) -1px 0px 0px;

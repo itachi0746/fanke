@@ -4,7 +4,7 @@
     <div class="resultBox isSuccess" v-if="isSuccess">
       <div class="successBg"></div>
       <div class="optContainer">
-        <img class="manImg" src="../assets/manImg.jpg"/>
+        <img class="manImg" :src="logo"/>
         <img src="../assets/success.png"/>
         <p>您的成绩为: {{Score}} 分</p>
         <p>{{Desc}}</p>
@@ -18,13 +18,13 @@
         </router-link>
 
         <div class="buttonBox">
-          <router-link to="/gamePage/gameResult/actInfo/actRank">
+          <router-link :to="{name: 'actRank'}">
             <div class="result-button rank-btn" @click="">
               排行榜
             </div>
           </router-link>
-          <router-link :to="{name: 'gamePage'}">
-            <div class="result-button home-btn">
+          <router-link :to="{name: 'home'}">
+            <div class="result-button home-btn" @click="playAgain">
               再玩一次
             </div>
           </router-link>
@@ -36,14 +36,14 @@
     <div class="resultBox isFail" v-else>
       <div class="failBg"></div>
       <div class="optContainer">
-        <img class="manImg" src="../assets/manImg.jpg"/>
+        <img class="manImg" :src="logo"/>
         <img src="../assets/fail.png"/>
         <p>您的成绩为: {{Score}} 分</p>
         <p>{{Desc}}</p>
         <p>最佳成绩为: {{BestScore}}分</p>
         <p>最佳排名为: NO.{{Rank}}</p>
-        <router-link :to="{name: 'gamePage'}">
-          <div class="result-button main-btn">
+        <router-link :to="{name: 'home'}">
+          <div class="result-button main-btn" @click="playAgain">
             再玩一次
           </div>
         </router-link>
@@ -54,7 +54,7 @@
             </div>
           </router-link>
           <router-link to="/home">
-            <div class="result-button home-btn" @click="hideMusic">
+            <div class="result-button home-btn" @click="">
               返回首页
             </div>
           </router-link>
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-    import {EventBus} from '../eventBus/eventBus'
+  import {EventBus} from '../eventBus/eventBus'
 
 
   export default {
@@ -82,19 +82,47 @@
         PrizeChance: 0,
         Rank: 0,
         Score: 0,
+        defaultLogo: require('../assets/manImg.jpg'),
+        userLogo: EventBus.userData.Logo,
         isHide: true
       }
     },
 //
 //  components: {},
 //
-//  computed: {},
-//
-    methods: {
-      hideMusic() {
+    computed: {
+      logo() {
+        if (this.userLogo === '' ||
+          this.userLogo === undefined ||
+          this.userLogo === null) {
+          return this.defaultLogo
+        } else {
+          return this.userLogo
+        }
+
       }
     },
-
+    methods: {
+      playAgain() {  // 再来一次
+//        const url = '/PlayAgain';
+//
+//        this.$http({
+//          method: 'post',
+//          url: url,
+////      data: {
+////        data
+////      }
+//        }).then(res => {
+////          console.log(res.data, '请求成功');
+//
+//
+//          this.isHide = false;
+//        }).catch(err => {
+//          console.log(err, '请求错误');
+//        })
+//      }
+      }
+    },
     created: function () {
       const url = '/exam/ExamResult';
 

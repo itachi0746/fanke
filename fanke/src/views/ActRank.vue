@@ -22,18 +22,13 @@
           <tr class="rankInfo" v-for="(user, index) in Users" :key="index">
             <td>No.{{user.Rank}}</td>
             <td>
-              <div v-if="Users.length!==0">
-                <div class="userImg manImg">
-                  <img :src="user.Logo" alt="">
-                </div>
-
+              <div class="userImg manImg" v-if="user.Logo">
+                <img :src="user.Logo" alt="用户头像">
               </div>
-              <div v-else>
-                <div class="userImg manImg">
-                  <img src="../assets/manImg.jpg" alt="">
-                </div>
-
+              <div class="userImg manImg" v-else>
+                <img :src="defaultLogo" alt="默认头像">
               </div>
+
             </td>
             <td class="userName">{{user.Name}}</td>
             <td>{{user.Score}}<span class="scoreUnit">分</span></td>
@@ -54,39 +49,50 @@
 
 <script>
 
-export default {
-  data: function () {
-    return {
-      Users: [],
+  export default {
+    data: function () {
+      return {
+        Users: [],
+        defaultLogo: require('../assets/manImg.jpg')
 
-    }
-  },
+      }
+    },
 //
 //  components: {},
 //
-//  computed: {},
+//    computed: {
+//      logo() {
+//        if (this.Users.logo === '' ||
+//          this.Users.logo === undefined ||
+//          this.Users.logo === null) {
+//          return this.defaultLogo
+//        } else {
+//          return this.Users.logo
+//        }
 //
+//      }
+//    },
 //  methods: {}
-//
-  mounted: function() {  // 请求排名
 
-    const url = '/exam/Rank';
-    this.$http({
-      url: url,//api 代理到json文件地址，后面的后缀是文件中的对象或者是数组
-      method: 'post',//请求方式
-      //这里可以添加axios文档中的各种配置
-    }).then(res => {
+    mounted: function () {  // 请求排名
+
+      const url = '/exam/Rank';
+      this.$http({
+        url: url,//api 代理到json文件地址，后面的后缀是文件中的对象或者是数组
+        method: 'post',//请求方式
+        //这里可以添加axios文档中的各种配置
+      }).then(res => {
 //      console.log(res.data, '请求成功');
-      this.Users = res.data.Data;
-      console.log('this.Users',this.Users)
-    }).catch(err => {
-      console.log(err, '请求错误');
-    })
+        this.Users = res.data.Data;
+        console.log('this.Users', this.Users)
+      }).catch(err => {
+        console.log(err, '请求错误');
+      })
 
-  },
+    },
 //
 //  beforeDestroy: function() {}
-}
+  }
 </script>
 
 <style>
@@ -100,10 +106,11 @@ export default {
   /*排行榜*/
   .actInfoBody {
     color: #ffffff;
-    font-size:0.7rem;
+    font-size: 0.7rem;
     padding: 0 1rem;
     position: relative;
   }
+
   .poupLine {
     /*font-size: .6rem;*/
     /*line-height: .9rem;*/
@@ -111,6 +118,7 @@ export default {
     margin-top: .7rem;
     position: relative;
   }
+
   .rankTable {
     width: 100%;
     margin-top: .55rem;
@@ -119,11 +127,13 @@ export default {
     font-size: .7rem;
     color: #FFF;
   }
+
   #rankHeight {
     overflow-y: hidden;
     padding: 0rem .5rem;
     -webkit-overflow-scrolling: touch;
   }
+
   .rankTable {
     width: 100%;
     margin-top: .55rem;
@@ -133,16 +143,19 @@ export default {
     color: #FFF;
     border-collapse: collapse;
   }
+
   .rankInfo {
     line-height: 2.75rem;
     border-bottom: 1px solid #ffffff;
   }
+
   .rankTable .userImg {
     width: 2rem;
     height: 2rem;
     margin: 0 auto;
     border-radius: 999px;
   }
+
   .userImg img {
     width: 100%;
     height: 100%;
@@ -158,7 +171,6 @@ export default {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-
 
   .actRank .poupSlideBar {
     left: 6rem;

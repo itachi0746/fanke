@@ -7,6 +7,7 @@
     <RuleImg></RuleImg>
     <TitleImg></TitleImg>
     <StartBtn></StartBtn>
+
     <router-view></router-view>
   </div>
 
@@ -21,7 +22,9 @@
 
   export default {
     data: function () {
-      return {}
+      return {
+//        userData:[]
+      }
     },
 //
     components: {
@@ -38,6 +41,21 @@
 
     mounted() {
       EventBus.$isActInfo = true;
+
+      // 请求用户信头像,名字
+      const url = '/account/getUserInfo';
+      this.$http({
+        url: url,
+        method: 'post',//请求方式
+        //这里可以添加axios文档中的各种配置
+      }).then(res => {
+        console.log(res.data, '请求用户数据成功');
+        EventBus.userData = res.data.Data
+
+      }).catch(err => {
+        console.log(err, '请求错误');
+
+      });
 
     },
 

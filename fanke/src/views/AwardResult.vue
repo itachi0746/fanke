@@ -22,7 +22,7 @@
         </div>
 
         <router-link to="/home">
-          <div class="menuBack" @click="hideMusic">
+          <div class="menuBack" @click="">
             返回首页
           </div>
         </router-link>
@@ -44,7 +44,7 @@
         </router-link>
         <br>
         <router-link to="/home">
-          <div class="menuBack" @click="hideMusic">返回首页</div>
+          <div class="menuBack" @click="">返回首页</div>
         </router-link>
 
         <!--<div>-->
@@ -77,8 +77,7 @@
 //  computed: {},
 //
     methods: {
-      hideMusic() {
-      }
+
     },
 
     beforeCreate() {

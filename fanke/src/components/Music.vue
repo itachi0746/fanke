@@ -1,5 +1,5 @@
 <template>
-  <div :class="{musicBox: true, hide: _musicHide}">
+  <div class="musicBox" v-show="!musicHide">
     <audio id="music" :src="localBGMsrc" loop="loop" autoplay="autoplay"></audio>
 
     <div v-if="music">
@@ -12,18 +12,17 @@
 </template>
 
 <script>
-  import {EventBus} from '../eventBus/eventBus';
+  //  import {EventBus} from '../eventBus/eventBus';
 
   export default {
-    props: ['musicHide'],
 
-    data: function () {
+    data() {
       return {
         music: true,
         localBGMsrc: require('../assets/music/bg_music.mp3'),
         serverBGMsrc: '',
-        BGM: null,
-        _musicHide: true
+        musicHide: true
+
       }
     },
 
@@ -41,11 +40,28 @@
 
     mounted() {
       this.BGM = document.querySelector("#music");
-      this._musicHide = this.musicHide
-//      console.log(EventBus.musicShow)
-    },
-    watch: {
+//      console.log(this.BGM)
 
+      //--创建页面监听，等待微信端页面加载完毕 触发音频播放
+//      document.addEventListener('WeixinJSBridgeReady', function() {
+//        this.BGM.play()
+//      })
+    },
+
+    watch: {
+      // 检测动态路由来回切换 并修改数据
+      $route(to, from) {
+//        console.log('music:', to.name)
+//        console.log('music:', from.name)
+        to.name === 'question' ? this.musicHide = false : this.musicHide = true;
+//        if (to.name === 'question') {
+//          this.musicHide = false
+//        }
+//        else {
+//          this.musicHide = true
+//        }
+
+      }
     }
 
 //  beforeDestroy: function() {}
@@ -66,6 +82,7 @@
     width: 2rem;
 
   }
+
   .hide {
     display: none;
   }
