@@ -5,6 +5,7 @@
       <div class="animated" :class="{ slideOutUp: isSlide, delayOfWrong: isDelay }" v-if="questions">
         <p class="questionNum">{{ questions[Num].QuestionNo + '/' + questions.length }}</p>
         <p class="questionText">{{ questions[Num].QuestionDesc }}</p>
+        <!--<p class="questionText">a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊</p>-->
         <img v-lazy="questions[Num].QuestionImage" alt="题目图片"
              @click.prevent :key="questions[Num].QuestionImage">
 
@@ -13,9 +14,14 @@
         <!--选项-->
         <div class="option" v-for="(item, index) in questions[Num].Items" :key="index">
           <p class="normalP" @touchstart.passive="flag && checkAnswer($event)" :id="questions[Num].Items[index].ItemId">
-            {{item.ItemDesc}}</p>
-
+            {{item.ItemDesc}}
+          </p>
         </div>
+        <!--<div class="option">-->
+          <!--<p class="normalP">-->
+            <!--啊啊啊啊啊啊</p>-->
+
+        <!--</div>-->
 
       </div>
 
@@ -140,7 +146,7 @@
 
         }).catch(err => {
           console.log(err, '请求错误');
-          alert('出现了一点问题, 将返回主页')
+          alert('出错啦, 将返回主页')
           this.$router.push({name: 'home'})
 
         });
@@ -214,12 +220,12 @@
   }
 
   .optionBox {
-    margin-top: 1rem;
+    margin-top: .7rem;
 
   }
 
   .option {
-    margin-bottom: .7rem;
+    margin-bottom: .35rem;
     width: 10.75rem;
     height: 1.75rem;
   }
@@ -258,6 +264,7 @@
 
   .questionText {
     word-wrap: break-word;
+    line-height:.95rem;
     font-size: 0.75rem;
     color: rgb(112, 0, 252);
     text-shadow: rgb(255, 255, 255) -1px -1px 0px, rgb(255, 255, 255) 0px -1px 0px, rgb(255, 255, 255) 1px -1px 0px, rgb(255, 255, 255) 1px 0px 0px, rgb(255, 255, 255) 1px 1px 0px, rgb(255, 255, 255) 0px 1px 0px, rgb(255, 255, 255) -1px 1px 0px, rgb(255, 255, 255) -1px 0px 0px;

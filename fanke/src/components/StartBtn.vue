@@ -1,6 +1,6 @@
 <template>
   <div class="bottom">
-    <div v-if="true">
+    <div v-if="success">
       <!--<router-link :to="{name: 'gamePage', params: {questions: questions}}" replace>-->
         <!--<img class="animated tada" src="../assets/startBtn.png"/>-->
       <!--</router-link>-->
@@ -57,6 +57,7 @@
         }
       }).catch(err => {
         console.log(err, '请求错误');
+        alert('出错啦')
       });
 
       // 请求问题数据

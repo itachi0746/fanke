@@ -48,6 +48,8 @@
 
     }).catch(err => {
       console.log(err, '请求错误');
+      alert('出错啦')
+
     });
 
 
@@ -72,6 +74,8 @@
           console.log('再来一次游戏')
         }).catch(err => {
           console.log(err, '请求错误');
+          alert('出错啦')
+
         })
       }
     }

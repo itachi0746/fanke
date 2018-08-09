@@ -21,11 +21,28 @@ Vue.use(VueLazyload, {
 
 Vue.config.productionTip = false;
 
-axios.defaults.baseURL = process.env.BASE_URL;  // 请求的默认URL
+// 环境的切换
+if (process.env.NODE_ENV === 'development') {
+  //开发环境下的代理地址，解决本地跨域跨域，配置在config目录下的index.js dev.proxyTable中
+  axios.defaults.baseURL = "/api"
+} else {
+  //生产环境下的地址
+  axios.defaults.baseURL = "";
+}
+
+//响应拦截
+// axios.interceptors.response.use(
+//
+//   error => {
+//     // error 的回调信息
+//     alert('出错啦');
+//     // error.message = '请求错误啊';
+//     return Promise.resolve(error);
+//   }
+// );
 
 // axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 Vue.prototype.$http = axios;
-// Vue.prototype.$isActInfo = true;
 
 /* eslint-disable no-new */
 let myVue = new Vue({
@@ -48,14 +65,14 @@ let myVue = new Vue({
       console.log('我监听到了浏览器的返回按钮事件啦');
 
       let userAgent = navigator.userAgent;
-      if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") != -1) {
+      if (userAgent.indexOf("Firefox") !== -1 || userAgent.indexOf("Chrome") !== -1) {
 
         if (EventBus.$isActInfo) {
-          console.log('关闭网页', EventBus.$isActInfo);
+          // console.log('关闭网页', EventBus.$isActInfo);
 
           WeixinJSBridge.call('closeWindow');
         } else {
-          console.log('不关闭网页', EventBus.$isActInfo);
+          // console.log('不关闭网页', EventBus.$isActInfo);
           EventBus.$isActInfo = true;
 
         }
