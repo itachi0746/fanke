@@ -4,7 +4,9 @@ import Vue from 'vue'
 import App from './index.vue'
 import 'font-awesome/css/font-awesome.min.css'
 // import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css';
+import 'element-ui/lib/theme-chalk/message.css';
+// import 'element-ui/lib/theme-chalk/message-box.css';
+// import 'element-ui/lib/theme-chalk/index.css';
 import '@/config/rem'
 import axiosPlugin from '@/server'
 // import router from './router'

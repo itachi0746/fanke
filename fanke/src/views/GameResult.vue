@@ -1,5 +1,6 @@
 <template>
   <div :class="{Mask:true, gameResult:true, hide:isHide}">
+
     <!--挑战成功-->
     <div class="resultBox isSuccess" v-if="isSuccess">
       <div class="successBg"></div>
@@ -11,11 +12,11 @@
         <p>最佳成绩为: {{BestScore}}分</p>
         <p>最佳排名为: NO.{{Rank}}</p>
         <p>今天还有 {{PrizeChance}} 次抽奖机会</p>
-        <router-link to="/gamePage/shake">
-          <div class="result-button main-btn">
-            赶紧去抽奖
-          </div>
-        </router-link>
+        <!--<router-link to="/gamePage/shake">-->
+        <div class="result-button main-btn" @click="toShake">
+          赶紧去抽奖
+        </div>
+        <!--</router-link>-->
 
         <div class="buttonBox">
           <router-link :to="{name: 'actRank'}">
@@ -24,7 +25,7 @@
             </div>
           </router-link>
           <router-link :to="{name: 'home'}">
-            <div class="result-button home-btn" @click="playAgain">
+            <div class="result-button home-btn" @click="">
               再玩一次
             </div>
           </router-link>
@@ -43,17 +44,17 @@
         <p>最佳成绩为: {{BestScore}}分</p>
         <p>最佳排名为: NO.{{Rank}}</p>
         <router-link :to="{name: 'home'}">
-          <div class="result-button main-btn" @click="playAgain">
+          <div class="result-button main-btn" @click="">
             再玩一次
           </div>
         </router-link>
         <div class="buttonBox">
-          <router-link to="/gamePage/gameResult/actInfo/actRank">
+          <router-link :to="{name: 'actRank'}">
             <div class="result-button rank-btn">
               排行榜
             </div>
           </router-link>
-          <router-link to="/home">
+          <router-link :to="{name: 'home'}">
             <div class="result-button home-btn" @click="">
               返回首页
             </div>
@@ -63,7 +64,9 @@
       </div>
 
     </div>
-
+    <div class="loadingPage" v-show="isLoading">
+      <img src="../assets/loading.gif" alt="loading">
+    </div>
     <router-view></router-view>
 
   </div>
@@ -83,8 +86,10 @@
         Rank: 0,
         Score: 0,
         defaultLogo: require('../assets/manImg.jpg'),
-        userLogo: EventBus.userData.Logo,
-        isHide: true
+        userLogo: '',
+        isHide: true,
+        isLoading: false
+
       }
     },
 //
@@ -103,25 +108,29 @@
       }
     },
     methods: {
-      playAgain() {  // 再来一次
-//        const url = '/PlayAgain';
-//
-//        this.$http({
-//          method: 'post',
-//          url: url,
-////      data: {
-////        data
-////      }
-//        }).then(res => {
-////          console.log(res.data, '请求成功');
-//
-//
-//          this.isHide = false;
-//        }).catch(err => {
-//          console.log(err, '请求错误');
-//        })
-//      }
-      }
+      toShake() {
+        this.isLoading = true;  // 显示加载中的图
+        // 请求中奖
+        const url = '/exam/DoDraw';
+        this.$http({
+          url: url,//api 代理到json文件地址，后面的后缀是文件中的对象或者是数组
+          method: 'post',//请求方式
+          //这里可以添加axios文档中的各种配置
+        }).then(res => {
+          console.log(res.data, '请求中奖数据成功');
+          const Data = res.data;
+          this.isLoading = false;
+          this.$router.push({name: 'shake', params: {drawData:Data}})
+
+        }).catch(err => {
+          console.log(err, '请求错误');
+//          alert('出错啦')
+
+        });
+
+
+      },
+
     },
     created: function () {
       const url = '/exam/ExamResult';
@@ -145,9 +154,10 @@
         this.Score >= 80 ? this.isSuccess = true : this.isSuccess = false;
 
         this.isHide = false;
+        this.userLogo = EventBus.userData.Logo
       }).catch(err => {
         console.log(err, '请求错误');
-        alert('出错啦')
+//        alert('出错啦')
 
       })
     },
@@ -174,6 +184,8 @@
     padding-top: 1rem;
     width: 100%;
     text-align: center;
+    position: relative;
+    z-index: 1;
   }
 
   .resultBox a {
@@ -294,6 +306,27 @@
     margin: 0.5rem auto;
     width: 80%;
     overflow: hidden;
+  }
+
+  .loadingPage {
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    z-index: 10;
+
+  }
+
+  .loadingPage img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
   }
 
   @-webkit-keyframes bgRotate {
