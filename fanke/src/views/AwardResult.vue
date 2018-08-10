@@ -37,11 +37,11 @@
       </div>
 
       <div class="resule-gift-buttonMenu">
-        <router-link to="/gamePage/shake">
-          <div class="repeatDraw">
+        <!--<router-link to="/gamePage/shake">-->
+          <div class="repeatDraw" @click="repeatDraw">
             继续抽奖
           </div>
-        </router-link>
+        <!--</router-link>-->
         <br>
         <router-link to="/home">
           <div class="menuBack" @click="">返回首页</div>
@@ -53,7 +53,9 @@
       </div>
 
     </div>
-
+    <div class="loadingPage" v-show="isLoading">
+      <img src="../assets/loading.gif" alt="loading">
+    </div>
     <router-view></router-view>
   </div>
 </template>
@@ -67,7 +69,8 @@
         winPrize: false,
         prizeData: {},
         img1: require('../assets/faiImg2-2.png'),
-        img2: require('../assets/gift.png')
+        img2: require('../assets/gift.png'),
+        isLoading: false
 
       }
     },
@@ -77,7 +80,28 @@
 //  computed: {},
 //
     methods: {
+      repeatDraw() {
+        this.isLoading = true;  // 显示加载中的图
 
+        const url = '/exam/DoDraw';
+        this.$http({
+          url: url,//api 代理到json文件地址，后面的后缀是文件中的对象或者是数组
+          method: 'post',//请求方式
+          //这里可以添加axios文档中的各种配置
+        }).then(res => {
+          console.log(res.data, '请求中奖数据成功');
+          const Data = res.data;
+          this.isLoading = false;
+
+          if(Data.Success) {
+            this.$router.push({name: 'shake', params: {drawData:Data}})
+          }
+        }).catch(err => {
+          console.log(err, '请求错误');
+//          alert('出错啦')
+
+        });
+      }
     },
 
     beforeCreate() {
@@ -256,6 +280,27 @@
     border-radius: .2rem;
     font-size: 0.8rem;
 
+  }
+
+  .loadingPage {
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    z-index: 310;
+
+  }
+
+  .loadingPage img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
   }
 
   @-webkit-keyframes bgRotate {

@@ -65,7 +65,7 @@
 
       }).catch(err => {
         console.log(err, '请求错误');
-        alert('出错啦')
+//        alert('出错啦')
 
       });
     },

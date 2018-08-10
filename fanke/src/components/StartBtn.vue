@@ -42,22 +42,12 @@
         console.log(res.data, '请求活动数据成功');
 
         EventBus.music = res.data.Data.Music;
-        this.success = res.data.Success;
-//        this.success = true;  // 测试
-        console.log('this.success',this.success)
+        this.success = res.data.Success;  // 活动是否过期
         this.joinNum = res.data.Data.ParticipantsCount;
 
-        //     活动过期
-        if(!this.success) {
-          setTimeout(()=> {
-            alert('活动已过期')
-
-          },1000)
-
-        }
       }).catch(err => {
         console.log(err, '请求错误');
-        alert('出错啦')
+//        alert('出错啦')
       });
 
       // 请求问题数据

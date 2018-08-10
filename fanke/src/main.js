@@ -6,6 +6,11 @@ import axios from 'axios'
 import router from './router'
 import VueLazyload from 'vue-lazyload'
 import animate from 'animate.css'
+import 'element-ui/lib/theme-chalk/message.css';
+// import {Message} from "element-ui/";
+
+import {Message} from "element-ui";
+
 import {EventBus} from './eventBus/eventBus'
 
 const err = require('./assets/error.png');
@@ -23,25 +28,41 @@ Vue.config.productionTip = false;
 
 // 环境的切换
 if (process.env.NODE_ENV === 'development') {
-  //开发环境下的代理地址，解决本地跨域跨域，配置在config目录下的index.js dev.proxyTable中
   axios.defaults.baseURL = "/api"
 } else {
   //生产环境下的地址
-  axios.defaults.baseURL = "";
+  axios.defaults.baseURL = "/api";
 }
+axios.defaults.timeout = 10000;
 
-//响应拦截
-// axios.interceptors.response.use(
-//
-//   error => {
-//     // error 的回调信息
-//     alert('出错啦');
-//     // error.message = '请求错误啊';
-//     return Promise.resolve(error);
-//   }
-// );
+//返回状态判断(添加响应拦截器)
+axios.interceptors.response.use(
+  res => {
+    //对响应数据做些事
+    if (res.data && !res.data.Success) {
 
-// axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+      alert(res.data.ErrMsg);
+      return Promise.reject(res.data.ErrMsg);
+    }
+    return res;
+  },
+  error => {
+
+    // 返回 response 里的错误信息
+    // console.log(error.response)
+    let errRes = error.response;
+    let msg = errRes.status + ':' + errRes.statusText;
+    // error 的回调信息
+    Message({
+      //  饿了么的消息弹窗组件,类似toast
+      showClose: true,
+      message: msg,
+      type: "error"
+    });
+    return Promise.reject(msg);
+  }
+);
+
 Vue.prototype.$http = axios;
 
 /* eslint-disable no-new */
@@ -78,10 +99,25 @@ let myVue = new Vue({
         }
       } else if (userAgent.indexOf('Android') > -1 || userAgent.indexOf('Linux') > -1) {
         window.opener = null;
-        window.open('about:blank', '_self', '').close();
+        // window.open('about:blank', '_self', '').close();
         console.log(222)
-      } else {
+
+        WeixinJSBridge.call('closeWindow');
+      } else if (userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('Mac') > -1) {
         console.log(333)
+        if (EventBus.$isActInfo) {
+          console.log('关闭网页', EventBus.$isActInfo);
+
+          WeixinJSBridge.call('closeWindow');
+        } else {
+          console.log('不关闭网页', EventBus.$isActInfo);
+          EventBus.$isActInfo = true;
+
+        }
+      } else {
+        console.log(444)
+        window.open('about:blank', '_self', '').close();
+
       }
     }
 

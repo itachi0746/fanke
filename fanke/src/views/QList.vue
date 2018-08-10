@@ -5,7 +5,6 @@
       <div class="animated" :class="{ slideOutUp: isSlide, delayOfWrong: isDelay }" v-if="questions">
         <p class="questionNum">{{ questions[Num].QuestionNo + '/' + questions.length }}</p>
         <p class="questionText">{{ questions[Num].QuestionDesc }}</p>
-        <!--<p class="questionText">a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊a啊啊啊啊啊啊啊啊啊啊</p>-->
         <img v-lazy="questions[Num].QuestionImage" alt="题目图片"
              @click.prevent :key="questions[Num].QuestionImage">
 
@@ -17,11 +16,7 @@
             {{item.ItemDesc}}
           </p>
         </div>
-        <!--<div class="option">-->
-          <!--<p class="normalP">-->
-            <!--啊啊啊啊啊啊</p>-->
 
-        <!--</div>-->
 
       </div>
 
@@ -67,18 +62,16 @@
       this.questions = this.$route.params.questions;
 
     },
-//    beforeMount() {
-//      console.log('beforeMount:',this.$route.params.questions,'and',this.questions)
-//    },
+    beforeMount() {
+      console.log('beforeMount: qlist')
+    },
 //
     mounted() {
 //      console.log('mounted:',this.$route.params.questions,'and',this.questions)
 
     },
     methods: {
-      imgClick(e) {
-        e.preventDefault()
-      },
+
       nextQ: function () {
         //  切换去下一个问题,相同的路由, 只是id不同 显示不同的问题
 //        console.log(this._id)
@@ -130,23 +123,12 @@
             }
 
             this.afterCheck(isRightAnswer)
-//            this.isSlide = true;
-//            if (this._id <= this.questions.length) {   // 题目还未答完
-//              this.timer = setTimeout(() => {
-//                this.nextQ();
-//              }, 1400)
-//
-//            } else {  // 题目答完 转去答题结果页
-//              setTimeout(() => {
-//                this.$router.push('/gamePage/gameResult')
-//              }, 1400)
-//            }
 
           }
 
         }).catch(err => {
           console.log(err, '请求错误');
-          alert('出错啦, 将返回主页')
+          alert('出错啦, 将返回主页');
           this.$router.push({name: 'home'})
 
         });
@@ -166,14 +148,12 @@
             }, 1400)
           }
 
-
         } else {  // 题目答完 转去答题结果页
           setTimeout(() => {
-            this.$router.push('/gamePage/gameResult')
+            this.$router.push({name: 'gameResult'})
           }, 1400)
         }
       }
-
 
     },
     watch: {
