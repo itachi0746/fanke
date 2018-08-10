@@ -1,16 +1,135 @@
 <template>
   <div class="actInfoBody actAward">
-    <div class="poupMainInfo">
+    <div class="poupMainInfo" id="poupMainInfo">
       <div id="awardInfoBox">
 
-        <div id="awardInfo" v-for="(prize, index) in prizeData" :key="index">
-          <div id="codeInfo0" class="codeInfoBox" @click="">
+        <!--<div v-for="(prize, index) in prizeData" :key="index">-->
+          <!--<div class="codeInfoBox" @click="">-->
+            <!--&lt;!&ndash;<div class="goDetailIcon"></div>&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class="djqImgBox"></div>&ndash;&gt;-->
+            <!--<div class="isEmptyAward ellipsis" style="width: 11rem;margin-left:0.6rem;font-size:0.7rem;">-->
+              <!--<p class="awardStyle">{{ prize.PrizeName }}：</p>-->
+              <!--<p class="awardName">{{ prize.PrizeDesc }}</p>-->
+              <!--<p class="awardTime">{{ prize.PrizeDate }}</p>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;<div class="noPartnersBox ">&ndash;&gt;-->
+              <!--&lt;!&ndash;<div class="codeperiod" style="margin: 0.25rem 0.6rem;line-height:1.4rem;"><span&ndash;&gt;-->
+                <!--&lt;!&ndash;class="awardTypeName">兑奖期限</span>：<span class="awardBgTime">2018.06.27</span> 至 <span&ndash;&gt;-->
+                <!--&lt;!&ndash;class="awardEndTime">2018.07.04</span></div>&ndash;&gt;-->
+              <!--&lt;!&ndash;&lt;!&ndash;<div style="color: #ecb208;margin-left:0.6rem;">未核销</div>&ndash;&gt;&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+          <!--</div>-->
+        <!--</div>-->
+        <div>
+          <div class="codeInfoBox" @click="">
             <!--<div class="goDetailIcon"></div>-->
             <!--<div class="djqImgBox"></div>-->
             <div class="isEmptyAward ellipsis" style="width: 11rem;margin-left:0.6rem;font-size:0.7rem;">
-              <p class="awardStyle">{{ prize.PrizeName }}：</p>
-              <p class="awardName">{{ prize.PrizeDesc }}</p>
-              <p class="awardTime">{{ prize.PrizeDate }}</p>
+              <p class="awardStyle">1111111</p>
+              <p class="awardName">222222</p>
+              <p class="awardTime">3333333333</p>
+            </div>
+            <!--<div class="noPartnersBox ">-->
+              <!--<div class="codeperiod" style="margin: 0.25rem 0.6rem;line-height:1.4rem;"><span-->
+                <!--class="awardTypeName">兑奖期限</span>：<span class="awardBgTime">2018.06.27</span> 至 <span-->
+                <!--class="awardEndTime">2018.07.04</span></div>-->
+              <!--&lt;!&ndash;<div style="color: #ecb208;margin-left:0.6rem;">未核销</div>&ndash;&gt;-->
+            <!--</div>-->
+          </div>
+        </div>
+        <div>
+          <div class="codeInfoBox" @click="">
+            <!--<div class="goDetailIcon"></div>-->
+            <!--<div class="djqImgBox"></div>-->
+            <div class="isEmptyAward ellipsis" style="width: 11rem;margin-left:0.6rem;font-size:0.7rem;">
+              <p class="awardStyle">1111111</p>
+              <p class="awardName">222222</p>
+              <p class="awardTime">3333333333</p>
+            </div>
+            <!--<div class="noPartnersBox ">-->
+              <!--<div class="codeperiod" style="margin: 0.25rem 0.6rem;line-height:1.4rem;"><span-->
+                <!--class="awardTypeName">兑奖期限</span>：<span class="awardBgTime">2018.06.27</span> 至 <span-->
+                <!--class="awardEndTime">2018.07.04</span></div>-->
+              <!--&lt;!&ndash;<div style="color: #ecb208;margin-left:0.6rem;">未核销</div>&ndash;&gt;-->
+            <!--</div>-->
+          </div>
+        </div>
+        <div>
+          <div class="codeInfoBox" @click="">
+            <!--<div class="goDetailIcon"></div>-->
+            <!--<div class="djqImgBox"></div>-->
+            <div class="isEmptyAward ellipsis" style="width: 11rem;margin-left:0.6rem;font-size:0.7rem;">
+              <p class="awardStyle">1111111</p>
+              <p class="awardName">222222</p>
+              <p class="awardTime">3333333333</p>
+            </div>
+            <!--<div class="noPartnersBox ">-->
+              <!--<div class="codeperiod" style="margin: 0.25rem 0.6rem;line-height:1.4rem;"><span-->
+                <!--class="awardTypeName">兑奖期限</span>：<span class="awardBgTime">2018.06.27</span> 至 <span-->
+                <!--class="awardEndTime">2018.07.04</span></div>-->
+              <!--&lt;!&ndash;<div style="color: #ecb208;margin-left:0.6rem;">未核销</div>&ndash;&gt;-->
+            <!--</div>-->
+          </div>
+        </div>
+        <div>
+          <div class="codeInfoBox" @click="">
+            <!--<div class="goDetailIcon"></div>-->
+            <!--<div class="djqImgBox"></div>-->
+            <div class="isEmptyAward ellipsis" style="width: 11rem;margin-left:0.6rem;font-size:0.7rem;">
+              <p class="awardStyle">1111111</p>
+              <p class="awardName">222222</p>
+              <p class="awardTime">3333333333</p>
+            </div>
+            <!--<div class="noPartnersBox ">-->
+              <!--<div class="codeperiod" style="margin: 0.25rem 0.6rem;line-height:1.4rem;"><span-->
+                <!--class="awardTypeName">兑奖期限</span>：<span class="awardBgTime">2018.06.27</span> 至 <span-->
+                <!--class="awardEndTime">2018.07.04</span></div>-->
+              <!--&lt;!&ndash;<div style="color: #ecb208;margin-left:0.6rem;">未核销</div>&ndash;&gt;-->
+            <!--</div>-->
+          </div>
+        </div>
+        <div>
+          <div class="codeInfoBox" @click="">
+            <!--<div class="goDetailIcon"></div>-->
+            <!--<div class="djqImgBox"></div>-->
+            <div class="isEmptyAward ellipsis" style="width: 11rem;margin-left:0.6rem;font-size:0.7rem;">
+              <p class="awardStyle">1111111</p>
+              <p class="awardName">222222</p>
+              <p class="awardTime">3333333333</p>
+            </div>
+            <!--<div class="noPartnersBox ">-->
+              <!--<div class="codeperiod" style="margin: 0.25rem 0.6rem;line-height:1.4rem;"><span-->
+                <!--class="awardTypeName">兑奖期限</span>：<span class="awardBgTime">2018.06.27</span> 至 <span-->
+                <!--class="awardEndTime">2018.07.04</span></div>-->
+              <!--&lt;!&ndash;<div style="color: #ecb208;margin-left:0.6rem;">未核销</div>&ndash;&gt;-->
+            <!--</div>-->
+          </div>
+        </div>
+        <div>
+          <div class="codeInfoBox" @click="">
+            <!--<div class="goDetailIcon"></div>-->
+            <!--<div class="djqImgBox"></div>-->
+            <div class="isEmptyAward ellipsis" style="width: 11rem;margin-left:0.6rem;font-size:0.7rem;">
+              <p class="awardStyle">1111111</p>
+              <p class="awardName">222222</p>
+              <p class="awardTime">3333333333</p>
+            </div>
+            <!--<div class="noPartnersBox ">-->
+              <!--<div class="codeperiod" style="margin: 0.25rem 0.6rem;line-height:1.4rem;"><span-->
+                <!--class="awardTypeName">兑奖期限</span>：<span class="awardBgTime">2018.06.27</span> 至 <span-->
+                <!--class="awardEndTime">2018.07.04</span></div>-->
+              <!--&lt;!&ndash;<div style="color: #ecb208;margin-left:0.6rem;">未核销</div>&ndash;&gt;-->
+            <!--</div>-->
+          </div>
+        </div>
+        <div>
+          <div class="codeInfoBox" @click="">
+            <!--<div class="goDetailIcon"></div>-->
+            <!--<div class="djqImgBox"></div>-->
+            <div class="isEmptyAward ellipsis" style="width: 11rem;margin-left:0.6rem;font-size:0.7rem;">
+              <p class="awardStyle">1111111</p>
+              <p class="awardName">222222</p>
+              <p class="awardTime">3333333333</p>
             </div>
             <!--<div class="noPartnersBox ">-->
               <!--<div class="codeperiod" style="margin: 0.25rem 0.6rem;line-height:1.4rem;"><span-->
@@ -34,6 +153,7 @@
 </template>
 
 <script>
+  import BScroll from 'better-scroll'
 
   export default {
     data: function () {
@@ -53,6 +173,17 @@
     },
 //
     mounted() {
+      //即定时器 20ms
+      this.$nextTick(() => {
+        //$refs绑定元素
+        if (!this.scroll) {
+          this.scroll = new BScroll('#poupMainInfo', {
+            //开启点击事件 默认为false
+            click: true
+          });
+
+        }
+      });
       // 请求我的奖品
       const url = '/exam/MyPrize';
       this.$http({
@@ -83,7 +214,7 @@
 
   #awardInfoBox {
     /*height: 16.5rem;*/
-    overflow-y: auto;
+    /*overflow-y: auto;*/
     font-size: .6rem;
     margin-top: .2rem;
   }
@@ -125,8 +256,11 @@
   }
 
   .poupMainInfo {
-    height: 24rem;
-    overflow-y: auto;
+    height: 30rem;
+    position: relative;
+    overflow: hidden;
+    top: 0;
+    bottom:5rem;
   }
 
   .actAward .poupSlideBar {

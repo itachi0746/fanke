@@ -1,7 +1,7 @@
 <template>
   <div id="">
     <!--筛选条件-->
-    <div class="sort-container hide">
+    <div class="sort-container ">
       <div class="sort-item">
         <span>城市</span>
         <i class="fa fa-caret-down"></i>
@@ -17,7 +17,7 @@
 
     </div>
     <!--选地区-->
-    <div class="filter-container hide">
+    <div class="filter-container ">
       <div class="filter-head">
         <div>
           <span>地区</span>

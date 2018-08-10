@@ -39,11 +39,16 @@ axios.defaults.timeout = 10000;
 axios.interceptors.response.use(
   res => {
     //对响应数据做些事
-    if (res.data && !res.data.Success) {
-
-      alert(res.data.ErrMsg);
-      return Promise.reject(res.data.ErrMsg);
-    }
+    // if (res.data && !res.data.Success) {
+    //   Message({
+    //     //  饿了么的消息弹窗组件,类似toast
+    //     showClose: true,
+    //     message: res.data.ErrMsg,
+    //     type: "error"
+    //   });
+    //   // alert(res.data.ErrMsg);
+    //   return Promise.reject(res.data.ErrMsg);
+    // }
     return res;
   },
   error => {
