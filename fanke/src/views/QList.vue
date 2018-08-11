@@ -114,7 +114,7 @@
             if (isRightAnswer) {  // 回答正确
 
               this.Event.target.style.background = 'url(' + this.btnRight + ') 0% 0% / 100% 100% no-repeat';
-              this.isDelay = false
+              this.isDelay = true
             } else {  // 错误
               this.Event.target.style.background = 'url(' + this.btnWrong + ') 0% 0% / 100% 100% no-repeat';
               this.Event.target.classList.add('shakeLR');

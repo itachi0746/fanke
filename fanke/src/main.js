@@ -7,8 +7,6 @@ import router from './router'
 import VueLazyload from 'vue-lazyload'
 import animate from 'animate.css'
 import 'element-ui/lib/theme-chalk/message.css';
-// import {Message} from "element-ui/";
-
 import {Message} from "element-ui";
 
 import {EventBus} from './eventBus/eventBus'
@@ -33,22 +31,24 @@ if (process.env.NODE_ENV === 'development') {
   //生产环境下的地址
   axios.defaults.baseURL = "/api";
 }
-axios.defaults.timeout = 10000;
+axios.defaults.timeout = 100000;
 
 //返回状态判断(添加响应拦截器)
 axios.interceptors.response.use(
   res => {
     //对响应数据做些事
-    // if (res.data && !res.data.Success) {
-    //   Message({
-    //     //  饿了么的消息弹窗组件,类似toast
-    //     showClose: true,
-    //     message: res.data.ErrMsg,
-    //     type: "error"
-    //   });
-    //   // alert(res.data.ErrMsg);
-    //   return Promise.reject(res.data.ErrMsg);
-    // }
+    if (res.data && !res.data.Success) {
+      if(res.data.Code!=='001') {
+        Message({
+          //  饿了么的消息弹窗组件,类似toast
+          showClose: true,
+          message: res.data.ErrMsg,
+          type: "error"
+        });
+      }
+
+      // return Promise.reject(res.data.ErrMsg);
+    }
     return res;
   },
   error => {
@@ -128,10 +128,7 @@ let myVue = new Vue({
 
   },
 
-
 });
 
 // console.log('myVue',myVue,myVue._handler)
 window.addEventListener("popstate", myVue._handler, false);
-
-

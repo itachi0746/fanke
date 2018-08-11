@@ -22,19 +22,11 @@
     components: {
       Music
     },
-//    watch: {
-//      // 检测动态路由来回切换 并修改数据
-//      $route(to, from) {
-//        console.log('home:',to.name)
-//        console.log('home:',from.name)
-//        if(to.name==='gamePage') {
-//          this.musicHide = false
-//        }
-//        if(to.name==='home') {
-//          this.musicHide = true
-//        }
-//      }
-//    }
+    mounted() {
+      window.addEventListener('contextmenu', function(e){  // 关闭长按菜单
+        e.preventDefault();
+      });
+    }
 
   }
 
@@ -46,11 +38,9 @@
     height: 100%;
     width: 100%;
     position: relative;
-    /* -webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px; */
+
   }
 
   .gameResultPart {
@@ -67,5 +57,6 @@
   [v-cloak] {
     display: none;
   }
+
 
 </style>

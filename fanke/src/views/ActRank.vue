@@ -101,7 +101,7 @@
 
 
   .poupMainInfo {
-    height: 24rem;
+    height: 25.25rem;
     overflow-y: auto;
   }
 

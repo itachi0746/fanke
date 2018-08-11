@@ -1,74 +1,76 @@
 <template>
-  <div :class="{Mask:true, gameResult:true, hide:isHide}">
+  <div class="">
+    <div class="gameResult Mask" :class="{hide:isHide}">
+      <!--挑战成功-->
+      <div class="resultBox isSuccess" v-if="isSuccess">
+        <div class="successBg"></div>
+        <div class="optContainer">
+          <img class="manImg" :src="logo"/>
+          <img src="../assets/success.png"/>
+          <p>您的成绩为: {{Score}} 分</p>
+          <p>{{Desc}}</p>
+          <p>最佳成绩为: {{BestScore}}分</p>
+          <p>最佳排名为: NO.{{Rank}}</p>
+          <p>恭喜你获得 {{PrizeChance}} 次抽奖机会</p>
+          <!--<router-link to="/gamePage/shake">-->
+          <div class="result-button main-btn" @click="toShake">
+            赶紧去抽奖
+          </div>
+          <!--</router-link>-->
 
-    <!--挑战成功-->
-    <div class="resultBox isSuccess" v-if="isSuccess">
-      <div class="successBg"></div>
-      <div class="optContainer">
-        <img class="manImg" :src="logo"/>
-        <img src="../assets/success.png"/>
-        <p>您的成绩为: {{Score}} 分</p>
-        <p>{{Desc}}</p>
-        <p>最佳成绩为: {{BestScore}}分</p>
-        <p>最佳排名为: NO.{{Rank}}</p>
-        <p>今天还有 {{PrizeChance}} 次抽奖机会</p>
-        <!--<router-link to="/gamePage/shake">-->
-        <div class="result-button main-btn" @click="toShake">
-          赶紧去抽奖
+          <div class="buttonBox">
+            <router-link :to="{name: 'actRank'}">
+              <div class="result-button rank-btn">
+                排行榜
+              </div>
+            </router-link>
+            <router-link :to="{name: 'home'}">
+              <div class="result-button home-btn" @click="">
+                再玩一次
+              </div>
+            </router-link>
+
+          </div>
         </div>
-        <!--</router-link>-->
-
-        <div class="buttonBox">
-          <router-link :to="{name: 'actRank'}">
-            <div class="result-button rank-btn">
-              排行榜
-            </div>
-          </router-link>
+      </div>
+      <!--挑战失败-->
+      <div class="resultBox isFail" v-else>
+        <div class="failBg"></div>
+        <div class="optContainer">
+          <img class="manImg" :src="logo"/>
+          <img src="../assets/fail.png"/>
+          <p>您的成绩为: {{Score}} 分</p>
+          <p>{{Desc}}</p>
+          <p>最佳成绩为: {{BestScore}}分</p>
+          <p>最佳排名为: NO.{{Rank}}</p>
           <router-link :to="{name: 'home'}">
-            <div class="result-button home-btn" @click="">
+            <div class="result-button main-btn" @click="">
               再玩一次
             </div>
           </router-link>
+          <div class="buttonBox">
+            <router-link :to="{name: 'actRank'}">
+              <div class="result-button rank-btn">
+                排行榜
+              </div>
+            </router-link>
+            <router-link :to="{name: 'home'}">
+              <div class="result-button home-btn" @click="">
+                返回首页
+              </div>
+            </router-link>
 
-        </div>
-      </div>
-    </div>
-    <!--挑战失败-->
-    <div class="resultBox isFail" v-else>
-      <div class="failBg"></div>
-      <div class="optContainer">
-        <img class="manImg" :src="logo"/>
-        <img src="../assets/fail.png"/>
-        <p>您的成绩为: {{Score}} 分</p>
-        <p>{{Desc}}</p>
-        <p>最佳成绩为: {{BestScore}}分</p>
-        <p>最佳排名为: NO.{{Rank}}</p>
-        <router-link :to="{name: 'home'}">
-          <div class="result-button main-btn" @click="">
-            再玩一次
           </div>
-        </router-link>
-        <div class="buttonBox">
-          <router-link :to="{name: 'actRank'}">
-            <div class="result-button rank-btn">
-              排行榜
-            </div>
-          </router-link>
-          <router-link :to="{name: 'home'}">
-            <div class="result-button home-btn" @click="">
-              返回首页
-            </div>
-          </router-link>
-
         </div>
+
       </div>
+
+      <router-view></router-view>
 
     </div>
     <div class="loadingPage" v-show="isLoading">
       <img src="../assets/loading.gif" alt="loading">
     </div>
-    <router-view></router-view>
-
   </div>
 </template>
 
@@ -133,6 +135,8 @@
 
     },
     created: function () {
+      this.isLoading = true;  // 显示加载中的图
+
       const url = '/exam/ExamResult';
 
       this.$http({
@@ -151,7 +155,9 @@
         this.PrizeChance = data.PrizeChance;
         this.Rank = data.Rank;
         this.Score = data.Score;
-        this.Score >= 80 ? this.isSuccess = true : this.isSuccess = false;
+        this.isSuccess = data.Success;  // 是否挑战成功
+
+        this.isLoading = false;
 
         this.isHide = false;
         this.userLogo = EventBus.userData.Logo
@@ -259,17 +265,13 @@
     margin-bottom: 0.3rem;
   }
 
-  .isSuccess .manImg {
+  .optContainer .manImg {
     border: .4rem solid #70d572;
     border-radius: 50%;
-
+    width: 5rem;
+    height: 5rem;
   }
 
-  .isFail .manImg {
-    border: .4rem solid #b5b5b6;
-    border-radius: 50%;
-
-  }
 
   .optContainer img:nth-child(2) {
     width: 90%;

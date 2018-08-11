@@ -47,6 +47,8 @@
 
       }).catch(err => {
         console.log(err, '请求错误');
+//        this.joinNum = res.data.Data.ParticipantsCount;
+
 //        alert('出错啦')
       });
 

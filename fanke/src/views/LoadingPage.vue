@@ -28,37 +28,28 @@
 
     mounted: function () {
       const len = this.imgObj.length;
-      const tmp = '/fanke';
+      const imgArr = [];
 
       console.log('图片加载中');
-      Array.from(this.imgObj).forEach((item) => {
+      Array.from(this.imgObj).forEach((item,index) => {
 //        console.log('图片加载中2');
 
-        let img = new Image();
-        // 开发环境不用修改路径, 生产环境要改变路径
-//        item = (process.env.NODE_ENV === 'development') ? item : tmp + item;
+        imgArr[index] = new Image();
 
-        img.src = item.src;
-//        console.log('item.src',item.src);
+        imgArr[index].src = item.src;
 
-        console.log('img.src',img.src);
-
-        img.onerror = () => {
+        imgArr[index].onerror = () => {
           console.log('图片chucuo');
-          console.log(img.src);
+          console.log(imgArr[index].src);
 
         };
 
-        img.onload = () => {
-//          console.log('图片加载中3');
+        imgArr[index].onload = () => {
+//          console.log(imgArr[index]);
 
           this.count++;
 
           this.per = Math.floor((this.count / len) * 100) + "%";
-//
-//          console.log(this.count);
-//          console.log(len);
-//          console.log(this.per);
 
           if (this.count >= len) {
             console.log('图片加载完毕');

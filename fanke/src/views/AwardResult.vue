@@ -38,9 +38,9 @@
 
       <div class="resule-gift-buttonMenu">
         <!--<router-link to="/gamePage/shake">-->
-          <div class="repeatDraw" @click="repeatDraw">
-            继续抽奖
-          </div>
+        <div class="repeatDraw" @click="repeatDraw">
+          继续抽奖
+        </div>
         <!--</router-link>-->
         <br>
         <router-link to="/home">
@@ -93,12 +93,9 @@
           const Data = res.data;
           this.isLoading = false;
 
-          if(Data.Success) {
-            this.$router.push({name: 'shake', params: {drawData:Data}})
-          }
+          this.$router.push({name: 'shake', params: {drawData: Data}})
         }).catch(err => {
           console.log(err, '请求错误');
-//          alert('出错啦')
 
         });
       }
