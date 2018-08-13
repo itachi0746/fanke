@@ -67,8 +67,16 @@ export default {
     })
   },
   mounted() {
-    const wh = window.innerHeight;
-    console.log(wh)
+
+    this.$nextTick(() => {
+
+
+    });
+    setTimeout(()=> {
+      const wh = window.innerHeight;
+      const bh = document.querySelector('#app').offsetHeight;
+      console.log(wh,bh)
+    },1000)
 
   }
 

@@ -23,15 +23,15 @@ Mock.mock('http://www.bai.com/GetRmd', {
 let banner = [
   {
     Id: '1', Name: '',
-    Img: Random.dataImage('375x100', 'lightblue')
+    Img: Random.dataImage('375x100', 'one')
   },
   {
     Id: '2', Name: '',
-    Img: Random.dataImage('375x100', 'red')
+    Img: Random.dataImage('375x100', 'two')
   },
   {
     Id: '3', Name: '',
-    Img: Random.dataImage('375x100', 'lightgreen')
+    Img: Random.dataImage('375x100', 'three')
   }
 ];
 

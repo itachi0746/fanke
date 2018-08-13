@@ -224,19 +224,16 @@
     </div>
     <!--遮罩层-->
     <div class="back-cover hide" @touchmove.prevent></div>
-    <!--轮播图-->
-    <div class="swiper-container">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="(item,index) in banner" :key="index">
-          <img :src="item.Img" alt="banner">
-        </div>
+    <!--轮播图 开始-->
+    <swiper :options="swiperOption" ref="mySwiper" v-if="banner.length">
+      <swiper-slide v-for="(item,index) in banner" :key="index">
+        <img :src="item.Img" alt="banner">
+      </swiper-slide>
+      <div class="swiper-pagination"  slot="pagination"></div>
+    </swiper>
+    <!--轮播图 结束-->
 
-      </div>
-      <!-- 如果需要分页器 -->
-      <div class="swiper-pagination"></div>
-
-    </div>
-    <!--推荐列表-->
+    <!--推荐列表 开始-->
     <div class="recommend-container">
       <div class="recommend-title">
         <span>热门推荐</span>
@@ -256,6 +253,8 @@
       </div>
 
     </div>
+    <!--推荐列表 结束-->
+
     <!--分割条-->
     <div class="division"></div>
     <ShopList></ShopList>
@@ -266,13 +265,14 @@
 </template>
 
 <script>
-  import '@/style/swiper.min.css'
-  import Swiper from '../../../../static/swiper.min'
+//  import '@/style/swiper.min.css'
+//  import Swiper from '../../../../static/swiper.min'
   import ShopList from 'components/common/shopList'
   import Footer from 'components/footer/footer'
   import BScroll from 'better-scroll'
   import {postData} from '@/server'
-
+  import { swiper, swiperSlide } from 'vue-awesome-swiper';
+  import 'swiper/dist/css/swiper.css'
 
   export default {
     name: 'Home',
@@ -280,7 +280,16 @@
       return {
         page: 'Home',
         recommend: [],
-        banner: []
+        banner: [],
+        swiperOption: {
+          pagination: {
+            el: '.swiper-pagination'
+          },
+          loop: true,
+          autoplay: {
+            disableOnInteraction: false,
+          },
+        }
       }
     },
     created() {
@@ -298,39 +307,31 @@
       });
 
     },
+    computed: {
+      swiper() {
+        return this.$refs.mySwiper.swiper
+      }
+    },
 
     mounted() {
-
-//      let mySwiper = new Swiper('.swiper-container', {
-//        pagination: {
-//          el: '.swiper-pagination'
-//        },
-//        loop: true,
-//        autoplay: {
-//          disableOnInteraction: false,
-//        },
-//        observer: true,//修改swiper自己或子元素时，自动初始化swiper
-//        observeParents: true//修改swiper的父元素时，自动初始化swiper
-//      });
-//      this.mySwiper.update()
-
+      const dh = document.body.clientHeight;
+//      console.log(dh);
 //      即定时器 20ms
       this.$nextTick(() => {
 
-        let mySwiper = new Swiper('.swiper-container', {
-          pagination: {
-            el: '.swiper-pagination'
-          },
-          loop: true,
-          autoplay: {
-            disableOnInteraction: false,
-          },
-          observer: true,//修改swiper自己或子元素时，自动初始化swiper
-          observeParents: true//修改swiper的父元素时，自动初始化swiper
-        });
-        const home = querySelector('#home');
-        this.HomeHeight = home.offsetHeight;
-        console.log('HomeHeight',this.HomeHeight)
+//        let mySwiper = new Swiper('.swiper-container', {
+//          pagination: {
+//            el: '.swiper-pagination'
+//          },
+//          loop: true,
+//          autoplay: {
+//            disableOnInteraction: false,
+//          },
+//          observer: true,
+//        });
+//        const home = querySelector('#home');
+//        this.HomeHeight = home.offsetHeight;
+//        console.log('HomeHeight',this.HomeHeight)
       });
 
       this.timer1 = setTimeout(() => {
@@ -347,7 +348,9 @@
     },
     components: {
       ShopList,
-      Footer
+      Footer,
+      swiper,
+      swiperSlide
     },
 
     beforeDestroy: function () {
@@ -417,14 +420,14 @@
   }
 
   .recommend-item-wrap {
-    width: 35rem;
+    width: 50rem;
     /*width: auto;*/
 
   }
 
   .recommend-item {
     margin-left: 0.5rem;
-    display: inline-block;
+    float: left;
     img, div, p {
       width: 5rem;
     }
