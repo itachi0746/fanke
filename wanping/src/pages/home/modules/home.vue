@@ -1,7 +1,7 @@
 <template>
-  <div id="">
+  <div id="home">
     <!--筛选条件-->
-    <div class="sort-container ">
+    <div class="sort-container hide">
       <div class="sort-item">
         <span>城市</span>
         <i class="fa fa-caret-down"></i>
@@ -17,7 +17,7 @@
 
     </div>
     <!--选地区-->
-    <div class="filter-container ">
+    <div class="filter-container hide">
       <div class="filter-head">
         <div>
           <span>地区</span>
@@ -101,15 +101,7 @@
                 <i class="fa fa-angle-right"></i>
               </div>
             </li>
-            <li class="category-left-li">
-              <div>
-                <span>番禺区</span>
-              </div>
-              <div>
-                <span class="category_count">20</span>
-                <i class="fa fa-angle-right"></i>
-              </div>
-            </li>
+
             <li class="category-left-li">
               <div>
                 <span>番禺区</span>
@@ -235,9 +227,10 @@
     <!--轮播图-->
     <div class="swiper-container">
       <div class="swiper-wrapper">
-        <div class="swiper-slide">Slide 1</div>
-        <div class="swiper-slide">Slide 2</div>
-        <div class="swiper-slide">Slide 3</div>
+        <div class="swiper-slide" v-for="(item,index) in banner" :key="index">
+          <img :src="item.Img" alt="banner">
+        </div>
+
       </div>
       <!-- 如果需要分页器 -->
       <div class="swiper-pagination"></div>
@@ -250,54 +243,15 @@
       </div>
       <div class="recommend-item-container">
         <div class="recommend-item-wrap">
-          <div class="recommend-item">
+          <div class="recommend-item" v-for="(item,index) in recommend" :key="index">
             <div>
-              <img src="@/assets/recommend.png" alt="">
+              <img :src="item.Img" alt="">
             </div>
-            <p>
-              我不是妖神
+            <p class="ellipsis">
+              {{item.Name}}
             </p>
           </div>
-          <div class="recommend-item">
-            <div>
-              <img src="@/assets/recommend.png" alt="">
-            </div>
-            <p>
-              我不是妖神
-            </p>
-          </div>
-          <div class="recommend-item">
-            <div>
-              <img src="@/assets/recommend.png" alt="">
-            </div>
-            <p>
-              我不是妖神
-            </p>
-          </div>
-          <div class="recommend-item">
-            <div>
-              <img src="@/assets/recommend.png" alt="">
-            </div>
-            <p>
-              我不是妖神
-            </p>
-          </div>
-          <div class="recommend-item">
-            <div>
-              <img src="@/assets/recommend.png" alt="">
-            </div>
-            <p>
-              我不是妖神
-            </p>
-          </div>
-          <div class="recommend-item">
-            <div>
-              <img src="@/assets/recommend.png" alt="">
-            </div>
-            <p>
-              我不是妖神
-            </p>
-          </div>
+
         </div>
       </div>
 
@@ -309,7 +263,6 @@
 
   </div>
 
-
 </template>
 
 <script>
@@ -318,63 +271,88 @@
   import ShopList from 'components/common/shopList'
   import Footer from 'components/footer/footer'
   import BScroll from 'better-scroll'
+  import {postData} from '@/server'
+
 
   export default {
     name: 'Home',
     data() {
       return {
-        page: 'Home'
-
+        page: 'Home',
+        recommend: [],
+        banner: []
       }
+    },
+    created() {
+      const url = 'http://www.bai.com/GetRmd';
+      postData(url).then(res => {
+        console.log(res)
+        this.recommend = res.recommend
+      });
+
+      const url2 = 'http://www.bai.com/GetBanner';
+      postData(url2).then(res => {
+        console.log(res)
+        this.banner = res.banner;
+
+      });
+
     },
 
     mounted() {
 
-      new Swiper('.swiper-container', {
-        pagination: {
-          el: '.swiper-pagination'
-        },
-        loop: true,
-        autoplay: {
-          disableOnInteraction: false,
-        },
-      });
+//      let mySwiper = new Swiper('.swiper-container', {
+//        pagination: {
+//          el: '.swiper-pagination'
+//        },
+//        loop: true,
+//        autoplay: {
+//          disableOnInteraction: false,
+//        },
+//        observer: true,//修改swiper自己或子元素时，自动初始化swiper
+//        observeParents: true//修改swiper的父元素时，自动初始化swiper
+//      });
+//      this.mySwiper.update()
 
-      //即定时器 20ms
+//      即定时器 20ms
       this.$nextTick(() => {
-        //$refs绑定元素
-        if (!this.scroll) {
-          this.scroll = new BScroll('#category-left', {
-            //开启点击事件 默认为false
-            click: true
-          });
 
-          this.scroll2 = new BScroll('#category-right', {
-            //开启点击事件 默认为false
-            click: true
-          })
-        }
-      })
-
-      const url = '/MallService/GetProducts';
-      this.$http({
-        url: url,//api 代理到json文件地址，后面的后缀是文件中的对象或者是数组
-        method: 'post',//请求方式
-        //这里可以添加axios文档中的各种配置
-      }).then(res => {
-        console.log(res.data, '请求数据成功');
-
-      }).catch(err => {
-        console.log(err, '请求错误');
-
+        let mySwiper = new Swiper('.swiper-container', {
+          pagination: {
+            el: '.swiper-pagination'
+          },
+          loop: true,
+          autoplay: {
+            disableOnInteraction: false,
+          },
+          observer: true,//修改swiper自己或子元素时，自动初始化swiper
+          observeParents: true//修改swiper的父元素时，自动初始化swiper
+        });
+        const home = querySelector('#home');
+        this.HomeHeight = home.offsetHeight;
+        console.log('HomeHeight',this.HomeHeight)
       });
+
+      this.timer1 = setTimeout(() => {
+        this.scroll = new BScroll('#category-left', {
+          //开启点击事件 默认为false
+          click: true
+        });
+        this.scroll2 = new BScroll('#category-right', {
+          //开启点击事件 默认为false
+          click: true
+        })
+      }, 30);
+
     },
     components: {
       ShopList,
       Footer
-    }
+    },
 
-//  beforeDestroy: function() {}
+    beforeDestroy: function () {
+      clearTimeout(this.timer1)
+    }
   }
 </script>
 
@@ -445,14 +423,15 @@
   }
 
   .recommend-item {
-    padding-left: 0.5rem;
+    margin-left: 0.5rem;
     display: inline-block;
-    img, div {
+    img, div, p {
       width: 5rem;
     }
     p {
       font-size: .75rem;
       padding-left: .2rem;
+      text-align: center;
     }
   }
 
@@ -516,9 +495,9 @@
 
   .wrapper, .category-right {
     width: 100%;
-    position: relative;
-    top: 0px;
-    overflow: hidden;
+    /*position: relative;*/
+    /*top: 0px;*/
+    overflow-y: auto;
     z-index: 1;
   }
 

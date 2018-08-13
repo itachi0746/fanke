@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'development') {
   ROOT = "/api"
 } else {
   //生产环境下的地址
-  ROOT= "";
+  ROOT = "";
 }
 
 const Axios = axios.create({
@@ -94,10 +94,26 @@ Axios.interceptors.response.use(
 
 
     // 返回 response 里的错误信息
-    let errorInfo = error;
-    return Promise.reject(errorInfo);
+    // let errorInfo = error;
+    return Promise.reject(error);
   }
 );
+
+
+// 封装axios的post请求
+export function postData(url, params = {}) {
+  return new Promise((resolve, reject) => {
+    Axios.post(url, params)
+      .then(response => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        console.log('请求出错');
+        reject(error);
+      })
+  })
+}
+
 
 // 对axios的实例重新封装成一个plugin ,方便 Vue.use(xxxx)
 export default {

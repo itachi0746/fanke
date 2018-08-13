@@ -91,15 +91,15 @@
     padding-top: .8rem;
   }
 
-  .goDetailIcon {
-    width: .875rem;
-    height: 1.75rem;
-    background: url('../assets/kqjt.png') no-repeat;
-    background-size: 100%;
-    position: absolute;
-    top: 1rem;
-    right: .5rem;
-  }
+  /*.goDetailIcon {*/
+    /*width: .875rem;*/
+    /*height: 1.75rem;*/
+    /*background: url('../assets/kqjt.png') no-repeat;*/
+    /*background-size: 100%;*/
+    /*position: absolute;*/
+    /*top: 1rem;*/
+    /*right: .5rem;*/
+  /*}*/
 
   .codeInfoBox .djqImgBox {
     width: 1.75rem;

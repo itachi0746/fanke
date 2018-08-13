@@ -1,121 +1,19 @@
 <template>
-  <div>
+  <div id="shoplist">
     <!--商家列表-->
     <div class="shoplist-container">
-      <div class="shoplist-item">
+      <div class="shoplist-item" v-for="(shop,index) in shopList" :key="index">
         <a href="shop.html">
           <p class="shop-name">
-            商家名字1111
+            {{ shop.Name }}
             <span class="right">
-            人流量: 1000/h
+            人流量: {{ shop.Flowrate }}/h
           </span>
           </p>
           <div class="oh">
             <div class="left shop-price">
               <span>¥</span>
-              <span>1000</span>
-              <span>起</span>
-            </div>
-            <div class="left screen-param">
-              <span>屏幕参数:</span>
-              <span>100*100</span>
-            </div>
-
-          </div>
-          <div class="discount">
-            <div>
-              <span class="_cu">促</span>
-              <span>促销描述</span>
-            </div>
-            <div>
-              <span class="_hui">惠</span>
-              <span>优惠描述</span>
-            </div>
-
-          </div>
-
-        </a>
-      </div>
-      <div class="shoplist-item">
-        <a href="#">
-          <p class="shop-name">
-            商家名字1111
-            <span class="right">
-            人流量: 1000/h
-          </span>
-          </p>
-          <div class="oh">
-            <div class="left shop-price">
-              <span>¥</span>
-              <span>1000</span>
-              <span>起</span>
-            </div>
-            <div class="left screen-param">
-              <span>屏幕参数:</span>
-              <span>100*100</span>
-            </div>
-
-          </div>
-          <div class="discount">
-            <div>
-              <span class="_cu">促</span>
-              <span>促销描述</span>
-            </div>
-            <div>
-              <span class="_hui">惠</span>
-              <span>优惠描述</span>
-            </div>
-
-          </div>
-
-        </a>
-      </div>
-      <div class="shoplist-item">
-        <a href="#">
-          <p class="shop-name">
-            商家名字1111
-            <span class="right">
-            人流量: 1000/h
-          </span>
-          </p>
-          <div class="oh">
-            <div class="left shop-price">
-              <span>¥</span>
-              <span>1000</span>
-              <span>起</span>
-            </div>
-            <div class="left screen-param">
-              <span>屏幕参数:</span>
-              <span>100*100</span>
-            </div>
-
-          </div>
-          <div class="discount">
-            <div>
-              <span class="_cu">促</span>
-              <span>促销描述</span>
-            </div>
-            <div>
-              <span class="_hui">惠</span>
-              <span>优惠描述</span>
-            </div>
-
-          </div>
-
-        </a>
-      </div>
-      <div class="shoplist-item">
-        <a href="#">
-          <p class="shop-name">
-            商家名字1111
-            <span class="right">
-            人流量: 1000/h
-          </span>
-          </p>
-          <div class="oh">
-            <div class="left shop-price">
-              <span>¥</span>
-              <span>1000</span>
+              <span>{{ shop.Prize }}</span>
               <span>起</span>
             </div>
             <div class="left screen-param">
@@ -145,12 +43,15 @@
 </template>
 
 <script>
+  import {postData} from '../../server'
+//  import BScroll from 'better-scroll'
 
 export default {
-//  data: function () {
-//    return {
-//    }
-//  },
+  data () {
+    return {
+      shopList: []
+    }
+  },
 
 //  components: {},
 
@@ -158,7 +59,18 @@ export default {
 
 //  methods: {}
 
-//  mounted: function() {},
+  created() {
+    const url = 'http://www.bai.com/GetShop';
+    postData(url).then((res) => {
+//      console.log(res)
+      this.shopList = res.shopList;
+    })
+  },
+  mounted() {
+    const wh = window.innerHeight;
+    console.log(wh)
+
+  }
 
 //  beforeDestroy: function() {}
 }
@@ -168,7 +80,10 @@ export default {
   @import "src/style/mixin";
 
   /*商家列表*/
-
+  #shoplist {
+    height: 100%;
+    overflow-y: auto;
+  }
   .shoplist-item {
     width: 100%;
     border-top: 1px solid $bc;

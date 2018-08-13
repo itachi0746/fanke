@@ -1,20 +1,17 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import App from './index.vue'
+import App from './video.vue'
 import 'font-awesome/css/font-awesome.min.css'
-// import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/message.css';
-// import 'element-ui/lib/theme-chalk/message-box.css';
-// import 'element-ui/lib/theme-chalk/index.css';
-import '@/config/rem'
-import axiosPlugin from '@/server'
+import '../../config/rem'
 // import router from './router'
-import Mock from '../../plugins/mock'
+// import axios from 'axios'
 
 
-Vue.config.productionTip = false;
-Vue.use(axiosPlugin);
+Vue.config.productionTip = false
+// axios.defaults.baseURL = process.env.BASE_URL;  // 请求的默认URL
+// Vue.prototype.$http = axios;
+
 
 /* eslint-disable no-new */
 new Vue({

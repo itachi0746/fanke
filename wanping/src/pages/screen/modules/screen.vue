@@ -55,7 +55,7 @@
 
 <script>
   import Calendar from 'vue-calendar-component';
-  import ActionBar from '../../components/footer/actionBar.vue'
+  import ActionBar from '../../../components/footer/actionBar.vue'
 
   export default {
     data() {

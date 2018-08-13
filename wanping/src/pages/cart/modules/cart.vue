@@ -28,7 +28,7 @@
           </div>
           <div class="item-detail">
             <div class="img-box">
-              <img src="../../assets/item.png" alt="">
+              <img src="../../../assets/item.png" alt="">
             </div>
             <div class="detail-box-r">
               <p>
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-  import Header from '../../components/header/header.vue'
+  import Header from '../../../components/header/header.vue'
 
 
   export default {

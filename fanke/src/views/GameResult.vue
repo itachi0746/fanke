@@ -129,10 +129,7 @@
 //          alert('出错啦')
 
         });
-
-
       },
-
     },
     created: function () {
       this.isLoading = true;  // 显示加载中的图
