@@ -38,14 +38,12 @@
           <span class="data-tag-font">选择想购买的广告位数量 :</span>
           <span class="number">
 
-            <button class="decrease disabled">-</button>
-            <input id="number" type="number" value="1" readonly="readonly">
-            <button class="increase">+</button>
+            <button class="decrease disabled" @click="reduceNum">-</button>
+            <input id="number" type="number" :value="num" readonly="readonly">
+            <button class="increase" @click="addNum">+</button>
           </span>
 
         </p>
-
-
       </div>
 
       <ActionBar></ActionBar>
@@ -62,7 +60,8 @@
       return {
         markDate: ['2018/7/31', '2018/8/31'],
         timeStamp: 0 + '',
-        oneDay: 86400000  // 一天的毫秒数
+        oneDay: 86400000,  // 一天的毫秒数
+        num: 1
       }
     },
 
@@ -83,6 +82,13 @@
       clickToday(data) {
         console.log(data); //跳到了本月
       },
+      addNum() {
+        this.num++
+      },
+      reduceNum() {
+        this.num--
+      },
+
       //从1970年开始的毫秒数,减去一天的毫秒数,然后截取10位变成
       timest() {
         let tmp = (Date.parse(new Date()) - this.oneDay).toString();

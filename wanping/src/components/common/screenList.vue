@@ -1,7 +1,7 @@
 <template>
   <div class="screenList">
     <ul>
-      <li v-for="(item,index) in screenList" :key="item.Id">
+      <li v-for="(item,index) in screenList" :key="item.Id" @click="toScreen">
         <section class="screen-left">
           <img class="screenImg" :src="item.Img" alt="">
         </section>
@@ -42,7 +42,11 @@
 
     computed: {},
 
-    methods: {},
+    methods: {
+      toScreen() {
+        window.location.href = 'screen.html'
+      }
+    },
 
     created() {
       const url = 'http://www.bai.com/GetScreenList';

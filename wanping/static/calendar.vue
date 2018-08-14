@@ -297,7 +297,7 @@ export default {
         k.markClassName = markClassName;
         k.isMark = markDate.indexOf(nowTime) > -1;
         //无法选中某天
-        console.log('this._agoDayHide',this._agoDayHide)
+//        console.log('this._agoDayHide',this._agoDayHide)
         k.dayHide = t < this._agoDayHide || t > this.futureDayHide;
         if (k.isToday) {
           this.$emit('isToday', nowTime);
