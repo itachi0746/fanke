@@ -3,14 +3,16 @@
 import Vue from 'vue'
 import App from './shop.vue'
 import 'font-awesome/css/font-awesome.min.css'
+import 'element-ui/lib/theme-chalk/message.css';
 import '../../config/rem'
-// import router from './router'
-// import axios from 'axios'
+import axiosPlugin from '@/server'
+// import $ from 'jquery'
+import Mock from '../../plugins/mock'
 
 
 Vue.config.productionTip = false
 // axios.defaults.baseURL = process.env.BASE_URL;  // 请求的默认URL
-// Vue.prototype.$http = axios;
+Vue.use(axiosPlugin);
 
 
 /* eslint-disable no-new */
