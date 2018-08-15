@@ -71,6 +71,8 @@
 <script>
   import Calendar from 'vue-calendar-component';
   import ActionBar from '../../../components/footer/actionBar.vue'
+  import utils from '@/config/utils'
+
 
   export default {
     data() {
@@ -123,9 +125,10 @@
     },
 
     mounted() {
-      const tmp = this.timest();
-      console.log(tmp);
-      this.timeStamp = tmp;
+      this.timeStamp = this.timest();
+      let arg=utils.getUrlParms();
+      console.log(arg)
+      let id=arg["id"];
 
     },
 

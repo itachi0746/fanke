@@ -2,35 +2,32 @@
   <div id="shoplist">
     <!--商家列表-->
     <div class="shoplist-container">
-      <div class="shoplist-item" v-for="(item,index) in screenList" :key="shop.Id">
-        <a href="shop.html"  @click="toScreen">
-          <p class="shop-name">
-            {{ item.Name }}
-            <span class="right">
-            人流量: {{ item.Flowrate }}/h
-          </span>
-          </p>
-          <div class="oh">
-            <div class="left shop-price">
-              <span>¥</span>
-              <span>{{ item.Prize }}</span>
-              <span>起</span>
-            </div>
-
-          </div>
-          <div class="discount">
-            <div>
-              <span class="_cu">促</span>
-              <span>促销描述</span>
-            </div>
-            <div>
-              <span class="_hui">惠</span>
-              <span>优惠描述</span>
-            </div>
-
+      <div class="shoplist-item" v-for="(item,index) in screenList" :key="item.Id" @click="toScreen($event)" :id="item.Id">
+        <p class="shop-name">
+          {{ item.Name }}
+          <span class="right">
+          人流量: {{ item.Flowrate }}/h
+        </span>
+        </p>
+        <div class="oh">
+          <div class="left shop-price">
+            <span>¥</span>
+            <span>{{ item.Prize }}</span>
+            <span>起</span>
           </div>
 
-        </a>
+        </div>
+        <div class="discount">
+          <div>
+            <span class="_cu">促</span>
+            <span>促销描述</span>
+          </div>
+          <div>
+            <span class="_hui">惠</span>
+            <span>优惠描述</span>
+          </div>
+
+          </div>
       </div>
 
     </div>
@@ -71,9 +68,11 @@
         })
 
       },
-      toScreen() {
-
-        window.location.href = 'screen.html'
+      toScreen(event) {
+//        Store.save('SCREEN_ID',)
+        const target = event.currentTarget;
+//        console.log(target)
+        window.location.href = 'screen.html?id='+target.id + '&' + 'b=555'
       }
     },
 
