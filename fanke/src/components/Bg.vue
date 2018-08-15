@@ -35,12 +35,12 @@ export default {
     z-index: -99;
   }
   .bg1 {
-    background: url('../assets/bg1.png') no-repeat;
+    background: url('../assets/bg1.jpg') no-repeat;
     background-size: contain;
   }
 
   .bg2 {
-    background: url('../assets/bg2.png') no-repeat;
+    background: url('../assets/bg2.jpg') no-repeat;
     background-size: contain;
   }
 

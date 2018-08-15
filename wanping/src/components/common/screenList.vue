@@ -49,10 +49,10 @@
     },
 
     created() {
-      const url = 'http://www.bai.com/GetScreenList';
+      const url = 'http://www.bai.com/screenListShop';
       postData(url).then((res) => {
         console.log(res)
-        this.screenList = res.screenList;
+        this.screenList = res.Data;
       })
     },
 

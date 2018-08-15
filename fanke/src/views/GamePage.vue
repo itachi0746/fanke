@@ -107,7 +107,7 @@
     top: 0;
     left: 0;
     z-index: -99;
-    background: url('../assets/bg2.png') no-repeat;
+    background: url('../assets/bg2.jpg') no-repeat;
     background-size: 100% 100%;
   }
 </style>

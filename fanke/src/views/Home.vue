@@ -82,7 +82,7 @@
     top: 0;
     left: 0;
     z-index: -99;
-    background: url('../assets/bg1.png') no-repeat;
+    background: url('../assets/bg1.jpg') no-repeat;
     background-size: 100% 100%;
   }
 

@@ -1,24 +1,37 @@
 <template>
   <div class="actionBar">
     <ul>
-      <li class="shop-car">加入购物车</li>
-      <li class="buy-btn">购买</li>
+      <li class="shop-car" @click="cart">加入购物车</li>
+      <li class="buy-btn" @click="buy">购买</li>
     </ul>
   </div>
 </template>
 
 <script>
+  import Store from '@/config/store.js'
+//  console.log(Store)
 
   export default {
+    props:['sumPrize'],
     data() {
-      return {}
+      return {
+
+      }
     },
 
     components: {},
 
     computed: {},
 
-    methods: {},
+    methods: {
+      buy() {
+        Store.save('SUM_PRIZE',this.sumPrize);
+        window.location.href = 'orderConfirm.html'
+      },
+      cart() {
+
+      }
+    },
 
     mounted() {
     },

@@ -36,7 +36,7 @@
 
     <!--分割条-->
     <div class="division"></div>
-    <ShopList></ShopList>
+    <screenListAll></screenListAll>
     <Footer :page="page"></Footer>
 
   </div>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-  import ShopList from 'components/common/shopList'
+  import screenListAll from 'components/common/screenListAll'
   import Footer from 'components/footer/footer'
   import aFilter from './filter'
 //  import BScroll from 'better-scroll'
@@ -71,16 +71,16 @@
       }
     },
     created() {
-      const url = 'http://www.bai.com/GetRmd';
+      const url = 'http://www.bai.com/recommend';
       postData(url).then(res => {
         console.log(res)
-        this.recommend = res.recommend
+        this.recommend = res.Data
       });
 
-      const url2 = 'http://www.bai.com/GetBanner';
+      const url2 = 'http://www.bai.com/banner';
       postData(url2).then(res => {
         console.log(res)
-        this.banner = res.banner;
+        this.banner = res.Data;
 
       });
 
@@ -111,7 +111,7 @@
     },
     components: {
       aFilter,
-      ShopList,
+      screenListAll,
       Footer,
       swiper,
       swiperSlide

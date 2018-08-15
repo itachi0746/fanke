@@ -2,18 +2,18 @@
   <div id="shoplist">
     <!--商家列表-->
     <div class="shoplist-container">
-      <div class="shoplist-item" v-for="(shop,index) in shopList" :key="shop.Id">
-        <a href="shop.html">
+      <div class="shoplist-item" v-for="(item,index) in screenList" :key="shop.Id">
+        <a href="shop.html"  @click="toScreen">
           <p class="shop-name">
-            {{ shop.Name }}
+            {{ item.Name }}
             <span class="right">
-            人流量: {{ shop.Flowrate }}/h
+            人流量: {{ item.Flowrate }}/h
           </span>
           </p>
           <div class="oh">
             <div class="left shop-price">
               <span>¥</span>
-              <span>{{ shop.Prize }}</span>
+              <span>{{ item.Prize }}</span>
               <span>起</span>
             </div>
 
@@ -41,12 +41,12 @@
 
 <script>
   import {postData} from '../../server'
-  //  import BScroll from 'better-scroll'
+  import Store from '@/config/store'
 
   export default {
     data() {
       return {
-        shopList: [],
+        screenList: [],
         page: 1, // 一开始一页
         sum: 5,  // 最多可以有几页
         loadMoreSwitch: true,
@@ -62,14 +62,18 @@
       getData() {
         this.loadMoreSwitch = false;
 
-        const url = 'http://www.bai.com/GetShop';
+        const url = 'http://www.bai.com/screenListAll';
         postData(url).then((res) => {
 //      console.log(res)
-          this.shopList = this.shopList.concat(res.shopList);
+          this.screenList = this.screenList.concat(res.Data);
           this.loadMoreSwitch = true;
 
         })
 
+      },
+      toScreen() {
+
+        window.location.href = 'screen.html'
       }
     },
 
@@ -95,7 +99,7 @@
             if ($('#app').height() - $(window).scrollTop() - $(window).height() < 50) {
               this.page++;
               this.getData();
-              console.log('chufa le ')
+              console.log('下拉加载更多')
             }
           }
 

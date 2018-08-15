@@ -1,6 +1,6 @@
 <template>
   <div class="bottom">
-    <div v-if="true">
+    <div v-if="success">
       <!--<router-link :to="{name: 'gamePage', params: {questions: questions}}" replace>-->
         <!--<img class="animated tada" src="../assets/startBtn.png"/>-->
       <!--</router-link>-->
@@ -9,7 +9,7 @@
       </router-link>
     </div>
     <div v-else>
-      <img class="animated tada" src="../assets/startBtn.png"/>
+      <img src="../assets/startBtn-1.png"/>
     </div>
 
     <p>
@@ -26,7 +26,6 @@
     data: function () {
       return {
         joinNum: null,
-//        questions: [],
         success: false
       }
     },

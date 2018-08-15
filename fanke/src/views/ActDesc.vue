@@ -21,16 +21,16 @@
           <p>本次活动主办单位为 - {{ activityData.SponsorDesc }}</p>
         </div>
       </div>
-      <div class="poupLine">
-        <div class="mainTitle">技术支持</div>
-        <div>
-          <p>
-            页面技术由
-            <a class="skillName" onclick="return false" href="">{{TechnicalSupport}}</a>
-            提供，技术支持方仅提供页面技术，不承担由活动引起的相关法律责任
-          </p>
-        </div>
-      </div>
+      <!--<div class="poupLine">-->
+        <!--<div class="mainTitle">技术支持</div>-->
+        <!--<div>-->
+          <!--<p>-->
+            <!--页面技术由-->
+            <!--<a class="skillName" onclick="return false" href="">{{TechnicalSupport}}</a>-->
+            <!--提供，技术支持方仅提供页面技术，不承担由活动引起的相关法律责任-->
+          <!--</p>-->
+        <!--</div>-->
+      <!--</div>-->
       <div class="poupLine">
         <div class="mainTitle">活动说明</div>
         <div id="DescBox" v-html="activityData.Desc">

@@ -15,13 +15,15 @@
         count: 0,
         per: '',
         imgObj: [
-          {'pic': '01', 'src': require('@/assets/bg1.png')},
-          {'pic': '02', 'src': require('@/assets/bg2.png')},
+          {'pic': '01', 'src': require('@/assets/bg1.jpg')},
+          {'pic': '02', 'src': require('@/assets/bg2.jpg')},
           {'pic': '03', 'src': require('@/assets/faiImg2-2.png')},
           {'pic': '04', 'src': require('@/assets/gift.png')},
           {'pic': '05', 'src': require('@/assets/light.png')},
           {'pic': '06', 'src': require('@/assets/title.png')},
           {'pic': '07', 'src': require('@/assets/yao.png')},
+          {'pic': '08', 'src': require('@/assets/startBtn.png')},
+          {'pic': '09', 'src': require('@/assets/startBtn-1.png')},
         ]
       }
     },

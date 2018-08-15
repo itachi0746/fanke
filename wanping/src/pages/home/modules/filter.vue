@@ -107,9 +107,9 @@
     },
 
     created() {
-      postData('http://www.bai.com/GetPlace').then((res) => {
+      postData('http://www.bai.com/city').then((res) => {
         console.log(res)
-        this.spaceList = res.Place;
+        this.spaceList = res.Data;
 //        this.areaList =
         //      即定时器 20ms
         this.$nextTick(() => {

@@ -17,20 +17,25 @@
         <p>
           <span>剩余广告位: </span>
           <span class="AD-num">10</span> 个
+          <span class="right">
+            <span>单价: </span>
+            ¥<span class="UP-num">{{ UP }}</span>
+          </span>
         </p>
+
 
       </div>
 
-      <div class="data-box">
-        <p class="">
-          <i class="data-spot"></i>
-          <span class="data-tag-font">您已订购的广告位 :</span>
+      <!--<div class="data-box">-->
+      <!--<p class="">-->
+      <!--<i class="data-spot"></i>-->
+      <!--<span class="data-tag-font">您已订购的广告位 :</span>-->
 
-        </p>
-        <p>
-          屏幕名字: 时段信息
-        </p>
-      </div>
+      <!--</p>-->
+      <!--<p>-->
+      <!--屏幕名字: 时段信息-->
+      <!--</p>-->
+      <!--</div>-->
 
       <div class="data-box">
         <p>
@@ -38,15 +43,27 @@
           <span class="data-tag-font">选择想购买的广告位数量 :</span>
           <span class="number">
 
-            <button class="decrease disabled" @click="reduceNum">-</button>
+            <button :class="['decrease', {disabled:num===1}]" @click="reduceNum">-</button>
             <input id="number" type="number" :value="num" readonly="readonly">
-            <button class="increase" @click="addNum">+</button>
+            <button :class="['increase', {disabled:num===10}]" @click="addNum">+</button>
           </span>
 
         </p>
       </div>
+      <div class="prize-box">
+        <section>
+          <span>已选择数量: </span>
+          <span class="sum-num"> {{ num }}</span>
+          <span>个</span>
+        </section>
+        <section>
+          <span>应付: </span>
+          <span> ¥</span>
+          <span class="sum-prize">{{ sumPrize }}</span>
+        </section>
+      </div>
 
-      <ActionBar></ActionBar>
+      <ActionBar :sumPrize="sumPrize"></ActionBar>
     </div>
   </div>
 </template>
@@ -58,10 +75,11 @@
   export default {
     data() {
       return {
-        markDate: ['2018/7/31', '2018/8/31'],
+        markDate: [],  // 标记日期
         timeStamp: 0 + '',
         oneDay: 86400000,  // 一天的毫秒数
-        num: 1
+        num: 1,  // 已选择数量
+        UP: 100,  // 单价
       }
     },
 
@@ -70,7 +88,12 @@
       ActionBar
     },
 
-    computed: {},
+    computed: {
+      sumPrize() {  // 总价
+        return this.num * this.UP
+      }
+
+    },
 
     methods: {
       clickDay(data) {
@@ -83,10 +106,11 @@
         console.log(data); //跳到了本月
       },
       addNum() {
-        this.num++
+        this.num<10?this.num++:this.num
+
       },
       reduceNum() {
-        this.num--
+        this.num>1?this.num--:this.num
       },
 
       //从1970年开始的毫秒数,减去一天的毫秒数,然后截取10位变成
@@ -137,8 +161,45 @@
 
   }
 
+  .prize-box {
+    position: fixed;
+    bottom: 2.3rem;
+    left: 0;
+    background-color: #fff;
+    border-top: 1px solid #dddddd;
+    width: 100%;
+    height:2rem;
+    padding: 0 .5rem;
+    @include fj;
+
+    section {
+      display: flex;
+      align-items: center;
+
+    }
+
+    span {
+      @include sc(.7rem, #666);
+    }
+
+    .sum-num {
+      @include sc(.9rem, $blue)
+
+    }
+    .sum-prize {
+      @include sc(.9rem, $payColor)
+
+    }
+  }
+
   .AD-num {
-    @include sc(1rem, $blue)
+    color: $blue;
+
+  }
+
+  .UP-num {
+    color: $payColor;
+
   }
 
   .calendar {
@@ -157,8 +218,9 @@
     left: -.75rem;
     top: .5rem;
   }
+
   .number {
-    @include wh(7rem,100%);
+    @include wh(7rem, 100%);
     border-radius: 3px;
     float: right;
 
@@ -203,8 +265,6 @@
     }
 
   }
-
-
 
 
 </style>

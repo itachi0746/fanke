@@ -1,45 +1,78 @@
 const Mock = require('mockjs');
 const Random = Mock.Random;
+let arr = {
+  lower: "abcdefghijklmnopqrstuvwxyz",
+  upper: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  number: "0123456789",
+  symbol: "!@#$%^&*()[]"
+};
 
-let shopList = [
-  {'Id|+1': 1, Name: '万达广场', 'Prize|+10': 100, Flowrate: '1000'}
-];
+// 首页的产品列表
+const pFun = function () {
+  let arr = [];
 
-Mock.mock('http://www.bai.com/GetShop', {
-  'shopList|5': shopList,
+  // for (let i = 1; i <= n; i++) {
+    let newItem = {
+      'Id|+1': 1, Name: '显示屏'+Random.string( 'number', 3 ), 'Prize|+10': 100, Flowrate: '1000'
+    };
+    arr.push(newItem)
+  // }
+
+  return arr
+};
+
+let screenListAll = {
+  'Data|5': pFun(),
+  Success: true,
+  Code: null
+};
+
+Mock.mock('http://www.bai.com/screenListAll', {
+  'data': screenListAll,
 });
 
-let recommend = [
-  {
-    'Id|+1': 1, Name: '万达广场万达广场万达广场万达广场',
-    Img: Random.dataImage('100x140')
-  }
-];
+// 首页的推荐列表
+let recommend = {
+  'Data|5': [
+    {
+      'Id|+1': 1, Name: '屏幕名字',
+      Img: Random.dataImage('100x140')
+    }
+  ],
+  Success: true,
+  Code: null
+};
 
-Mock.mock('http://www.bai.com/GetRmd', {
-  'recommend|4-6': recommend,
+Mock.mock('http://www.bai.com/recommend', {
+  'data': recommend,
 });
 
-let banner = [
-  {
-    Id: '1', Name: '',
-    Img: Random.dataImage('375x100')
-  },
-  {
-    Id: '2', Name: '',
-    Img: Random.dataImage('375x100')
-  },
-  {
-    Id: '3', Name: '',
-    Img: Random.dataImage('375x100')
-  }
-];
+// 首页banner
+let banner = {
+  'Data': [
+    {
+      Id: '1', Name: '',
+      Img: Random.dataImage('375x100')
+    },
+    {
+      Id: '2', Name: '',
+      Img: Random.dataImage('375x100')
+    },
+    {
+      Id: '3', Name: '',
+      Img: Random.dataImage('375x100')
+    }
+  ],
+  Success: true,
+  Code: null
+};
 
-Mock.mock('http://www.bai.com/GetBanner', {
-  'banner': banner,
+Mock.mock('http://www.bai.com/banner', {
+  'data': banner,
 });
 
-const pdtList = function () {
+// 首页的城市列表
+const PList = function () {
   let placeList = [{'Id': 1, Name: '全部', children: []}];
   for (let i = 2; i < 16; i++) {
     let newplace = {
@@ -58,22 +91,35 @@ const pdtList = function () {
 };
 
 
-Mock.mock('http://www.bai.com/GetPlace', {
-  'Place': pdtList,
+
+let city = {
+  'Data': PList,
+  Success: true,
+  Code: null
+};
+
+
+Mock.mock('http://www.bai.com/city', {
+  'data': city,
 });
 
-let screenList = [
-  {
-    'Id|+1': 1, Name: 'LED广告屏',
-    Img: Random.dataImage('60x60'),
-    Prize: Random.natural(1000, 2000),
-    Desc: '屏幕描述文字',
-    ScreenParameters: '100×100'
-  }
-];
+// 商家页  获取商家的屏幕列表
+let screenListShop = {
+  'Data|5': [
+    {
+      'Id|+1': 1, Name: 'LED广告屏',
+      Img: Random.dataImage('60x60'),
+      Prize: Random.natural(1000, 2000),
+      Desc: '屏幕描述文字',
+      ScreenParameters: '100×100'
+    }
+  ],
+  Success: true,
+  Code: null
+};
 
-Mock.mock('http://www.bai.com/GetScreenList', {
-  'screenList|4-8': screenList,
+Mock.mock('http://www.bai.com/screenListShop', {
+  'data': screenListShop,
 });
 
 export default Mock
