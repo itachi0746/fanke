@@ -3,7 +3,7 @@
   <div>
     <section class="head">
       <header>
-        <div class="back">
+        <div class="back" @click="goBack">
 
           <i class="fa fa-angle-left left"></i>
         </div>
@@ -34,7 +34,11 @@
 
     computed: {},
 
-    methods: {},
+    methods: {
+      goBack() {
+        window.history.go(-1)
+      }
+    },
 
     mounted() {
     },

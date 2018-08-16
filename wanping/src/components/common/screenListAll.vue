@@ -12,7 +12,7 @@
         <div class="oh">
           <div class="left shop-price">
             <span>¥</span>
-            <span>{{ item.Prize }}</span>
+            <span>{{ item.Price }}</span>
             <span>起</span>
           </div>
 
@@ -38,7 +38,7 @@
 
 <script>
   import {postData} from '../../server'
-  import Store from '@/config/store'
+//  import Store from '@/config/store'
 
   export default {
     data() {
@@ -72,7 +72,7 @@
 //        Store.save('SCREEN_ID',)
         const target = event.currentTarget;
 //        console.log(target)
-        window.location.href = 'screen.html?id='+target.id + '&' + 'b=555'
+        window.location.href = 'screen.html'
       }
     },
 

@@ -16,7 +16,7 @@
           <p class="screen-desc">{{ item.Desc }}</p>
           <p class="screen-price">
             <span>¥</span>
-            <span>{{ item.Prize }}</span>
+            <span>{{ item.Price }}</span>
             <span>起</span>
             <button>点击选择</button>
           </p>

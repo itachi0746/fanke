@@ -1,5 +1,6 @@
 <template>
   <div class="screen-detail">
+    <Header :headName="headName"></Header>
     <div class="screen-data">
       <h5>屏幕名字</h5>
       <p class="screen-desc">屏幕描述</p>
@@ -26,28 +27,27 @@
 
       </div>
 
-      <!--<div class="data-box">-->
-      <!--<p class="">-->
-      <!--<i class="data-spot"></i>-->
-      <!--<span class="data-tag-font">您已订购的广告位 :</span>-->
-
-      <!--</p>-->
-      <!--<p>-->
-      <!--屏幕名字: 时段信息-->
-      <!--</p>-->
-      <!--</div>-->
-
       <div class="data-box">
         <p>
           <i class="data-spot"></i>
           <span class="data-tag-font">选择想购买的广告位数量 :</span>
-          <span class="number">
+        </p>
+        <p class="number">
 
-            <button :class="['decrease', {disabled:num===1}]" @click="reduceNum">-</button>
-            <input id="number" type="number" :value="num" readonly="readonly">
-            <button :class="['increase', {disabled:num===10}]" @click="addNum">+</button>
-          </span>
+          <button :class="['button','decrease', {disabled:num===1}]" @click="reduceNum">-</button>
+          <input id="number" type="number" :value="num" readonly="readonly">
+          <button :class="['button','increase', {disabled:num===10}]" @click="addNum">+</button>
+          <button class="right add">添加</button>
+        </p>
+      </div>
+      <div class="data-box">
+        <p class="">
+          <i class="data-spot"></i>
+          <span class="data-tag-font">您已选择的广告位 :</span>
 
+        </p>
+        <p>
+          广告位信息
         </p>
       </div>
       <div class="prize-box">
@@ -59,11 +59,11 @@
         <section>
           <span>应付: </span>
           <span> ¥</span>
-          <span class="sum-prize">{{ sumPrize }}</span>
+          <span class="sum-prize">{{ sumPrice }}</span>
         </section>
       </div>
 
-      <ActionBar :sumPrize="sumPrize"></ActionBar>
+      <ActionBar :sumPrice="sumPrice"></ActionBar>
     </div>
   </div>
 </template>
@@ -71,12 +71,14 @@
 <script>
   import Calendar from 'vue-calendar-component';
   import ActionBar from '../../../components/footer/actionBar.vue'
-  import utils from '@/config/utils'
+  import Header from '../../../components/header/header.vue'
+//  import utils from '@/config/utils'
 
 
   export default {
     data() {
       return {
+        headName: '屏幕详情',
         markDate: [],  // 标记日期
         timeStamp: 0 + '',
         oneDay: 86400000,  // 一天的毫秒数
@@ -87,11 +89,12 @@
 
     components: {
       Calendar,
-      ActionBar
+      ActionBar,
+      Header
     },
 
     computed: {
-      sumPrize() {  // 总价
+      sumPrice() {  // 总价
         return this.num * this.UP
       }
 
@@ -151,6 +154,7 @@
 
   .data-container {
     padding: .5rem;
+    margin-bottom: 4.3rem;
     p {
       position: relative;
       height: 1.3rem;
@@ -223,9 +227,10 @@
   }
 
   .number {
-    @include wh(7rem, 100%);
+    @include wh(100%, 100%);
     border-radius: 3px;
-    float: right;
+    margin-bottom: .7rem;
+    /*float: right;*/
 
     input[type=number] {
       line-height: 1.2rem;
@@ -244,7 +249,7 @@
       float: left;
     }
 
-    button {
+    .button {
       outline: 0;
       line-height: 1.2rem;
       height: 1.5rem;
@@ -266,6 +271,19 @@
     .disabled {
       color: #bbbbbb;
     }
+    .right {
+      height: 1.5rem;
+
+    }
+    .add {
+      width: 4rem;
+      height: 1.5rem;
+      background-color: $blue;
+      color: #ffffff;
+      line-height: 1.5rem;
+      @include borderRadius(5px)
+    }
+
 
   }
 

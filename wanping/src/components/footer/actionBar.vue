@@ -8,11 +8,11 @@
 </template>
 
 <script>
-  import Store from '@/config/store.js'
+//  import Store from '@/config/store'
 //  console.log(Store)
 
   export default {
-    props:['sumPrize'],
+    props:['sumPrice'],
     data() {
       return {
 
@@ -25,7 +25,7 @@
 
     methods: {
       buy() {
-        Store.save('SUM_PRIZE',this.sumPrize);
+//        Store.save('SUM_PRIZE',this.sumPrice);
         window.location.href = 'orderConfirm.html'
       },
       cart() {

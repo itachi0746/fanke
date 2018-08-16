@@ -10,6 +10,14 @@
           <img src="../../assets/home.png" alt="">
           <span>主页</span>
         </li>
+        <li class="foot-guide-li" @click="toCart" v-if="this.page==='Cart'">
+          <img src="../../assets/cart2.png" alt="">
+          <span class="chosen">购物车</span>
+        </li>
+        <li class="foot-guide-li" @click="toCart" v-else>
+          <img src="../../assets/cart.png" alt="">
+          <span>购物车</span>
+        </li>
 
         <li class="foot-guide-li" @click="toSearch" v-if="this.page==='Search'">
           <img src="../../assets/search2.png" alt="">
@@ -82,6 +90,10 @@ export default {
     },
     toOrder() {
       window.location.href = 'order.html';
+
+    },
+    toCart() {
+      window.location.href = 'cart.html';
 
     },
 

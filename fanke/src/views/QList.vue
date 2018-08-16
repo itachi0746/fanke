@@ -245,7 +245,7 @@
   .questionText {
     word-wrap: break-word;
     line-height:.95rem;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     color: rgb(112, 0, 252);
     text-shadow: rgb(255, 255, 255) -1px -1px 0px, rgb(255, 255, 255) 0px -1px 0px, rgb(255, 255, 255) 1px -1px 0px, rgb(255, 255, 255) 1px 0px 0px, rgb(255, 255, 255) 1px 1px 0px, rgb(255, 255, 255) 0px 1px 0px, rgb(255, 255, 255) -1px 1px 0px, rgb(255, 255, 255) -1px 0px 0px;
   }

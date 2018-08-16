@@ -37,11 +37,11 @@
               <p class="pay">
                 <i>¥</i><span>1000</span>
 
-                <span class="number">
-                  <button class="decrease disabled">-</button>
-                  <input id="number" type="number" value="1" readonly="readonly">
-                  <button class="increase">+</button>
-                </span>
+                <!--<span class="number">-->
+                  <!--<button class="decrease disabled">-</button>-->
+                  <!--<input id="number" type="number" value="1" readonly="readonly">-->
+                  <!--<button class="increase">+</button>-->
+                <!--</span>-->
               </p>
             </div>
 
@@ -82,6 +82,7 @@
   export default {
     data() {
       return {
+        page: 'Cart',
         headName: '购物车'
 
       }

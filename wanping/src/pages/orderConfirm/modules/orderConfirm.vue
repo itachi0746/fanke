@@ -36,7 +36,7 @@
 
 <script>
   import Header from '@/components/header/header.vue'
-  import Store from '@/config/store'
+//  import Store from '@/config/store'
 
   export default {
     data() {
@@ -54,9 +54,9 @@
     methods: {},
 
     mounted() {
-      const key = 'SUM_PRIZE';
-      const sumPrize = Store.fetch(key);
-      console.log(sumPrize)
+//      const key = 'SUM_PRIZE';
+//      const sumPrice = Store.fetch(key);
+//      console.log(sumPrice)
     },
 
     beforeDestroy() {
