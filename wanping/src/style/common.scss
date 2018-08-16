@@ -114,3 +114,11 @@ html,body{
 .animation_opactiy{
   animation: backOpacity 2s ease-in-out infinite;
 }
+
+//==========================================================
+//特殊情况 element UI 用的
+.el-button {
+  span {
+    color: #ffffff;
+  }
+}

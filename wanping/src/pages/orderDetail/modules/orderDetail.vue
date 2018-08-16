@@ -21,7 +21,21 @@
       </ul>
       <!--<div class="deliver_fee"><span>配送费</span> <span>4</span>-->
       <!--</div>-->
-      <div class="pay_ment">实付9725.00</div>
+      <div class="pay_ment">实付9725.00 </div>
+        <!--上传功能  开始-->
+        <el-upload
+          class="upload-demo"
+          action="/Fileupdate/share/uploadImg"
+          accept=".jpg,.png"
+          :on-change="handleChange"
+          :on-success="handleSuccess"
+          :file-list="fileList3">
+          <el-button size="small" type="primary">上传图片素材</el-button>
+          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+        </el-upload>
+
+        <!--上传功能  结束-->
+
     </section>
   </div>
   <!--  结束-->
@@ -33,7 +47,8 @@
   export default {
     data() {
       return {
-        headName: '订单详情'
+        headName: '订单详情',
+        fileList3: []
       }
     },
 
@@ -43,7 +58,26 @@
 
     computed: {},
 
-    methods: {},
+    methods: {
+      handleChange(file, fileList) {
+//      this.fileList3 = fileList.slice(-3);
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
+      },
+      handleSuccess() {
+        console.log('上传成功')
+      }
+    },
 
     mounted() {
     },
@@ -122,5 +156,11 @@
       padding-right: .5rem;
     }
   }
-
+  .upload-demo {
+    padding: .5rem;
+    text-align: right;
+    span {
+      color: #ffffff;
+    }
+  }
 </style>

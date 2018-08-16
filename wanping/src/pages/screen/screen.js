@@ -3,8 +3,8 @@
 import Vue from 'vue'
 import App from './screen.vue'
 import 'font-awesome/css/font-awesome.min.css'
-// import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/message.css';
+import {Button} from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css';
 import '@/config/rem'
 import axiosPlugin from '@/server'
 // import router from './router'
@@ -12,7 +12,7 @@ import axiosPlugin from '@/server'
 
 Vue.config.productionTip = false;
 Vue.use(axiosPlugin);
-// Vue.use(ElementUI);
+Vue.use(Button);
 
 /* eslint-disable no-new */
 new Vue({

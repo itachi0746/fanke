@@ -37,7 +37,9 @@
           <button :class="['button','decrease', {disabled:num===1}]" @click="reduceNum">-</button>
           <input id="number" type="number" :value="num" readonly="readonly">
           <button :class="['button','increase', {disabled:num===10}]" @click="addNum">+</button>
-          <button class="right add">添加</button>
+          <!--<button class="right add">添加</button>-->
+          <el-button size="small" type="primary" class="right">添加</el-button>
+
         </p>
       </div>
       <div class="data-box">
@@ -273,7 +275,7 @@
     }
     .right {
       height: 1.5rem;
-
+      width: 5rem;
     }
     .add {
       width: 4rem;

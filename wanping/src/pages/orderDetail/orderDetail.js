@@ -3,7 +3,8 @@
 import Vue from 'vue'
 import App from './orderDetail.vue'
 import 'font-awesome/css/font-awesome.min.css'
-import 'element-ui/lib/theme-chalk/message.css';
+import {Upload,Button} from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css';
 import '@/config/rem'
 import axiosPlugin from '@/server'
 import $ from 'jquery'
@@ -12,7 +13,8 @@ import Mock from '../../plugins/mock'
 
 Vue.config.productionTip = false;
 Vue.use(axiosPlugin);
-
+Vue.use(Upload);
+Vue.use(Button);
 
 /* eslint-disable no-new */
 new Vue({
