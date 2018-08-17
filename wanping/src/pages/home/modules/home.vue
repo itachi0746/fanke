@@ -4,9 +4,9 @@
     <!--选地区-->
     <aFilter></aFilter>
     <!--轮播图 开始-->
-    <swiper :options="swiperOption" ref="mySwiper" v-if="banner.length">
-      <swiper-slide v-for="(item,index) in banner" :key="item.Id">
-        <img :src="item.Img" alt="banner">
+    <swiper :options="swiperOption" ref="mySwiper" v-if="Ads.length">
+      <swiper-slide v-for="(item,index) in Ads" :key="item.Index">
+        <img :src="item.ImageUrl" alt="Ads">
       </swiper-slide>
       <div class="swiper-pagination"  slot="pagination"></div>
     </swiper>
@@ -19,7 +19,7 @@
       </div>
       <div class="recommend-item-container">
         <div class="recommend-item-wrap">
-          <div class="recommend-item" v-for="(item,index) in recommend" :key="item.Id">
+          <div class="recommend-item" v-for="(item,index) in Recommends" :key="item.Id">
             <div>
               <img :src="item.Img" alt="">
             </div>
@@ -56,9 +56,9 @@
     name: 'Home',
     data() {
       return {
+        Ads: [],
         page: 'Home',
-        recommend: [],
-        banner: [],
+        Recommends: [],
         swiperOption: {
           pagination: {
             el: '.swiper-pagination'
@@ -71,18 +71,23 @@
       }
     },
     created() {
-      const url = 'http://www.bai.com/recommend';
+      const url = '/GetAds';
       postData(url).then(res => {
-        console.log(res)
-        this.recommend = res.Data
+//        console.log(res)
+        this.Ads = res.Data
       });
 
-      const url2 = 'http://www.bai.com/banner';
-      postData(url2).then(res => {
+      const url1 = '/GetRecommends';
+      postData(url1).then(res => {
         console.log(res)
-        this.banner = res.Data;
-
+        this.Recommends = res.Data
       });
+
+//      const url2 = '/GetProducts';
+//      postData(url2).then(res => {
+//        console.log(res)
+//
+//      });
 
     },
     computed: {
@@ -133,6 +138,11 @@
     position: relative;
     top: 1.6rem;
     height: 5rem;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 
   .recommend-container {
@@ -154,7 +164,7 @@
   }
 
   .recommend-item-wrap {
-    width: 50rem;
+    width: 100rem;
     /*width: auto;*/
 
   }
@@ -164,6 +174,10 @@
     float: left;
     img, div, p {
       width: 5rem;
+    }
+    img {
+      height: 7rem;
+
     }
     p {
       font-size: .75rem;

@@ -15,11 +15,18 @@ if (process.env.NODE_ENV === 'development') {
 const Axios = axios.create({
   baseURL: ROOT, // 因为我本地做了反向代理
   timeout: 10000,
-  responseType: "json",
-  withCredentials: true, // 是否允许带cookie这些
+  // responseType: "json",
+  // withCredentials: true, // 是否允许带cookie这些
   // headers: {
-  //   "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
-  // }
+  //   "Content-Type": "application/x-www-form-urlencoded"
+  // },
+  // transformRequest: [function (data) {
+  //   let ret = '';
+  //   for (let i in data) {
+  //     ret += encodeURIComponent(i) + '=' + encodeURIComponent(data[i]) + '&'
+  //   }
+  //   return ret
+  // }],
 });
 
 
@@ -51,16 +58,16 @@ Axios.interceptors.request.use(
 Axios.interceptors.response.use(
   res => {
     //对响应数据做些事
-    // if (res.data && !res.data.Success) {
-    //   Message({
-    //     //  饿了么的消息弹窗组件,类似toast
-    //     showClose: true,
-    //     message: '请求失败',
-    //     type: "error"
-    //   });
-    //   return Promise.reject(res.data.ErrMsg);
-    // }
-    return res.data;
+    if (res.Data && !res.Success) {
+      Message({
+        //  饿了么的消息弹窗组件,类似toast
+        showClose: true,
+        message: '请求失败',
+        type: "error"
+      });
+      return Promise.reject(res.ErrMsg);
+    }
+    return res;
   },
   error => {
     Message({

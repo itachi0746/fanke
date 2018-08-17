@@ -285,6 +285,7 @@ export default {
 //        console.log(k)
         k.chooseDay = false;
         const nowTime = k.date;
+//        console.log(nowTime)
         const t = new Date(nowTime).getTime() / 1000;
         //看每一天的class
         for (const c of markDateMore) {
@@ -301,7 +302,7 @@ export default {
         k.dayHide = t < this._agoDayHide || t > this.futureDayHide;
         if (k.isToday) {
           this.$emit('isToday', nowTime);
-          console.log(nowTime)
+//          console.log(nowTime)
         }
         let flag = !k.dayHide && k.otherMonth === 'nowMonth';
         if (chooseDay && chooseDay === nowTime && flag) {
@@ -332,7 +333,7 @@ export default {
     agoDayHide(val, oldVal) {
       this._agoDayHide = this.agoDayHide;
       this._agoDayHide = parseInt(val);
-      console.log(this._agoDayHide)
+//      console.log(this._agoDayHide)
       this.getList(this.myDate);
     },
     futureDayHide(val, oldVal) {

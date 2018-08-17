@@ -2,8 +2,8 @@
   <div class="screen-detail">
     <Header :headName="headName"></Header>
     <div class="screen-data">
-      <h5>屏幕名字</h5>
-      <p class="screen-desc">屏幕描述</p>
+      <h5>{{resData.Name}}</h5>
+      <p class="screen-desc">{{resData.Desc}}</p>
     </div>
     <div class="calendar">
       <Calendar v-on:choseDay="clickDay"
@@ -13,14 +13,14 @@
       <div class="data-box">
         <p>
           <i class="data-spot"></i>
-          <span class="data-tag-font">X月 X日 :  </span>
+          <span class="data-tag-font">{{nowMonth}}月 {{nowDay}}日 :  </span>
         </p>
-        <p>
+        <p v-if="this.curDayObj">
           <span>剩余广告位: </span>
-          <span class="AD-num">10</span> 个
+          <span class="AD-num">{{curDayObj.Remain}}</span> 个
           <span class="right">
             <span>单价: </span>
-            ¥<span class="UP-num">{{ UP }}</span>
+            ¥<span class="UP-num">{{ curDayObj.Price }}</span>
           </span>
         </p>
 
@@ -32,13 +32,13 @@
           <i class="data-spot"></i>
           <span class="data-tag-font">选择想购买的广告位数量 :</span>
         </p>
-        <p class="number">
+        <p class="number" v-if="curDayObj">
 
-          <button :class="['button','decrease', {disabled:num===1}]" @click="reduceNum">-</button>
+          <button :class="['button','decrease', {disabled:num<=1}]" @click="reduceNum">-</button>
           <input id="number" type="number" :value="num" readonly="readonly">
-          <button :class="['button','increase', {disabled:num===10}]" @click="addNum">+</button>
-          <!--<button class="right add">添加</button>-->
-          <el-button size="small" type="primary" class="right">添加</el-button>
+          <button :class="['button','increase', {disabled:num>=curDayObj.Remain}]" @click="addNum">+</button>
+          <!--<el-button size="small" type="primary" :class="['right',{disabled: true}]" @click="addSelected">添加</el-button>-->
+          <el-button size="small" type="primary" class="right" @click="addSelected" :disabled="curDayObj.Remain===0">添加</el-button>
 
         </p>
       </div>
@@ -48,9 +48,16 @@
           <span class="data-tag-font">您已选择的广告位 :</span>
 
         </p>
-        <p>
-          广告位信息
-        </p>
+        <section v-if="selected.length">
+          <p v-for="(item,index) in selected" :key="item.id">
+            <span>{{item.day}}</span>
+            广告位数量:
+            <span>{{item.num}}</span>
+          </p>
+        </section>
+        <section v-else>
+           <p>暂无</p>
+        </section>
       </div>
       <div class="prize-box">
         <section>
@@ -74,7 +81,7 @@
   import Calendar from 'vue-calendar-component';
   import ActionBar from '../../../components/footer/actionBar.vue'
   import Header from '../../../components/header/header.vue'
-//  import utils from '@/config/utils'
+  import {postData} from '../../../server'
 
 
   export default {
@@ -85,7 +92,14 @@
         timeStamp: 0 + '',
         oneDay: 86400000,  // 一天的毫秒数
         num: 1,  // 已选择数量
-        UP: 100,  // 单价
+        UP: null,  // 单价
+        resData: {},  // 响应返回的data
+        days: [],  // 向后一个月的数据
+        nowMonth: null,  // 现在几月
+        nowDay: null,  // 现在几号
+        curDayObj: null,  // 当前显示的某天的obj
+        selected: [],  // 已选择的广告位
+        itemId: 0,  // 所选择时段的id
       }
     },
 
@@ -97,14 +111,17 @@
 
     computed: {
       sumPrice() {  // 总价
-        return this.num * this.UP
-      }
-
+        if (this.UP !== null && this.UP > 0) {
+          return this.num * this.UP
+        }
+      },
     },
 
     methods: {
-      clickDay(data) {
-        console.log(data); //选中某天
+      clickDay(data) {  //选中某天
+        console.log(data);
+        this.num = 1;
+        this.findDay(data)
       },
       changeDate(data) {
         console.log(data); //左右点击切换月份
@@ -113,32 +130,77 @@
         console.log(data); //跳到了本月
       },
       addNum() {
-        this.num<10?this.num++:this.num
-
+        if(this.curDayObj!==null) {
+          this.num < this.curDayObj.Remain ? this.num++ : this.num
+        }
       },
       reduceNum() {
-        this.num>1?this.num--:this.num
+        this.num > 1 ? this.num-- : this.num
       },
 
       //从1970年开始的毫秒数,减去一天的毫秒数,然后截取10位变成
       timest() {
         let tmp = (Date.parse(new Date()) - this.oneDay).toString();
-        console.log(tmp)
+//        console.log(tmp)
         tmp = tmp.substr(0, 10);
         return tmp;
+      },
+      findDay(data) {  // 遍历日期数组 找到点击的是哪一天
+        this.days.forEach((item, index) => {
+          if (item.Date === data) {
+            this.curDayObj = item;
+//            console.log(this.curDayObj)
+          }
+        })
+      },
+      addSelected() {
+        let newItem = {
+          id: this.itemId,
+          day: this.curDayObj.Date,
+          num: this.num
+        };
+        this.itemId++;
+        this.selected.push(newItem);
       }
+
+//      dateFormat(date) {
+//        date = typeof date === 'string' ? new Date(date.replace(/\-/g, '-')) : date;
+//        let month = date.getMonth() + 1;
+//        month = month < 10 ? '0' + month : month;
+//        let day = date.getDate();
+//        day = day < 10 ? '0' + day : day;
+//        return date.getFullYear() + '-' + month + '-' + day;
+//      },
+    },
+    created() {
+      const myDate = new Date();
+      this.nowMonth = myDate.getMonth() + 1;
+      this.nowDay = myDate.getDate();
+//      const YMD = this.dateFormat(myDate);
+
+      const url = '/Detail';
+      postData(url).then((res) => {
+        console.log(res)
+        this.resData = res.Data;
+        this.days = res.Data.DayStates;  // 日期数组
+        this.UP = this.days[0].Price;  // 今天的产品的单价
+        this.curDayObj = this.days[0]  // 当前显示的天
+      });
+
+
     },
 
     mounted() {
       this.timeStamp = this.timest();
-      let arg=utils.getUrlParms();
-      console.log(arg)
-      let id=arg["id"];
+//      let arg=utils.getUrlParms();
+//      console.log(arg)
+//      let id=arg["id"];
 
     },
 
     beforeDestroy() {
     }
+
   }
 </script>
 
@@ -177,7 +239,7 @@
     background-color: #fff;
     border-top: 1px solid #dddddd;
     width: 100%;
-    height:2rem;
+    height: 2rem;
     padding: 0 .5rem;
     @include fj;
 
@@ -285,7 +347,6 @@
       line-height: 1.5rem;
       @include borderRadius(5px)
     }
-
 
   }
 

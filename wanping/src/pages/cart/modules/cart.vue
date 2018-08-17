@@ -97,6 +97,7 @@
     methods: {},
 
     mounted() {
+//      产品名字
     },
 
     beforeDestroy() {

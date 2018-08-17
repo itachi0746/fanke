@@ -108,8 +108,8 @@
 
     created() {
       postData('http://www.bai.com/city').then((res) => {
-        console.log(res)
-        this.spaceList = res.Data;
+//        console.log(res)
+        this.spaceList = res.data.Data;
 //        this.areaList =
         //      即定时器 20ms
         this.$nextTick(() => {

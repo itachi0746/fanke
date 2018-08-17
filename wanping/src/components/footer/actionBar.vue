@@ -1,14 +1,14 @@
 <template>
   <div class="actionBar">
     <ul>
-      <li class="shop-car" @click="cart">加入购物车</li>
+      <li class="shop-car" @click="addToBasket">加入购物车</li>
       <li class="buy-btn" @click="buy">购买</li>
     </ul>
   </div>
 </template>
 
 <script>
-//  import Store from '@/config/store'
+  import {postData} from '../../server'
 //  console.log(Store)
 
   export default {
@@ -28,8 +28,17 @@
 //        Store.save('SUM_PRIZE',this.sumPrice);
         window.location.href = 'orderConfirm.html'
       },
-      cart() {
+      addToBasket() {  // 添加到购物车
+        const url = '/AddToBasket';
+        const data = [{
+          psid: 1,
+          date: '2018-08-17',
+          count: 2
+        }];
+        postData(url,data).then((res) => {
+          console.log('AddToBasket',res)
 
+        });
       }
     },
 

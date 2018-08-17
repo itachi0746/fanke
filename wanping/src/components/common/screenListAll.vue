@@ -2,7 +2,8 @@
   <div id="shoplist">
     <!--商家列表-->
     <div class="shoplist-container">
-      <div class="shoplist-item" v-for="(item,index) in screenList" :key="item.Id" @click="toScreen($event)" :id="item.Id">
+      <div class="shoplist-item" v-for="(item,index) in screenList" :key="item.Id" @click="toScreen($event)"
+           :id="item.Id">
         <p class="shop-name">
           {{ item.Name }}
           <span class="right">
@@ -24,10 +25,10 @@
           </div>
           <div>
             <span class="_hui">惠</span>
-            <span>优惠描述</span>
+            <span>{{item.DiscountDesc}}</span>
           </div>
 
-          </div>
+        </div>
       </div>
 
     </div>
@@ -38,7 +39,7 @@
 
 <script>
   import {postData} from '../../server'
-//  import Store from '@/config/store'
+  //  import Store from '@/config/store'
 
   export default {
     data() {
@@ -59,12 +60,15 @@
       getData() {
         this.loadMoreSwitch = false;
 
-        const url = 'http://www.bai.com/screenListAll';
-        postData(url).then((res) => {
-//      console.log(res)
-          this.screenList = this.screenList.concat(res.Data);
+        const url = '/GetProducts';
+        const data = {
+          pageindex: this.page
+        };
+        postData(url,data).then((res) => {
+          console.log(res)
+          this.screenList = this.screenList.concat(res.Data.Models);
           this.loadMoreSwitch = true;
-
+          this.sum = res.PageCount  // 总页数
         })
 
       },
@@ -84,7 +88,7 @@
       window.onload = () => {
 
         /*监听加载更多*/
-        $(window).scroll(()=> {
+        $(window).scroll(() => {
 //          console.log(1)
           if (this.loadMoreSwitch) {
 //            console.log(2)

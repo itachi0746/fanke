@@ -25,7 +25,7 @@
         <!--上传功能  开始-->
         <el-upload
           class="upload-demo"
-          action="/Fileupdate/share/uploadImg"
+          action="https://jsonplaceholder.typicode.com/posts/"
           accept=".jpg,.png"
           :on-change="handleChange"
           :on-success="handleSuccess"
@@ -158,7 +158,7 @@
   }
   .upload-demo {
     padding: .5rem;
-    text-align: right;
+    /*text-align: right;*/
     span {
       color: #ffffff;
     }

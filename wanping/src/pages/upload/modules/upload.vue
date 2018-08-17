@@ -4,7 +4,7 @@
     <Header :headName="headName"></Header>
     <el-upload
       class="upload-demo"
-      action="/Fileupdate/share/uploadImg"
+      action="https://jsonplaceholder.typicode.com/posts/"
       accept=".jpg,.png,.mp4"
       :on-change="handleChange"
       :on-success="handleSuccess"
