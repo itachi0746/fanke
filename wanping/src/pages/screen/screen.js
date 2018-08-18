@@ -7,7 +7,7 @@ import {Button} from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/config/rem'
 import axiosPlugin from '@/server'
-// import router from './router'
+import router from './router'
 
 
 Vue.config.productionTip = false;
@@ -17,7 +17,7 @@ Vue.use(Button);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  // router,
+  router,
   // render: h => h(App)
   components: { App },
   template: '<App/>'

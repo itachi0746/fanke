@@ -7,7 +7,7 @@ import 'element-ui/lib/theme-chalk/message.css';
 import '../../config/rem'
 import axiosPlugin from '@/server'
 // import $ from 'jquery'
-import Mock from '../../plugins/mock'
+
 
 
 Vue.config.productionTip = false

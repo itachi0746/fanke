@@ -3,31 +3,34 @@
   <div class="order">
     <Header :headName="headName"></Header>
 
-    <section class="order-data">
+    <section class="order-data" v-if="orderData">
       <header>
         订单信息
       </header>
-      <ul>
+      <p>{{orderData.name}}</p>
+
+      <ul v-for="(item) in orderData.items" :key="item.id">
         <li class="data-container">
-          <p class="product-name ellipsis">屏幕名称xxxxxxxxxxxxxxxxxxxxx</p>
+          <p class="product-name ellipsis">{{item.day}}</p>
         </li>
         <li class="data-container">
           <span>单价</span>
-          <span>¥ 100</span>
+          <span>¥ {{item.price}}</span>
         </li>
         <li class="data-container">
           <span>数量</span>
-          <span>× 10</span>
+          <span>× {{item.num}}</span>
         </li>
       </ul>
+
       <section class="total-price">
         <span>订单总价</span>
-        <span>待支付 ¥1000</span>
+        <span>待支付 ¥{{orderData.sumPrice}}</span>
       </section>
     </section>
 
     <section class="confrim-order">
-      <p>待支付 ¥1000.0</p>
+      <p>待支付 ¥{{orderData.sumPrice}}</p>
       <p @click="handleOrder">确认下单</p>
     </section>
   </div>
@@ -41,7 +44,12 @@
   export default {
     data() {
       return {
-        headName: '确认订单'
+        headName: '确认订单',
+        screenName: '',
+        price: null,
+        num: null,
+        sumPrice: null,
+        orderData: []
       }
     },
 
@@ -57,8 +65,8 @@
         const data = {
           "FromBasket": false,
           items: [{
-            "BasketDtlId": "1",  // 购物车id
-            "PsId": "12",  // 产品id
+            "BasketDtlId": null,  // 购物车id
+            "PsId": orderData.id,  // 产品id
             "Count": "10",  // 广告位数量
             "Date": "2018-08-18",
             "Amount": '1000',  // 总价
@@ -71,11 +79,20 @@
         })
       }
     },
+    created() {
+      this.orderData = this.$route.params.data;
+//      this.screenName = data.name;
+//      this.price = data.price;
+//      this.sumPrice = data.sumPrice;
+
+      console.log('confirm created',this.orderData)
+
+    },
 
     mounted() {
 //      const key = 'SUM_PRIZE';
 //      const sumPrice = Store.fetch(key);
-//      console.log(sumPrice)
+      console.log('confirm mountred')
     },
 
     beforeDestroy() {

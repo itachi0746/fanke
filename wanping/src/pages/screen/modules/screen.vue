@@ -10,12 +10,12 @@
                 v-on:changeMonth="changeDate" :agoDayHide="timeStamp" :markDate="markDate"></Calendar>
     </div>
     <div class="data-container">
-      <div class="data-box">
+      <div class="data-box" v-if="curDayObj">
         <p>
           <i class="data-spot"></i>
-          <span class="data-tag-font">{{nowMonth}}月 {{nowDay}}日 :  </span>
+          <span class="data-tag-font">{{curMonth}}月 {{curDay}}日 :  </span>
         </p>
-        <p v-if="this.curDayObj">
+        <p>
           <span>剩余广告位: </span>
           <span class="AD-num">{{curDayObj.Remain}}</span> 个
           <span class="right">
@@ -37,8 +37,9 @@
           <button :class="['button','decrease', {disabled:num<=1}]" @click="reduceNum">-</button>
           <input id="number" type="number" :value="num" readonly="readonly">
           <button :class="['button','increase', {disabled:num>=curDayObj.Remain}]" @click="addNum">+</button>
-          <!--<el-button size="small" type="primary" :class="['right',{disabled: true}]" @click="addSelected">添加</el-button>-->
-          <el-button size="small" type="primary" class="right" @click="addSelected" :disabled="curDayObj.Remain===0">添加</el-button>
+          <el-button size="small" type="primary" class="right" @click="addSelected" :disabled="curDayObj.Remain===0">
+            添加
+          </el-button>
 
         </p>
       </div>
@@ -56,30 +57,36 @@
           </p>
         </section>
         <section v-else>
-           <p>暂无</p>
+          <p>暂无</p>
         </section>
       </div>
       <div class="prize-box">
+        <!--<section>-->
+        <!--<span>已选择数量: </span>-->
+        <!--<span class="sum-num"> {{ sumNum }}</span>-->
+        <!--<span>个</span>-->
+        <!--</section>-->
         <section>
-          <span>已选择数量: </span>
-          <span class="sum-num"> {{ num }}</span>
-          <span>个</span>
-        </section>
-        <section>
-          <span>应付: </span>
-          <span> ¥</span>
-          <span class="sum-prize">{{ sumPrice }}</span>
+        <span>应付: </span>
+        <span> ¥</span>
+        <span class="sum-prize">{{ sumPrice }}</span>
         </section>
       </div>
 
-      <ActionBar :sumPrice="sumPrice"></ActionBar>
+
+    </div>
+    <!--操作部分-->
+    <div class="actionBar">
+      <ul>
+        <li class="shop-car" @click="addToBasket">加入购物车</li>
+        <li class="buy-btn" @click="buy">购买</li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
   import Calendar from 'vue-calendar-component';
-  import ActionBar from '../../../components/footer/actionBar.vue'
   import Header from '../../../components/header/header.vue'
   import {postData} from '../../../server'
 
@@ -92,11 +99,10 @@
         timeStamp: 0 + '',
         oneDay: 86400000,  // 一天的毫秒数
         num: 1,  // 已选择数量
+        sumNum: 0,  // 已添加的数量
         UP: null,  // 单价
         resData: {},  // 响应返回的data
         days: [],  // 向后一个月的数据
-        nowMonth: null,  // 现在几月
-        nowDay: null,  // 现在几号
         curDayObj: null,  // 当前显示的某天的obj
         selected: [],  // 已选择的广告位
         itemId: 0,  // 所选择时段的id
@@ -105,16 +111,30 @@
 
     components: {
       Calendar,
-      ActionBar,
       Header
     },
 
     computed: {
-      sumPrice() {  // 总价
-        if (this.UP !== null && this.UP > 0) {
-          return this.num * this.UP
+      sumPrice() {  // 遍历各天,计算总价
+        let result = 0;
+        if (this.selected.length) {
+          this.selected.forEach((item)=> {
+            result += item.sumPrice;
+          });
+        }
+        return result
+      },
+      curMonth() {
+        if (this.curDayObj !== null) {
+          return this.curDayObj.Date.split('-')[1];
         }
       },
+      curDay() {
+        if (this.curDayObj !== null) {
+          return this.curDayObj.Date.split('-')[2];
+        }
+      },
+
     },
 
     methods: {
@@ -130,7 +150,7 @@
         console.log(data); //跳到了本月
       },
       addNum() {
-        if(this.curDayObj!==null) {
+        if (this.curDayObj !== null) {
           this.num < this.curDayObj.Remain ? this.num++ : this.num
         }
       },
@@ -149,19 +169,43 @@
         this.days.forEach((item, index) => {
           if (item.Date === data) {
             this.curDayObj = item;
-//            console.log(this.curDayObj)
           }
         })
       },
-      addSelected() {
-        let newItem = {
-          id: this.itemId,
-          day: this.curDayObj.Date,
-          num: this.num
-        };
-        this.itemId++;
-        this.selected.push(newItem);
-      }
+      addSelected() {  // 选择广告位
+        const repeated = this.isRepeated(this.curDayObj.Date);
+        this.sumNum = this.num;
+        if (!repeated) {  // 不是重复的
+          let newItem = {
+            id: this.itemId,
+            day: this.curDayObj.Date,
+            num: this.sumNum,  // 数量
+            price: this.UP,  // 单价
+            sumPrice: this.UP * this.sumNum  // 总价
+          };
+          this.itemId++;
+          this.selected.push(newItem);
+        } else {  // 重复的
+          repeated.num += this.sumNum;  // 重新计算数量
+          repeated.num = repeated.num > this.curDayObj.Remain ? this.curDayObj.Remain : repeated.num;  // 防止超出
+          repeated.sumPrice = repeated.num * repeated.price;  // 重新计算总价
+
+        }
+
+      },
+      isRepeated(date) {
+        let temp = null;
+
+        for (let i = 0; i < this.selected.length; i++) {
+          if (this.selected[i].day === date) {
+//            console.log(1);
+            temp = this.selected[i];
+            break
+          }
+        }
+        return temp
+
+      },
 
 //      dateFormat(date) {
 //        date = typeof date === 'string' ? new Date(date.replace(/\-/g, '-')) : date;
@@ -171,12 +215,32 @@
 //        day = day < 10 ? '0' + day : day;
 //        return date.getFullYear() + '-' + month + '-' + day;
 //      },
+      buy() {
+        let data = {
+          name: this.resData.Name,
+          id:  this.resData.Id,
+          sumPrice: this.sumPrice,
+          items: this.selected
+        };
+        console.log(this.selected)
+        this.$router.push({name: 'OrderConfirm', params: {data: data} })
+      },
+      addToBasket() {  // 添加到购物车
+        const url = '/AddToBasket';
+        const data = [{
+          psid: 1,
+          date: '2018-08-17',
+          count: 2
+        }];
+        postData(url,data).then((res) => {
+          console.log('AddToBasket',res)
+
+        });
+      }
     },
+
     created() {
-      const myDate = new Date();
-      this.nowMonth = myDate.getMonth() + 1;
-      this.nowDay = myDate.getDate();
-//      const YMD = this.dateFormat(myDate);
+//      const myDate = new Date();
 
       const url = '/Detail';
       postData(url).then((res) => {
@@ -192,9 +256,7 @@
 
     mounted() {
       this.timeStamp = this.timest();
-//      let arg=utils.getUrlParms();
-//      console.log(arg)
-//      let id=arg["id"];
+      console.log('screen  mounted')
 
     },
 
@@ -346,6 +408,40 @@
       color: #ffffff;
       line-height: 1.5rem;
       @include borderRadius(5px)
+    }
+
+  }
+
+  .actionBar {
+    background-color: #fff;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2.3rem;
+    box-shadow: 0 -0.02667rem 0.05333rem rgba(0, 0, 0, 0.1);
+
+    ul {
+      @include wh(100%, 100%);
+      @include fj;
+
+    }
+
+    li {
+      flex: 1;
+      text-align: center;
+      line-height: 2.3rem;
+      font-weight: bold;
+      @include sc(.9rem, #fff);
+
+    }
+    .shop-car {
+      background-color: #FF9500;
+    }
+    .buy-btn {
+      background-color: #FF0036;
     }
 
   }

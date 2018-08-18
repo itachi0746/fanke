@@ -25,8 +25,7 @@
 
     methods: {
       buy() {
-//        Store.save('SUM_PRIZE',this.sumPrice);
-        window.location.href = 'orderConfirm.html'
+        this.$router.push({name: 'OrderConfirm', params: {} })
       },
       addToBasket() {  // 添加到购物车
         const url = '/AddToBasket';

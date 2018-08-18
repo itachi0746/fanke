@@ -23,7 +23,7 @@
       Music
     },
     mounted() {
-      window.addEventListener('contextmenu', function(e){  // 关闭长按菜单
+      window.addEventListener('contextmenu', function(e){  // 关闭长按菜单,右键菜单
         e.preventDefault();
       });
     }
