@@ -7,7 +7,8 @@
     </div>
     <div class="calendar">
       <Calendar v-on:choseDay="clickDay"
-                v-on:changeMonth="changeDate" :agoDayHide="timeStamp" :markDate="markDate"></Calendar>
+                v-on:changeMonth="changeDate" :agoDayHide="timeStampStart"
+                :markDate="markDate" :futureDayHide="timeStampOver"></Calendar>
     </div>
     <div class="data-container">
       <div class="data-box" v-if="curDayObj">
@@ -54,6 +55,7 @@
             <span>{{item.day}}</span>
             广告位数量:
             <span>{{item.num}}</span>
+            <i class="el-icon-close right" @click="delSelected($event)" :id="item.id"></i>
           </p>
         </section>
         <section v-else>
@@ -67,9 +69,9 @@
         <!--<span>个</span>-->
         <!--</section>-->
         <section>
-        <span>应付: </span>
-        <span> ¥</span>
-        <span class="sum-prize">{{ sumPrice }}</span>
+          <span>应付: </span>
+          <span> ¥</span>
+          <span class="sum-prize">{{ sumPrice }}</span>
         </section>
       </div>
 
@@ -88,15 +90,18 @@
 <script>
   import Calendar from 'vue-calendar-component';
   import Header from '../../../components/header/header.vue'
-  import {postData} from '../../../server'
+  import {postData} from '@/server'
+  import getUrlParms from '@/config/utils'
 
 
   export default {
     data() {
       return {
         headName: '屏幕详情',
+        Id: '',
         markDate: [],  // 标记日期
-        timeStamp: 0 + '',
+        timeStampStart: 0 + '',  //日历
+        timeStampOver: 0 + '',
         oneDay: 86400000,  // 一天的毫秒数
         num: 1,  // 已选择数量
         sumNum: 0,  // 已添加的数量
@@ -115,10 +120,13 @@
     },
 
     computed: {
+      oneMonth() {
+        return this.oneDay * 29
+      },
       sumPrice() {  // 遍历各天,计算总价
         let result = 0;
         if (this.selected.length) {
-          this.selected.forEach((item)=> {
+          this.selected.forEach((item) => {
             result += item.sumPrice;
           });
         }
@@ -160,10 +168,13 @@
 
       //从1970年开始的毫秒数,减去一天的毫秒数,然后截取10位变成
       timest() {
-        let tmp = (Date.parse(new Date()) - this.oneDay).toString();
+        let a = Date.parse(new Date());
+        let yesterday = (a - this.oneDay).toString();
+        let oneMonth = (a + this.oneMonth).toString();
 //        console.log(tmp)
-        tmp = tmp.substr(0, 10);
-        return tmp;
+        yesterday = yesterday.substr(0, 10);
+        oneMonth = oneMonth.substr(0, 10);
+        return [yesterday, oneMonth];
       },
       findDay(data) {  // 遍历日期数组 找到点击的是哪一天
         this.days.forEach((item, index) => {
@@ -206,6 +217,20 @@
         return temp
 
       },
+      delSelected(event) {  // 删除选中的时段
+//        console.log(event.currentTarget);
+//        console.log(event.target);
+        const Tindex = parseInt(event.target.id);
+
+        for(let i=0;i<this.selected.length;i++) {
+          if (this.selected[i].id === Tindex) {
+//            console.log(index, item.id);
+            this.selected.splice(i, 1);
+            break;
+          }
+        }
+
+      },
 
 //      dateFormat(date) {
 //        date = typeof date === 'string' ? new Date(date.replace(/\-/g, '-')) : date;
@@ -216,14 +241,15 @@
 //        return date.getFullYear() + '-' + month + '-' + day;
 //      },
       buy() {
+
         let data = {
           name: this.resData.Name,
-          id:  this.resData.Id,
+          id: this.Id,
           sumPrice: this.sumPrice,
           items: this.selected
         };
-        console.log(this.selected)
-        this.$router.push({name: 'OrderConfirm', params: {data: data} })
+//        console.log(this.selected)
+        this.$router.push({name: 'OrderConfirm', params: {data: data}})
       },
       addToBasket() {  // 添加到购物车
         const url = '/AddToBasket';
@@ -232,8 +258,8 @@
           date: '2018-08-17',
           count: 2
         }];
-        postData(url,data).then((res) => {
-          console.log('AddToBasket',res)
+        postData(url, data).then((res) => {
+          console.log('AddToBasket', res)
 
         });
       }
@@ -241,13 +267,20 @@
 
     created() {
 //      const myDate = new Date();
+      const args = getUrlParms();
+      this.Id = args.id;
+//      console.log(args);
 
       const url = '/Detail';
-      postData(url).then((res) => {
+      const data = {
+        id: this.Id
+      };
+      postData(url,data).then((res) => {
         console.log(res)
         this.resData = res.Data;
         this.days = res.Data.DayStates;  // 日期数组
         this.UP = this.days[0].Price;  // 今天的产品的单价
+
         this.curDayObj = this.days[0]  // 当前显示的天
       });
 
@@ -255,7 +288,8 @@
     },
 
     mounted() {
-      this.timeStamp = this.timest();
+      this.timeStampStart = this.timest()[0];
+      this.timeStampOver = this.timest()[1];
       console.log('screen  mounted')
 
     },
@@ -444,6 +478,10 @@
       background-color: #FF0036;
     }
 
+  }
+
+  .el-icon-close {
+    margin: .2rem .2rem 0 0;
   }
 
 

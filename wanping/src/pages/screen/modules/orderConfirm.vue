@@ -7,7 +7,7 @@
       <header>
         订单信息
       </header>
-      <p>{{orderData.name}}</p>
+      <p class="screenName">{{orderData.name}}</p>
 
       <ul v-for="(item) in orderData.items" :key="item.id">
         <li class="data-container">
@@ -45,10 +45,7 @@
     data() {
       return {
         headName: '确认订单',
-        screenName: '',
-        price: null,
-        num: null,
-        sumPrice: null,
+
         orderData: []
       }
     },
@@ -64,27 +61,32 @@
         const url = '/ConfirmOrder';
         const data = {
           "FromBasket": false,
-          items: [{
-            "BasketDtlId": null,  // 购物车id
-            "PsId": orderData.id,  // 产品id
-            "Count": "10",  // 广告位数量
-            "Date": "2018-08-18",
-            "Amount": '1000',  // 总价
-            "Price": "100"  // 价格
-          }]
+          items: this.handleItems()
         };
         postData(url, data).then((res) => {
           console.log(res)
           // TODO
         })
+      },
+      handleItems() {
+        let arr = [];
+        this.orderData.items.forEach((item,index)=> {
+          let newItem = {
+            "BasketDtlId": null,  // 购物车id
+            "PsId": this.orderData.id,  // 产品id
+            "Count": item.num,  // 广告位数量
+            "Date": item.day + '',  // 日期
+            "Amount": item.sumPrice,  // 总价
+            "Price": item.price  // 价格
+          };
+          arr.push(newItem)
+
+        });
+        return arr
       }
     },
     created() {
       this.orderData = this.$route.params.data;
-//      this.screenName = data.name;
-//      this.price = data.price;
-//      this.sumPrice = data.sumPrice;
-
       console.log('confirm created',this.orderData)
 
     },
@@ -118,6 +120,10 @@
     }
     ul {
       border-bottom: 0.05rem solid #f5f5f5;
+
+    }
+    .screenName {
+      padding: .5rem;
 
     }
   }

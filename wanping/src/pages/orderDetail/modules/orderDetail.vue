@@ -12,24 +12,24 @@
         <i class="fa fa-angle-right arrow_right"></i>
       </a>
       <ul class="food_list_ul">
-        <li><p class="food_name ellipsis">广告信息</p>
+        <li>
+          <p class="food_name ellipsis">广告信息</p>
           <div class="quantity_price">
             <span>X1</span>
             <span>¥20</span>
           </div>
         </li>
       </ul>
-      <!--<div class="deliver_fee"><span>配送费</span> <span>4</span>-->
-      <!--</div>-->
+
       <div class="pay_ment">实付9725.00 </div>
         <!--上传功能  开始-->
         <el-upload
           class="upload-demo"
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action="/Fileupdate/AddFile"
           accept=".jpg,.png"
+          :data="data"
           :on-change="handleChange"
-          :on-success="handleSuccess"
-          :file-list="fileList3">
+          :on-success="handleSuccess">
           <el-button size="small" type="primary">上传图片素材</el-button>
           <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
         </el-upload>
@@ -48,7 +48,8 @@
     data() {
       return {
         headName: '订单详情',
-        fileList3: []
+        fileList3: [],
+        data: {}
       }
     },
 
@@ -80,6 +81,10 @@
     },
 
     mounted() {
+      this.data = {
+        OrderId: '1',
+        DetailId: '1'
+      }
     },
 
     beforeDestroy() {

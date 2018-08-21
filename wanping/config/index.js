@@ -20,7 +20,7 @@ module.exports = {
         }
       },
       '/Fileupdate': {
-        target: 'http://localhost:16785',  // 通过本地服务器将你的请求转发到这个地址
+        target: 'http://192.168.10.172/MallService',  // 通过本地服务器将你的请求转发到这个地址
         changeOrigin: true,  // 设置这个参数可以避免跨域
         pathRewrite: {
           '^/Fileupdate': ''
@@ -49,7 +49,7 @@ module.exports = {
     // https://vue-loader.vuejs.org/en/options.html#cachebusting
     cacheBusting: true,
 
-    cssSourceMap: true
+    cssSourceMap: false
   },
 
   build: {
@@ -65,7 +65,7 @@ module.exports = {
      * Source Maps
      */
 
-    productionSourceMap: true,
+    productionSourceMap: false,
     // https://webpack.js.org/configuration/devtool/#production
     devtool: '#source-map',
 

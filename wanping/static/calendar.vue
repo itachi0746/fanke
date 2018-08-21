@@ -197,7 +197,8 @@ export default {
       AdData: [
 
       ],
-      _agoDayHide: ''
+      _agoDayHide: '',
+      _futureDayHide: ''
 
     };
   },
@@ -299,7 +300,7 @@ export default {
         k.isMark = markDate.indexOf(nowTime) > -1;
         //无法选中某天
 //        console.log('this._agoDayHide',this._agoDayHide)
-        k.dayHide = t < this._agoDayHide || t > this.futureDayHide;
+        k.dayHide = t < this._agoDayHide || t > this._futureDayHide;
         if (k.isToday) {
           this.$emit('isToday', nowTime);
 //          console.log(nowTime)
@@ -337,7 +338,8 @@ export default {
       this.getList(this.myDate);
     },
     futureDayHide(val, oldVal) {
-      this.futureDayHide = parseInt(val);
+      this._futureDayHide = this.futureDayHide;
+      this._futureDayHide = parseInt(val);
       this.getList(this.myDate);
     },
     sundayStart(val, oldVal) {

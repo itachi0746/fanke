@@ -7,7 +7,6 @@ import {Upload,Button} from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/config/rem'
 import axiosPlugin from '@/server'
-import $ from 'jquery'
 
 
 

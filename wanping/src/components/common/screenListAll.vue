@@ -39,7 +39,6 @@
 
 <script>
   import {postData} from '../../server'
-  //  import Store from '@/config/store'
 
   export default {
     data() {
@@ -73,10 +72,8 @@
 
       },
       toScreen(event) {
-//        Store.save('SCREEN_ID',)
-        const target = event.currentTarget;
-//        console.log(target)
-        window.location.href = 'screen.html'
+        const targetId = event.currentTarget.id;
+        window.location.href = 'screen.html?id=' + targetId;
       }
     },
 
