@@ -6,6 +6,7 @@
     <div class="bg1"></div>
     <RuleImg></RuleImg>
     <TitleImg></TitleImg>
+    <WinningList></WinningList>
     <StartBtn></StartBtn>
 
     <router-view></router-view>
@@ -17,6 +18,7 @@
   import RuleImg from '../components/RuleImg'
   import TitleImg from '../components/TitleImg'
   import StartBtn from '../components/StartBtn'
+  import WinningList from '../components/WinningList'
   import {EventBus} from '../eventBus/eventBus'
 
 
@@ -30,7 +32,8 @@
     components: {
       RuleImg,
       TitleImg,
-      StartBtn
+      StartBtn,
+      WinningList
     },
 //
 //  computed: {},
@@ -57,6 +60,8 @@
 //        alert('出错啦')
 
       });
+
+//      console.log($)
 
     },
 
