@@ -6,33 +6,55 @@
     <section class="food_list">
       <a href="#" class="food_list_header">
         <div class="shop_name">
-          <img src="../../../assets/lm.jpg">
+          <!--<img src="../../../assets/lm.jpg">-->
           <span>订单信息</span>
         </div>
-        <i class="fa fa-angle-right arrow_right"></i>
+        <!--<i class="fa fa-angle-right arrow_right"></i>-->
       </a>
       <ul class="food_list_ul">
-        <li>
-          <p class="food_name ellipsis">广告信息</p>
+        <p class="data-head">
+          <span>订单编号: {{resData.OrderNo}}</span>
+        </p>
+        <p class="data-head">
+          <span>日期: {{resData.OrderDate}}</span>
+        </p>
+        <li v-for="(item,index) in resData.Items" :key="item.PsId">
+          <p class="food_name ellipsis">{{item.PsName}}</p>
           <div class="quantity_price">
-            <span>X1</span>
-            <span>¥20</span>
+            <span>X{{item.Total}}</span>
+            <span>¥{{item.Amount}}</span>
           </div>
+          <!--上传功能action="/Fileupdate/AddFile"  开始-->
+          <el-upload
+            class="upload-demo"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            accept=".jpg,.png"
+            :data="data"
+            :before-upload="beforeUpload"
+            :on-change="handleChange"
+            :on-success="handleSuccess">
+            <el-button size="small" type="primary">上传图片素材</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          </el-upload>
+          <!--上传功能  结束-->
+
         </li>
+
       </ul>
 
-      <div class="pay_ment">实付9725.00 </div>
-        <!--上传功能  开始-->
-        <el-upload
-          class="upload-demo"
-          action="/Fileupdate/AddFile"
-          accept=".jpg,.png"
-          :data="data"
-          :on-change="handleChange"
-          :on-success="handleSuccess">
-          <el-button size="small" type="primary">上传图片素材</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-        </el-upload>
+      <div class="pay_ment">{{resData.OrderStatus}}</div>
+        <!--上传功能action="/Fileupdate/AddFile"  开始-->
+        <!--<el-upload-->
+          <!--class="upload-demo"-->
+          <!--action="https://jsonplaceholder.typicode.com/posts/"-->
+          <!--accept=".jpg,.png"-->
+          <!--:data="data"-->
+          <!--:before-upload="beforeUpload"-->
+          <!--:on-change="handleChange"-->
+          <!--:on-success="handleSuccess">-->
+          <!--<el-button size="small" type="primary">上传图片素材</el-button>-->
+          <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
+        <!--</el-upload>-->
 
         <!--上传功能  结束-->
 
@@ -43,13 +65,18 @@
 
 <script>
   import Header from '@/components/header/header.vue'
+  import getUrlParms from '@/config/utils'
+  import {postData} from '@/server'
+
 
   export default {
     data() {
       return {
         headName: '订单详情',
         fileList3: [],
-        data: {}
+        resData: {},
+        data: {},
+        OrderId: ''
       }
     },
 
@@ -63,7 +90,7 @@
       handleChange(file, fileList) {
 //      this.fileList3 = fileList.slice(-3);
       },
-      beforeAvatarUpload(file) {
+      beforeUpload(file) {
         const isJPG = file.type === 'image/jpeg';
         const isLt2M = file.size / 1024 / 1024 < 2;
 
@@ -78,6 +105,20 @@
       handleSuccess() {
         console.log('上传成功')
       }
+    },
+    created() {
+      const args = getUrlParms();
+      this.OrderId = args.OrderId;
+
+      const url = '/OrderDetail';
+      const data = {
+        OrderId: this.OrderId
+      };
+
+      postData(url,data).then((res) => {
+        console.log(res)
+        this.resData = res.Data;
+      });
     },
 
     mounted() {
@@ -120,6 +161,11 @@
       }
     }
     .food_list_ul {
+      .data-head {
+        @include fj;
+        @include sc(.75rem,black);
+        padding: .5rem;
+      }
       li {
         @include fj;
         align-items: center;

@@ -1,6 +1,9 @@
 <template>
   <!--问题-->
   <div class="QBox">
+    <audio ref="SoundEffectR" :src="SoundEffectR"></audio>
+    <audio ref="SoundEffectW" :src="SoundEffectW"></audio>
+
     <div class="question">
       <div class="animated" :class="{ slideOutUp: isSlide, delayOfWrong: isDelay }" v-if="questions">
         <p class="questionNum">{{ questions[Num].QuestionNo + '/' + questions.length }}</p>
@@ -41,7 +44,9 @@
         flag: true,  // 点击开关
         btnRight: require('../assets/btnRight.png'),
         btnWrong: require('../assets/btnWrong.png'),
-        isDelay: false
+        isDelay: false,
+        SoundEffectR: require('../assets/music/right.mp3'),
+        SoundEffectW: require('../assets/music/wrong.mp3')
       }
     },
     computed: {
@@ -114,9 +119,11 @@
             if (isRightAnswer) {  // 回答正确
 
               this.Event.target.style.background = 'url(' + this.btnRight + ') 0% 0% / 100% 100% no-repeat';
+              this.playMusic(true);
               this.isDelay = true
             } else {  // 错误
               this.Event.target.style.background = 'url(' + this.btnWrong + ') 0% 0% / 100% 100% no-repeat';
+              this.playMusic(false);
               this.Event.target.classList.add('shakeLR');
               this.isDelay = true;
 
@@ -132,6 +139,14 @@
           this.$router.push({name: 'home'})
 
         });
+      },
+      playMusic(isRight) {
+        if(isRight) {
+          this.$refs.SoundEffectR.play();
+        }else {
+          this.$refs.SoundEffectW.play();
+        }
+
       },
       afterCheck(isRight) {
         this.isSlide = true;

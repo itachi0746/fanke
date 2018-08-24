@@ -4,27 +4,30 @@
     <Header :headName="headName"></Header>
 
     <ul class="order_list_ul">
-      <li class="order_list_li">
-        <img src="../../../assets/lm.jpg" class="restaurant_image">
+      <li class="order_list_li" v-for="(order,index) in orderArr" :key="order.OrderId"
+          @click="toOrderDetail($event)" :id="order.OrderId"
+      >
+        <!--<img src="../../../assets/lm.jpg" class="restaurant_image">-->
         <section class="order_item_right">
           <section>
             <header class="order_item_right_header">
               <section class="order_header">
-                <h4><span class="ellipsis">演示 </span>
+                <h4><span class="ellipsis">{{order.OrderNo}} </span>
                   <i class="fa fa-angle-right"></i>
                 </h4>
-                <p class="order_time">2018-07-31 09:48</p>
+                <p class="order_time">{{order.OrderDate}}</p>
               </section>
               <p class="order_status">
-                等待支付
+                {{order.OrderStatus}}
               </p>
             </header>
-            <section class="order_basket">
-              <p class="order_name ellipsis">屏幕名称</p>
-              <p class="order_amount">¥9725.00</p>
+            <section class="order_basket" v-for="(item,index) in order.Items" :key="item.OrderId">
+              <p class="order_name ellipsis">{{item.PsName}}</p>
+              <p class="order_amount">¥{{item.Amount}}</p>
             </section>
           </section>
           <div class="order_again">
+            <span class="order_sum">合计 ¥100.00</span>
             <ComputeTime></ComputeTime>
           </div>
         </section>
@@ -40,12 +43,15 @@
   import Footer from '@/components/footer/footer.vue'
   import Header from '@/components/header/header.vue'
   import ComputeTime from '../../../components/common/computeTime.vue'
+  import {postData} from '@/server'
+
 
   export default {
     data() {
       return {
         headName: '我的订单',
-        page: 'Order'
+        page: 'Order',
+        orderArr: []
       }
     },
 
@@ -55,8 +61,25 @@
 
     computed: {},
 
-    methods: {},
+    methods: {
+      toOrderDetail(event) {
+        const Tindex = event.currentTarget.id;
+//        console.log(event.target)
+//        console.log(event.currentTarget )
 
+        console.log(Tindex)
+
+        window.location.href = 'orderDetail.html?OrderId=' + Tindex;
+      }
+    },
+
+    created() {
+      const url = '/GetOrders';
+      postData(url).then((res) => {
+        console.log(res)
+        this.orderArr = res.Data;
+      });
+    },
     mounted() {
     },
 
@@ -76,7 +99,7 @@
     }
   }
   .order_list_ul{
-    margin-bottom: .5rem;
+    margin-bottom: 2.5rem;
     .order_list_li{
       background-color: #fff;
       display: flex;
@@ -140,6 +163,9 @@
             border: 0.025rem solid #3190e8;
             padding: .1rem .2rem;
             border-radius: .15rem;
+          }
+          .order_sum {
+
           }
         }
       }

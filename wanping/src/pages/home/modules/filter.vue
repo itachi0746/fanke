@@ -107,24 +107,24 @@
     },
 
     created() {
-      postData('http://www.bai.com/city').then((res) => {
-//        console.log(res)
-        this.spaceList = res.data.Data;
-//        this.areaList =
-        //      即定时器 20ms
-        this.$nextTick(() => {
-          this.scroll = new BScroll('#category-left', {
-            //开启点击事件 默认为false
-            click: true
-          });
-          this.scroll2 = new BScroll('#category-right', {
-            //开启点击事件 默认为false
-            click: true
-          })
-        });
-
-        }
-      )
+//      postData('http://www.bai.com/city').then((res) => {
+////        console.log(res)
+//        this.spaceList = res.data.Data;
+////        this.areaList =
+//        //      即定时器 20ms
+//        this.$nextTick(() => {
+//          this.scroll = new BScroll('#category-left', {
+//            //开启点击事件 默认为false
+//            click: true
+//          });
+//          this.scroll2 = new BScroll('#category-right', {
+//            //开启点击事件 默认为false
+//            click: true
+//          })
+//        });
+//
+//        }
+//      )
     },
     mounted() {
     },
