@@ -80,7 +80,7 @@
   }
   .bottom {
     position: absolute;
-    bottom: 1rem;
+    bottom: 3rem;
     left: 0;
     width: 100%;
     text-align: center;

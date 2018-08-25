@@ -18,24 +18,45 @@
         <p class="data-head">
           <span>日期: {{resData.OrderDate}}</span>
         </p>
-        <li v-for="(item,index) in resData.Items" :key="item.PsId">
-          <p class="food_name ellipsis">{{item.PsName}}</p>
+        <!--<li v-for="(item,index) in resData.Items" :key="item.PsId">-->
+          <!--<p class="food_name ellipsis">{{item.PsName}}</p>-->
+          <!--<div class="quantity_price">-->
+            <!--<span>X{{item.Total}}</span>-->
+            <!--<span>¥{{item.Amount}}</span>-->
+          <!--</div>-->
+          <!--&lt;!&ndash;上传功能action="/Fileupdate/AddFile"  开始&ndash;&gt;-->
+          <!--<el-upload-->
+            <!--class="upload-demo"-->
+            <!--action="https://jsonplaceholder.typicode.com/posts/"-->
+            <!--accept=".jpg,.png"-->
+            <!--:data="data"-->
+            <!--:before-upload="beforeUpload"-->
+            <!--:on-change="handleChange"-->
+            <!--:on-success="handleSuccess">-->
+            <!--<el-button size="small" type="primary">上传图片素材</el-button>-->
+            <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
+          <!--</el-upload>-->
+          <!--&lt;!&ndash;上传功能  结束&ndash;&gt;-->
+
+        <!--</li>-->
+        <li>
+          <p class="food_name ellipsis">{{11111}}</p>
           <div class="quantity_price">
-            <span>X{{item.Total}}</span>
-            <span>¥{{item.Amount}}</span>
+            <span>X{{11122111}}</span>
+            <span>¥{{222222}}</span>
           </div>
           <!--上传功能action="/Fileupdate/AddFile"  开始-->
-          <el-upload
-            class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            accept=".jpg,.png"
-            :data="data"
-            :before-upload="beforeUpload"
-            :on-change="handleChange"
-            :on-success="handleSuccess">
-            <el-button size="small" type="primary">上传图片素材</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-          </el-upload>
+          <!--<el-upload-->
+            <!--class="upload-demo"-->
+            <!--action="https://jsonplaceholder.typicode.com/posts/"-->
+            <!--accept=".jpg,.png"-->
+            <!--:data="data"-->
+            <!--:before-upload="beforeUpload"-->
+            <!--:on-change="handleChange"-->
+            <!--:on-success="handleSuccess">-->
+            <!--<el-button size="small" type="primary">上传图片素材</el-button>-->
+            <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
+          <!--</el-upload>-->
           <!--上传功能  结束-->
 
         </li>
@@ -44,17 +65,17 @@
 
       <div class="pay_ment">{{resData.OrderStatus}}</div>
         <!--上传功能action="/Fileupdate/AddFile"  开始-->
-        <!--<el-upload-->
-          <!--class="upload-demo"-->
-          <!--action="https://jsonplaceholder.typicode.com/posts/"-->
-          <!--accept=".jpg,.png"-->
-          <!--:data="data"-->
-          <!--:before-upload="beforeUpload"-->
-          <!--:on-change="handleChange"-->
-          <!--:on-success="handleSuccess">-->
-          <!--<el-button size="small" type="primary">上传图片素材</el-button>-->
-          <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
-        <!--</el-upload>-->
+        <el-upload
+          class="upload-demo"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          accept=".jpg,.png"
+          :data="data"
+          :before-upload="beforeUpload"
+          :on-change="handleChange"
+          :on-success="handleSuccess">
+          <el-button size="small" type="primary">上传图片素材</el-button>
+          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+        </el-upload>
 
         <!--上传功能  结束-->
 
