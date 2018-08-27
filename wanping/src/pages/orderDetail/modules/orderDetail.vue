@@ -19,44 +19,47 @@
           <span>日期: {{resData.OrderDate}}</span>
         </p>
         <!--<li v-for="(item,index) in resData.Items" :key="item.PsId">-->
-          <!--<p class="food_name ellipsis">{{item.PsName}}</p>-->
-          <!--<div class="quantity_price">-->
-            <!--<span>X{{item.Total}}</span>-->
-            <!--<span>¥{{item.Amount}}</span>-->
-          <!--</div>-->
-          <!--&lt;!&ndash;上传功能action="/Fileupdate/AddFile"  开始&ndash;&gt;-->
-          <!--<el-upload-->
-            <!--class="upload-demo"-->
-            <!--action="https://jsonplaceholder.typicode.com/posts/"-->
-            <!--accept=".jpg,.png"-->
-            <!--:data="data"-->
-            <!--:before-upload="beforeUpload"-->
-            <!--:on-change="handleChange"-->
-            <!--:on-success="handleSuccess">-->
-            <!--<el-button size="small" type="primary">上传图片素材</el-button>-->
-            <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
-          <!--</el-upload>-->
-          <!--&lt;!&ndash;上传功能  结束&ndash;&gt;-->
+        <!--<p class="food_name ellipsis">{{item.PsName}}</p>-->
+        <!--<div class="quantity_price">-->
+        <!--<span>X{{item.Total}}</span>-->
+        <!--<span>¥{{item.Amount}}</span>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;上传功能action="/Fileupdate/AddFile"  开始&ndash;&gt;-->
+        <!--<el-upload-->
+        <!--class="upload-demo"-->
+        <!--action="https://jsonplaceholder.typicode.com/posts/"-->
+        <!--accept=".jpg,.png"-->
+        <!--:data="data"-->
+        <!--:before-upload="beforeUpload"-->
+        <!--:on-change="handleChange"-->
+        <!--:on-success="handleSuccess">-->
+        <!--<el-button size="small" type="primary">上传图片素材</el-button>-->
+        <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
+        <!--</el-upload>-->
+        <!--&lt;!&ndash;上传功能  结束&ndash;&gt;-->
 
         <!--</li>-->
         <li>
-          <p class="food_name ellipsis">{{11111}}</p>
-          <div class="quantity_price">
-            <span>X{{11122111}}</span>
-            <span>¥{{222222}}</span>
+          <div class="li-div">
+            <p class="food_name ellipsis">{{'名字'}}</p>
+            <div class="quantity_price">
+              <span>X{{'数量'}}</span>
+              <span>¥{{'价格'}}</span>
+            </div>
           </div>
+
           <!--上传功能action="/Fileupdate/AddFile"  开始-->
-          <!--<el-upload-->
-            <!--class="upload-demo"-->
-            <!--action="https://jsonplaceholder.typicode.com/posts/"-->
-            <!--accept=".jpg,.png"-->
-            <!--:data="data"-->
-            <!--:before-upload="beforeUpload"-->
-            <!--:on-change="handleChange"-->
-            <!--:on-success="handleSuccess">-->
-            <!--<el-button size="small" type="primary">上传图片素材</el-button>-->
-            <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
-          <!--</el-upload>-->
+          <el-upload
+            class="upload-demo"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            accept=".jpg,.png,.mp4"
+            :data="data"
+            :before-upload="beforeUpload"
+            :on-change="handleChange"
+            :on-success="handleSuccess">
+            <el-button size="small" type="primary">上传素材</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          </el-upload>
           <!--上传功能  结束-->
 
         </li>
@@ -64,20 +67,20 @@
       </ul>
 
       <div class="pay_ment">{{resData.OrderStatus}}</div>
-        <!--上传功能action="/Fileupdate/AddFile"  开始-->
-        <el-upload
-          class="upload-demo"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          accept=".jpg,.png"
-          :data="data"
-          :before-upload="beforeUpload"
-          :on-change="handleChange"
-          :on-success="handleSuccess">
-          <el-button size="small" type="primary">上传图片素材</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-        </el-upload>
+      <!--上传功能action="/Fileupdate/AddFile"  开始-->
+      <!--<el-upload-->
+      <!--class="upload-demo"-->
+      <!--action="https://jsonplaceholder.typicode.com/posts/"-->
+      <!--accept=".jpg,.png"-->
+      <!--:data="data"-->
+      <!--:before-upload="beforeUpload"-->
+      <!--:on-change="handleChange"-->
+      <!--:on-success="handleSuccess">-->
+      <!--<el-button size="small" type="primary">上传图片素材</el-button>-->
+      <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
+      <!--</el-upload>-->
 
-        <!--上传功能  结束-->
+      <!--上传功能  结束-->
 
     </section>
   </div>
@@ -88,6 +91,7 @@
   import Header from '@/components/header/header.vue'
   import getUrlParms from '@/config/utils'
   import {postData} from '@/server'
+  import {Message} from 'element-ui'
 
 
   export default {
@@ -96,7 +100,7 @@
         headName: '订单详情',
         fileList3: [],
         resData: {},
-        data: {},
+        data: {},  // 上传文件时要传的data
         OrderId: ''
       }
     },
@@ -113,19 +117,47 @@
       },
       beforeUpload(file) {
         const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+        const isMP4 = file.type === 'mp4';
+        const fileSize = file.size / 1024 / 1024;  // w文件的大小 M
+        const isLt2M = fileSize < 2;
+        const isLt10M = fileSize < 10;
 
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
+        if (!isJPG && !isMP4) {
+          Message({
+            showClose: true,
+            message: '视频或图片的格式错误',
+            type: "error"
+          });
+          return false
         }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
+        if (isJPG && !isLt2M) {
+          Message({
+            showClose: true,
+            message: '上传图片大小不能超过 2MB!',
+            type: "error"
+          });
+          return false
+
         }
-        return isJPG && isLt2M;
+        if (isMP4 && !isLt10M) {
+          Message({
+            showClose: true,
+            message: '上传视频大小不能超过 10MB!',
+            type: "error"
+          });
+          return false
+
+        }
+        return true
       },
       handleSuccess() {
-        console.log('上传成功')
-      }
+        Message({
+          showClose: true,
+          message: '上传成功!',
+          type: "success"
+        });
+
+      },
     },
     created() {
       const args = getUrlParms();
@@ -136,7 +168,7 @@
         OrderId: this.OrderId
       };
 
-      postData(url,data).then((res) => {
+      postData(url, data).then((res) => {
         console.log(res)
         this.resData = res.Data;
       });
@@ -184,12 +216,13 @@
     .food_list_ul {
       .data-head {
         @include fj;
-        @include sc(.75rem,black);
+        @include sc(.75rem, black);
         padding: .5rem;
       }
       li {
         @include fj;
-        align-items: center;
+        flex-direction: column;
+        /*align-items: center;*/
         padding: 0 .5rem;
         line-height: 2rem;
         .food_name {
@@ -206,6 +239,10 @@
           span:nth-of-type(2) {
             @include sc(.6rem, #666);
           }
+        }
+        .li-div {
+          @include fj;
+
         }
       }
     }
@@ -228,6 +265,7 @@
       padding-right: .5rem;
     }
   }
+
   .upload-demo {
     padding: .5rem;
     /*text-align: right;*/

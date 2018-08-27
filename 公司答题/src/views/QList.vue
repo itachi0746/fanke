@@ -133,12 +133,13 @@
 
           }
 
-        }).catch(err => {
-          console.log(err, '请求错误');
-          alert('出错啦, 将返回主页');
-          this.$router.push({name: 'home'})
-
-        });
+        })
+//          .catch(err => {
+//          console.log(err, '请求错误');
+//          alert('出错啦, 将返回主页');
+//          this.$router.push({name: 'home'})
+//
+//        });
       },
       playMusic(isRight) {
         if(isRight) {

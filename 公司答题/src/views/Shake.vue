@@ -67,14 +67,8 @@
 
       shakeAction() {
         if (!this.isShake) {  // 开关 避免重复触发摇一摇
-
-//          this.yao.play();
           this.$refs.yao.play();
           this.isShake = true;
-//          this.timer = setTimeout(()=> {
-//            this.isLoading = true;
-//
-//          },2000)
 
           this.timer = setTimeout(() => {
             this.$router.replace({name: 'awardResult', params: {winPrize: this.winPrize, prizeData: this.prizeData}});

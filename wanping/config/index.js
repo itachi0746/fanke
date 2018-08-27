@@ -20,7 +20,7 @@ module.exports = {
         }
       },
       '/Fileupdate': {
-        target: 'http://192.168.10.172/MallService',  // 通过本地服务器将你的请求转发到这个地址
+        target: 'http://wap2.jierutek.com/MallService',  // 通过本地服务器将你的请求转发到这个地址
         changeOrigin: true,  // 设置这个参数可以避免跨域
         pathRewrite: {
           '^/Fileupdate': ''
@@ -54,10 +54,10 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '../dist/index.html'),
+    index: path.resolve(__dirname, '../wanping/index.html'),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, '../dist'),
+    assetsRoot: path.resolve(__dirname, '../wanping'),
     assetsSubDirectory: 'static',
     assetsPublicPath: './',
 

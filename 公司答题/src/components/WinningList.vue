@@ -1,35 +1,35 @@
 <template>
   <div class="WL" id="WL" v-if="WL">
     <ul class="WL-p">
-      <li v-for="(item,index) in WL" :key="">
-        {{item.PrizeTime}}
+      <!--<li v-for="(item,index) in WL" :key="">-->
+        <!--{{item.PrizeTime}}-->
+        <!--恭喜-->
+        <!--<span class="WL-name">-->
+          <!--{{item.UserName}}-->
+        <!--</span>-->
+        <!--获得{{item.PrizeName}}！-->
+      <!--</li>-->
+      <li>
+        22222222222222
         恭喜
         <span class="WL-name">
-          {{item.UserName}}
-        </span>
-        获得{{item.PrizeName}}！
+          吾问无为谓
+        </span>获得呜呜呜!
       </li>
-      <!--<li>-->
-        <!--22222222222222-->
-        <!--恭喜-->
-        <!--<span class="WL-name">-->
-          <!--吾问无为谓-->
-        <!--</span>获得呜呜呜!-->
-      <!--</li>-->
-      <!--<li>-->
-        <!--22222222222222-->
-        <!--恭喜-->
-        <!--<span class="WL-name">-->
-          <!--吾问无为谓无无无-->
-        <!--</span>获得呜呜呜!-->
-      <!--</li>-->
-      <!--<li>-->
-        <!--22222222222222-->
-        <!--恭喜-->
-        <!--<span class="WL-name">-->
-          <!--吾问无为谓无无无-->
-        <!--</span>获得呜呜呜!-->
-      <!--</li>-->
+      <li>
+        22222222222222
+        恭喜
+        <span class="WL-name">
+          吾问无为谓无无无
+        </span>获得呜呜呜!
+      </li>
+      <li>
+        22222222222222
+        恭喜
+        <span class="WL-name">
+          吾问无为谓无无无
+        </span>获得呜呜呜!
+      </li>
 
     </ul>
   </div>
@@ -160,9 +160,9 @@
     font-size: .6rem;
     color: #fff;
     text-align: center;
-    /*display: flex;*/
-    /*justify-content: space-between;*/
-    /*align-items: center;*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 0 .15rem;
     white-space: nowrap;
 
@@ -171,10 +171,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    display: inline-block;
-    max-width: 4.75rem;
+    /*display: inline-block;*/
+    /*max-width: 4.75rem;*/
+    flex: 4;
     position: relative;
-    top: .2rem;
+    /*top: .2rem;*/
   }
 
 </style>
