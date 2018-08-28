@@ -1,0 +1,107 @@
+@charset "UTF-8";
+body, div, img, span, header, footer, nav, section, aside, article, ul, dl, dt, dd, li, a, p, h1, h2, h3, h4, h5, h6, i, b, textarea, button, input, select, figure, figcaption {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-style: normal;
+  text-decoration: none;
+  border: none;
+  font-weight: normal;
+  font-family: "黑体", Arial, sans-serif; }
+  body:hover, div:hover, img:hover, span:hover, header:hover, footer:hover, nav:hover, section:hover, aside:hover, article:hover, ul:hover, dl:hover, dt:hover, dd:hover, li:hover, a:hover, p:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, i:hover, b:hover, textarea:hover, button:hover, input:hover, select:hover, figure:hover, figcaption:hover {
+    outline: none; }
+
+img {
+  vertical-align: middle; }
+
+input[type="button"], input[type="submit"], input[type="search"], input[type="reset"] {
+  -webkit-appearance: none; }
+
+textarea {
+  -webkit-appearance: none; }
+
+body {
+  width: 1280px;
+  height: 720px;
+  background: #F5F5F5 no-repeat; }
+
+.oh {
+  overflow: hidden; }
+
+.clear:after {
+  content: '';
+  display: block;
+  clear: both; }
+
+.clear {
+  zoom: 1; }
+
+.back_img {
+  background-repeat: no-repeat;
+  background-size: 100% 100%; }
+
+.margin {
+  margin: 0 auto; }
+
+.left {
+  float: left; }
+
+.right {
+  float: right; }
+
+.hide {
+  display: none; }
+
+.show {
+  display: block; }
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+
+@keyframes backOpacity {
+  0% {
+    opacity: 1; }
+  25% {
+    opacity: 0.5; }
+  50% {
+    opacity: 1; }
+  75% {
+    opacity: 0.5; }
+  100% {
+    opacity: 1; } }
+.animation_opactiy {
+  animation: backOpacity 2s ease-in-out infinite; }
+
+body {
+  background-image: url("../img/bg_tv_color.png");
+  position: relative;
+  color: #fff; }
+
+.main {
+  width: 1184px;
+  margin: 0 auto;
+  position: relative;
+  top: 27px; }
+
+.top-right-bg {
+  position: absolute;
+  top: 0;
+  right: 0; }
+
+.head {
+  font-size: 32px;
+  overflow: hidden; }
+  .head .right {
+    font-size: 18px;
+    margin-top: 6px; }
+    .head .right .and {
+      margin: 0 5px; }
+
+.wifi {
+  margin: 0 46px; }
+  .wifi img {
+    margin-top: -5px; }
+
+/*# sourceMappingURL=index.css.map */

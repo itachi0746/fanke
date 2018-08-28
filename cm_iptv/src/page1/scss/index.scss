@@ -1,0 +1,37 @@
+@import "common";
+@import "mixin";
+
+body {
+  background-image: url("../img/bg_tv_color.png");
+  position: relative;
+  color: #fff;
+
+}
+.main {
+  width: 1184px;
+  margin: 0 auto;
+  position: relative;
+  top: 27px;
+}
+.top-right-bg {
+  @include allcover;
+}
+.head {
+  font-size: 32px;
+  overflow: hidden;
+
+  .right {
+    font-size: 18px;
+    margin-top: 6px;
+
+    .and {
+      margin: 0 5px;
+    }
+  }
+}
+.wifi {
+  margin: 0 46px;
+  img {
+    margin-top: -5px;
+  }
+}
