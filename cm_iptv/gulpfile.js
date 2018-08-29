@@ -2,14 +2,13 @@
 var config = {
   // src: "src/assets", // 文件资源css,js,image等
   // srcView: "src/View/Company2", // 文件资源html等
-  server: "src/page1", // 服务器根目录
+  server: "src/page1/views/L2", // 服务器根目录
   target: "index.html" // 要监视(执行)的html文件
   // dest: "dev/assets", // 生产环境文件夹
   // destView: "dev/View/Company2" // 生产环境文件夹
 };
 
 // 一次安装
-// 用cnpm安装文件夹会很多, 文件路径太深, 导致git上传不到
 // npm install pump gulp-sass gulp-clean gulp-autoprefixer gulp-clean-css gulp-imagemin gulp-changed gulp-sourcemaps gulp-uglify run-sequence gulp-rename gulp-htmlmin gulp-postcss imagemin-pngquant gulp-cache gulp-concat del browser-sync --save-dev
 var gulp        = require('gulp'),
 

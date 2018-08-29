@@ -23,7 +23,8 @@ textarea {
 body {
   width: 1280px;
   height: 720px;
-  background: #F5F5F5 no-repeat; }
+  background: #F5F5F5 no-repeat;
+  position: relative; }
 
 .oh {
   overflow: hidden; }
@@ -76,8 +77,8 @@ body {
 
 body {
   background-image: url("../img/bg_tv_color.png");
-  position: relative;
-  color: #fff; }
+  color: #fff;
+  overflow: hidden; }
 
 .main {
   width: 1184px;
@@ -103,5 +104,24 @@ body {
   margin: 0 46px; }
   .wifi img {
     margin-top: -5px; }
+
+.tab-menu {
+  position: absolute;
+  top: 558px; }
+  .tab-menu ul {
+    overflow: hidden;
+    width: 1520px; }
+  .tab-menu li {
+    width: 302px;
+    height: 102px;
+    font-size: 24px;
+    float: left; }
+    .tab-menu li p {
+      padding-left: 82px; }
+    .tab-menu li .fp {
+      margin-top: 26px; }
+    .tab-menu li .is-active {
+      width: 100%;
+      height: 100%; }
 
 /*# sourceMappingURL=index.css.map */

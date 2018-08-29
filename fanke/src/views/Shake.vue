@@ -2,9 +2,9 @@
   <div class="Mask2 yao">
     <audio id="yao" :src="YAOsrc"></audio>
     <img id="yaoImg" :class="{animated:true,shake:isShake}" src="../assets/yao.png"/>
-    <!--<div class="loadingPage" v-show="isLoading">-->
-    <!--<img src="../assets/loading.gif" alt="loading">-->
-    <!--</div>-->
+    <div class="loadingPage" v-show="isLoading">
+      <img src="../assets/loading.gif" alt="loading">
+    </div>
     <router-view></router-view>
   </div>
 </template>
@@ -64,47 +64,43 @@
         this.shakeAction()
       },
 
-//      doDraw () {
-//        this.isLoading = true;
-//        // 请求中奖
-//        const url = '/exam/DoDraw';
-//        this.$http({
-//          url: url,//api 代理到json文件地址，后面的后缀是文件中的对象或者是数组
-//          method: 'post',//请求方式
-//          //这里可以添加axios文档中的各种配置
-//        }).then(res => {
-//          console.log(res.data, '请求中奖数据成功');
-//          this.winPrize = res.data.Success;  // 是否中奖
-//
-//          this.prizeData = res.data.Data;  // 中奖的数据
-//          this.isLoading = false;
-//
-//          this.addEvent();
-//
-//        }).catch(err => {
-//          console.log(err, '请求错误');
-//          alert('出错啦')
-//
-//        });
-//
-////        this.test();
-//
-//      },
+      doDraw() {
+        this.isLoading = true;
+        // 请求中奖
+        const url = '/exam/DoDraw';
+        this.$http({
+          url: url,//api 代理到json文件地址，后面的后缀是文件中的对象或者是数组
+          method: 'post',//请求方式
+          //这里可以添加axios文档中的各种配置
+        }).then(res => {
+          console.log(res.data, '请求中奖数据成功');
+          this.winPrize = res.data.Success;  // 是否中奖
 
-      shakeAction() {
-        if (!this.isShake) {  // 开关 避免重复触发摇一摇
-
-          this.yao.play();
-          this.isShake = true;
-//          this.timer = setTimeout(()=> {
-//            this.isLoading = true;
-//
-//          },2000)
+          this.prizeData = res.data.Data;  // 中奖的数据
+          this.isLoading = false;
 
           this.timer = setTimeout(() => {
             this.$router.replace({name: 'awardResult', params: {winPrize: this.winPrize, prizeData: this.prizeData}});
 
           }, 2000)
+//          this.addEvent();
+
+        }).catch(err => {
+          console.log(err, '请求错误');
+//          alert('出错啦')
+
+        });
+
+//        this.test();
+
+      },
+
+      shakeAction() {
+        if (!this.isShake) {  // 开关 避免重复触发摇一摇
+          this.isShake = true;
+          this.yao.play();
+          this.doDraw();
+
 
         }
 
@@ -125,9 +121,9 @@
 
     mounted() {
       this.yao = document.querySelector('#yao');
-      this.winPrize = this.$route.params.drawData.Success;  // 是否中奖
-//
-      this.prizeData = this.$route.params.drawData.Data;  // 中奖的数据
+//      this.winPrize = this.$route.params.drawData.Success;  // 是否中奖
+
+//      this.prizeData = this.$route.params.drawData.Data;  // 中奖的数据
 //      this.doDraw()
       this.addEvent()
 //      this.test();
@@ -138,25 +134,26 @@
 </script>
 
 <style>
-  /*.loadingPage {*/
-  /*background: rgba(0, 0, 0, 0.5);*/
-  /*width: 100%;*/
-  /*height: 100%;*/
-  /*background-size: 100% 100%;*/
-  /*top: 0;*/
-  /*left: 0;*/
-  /*position: absolute;*/
+  .loadingPage {
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
 
-  /*}*/
+  }
 
-  /*.loadingPage img {*/
-  /*position: absolute;*/
-  /*top: 0;*/
-  /*left: 0;*/
-  /*right: 0;*/
-  /*bottom: 0;*/
-  /*margin: auto;*/
-  /*}*/
+  .loadingPage img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+  }
+
   #yaoImg {
     width: 15rem;
     position: absolute;

@@ -68,9 +68,9 @@
       <router-view></router-view>
 
     </div>
-    <div class="loadingPage" v-show="isLoading">
-      <img src="../assets/loading.gif" alt="loading">
-    </div>
+    <!--<div class="loadingPage" v-show="isLoading">-->
+      <!--<img src="../assets/loading.gif" alt="loading">-->
+    <!--</div>-->
   </div>
 </template>
 
@@ -111,24 +111,26 @@
     },
     methods: {
       toShake() {
-        this.isLoading = true;  // 显示加载中的图
-        // 请求中奖
-        const url = '/exam/DoDraw';
-        this.$http({
-          url: url,//api 代理到json文件地址，后面的后缀是文件中的对象或者是数组
-          method: 'post',//请求方式
-          //这里可以添加axios文档中的各种配置
-        }).then(res => {
-          console.log(res.data, '请求中奖数据成功');
-          const Data = res.data;
-          this.isLoading = false;
-          this.$router.push({name: 'shake', params: {drawData:Data}})
+        this.$router.push({name: 'shake'})
 
-        }).catch(err => {
-          console.log(err, '请求错误');
-//          alert('出错啦')
-
-        });
+//        this.isLoading = true;  // 显示加载中的图
+//        // 请求中奖
+//        const url = '/exam/DoDraw';
+//        this.$http({
+//          url: url,//api 代理到json文件地址，后面的后缀是文件中的对象或者是数组
+//          method: 'post',//请求方式
+//          //这里可以添加axios文档中的各种配置
+//        }).then(res => {
+//          console.log(res.data, '请求中奖数据成功');
+//          const Data = res.data;
+//          this.isLoading = false;
+//          this.$router.push({name: 'shake', params: {drawData:Data}})
+//
+//        }).catch(err => {
+//          console.log(err, '请求错误');
+////          alert('出错啦')
+//
+//        });
       },
     },
     created: function () {
@@ -307,26 +309,26 @@
     overflow: hidden;
   }
 
-  .loadingPage {
-    background: rgba(0, 0, 0, 0.5);
-    width: 100%;
-    height: 100%;
-    background-size: 100% 100%;
-    top: 0;
-    left: 0;
-    position: absolute;
-    z-index: 10;
+  /*.loadingPage {*/
+    /*background: rgba(0, 0, 0, 0.5);*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*background-size: 100% 100%;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*position: absolute;*/
+    /*z-index: 10;*/
 
-  }
+  /*}*/
 
-  .loadingPage img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-  }
+  /*.loadingPage img {*/
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*right: 0;*/
+    /*bottom: 0;*/
+    /*margin: auto;*/
+  /*}*/
 
   @-webkit-keyframes bgRotate {
     0% {

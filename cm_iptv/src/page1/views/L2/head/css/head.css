@@ -1,4 +1,5 @@
-body, div, span, header, footer, nav, section, aside, article, ul, dl, dt, dd, li, a, p, h1, h2, h3, h4, h5, h6, i, b, textarea, button, input, select, figure, figcaption {
+@charset "UTF-8";
+body, div, img, span, header, footer, nav, section, aside, article, ul, dl, dt, dd, li, a, p, h1, h2, h3, h4, h5, h6, i, b, textarea, button, input, select, figure, figcaption {
   padding: 0;
   margin: 0;
   list-style: none;
@@ -6,9 +7,12 @@ body, div, span, header, footer, nav, section, aside, article, ul, dl, dt, dd, l
   text-decoration: none;
   border: none;
   font-weight: normal;
-  font-family: "Microsoft Yahei", Arial, sans-serif; }
-  body:hover, div:hover, span:hover, header:hover, footer:hover, nav:hover, section:hover, aside:hover, article:hover, ul:hover, dl:hover, dt:hover, dd:hover, li:hover, a:hover, p:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, i:hover, b:hover, textarea:hover, button:hover, input:hover, select:hover, figure:hover, figcaption:hover {
+  font-family: "黑体", Arial, sans-serif; }
+  body:hover, div:hover, img:hover, span:hover, header:hover, footer:hover, nav:hover, section:hover, aside:hover, article:hover, ul:hover, dl:hover, dt:hover, dd:hover, li:hover, a:hover, p:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, i:hover, b:hover, textarea:hover, button:hover, input:hover, select:hover, figure:hover, figcaption:hover {
     outline: none; }
+
+img {
+  vertical-align: middle; }
 
 input[type="button"], input[type="submit"], input[type="search"], input[type="reset"] {
   -webkit-appearance: none; }
@@ -17,10 +21,10 @@ textarea {
   -webkit-appearance: none; }
 
 body {
-  height: 100%;
-  width: 100%;
+  width: 1280px;
+  height: 720px;
   background: #F5F5F5 no-repeat;
-  background-size: 100% 100%; }
+  position: relative; }
 
 .oh {
   overflow: hidden; }
@@ -71,4 +75,19 @@ body {
 .animation_opactiy {
   animation: backOpacity 2s ease-in-out infinite; }
 
-/*# sourceMappingURL=common.css.map */
+.main {
+  width: 1180px;
+  margin: 27px auto; }
+
+.head {
+  font-size: 32px;
+  overflow: hidden; }
+  .head .left {
+    font-size: 26px; }
+  .head .right {
+    font-size: 18px;
+    margin-top: 6px; }
+    .head .right .and {
+      margin: 0 5px; }
+
+/*# sourceMappingURL=head.css.map */

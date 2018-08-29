@@ -1,0 +1,62 @@
+@import "../../../styles/common";
+@import "../../../styles/mixin";
+
+body {
+  background-image: url("../img/bg_tv_color.png");
+  color: #fff;
+  overflow: hidden;
+}
+.main {
+  width: 1184px;
+  margin: 0 auto;
+  position: relative;
+  top: 27px;
+}
+.top-right-bg {
+  @include allcover;
+}
+.head {
+  font-size: 32px;
+  overflow: hidden;
+
+  .right {
+    font-size: 18px;
+    margin-top: 6px;
+
+    .and {
+      margin: 0 5px;
+    }
+  }
+}
+.wifi {
+  margin: 0 46px;
+  img {
+    margin-top: -5px;
+  }
+}
+.tab-menu {
+  position: absolute;
+  top: 558px;
+  ul {
+    overflow: hidden;
+    width: 1520px;
+  }
+  li {
+    @include wh(302px,102px);
+    font-size: 24px;
+    float: left;
+    //text-align: center;
+
+    p {
+      padding-left: 82px;
+    }
+    .fp {
+      margin-top: 26px;
+    }
+    .is-active {
+      @include wh(100%,100%);
+    }
+    .no-active {
+    }
+  }
+}

@@ -1,0 +1,113 @@
+@import "../../../styles/common";
+@import "../../../styles/mixin";
+
+body {
+  background-image: url("../img/bg_tv_color.png");
+  color: #fff;
+  overflow: hidden;
+}
+
+.main {
+  width: 1180px;
+  margin: 0 auto;
+  position: relative;
+  top: 27px;
+}
+
+.head {
+  font-size: 32px;
+  overflow: hidden;
+  .left {
+    font-size: 26px;
+  }
+  .right {
+    font-size: 18px;
+    margin-top: 6px;
+
+    .and {
+      margin: 0 5px;
+    }
+  }
+}
+
+.main-content {
+  margin-top: 65px;
+  height: 593px;
+  .left-menu {
+    width: 198px;
+    padding: 38px 0;
+    li {
+      @include wh(198px, 52px);
+      margin: 23px 0;
+      //background-color: #fff;
+
+      div {
+        @include wh(198px, 52px);
+        line-height: 52px;
+        @include sc(24px, #9a9ea5);
+        padding-left: 30px;
+      }
+      .is-active {
+        background: url("../img/btn_list_sel.png") no-repeat;
+        @include sc(26px, $f1);
+
+      }
+    }
+  }
+  .right-content {
+    margin-left: 187px;
+    float: left;
+    height: 593px;
+    overflow-y: auto;
+    padding-right: 70px;
+    ul {
+      li {
+        @include wh(708px, 156px);
+        background: url("../img/mask_list.png");
+        @include borderRadius(12px);
+        border: 3px solid #ff6961;
+        margin-bottom: 19px;
+
+        div {
+          margin: 27px 34px 0;
+        }
+        p {
+          line-height: .9;
+
+        }
+
+        .food-name {
+          @include sc(30px, $f1);
+          margin-bottom: 10px;
+        }
+        .food-name-en,.recommend {
+          @include sc(18px, #9a9ea5);
+
+        }
+        .food-name-en {
+          margin-bottom: 39px;
+
+        }
+      }
+    }
+  }
+
+  .right-content::-webkit-scrollbar{
+    width:10px;
+    height:4px;
+  }
+  .right-content::-webkit-scrollbar-track{
+    background: #f6f6f6;
+    @include borderRadius(5px);
+  }
+  .right-content::-webkit-scrollbar-thumb{
+    background: #aaa;
+    @include borderRadius(5px);
+  }
+  .right-content::-webkit-scrollbar-thumb:hover{
+    background: #747474;
+  }
+  .right-content::-webkit-scrollbar-corner {
+    background: #f6f6f6;
+  }
+}

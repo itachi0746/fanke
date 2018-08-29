@@ -1,4 +1,4 @@
-$blue: #3297f5;
+$f1: #f1f1f1;
 
 
 // 背景图片地址和大小
@@ -68,19 +68,3 @@ $blue: #3297f5;
 
 }
 
-// 促  惠  字体效果
-%_cu ,%_hui{
-  @include sc(.7rem ,#fff);
-  @include wh(1rem, 1rem);
-  @include borderRadius(2px);
-  display: inline-block;
-  text-align: center;
-}
-
-%_cu {
-  background-color: orange;
-}
-
-%_hui {
-  background-color: #ff8298;
-}
