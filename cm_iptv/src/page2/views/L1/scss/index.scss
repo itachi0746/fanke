@@ -1,0 +1,109 @@
+@import "../../../styles/common";
+@import "../../../styles/mixin";
+
+body {
+  background-image: url("../img/bg_mask_1.png");
+  color: #fff;
+  overflow: hidden;
+}
+.main {
+  width: 1210px;
+  margin: 0 auto;
+  position: relative;
+  top: 37px;
+}
+.head {
+  overflow: hidden;
+  .and {
+    margin: 0 7px;
+  }
+  .right {
+    @include sc(20px,#fff);
+    line-height: 1;
+
+    img {
+      vertical-align: baseline;
+    }
+  }
+}
+
+.main-content {
+  margin-top: 127px;
+  .tab {
+    width: 208px;
+    float: left;
+    ul {
+      //overflow: hidden;
+    }
+    li {
+      @include wh(208px,66px);
+      margin-bottom: 35px;
+      div {
+        @include wh(208px,66px);
+        @include sc(24px,#fff);
+
+        span {
+          position: relative;
+          top: 3px;
+        }
+        p {
+          padding: 17px 0 0 35px;
+
+        }
+      }
+      div:focus {
+        background-image: url('../img/bg_nav_sel.png');
+        outline: none;
+      }
+
+    }
+  }
+}
+
+.tab-content {
+  @include wh(1072px,490px);
+  float: left;
+
+  .box {
+    padding-left: 83px;
+    overflow: hidden;
+    div {
+      margin: 0 23px 23px 0;
+      float: left;
+      p {
+        line-height: 1.2;
+      }
+      .p1 {
+        //@include sc(14px,#fff);
+        margin: 24px 0 0 24px;
+      }
+      .p2 {
+        @include sc(26px,#fff);
+        margin-left: 24px;
+      }
+      .p3 {
+        @include sc(36px,#fff);
+        margin-left: 24px;
+
+      }
+    }
+
+    .b-box {
+      @include wh(502px,236px);
+    }
+
+    .s-box {
+      @include wh(236px,236px);
+    }
+    .b-box:focus {
+      background-image: url('../img/img_card1_sel.png');
+      outline: none;
+
+    }
+    .s-box:focus {
+      background-image: url('../img/img_card2_sel.png');
+      outline: none;
+
+    }
+  }
+}

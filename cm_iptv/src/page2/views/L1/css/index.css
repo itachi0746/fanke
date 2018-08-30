@@ -51,10 +51,10 @@ body {
   float: right; }
 
 .hide {
-  display: none; }
+  display: none !important; }
 
 .show {
-  display: block; }
+  display: block !important; }
 
 .ellipsis {
   overflow: hidden;
@@ -76,52 +76,83 @@ body {
   animation: backOpacity 2s ease-in-out infinite; }
 
 body {
-  background-image: url("../img/bg_tv_color.png");
+  background-image: url("../img/bg_mask_1.png");
   color: #fff;
   overflow: hidden; }
 
 .main {
-  width: 1184px;
+  width: 1210px;
   margin: 0 auto;
   position: relative;
-  top: 27px; }
-
-.top-right-bg {
-  position: absolute;
-  top: 0;
-  right: 0; }
+  top: 37px; }
 
 .head {
-  font-size: 32px;
   overflow: hidden; }
+  .head .and {
+    margin: 0 7px; }
   .head .right {
-    font-size: 18px;
-    margin-top: 6px; }
-    .head .right .and {
-      margin: 0 5px; }
+    font-size: 20px;
+    color: #fff;
+    line-height: 1; }
+    .head .right img {
+      vertical-align: baseline; }
 
-.wifi {
-  margin: 0 46px; }
-  .wifi img {
-    margin-top: -5px; }
-
-.tab-menu {
-  position: absolute;
-  top: 558px; }
-  .tab-menu ul {
-    overflow: hidden;
-    width: 1520px; }
-  .tab-menu li {
-    width: 302px;
-    height: 102px;
-    font-size: 24px;
+.main-content {
+  margin-top: 127px; }
+  .main-content .tab {
+    width: 208px;
     float: left; }
-    .tab-menu li p {
-      padding-left: 82px; }
-    .tab-menu li .fp {
-      margin-top: 26px; }
-    .tab-menu li .is-active {
-      width: 100%;
-      height: 100%; }
+    .main-content .tab li {
+      width: 208px;
+      height: 66px;
+      margin-bottom: 35px; }
+      .main-content .tab li div {
+        width: 208px;
+        height: 66px;
+        font-size: 24px;
+        color: #fff; }
+        .main-content .tab li div span {
+          position: relative;
+          top: 3px; }
+        .main-content .tab li div p {
+          padding: 17px 0 0 35px; }
+      .main-content .tab li div:focus {
+        background-image: url("../img/bg_nav_sel.png");
+        outline: none; }
+
+.tab-content {
+  width: 1072px;
+  height: 490px;
+  float: left; }
+  .tab-content .box {
+    padding-left: 83px;
+    overflow: hidden; }
+    .tab-content .box div {
+      margin: 0 23px 23px 0;
+      float: left; }
+      .tab-content .box div p {
+        line-height: 1.2; }
+      .tab-content .box div .p1 {
+        margin: 24px 0 0 24px; }
+      .tab-content .box div .p2 {
+        font-size: 26px;
+        color: #fff;
+        margin-left: 24px; }
+      .tab-content .box div .p3 {
+        font-size: 36px;
+        color: #fff;
+        margin-left: 24px; }
+    .tab-content .box .b-box {
+      width: 502px;
+      height: 236px; }
+    .tab-content .box .s-box {
+      width: 236px;
+      height: 236px; }
+    .tab-content .box .b-box:focus {
+      background-image: url("../img/img_card1_sel.png");
+      outline: none; }
+    .tab-content .box .s-box:focus {
+      background-image: url("../img/img_card2_sel.png");
+      outline: none; }
 
 /*# sourceMappingURL=index.css.map */

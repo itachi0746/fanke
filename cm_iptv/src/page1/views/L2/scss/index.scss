@@ -81,7 +81,7 @@ body {
           margin-bottom: 10px;
         }
         .food-name-en,.recommend {
-          @include sc(18px, #9a9ea5);
+          @include sc(18px, $f1d);
 
         }
         .food-name-en {

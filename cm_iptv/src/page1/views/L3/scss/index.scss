@@ -1,0 +1,113 @@
+@import "../../../styles/common";
+@import "../../../styles/mixin";
+
+body {
+  background-image: url("../img/mask_details_bg.png");
+  color: #fff;
+  overflow: hidden;
+}
+
+.main {
+  width: 1180px;
+  margin: 0 auto;
+  position: relative;
+  top: 27px;
+}
+
+.head {
+  font-size: 32px;
+  overflow: hidden;
+  .left {
+    font-size: 26px;
+  }
+  .right {
+    font-size: 18px;
+    margin-top: 6px;
+
+    .and {
+      margin: 0 5px;
+    }
+  }
+}
+
+.mid-content {
+  margin-top: 82px;
+
+  .food-name {
+    @include sc(36px,$f1);
+    line-height: 1;
+    margin-bottom: 21px;
+  }
+  .rcm-num {
+    @include sc(18px,$f1);
+    line-height: 1;
+
+  }
+  .food-dsc {
+    width: 462px;
+    @include sc(20px,$f1);
+    margin-top: 15px;
+    line-height: 1.7;
+    margin-bottom: 50px;
+  }
+  .btn-box {
+    @include wh(186px,48px);
+
+    .btn {
+      background: url("../img/btn_bug_nor.png") no-repeat;
+      @include wh(186px,48px);
+
+    }
+    .btn-active {
+      background: url("../img/btn_bug_sel.png") no-repeat;
+      @include wh(186px,48px);
+
+    }
+  }
+}
+
+.btm {
+  @include wh(1180px,154px);
+  @include borderRadius(20px);
+  background-color: #413e61;
+  position: absolute;
+  top: 512px;
+  left: 0;
+
+  .bg {
+    @include wh(327px,130px);
+    background: url("../img/bg_recommend.png") no-repeat;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+  .other {
+    @include wh(255px,154px);
+    float: left;
+    text-align: center;
+    @include sc(28px,$f1);
+    p {
+      padding-top: 60px;
+
+    }
+  }
+  .other-list {
+    float: left;
+    overflow: hidden;
+    @include wh(925px,154px);
+
+    li {
+      float: left;
+      @include wh(204px,96px);
+      background: url("../img/mask_recommend.png") no-repeat;
+      margin: 28px 20px 0 0;
+
+      p {
+        margin-top: 65px;
+        padding-left: 20px;
+        @include sc(22px,$f1);
+
+      }
+    }
+  }
+}
