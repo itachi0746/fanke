@@ -1,0 +1,175 @@
+@charset "UTF-8";
+body, div, img, span, header, footer, nav, section, aside, article, ul, dl, dt, dd, li, a, p, h1, h2, h3, h4, h5, h6, i, b, textarea, button, input, select, figure, figcaption {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-style: normal;
+  text-decoration: none;
+  border: none;
+  font-weight: normal;
+  font-family: "黑体", Arial, sans-serif; }
+  body:hover, div:hover, img:hover, span:hover, header:hover, footer:hover, nav:hover, section:hover, aside:hover, article:hover, ul:hover, dl:hover, dt:hover, dd:hover, li:hover, a:hover, p:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, i:hover, b:hover, textarea:hover, button:hover, input:hover, select:hover, figure:hover, figcaption:hover {
+    outline: none; }
+
+img {
+  vertical-align: middle; }
+
+input[type="button"], input[type="submit"], input[type="search"], input[type="reset"] {
+  -webkit-appearance: none; }
+
+textarea {
+  -webkit-appearance: none; }
+
+body {
+  width: 1280px;
+  height: 720px;
+  background: #F5F5F5 no-repeat;
+  position: relative;
+  font-size: 20px;
+  color: #ffffff; }
+
+.oh {
+  overflow: hidden; }
+
+.clear:after {
+  content: '';
+  display: block;
+  clear: both; }
+
+.clear {
+  zoom: 1; }
+
+.back_img {
+  background-repeat: no-repeat;
+  background-size: 100% 100%; }
+
+.margin {
+  margin: 0 auto; }
+
+.left {
+  float: left; }
+
+.right {
+  float: right; }
+
+.hide {
+  display: none !important; }
+
+.show {
+  display: block !important; }
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+
+@keyframes backOpacity {
+  0% {
+    opacity: 1; }
+  25% {
+    opacity: 0.5; }
+  50% {
+    opacity: 1; }
+  75% {
+    opacity: 0.5; }
+  100% {
+    opacity: 1; } }
+.animation_opactiy {
+  animation: backOpacity 2s ease-in-out infinite; }
+
+body {
+  background-image: url("../img/bg_mask_1.png");
+  color: #fff;
+  overflow: hidden; }
+
+.main {
+  width: 1210px;
+  margin: 0 auto;
+  position: relative;
+  top: 37px; }
+
+.head {
+  overflow: hidden; }
+  .head .and {
+    margin: 0 7px; }
+  .head .right {
+    font-size: 20px;
+    color: #fff;
+    line-height: 1; }
+    .head .right img {
+      vertical-align: baseline; }
+
+.main-content {
+  margin-top: 127px;
+  height: 561px; }
+  .main-content .tab {
+    width: 208px;
+    float: left; }
+    .main-content .tab li {
+      width: 208px;
+      height: 66px;
+      margin-bottom: 31px; }
+      .main-content .tab li div {
+        width: 208px;
+        height: 66px;
+        font-size: 24px;
+        color: #fff; }
+        .main-content .tab li div span {
+          position: relative;
+          top: 3px; }
+        .main-content .tab li div p {
+          padding: 17px 0 0 35px; }
+      .main-content .tab li div:focus {
+        background-image: url("../img/bg_nav_sel.png");
+        outline: none; }
+
+.time {
+  position: absolute;
+  left: 0;
+  top: 647px; }
+  .time p {
+    padding-left: 35px; }
+
+.tab-page {
+  float: left;
+  width: 1072px;
+  height: 404px;
+  margin-top: 25px; }
+  .tab-page .box {
+    padding-left: 83px;
+    overflow: hidden; }
+    .tab-page .box ul li {
+      width: 326px;
+      height: 404px;
+      float: left;
+      background-color: #fff;
+      position: relative; }
+      .tab-page .box ul li .li-title {
+        width: 326px;
+        height: 76px;
+        line-height: 76px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        text-align: center;
+        font-size: 26px;
+        background: url("../img/bg_card_mask.png") no-repeat; }
+  .tab-page .page-num {
+    margin-top: 59px;
+    padding-right: 35px; }
+    .tab-page .page-num li {
+      color: #f1f1f1;
+      border: 3px solid #9a9ea5;
+      width: 36px;
+      height: 36px;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      -ms-border-radius: 50%;
+      -o-border-radius: 50%;
+      border-radius: 50%;
+      line-height: 36px;
+      text-align: center;
+      float: left;
+      margin-left: 10px; }
+
+/*# sourceMappingURL=index.css.map */

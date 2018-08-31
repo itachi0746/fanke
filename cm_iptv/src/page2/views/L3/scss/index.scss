@@ -1,0 +1,81 @@
+@import "../../../styles/common";
+@import "../../../styles/mixin";
+
+body {
+  background-image: url("../img/bg_mask_3.png");
+  color: #fff;
+  overflow: hidden;
+}
+
+.main {
+  width: 1210px;
+  margin: 0 auto;
+  position: relative;
+  top: 37px;
+}
+
+.head {
+  overflow: hidden;
+  .and {
+    margin: 0 7px;
+  }
+  .right {
+    @include sc(20px, #fff);
+    line-height: 1;
+
+    img {
+      vertical-align: baseline;
+    }
+  }
+}
+
+.time {
+  position: absolute;
+  left: 0;
+  top: 647px;
+  p {
+    padding-left: 35px;
+  }
+}
+
+.mid-content {
+  position: absolute;
+  top: 125px;
+  left: 87px;
+  width: 1106px;
+  height: 469px;
+  //background-color: #fff;
+
+  .btn_arrow_left {
+    position: absolute;
+    left: 0;
+    top: 203px;
+  }
+  .btn_arrow_right {
+    position: absolute;
+    right: 0;
+    top: 203px;
+  }
+  .mid-box {
+    width: 903px;
+    height: 469px;
+    margin: 0 auto;
+    //background-color: blue;
+  }
+}
+
+.btn-menu {
+  position: absolute;
+  left: 727px;
+  top: 647px;
+  //height: 36px;
+  //line-height: 36px;
+  li {
+    float: left;
+    margin-right: 28px;
+  }
+  span {
+    position: relative;
+    top: 2px;
+  }
+}

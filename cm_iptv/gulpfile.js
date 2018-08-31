@@ -2,7 +2,7 @@
 var config = {
   // src: "src/assets", // 文件资源css,js,image等
   // srcView: "src/View/Company2", // 文件资源html等
-  server: "src/page2/views/L1", // 服务器根目录
+  server: "src/page3/views/L2", // 服务器根目录
   target: "index.html" // 要监视(执行)的html文件
   // dest: "dev/assets", // 生产环境文件夹
   // destView: "dev/View/Company2" // 生产环境文件夹

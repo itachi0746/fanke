@@ -29,6 +29,7 @@ body {
 
 .main-content {
   margin-top: 127px;
+  height: 561px;
   .tab {
     width: 208px;
     float: left;
@@ -37,7 +38,7 @@ body {
     }
     li {
       @include wh(208px,66px);
-      margin-bottom: 35px;
+      margin-bottom: 31px;
       div {
         @include wh(208px,66px);
         @include sc(24px,#fff);
@@ -57,9 +58,21 @@ body {
       }
 
     }
+    .tab-btm {
+      p {
+        padding-left: 35px;
+      }
+    }
   }
 }
-
+.time {
+  position: absolute;
+  left: 0;
+  top: 647px;
+  p {
+    padding-left: 35px;
+  }
+}
 .tab-content {
   @include wh(1072px,490px);
   float: left;
@@ -105,5 +118,9 @@ body {
       outline: none;
 
     }
+  }
+  .tab-btm {
+    padding-left: 83px;
+
   }
 }

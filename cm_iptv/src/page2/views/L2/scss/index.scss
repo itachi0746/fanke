@@ -1,0 +1,119 @@
+@import "../../../styles/common";
+@import "../../../styles/mixin";
+
+body {
+  background-image: url("../img/bg_mask_1.png");
+  color: #fff;
+  overflow: hidden;
+}
+.main {
+  width: 1210px;
+  margin: 0 auto;
+  position: relative;
+  top: 37px;
+}
+.head {
+  overflow: hidden;
+  .and {
+    margin: 0 7px;
+  }
+  .right {
+    @include sc(20px,#fff);
+    line-height: 1;
+
+    img {
+      vertical-align: baseline;
+    }
+  }
+}
+
+.main-content {
+  margin-top: 127px;
+  height: 561px;
+  .tab {
+    width: 208px;
+    float: left;
+    ul {
+      //overflow: hidden;
+    }
+    li {
+      @include wh(208px,66px);
+      margin-bottom: 31px;
+      div {
+        @include wh(208px,66px);
+        @include sc(24px,#fff);
+
+        span {
+          position: relative;
+          top: 3px;
+        }
+        p {
+          padding: 17px 0 0 35px;
+
+        }
+      }
+      div:focus {
+        background-image: url('../img/bg_nav_sel.png');
+        outline: none;
+      }
+
+    }
+
+  }
+}
+.time {
+  position: absolute;
+  left: 0;
+  top: 647px;
+  p {
+    padding-left: 35px;
+  }
+}
+.tab-page {
+  float: left;
+  width: 1072px;
+  height: 404px;
+  margin-top: 25px;
+  .box {
+    padding-left: 83px;
+
+    overflow: hidden;
+    ul {
+      li {
+        @include wh(326px,404px);
+        float: left;
+        background-color: #fff;
+        position: relative;
+
+        .li-title {
+          width: 326px;
+          height: 76px;
+          line-height: 76px;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          text-align: center;
+          font-size: 26px;
+          background: url("../img/bg_card_mask.png") no-repeat;
+        }
+      }
+    }
+  }
+  .page-num {
+    margin-top: 59px;
+    padding-right: 35px;
+    ul {
+
+    }
+    li {
+      color: $f1;
+      border: 3px solid $f1d;
+      @include wh(36px,36px);
+      @include borderRadius(50%);
+      line-height: 36px;
+      text-align: center;
+      float: left;
+      margin-left: 10px;
+    }
+  }
+}

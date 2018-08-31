@@ -24,7 +24,9 @@ body {
   width: 1280px;
   height: 720px;
   background: #F5F5F5 no-repeat;
-  position: relative; }
+  position: relative;
+  font-size: 20px;
+  color: #ffffff; }
 
 .oh {
   overflow: hidden; }
@@ -98,14 +100,15 @@ body {
       vertical-align: baseline; }
 
 .main-content {
-  margin-top: 127px; }
+  margin-top: 127px;
+  height: 561px; }
   .main-content .tab {
     width: 208px;
     float: left; }
     .main-content .tab li {
       width: 208px;
       height: 66px;
-      margin-bottom: 35px; }
+      margin-bottom: 31px; }
       .main-content .tab li div {
         width: 208px;
         height: 66px;
@@ -119,6 +122,15 @@ body {
       .main-content .tab li div:focus {
         background-image: url("../img/bg_nav_sel.png");
         outline: none; }
+    .main-content .tab .tab-btm p {
+      padding-left: 35px; }
+
+.time {
+  position: absolute;
+  left: 0;
+  top: 647px; }
+  .time p {
+    padding-left: 35px; }
 
 .tab-content {
   width: 1072px;
@@ -154,5 +166,7 @@ body {
     .tab-content .box .s-box:focus {
       background-image: url("../img/img_card2_sel.png");
       outline: none; }
+  .tab-content .tab-btm {
+    padding-left: 83px; }
 
 /*# sourceMappingURL=index.css.map */
