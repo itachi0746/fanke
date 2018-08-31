@@ -6,7 +6,7 @@ body, div, img, span, header, footer, nav, section, aside, article, ul, dl, dt, 
   text-decoration: none;
   border: none;
   font-weight: normal;
-  font-family: "黑体", Arial, sans-serif;
+  font-family: SimHei,"黑体", Arial, sans-serif;
 
   &:hover{
     outline: none;
@@ -64,11 +64,11 @@ body {
 }
 
 .hide{
-  display: none;
+  display: none!important;
 }
 
 .show{
-  display: block;
+  display: block!important;
 }
 
 .ellipsis{

@@ -50,7 +50,16 @@ body {
       .is-active {
         background: url("../img/btn_list_sel.png") no-repeat;
         @include sc(26px, $f1);
-
+        display: none;
+      }
+    }
+    li:focus {
+      outline: none;
+      .is-active {
+        display: block;
+      }
+      .no-active {
+        display: none;
       }
     }
   }
@@ -63,13 +72,17 @@ body {
     ul {
       li {
         @include wh(708px, 156px);
-        background: url("../img/mask_list.png");
         @include borderRadius(12px);
-        border: 3px solid #ff6961;
+        background: url("../img/mask_list.png");
+        border: 3px solid transparent;
+
         margin-bottom: 19px;
 
         div {
           margin: 27px 34px 0;
+          img {
+            vertical-align: baseline;
+          }
         }
         p {
           line-height: .9;
@@ -88,6 +101,11 @@ body {
           margin-bottom: 39px;
 
         }
+      }
+      li:focus {
+        outline: none;
+        border: 3px solid #ff6961;
+
       }
     }
   }

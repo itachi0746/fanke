@@ -7,7 +7,7 @@ body, div, img, span, header, footer, nav, section, aside, article, ul, dl, dt, 
   text-decoration: none;
   border: none;
   font-weight: normal;
-  font-family: "黑体", Arial, sans-serif; }
+  font-family: SimHei,"榛戜綋", Arial, sans-serif; }
   body:hover, div:hover, img:hover, span:hover, header:hover, footer:hover, nav:hover, section:hover, aside:hover, article:hover, ul:hover, dl:hover, dt:hover, dd:hover, li:hover, a:hover, p:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, i:hover, b:hover, textarea:hover, button:hover, input:hover, select:hover, figure:hover, figcaption:hover {
     outline: none; }
 
@@ -53,10 +53,10 @@ body {
   float: right; }
 
 .hide {
-  display: none; }
+  display: none !important; }
 
 .show {
-  display: block; }
+  display: block !important; }
 
 .ellipsis {
   overflow: hidden;
@@ -119,7 +119,14 @@ body {
       .main-content .left-menu li .is-active {
         background: url("../img/btn_list_sel.png") no-repeat;
         font-size: 26px;
-        color: #f1f1f1; }
+        color: #f1f1f1;
+        display: none; }
+    .main-content .left-menu li:focus {
+      outline: none; }
+      .main-content .left-menu li:focus .is-active {
+        display: block; }
+      .main-content .left-menu li:focus .no-active {
+        display: none; }
   .main-content .right-content {
     margin-left: 187px;
     float: left;
@@ -129,16 +136,18 @@ body {
     .main-content .right-content ul li {
       width: 708px;
       height: 156px;
-      background: url("../img/mask_list.png");
       -webkit-border-radius: 12px;
       -moz-border-radius: 12px;
       -ms-border-radius: 12px;
       -o-border-radius: 12px;
       border-radius: 12px;
-      border: 3px solid #ff6961;
+      background: url("../img/mask_list.png");
+      border: 3px solid transparent;
       margin-bottom: 19px; }
       .main-content .right-content ul li div {
         margin: 27px 34px 0; }
+        .main-content .right-content ul li div img {
+          vertical-align: baseline; }
       .main-content .right-content ul li p {
         line-height: .9; }
       .main-content .right-content ul li .food-name {
@@ -150,6 +159,9 @@ body {
         color: #9a9ea5; }
       .main-content .right-content ul li .food-name-en {
         margin-bottom: 39px; }
+    .main-content .right-content ul li:focus {
+      outline: none;
+      border: 3px solid #ff6961; }
   .main-content .right-content::-webkit-scrollbar {
     width: 10px;
     height: 4px; }

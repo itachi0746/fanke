@@ -102,9 +102,7 @@ body {
   .page-num {
     margin-top: 59px;
     padding-right: 35px;
-    ul {
 
-    }
     li {
       color: $f1;
       border: 3px solid $f1d;
@@ -114,6 +112,10 @@ body {
       text-align: center;
       float: left;
       margin-left: 10px;
+    }
+    li:focus {
+      border: 3px solid $btnfocus;
+      outline: none;
     }
   }
 }

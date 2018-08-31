@@ -7,7 +7,7 @@ body, div, img, span, header, footer, nav, section, aside, article, ul, dl, dt, 
   text-decoration: none;
   border: none;
   font-weight: normal;
-  font-family: "黑体", Arial, sans-serif; }
+  font-family: SimHei,"榛戜綋", Arial, sans-serif; }
   body:hover, div:hover, img:hover, span:hover, header:hover, footer:hover, nav:hover, section:hover, aside:hover, article:hover, ul:hover, dl:hover, dt:hover, dd:hover, li:hover, a:hover, p:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, i:hover, b:hover, textarea:hover, button:hover, input:hover, select:hover, figure:hover, figcaption:hover {
     outline: none; }
 
@@ -53,10 +53,10 @@ body {
   float: right; }
 
 .hide {
-  display: none; }
+  display: none !important; }
 
 .show {
-  display: block; }
+  display: block !important; }
 
 .ellipsis {
   overflow: hidden;
@@ -124,10 +124,9 @@ body {
       background: url("../img/btn_bug_nor.png") no-repeat;
       width: 186px;
       height: 48px; }
-    .mid-content .btn-box .btn-active {
-      background: url("../img/btn_bug_sel.png") no-repeat;
-      width: 186px;
-      height: 48px; }
+  .mid-content .btn:focus {
+    background: url("../img/btn_bug_sel.png") no-repeat;
+    outline: none; }
 
 .btm {
   width: 1180px;
@@ -167,11 +166,20 @@ body {
       width: 204px;
       height: 96px;
       background: url("../img/mask_recommend.png") no-repeat;
-      margin: 28px 20px 0 0; }
+      margin: 28px 20px 0 0;
+      -webkit-border-radius: 12px;
+      -moz-border-radius: 12px;
+      -ms-border-radius: 12px;
+      -o-border-radius: 12px;
+      border-radius: 12px;
+      border: 3px solid transparent; }
       .btm .other-list li p {
         margin-top: 65px;
         padding-left: 20px;
         font-size: 22px;
         color: #f1f1f1; }
+    .btm .other-list li:focus {
+      border: 3px solid #ff6961;
+      outline: none; }
 
 /*# sourceMappingURL=index.css.map */

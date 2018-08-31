@@ -20,7 +20,7 @@ body {
   overflow: hidden;
 
   .right {
-    font-size: 18px;
+    font-size: 20px;
     margin-top: 6px;
 
     .and {
@@ -55,8 +55,40 @@ body {
     }
     .is-active {
       @include wh(100%,100%);
+      display: none;
     }
     .no-active {
     }
+  }
+  li:focus {
+    outline: none;
+    .is-active {
+      display: block;
+    }
+    .no-active {
+      display: none;
+    }
+  }
+}
+
+.tips {
+  color: #bcbec4;
+  margin-top: 41px;
+
+  img {
+    margin-right: 10px;
+    vertical-align: baseline;
+  }
+}
+.fonts {
+  margin-top: 163px;
+  .p1 {
+    @include sc(52px,$f1);
+    margin-bottom: 47px;
+  }
+  .p2 {
+    color: #bcbec4;
+    width: 540px;
+    line-height: 2;
   }
 }

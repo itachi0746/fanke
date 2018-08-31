@@ -56,13 +56,11 @@ body {
     .btn {
       background: url("../img/btn_bug_nor.png") no-repeat;
       @include wh(186px,48px);
-
     }
-    .btn-active {
-      background: url("../img/btn_bug_sel.png") no-repeat;
-      @include wh(186px,48px);
-
-    }
+  }
+  .btn:focus {
+    background: url("../img/btn_bug_sel.png") no-repeat;
+    outline: none;
   }
 }
 
@@ -101,6 +99,8 @@ body {
       @include wh(204px,96px);
       background: url("../img/mask_recommend.png") no-repeat;
       margin: 28px 20px 0 0;
+      @include borderRadius(12px);
+      border: 3px solid transparent;
 
       p {
         margin-top: 65px;
@@ -108,6 +108,10 @@ body {
         @include sc(22px,$f1);
 
       }
+    }
+    li:focus {
+      border: 3px solid #ff6961;
+      outline: none;
     }
   }
 }

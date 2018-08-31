@@ -78,62 +78,79 @@ body {
   animation: backOpacity 2s ease-in-out infinite; }
 
 body {
-  background-image: url("../img/bg_mask_3.png");
+  background-image: url("../assets/backbg.png");
   color: #fff;
   overflow: hidden; }
 
 .main {
-  width: 1210px;
+  width: 1122px;
   margin: 0 auto;
   position: relative;
-  top: 37px; }
+  top: 34px; }
 
 .head {
   overflow: hidden; }
-  .head .and {
-    margin: 0 7px; }
-  .head .right {
-    font-size: 20px;
-    color: #fff;
+  .head .line {
+    margin: 0 5px; }
+  .head p {
     line-height: 1; }
-    .head .right img {
-      vertical-align: baseline; }
+  .head .p1 {
+    font-size: 38px; }
 
-.time {
-  position: absolute;
-  left: 0;
-  top: 647px; }
-  .time p {
-    padding-left: 35px; }
+.location {
+  margin-top: 29px;
+  color: #e4d5fe; }
 
-.mid-content {
-  position: absolute;
-  top: 125px;
-  left: 87px;
-  width: 1106px;
-  height: 469px; }
-  .mid-content .btn_arrow_left {
+.main-box {
+  height: 504px;
+  width: 1122px;
+  position: relative; }
+  .main-box .prev {
     position: absolute;
     left: 0;
-    top: 203px; }
-  .mid-content .btn_arrow_right {
+    top: 186px; }
+  .main-box .next {
     position: absolute;
     right: 0;
-    top: 203px; }
-  .mid-content .mid-box {
-    width: 903px;
-    height: 469px;
-    margin: 0 auto; }
+    top: 186px; }
+  .main-box .back-to-home {
+    width: 130px;
+    height: 41px;
+    -webkit-border-radius: 20.5px;
+    -moz-border-radius: 20.5px;
+    -ms-border-radius: 20.5px;
+    -o-border-radius: 20.5px;
+    border-radius: 20.5px;
+    color: #30d0fe;
+    text-align: center;
+    line-height: 41px;
+    border: 2px solid #30d0fe;
+    position: absolute;
+    bottom: 0;
+    left: 493px; }
 
-.btn-menu {
-  position: absolute;
-  left: 727px;
-  top: 647px; }
-  .btn-menu li {
-    float: left;
-    margin-right: 28px; }
-  .btn-menu span {
-    position: relative;
-    top: 2px; }
+.main-content {
+  margin-top: 49px;
+  height: 500px;
+  width: 1122px;
+  position: relative; }
+  .main-content .desc {
+    width: 390px;
+    height: 500px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: url("../img/text-bg.png"); }
+  .main-content .prev {
+    position: absolute;
+    left: 0;
+    top: 228px; }
+  .main-content .next {
+    position: absolute;
+    right: 415px;
+    top: 228px; }
+
+.btm {
+  margin-top: 30px; }
 
 /*# sourceMappingURL=index.css.map */
