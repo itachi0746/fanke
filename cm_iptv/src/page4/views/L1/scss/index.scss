@@ -1,0 +1,131 @@
+@import "../../../styles/common";
+@import "../../../styles/mixin";
+
+body {
+  background-image: url("../img/mark_bg.png");
+  color: #fff;
+  overflow: hidden;
+}
+
+.main {
+  width: 1152px;
+  height: 720px;
+  margin: 0 auto;
+  position: relative;
+  //top: 36px;
+}
+
+.head {
+  position: relative;
+  top: 36px;
+  overflow: hidden;
+  .date {
+    width: 115px;
+    height: 48px;
+    float: left;
+    color: $fd;
+  }
+  .weather {
+    float: left;
+    margin-right: 20px;
+  }
+  .time {
+    font-size: 48px;
+    float: left;
+  }
+}
+
+.welcome {
+  margin-top: 140px;
+  .p1 {
+    font-size: 24px;
+    color: $fd;
+
+  }
+  .p2 {
+    font-size: 54px;
+    height: 100px;
+    line-height: 100px;
+    overflow: hidden;
+    span {
+      float: left;
+
+    }
+    .btn {
+      width: 100px;
+      height: 100px;
+      display: inline-block;
+      background: url("../img/btn_play_unsel.png") no-repeat;
+    }
+    .btn:focus {
+      background: url("../img/btn_play_sel.png") no-repeat;
+      outline: none;
+    }
+  }
+}
+
+.wifi {
+  margin-top: 57px;
+  color: $fd;
+
+  img {
+    margin-right: 5px;
+  }
+}
+
+.tips {
+  margin-top: 20px;
+  color: $fd;
+
+}
+
+.btm-tab {
+  position: absolute;
+  bottom: 36px;
+  left: 64px;
+  width: 1280-64px;
+  height: 155px;
+  overflow: hidden;
+  ul {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 2999px;
+  }
+  li {
+    width: 272px;
+    height: 144px;
+    float: left;
+    border: 3px solid transparent;
+    margin-right: 17px;
+    @include borderRadius(4px);
+    p {
+      padding-left: 107px;
+      //white-space: nowrap;
+    }
+    .p1 {
+      margin-top: 48px;
+    }
+  }
+  li:focus {
+    outline: none;
+    border: 3px solid #f0eceb;
+    margin-top: -5px;
+  }
+  .l1 {
+    background: url("../img/btn_hotel .png") no-repeat;
+  }
+  .l2 {
+    background: url("../img/btn_roomservice.png") no-repeat;
+  }
+  .l3 {
+    background: url("../img/btn_food.png") no-repeat;
+  }
+  .l4 {
+    background: url("../img/btn_tvplay.png") no-repeat;
+  }
+  .l5 {
+    background: url("../img/btn_businesstravel.png") no-repeat;
+  }
+}
+

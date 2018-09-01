@@ -78,91 +78,107 @@ body {
   animation: backOpacity 2s ease-in-out infinite; }
 
 body {
-  background-image: url("../assets/backbg.png");
   color: #fff;
   overflow: hidden; }
 
+.mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 771px;
+  height: 595px;
+  background: url("../img/mask_bg.png") no-repeat; }
+
 .main {
-  width: 1122px;
+  width: 1152px;
+  height: 720px;
   margin: 0 auto;
-  position: relative;
-  top: 34px; }
+  position: relative; }
 
 .head {
-  overflow: hidden; }
-  .head .line {
-    margin: 0 5px; }
-  .head p {
+  position: relative;
+  top: 36px; }
+
+.welcome {
+  position: absolute;
+  top: 283px; }
+  .welcome .p1 {
+    font-size: 60px;
     line-height: 1; }
-  .head .p1 {
-    font-size: 38px; }
+  .welcome .p2 {
+    font-size: 34.5px;
+    margin-top: 21px;
+    line-height: 1; }
 
-.location {
-  margin-top: 29px;
-  color: #e4d5fe; }
+.play {
+  position: absolute;
+  top: 477px;
+  width: 221px;
+  height: 58px;
+  -webkit-border-radius: 29px;
+  -moz-border-radius: 29px;
+  -ms-border-radius: 29px;
+  -o-border-radius: 29px;
+  border-radius: 29px;
+  border: 3px solid #ffffff;
+  text-align: center;
+  line-height: 58px; }
 
-.main-box {
-  height: 504px;
-  width: 1122px;
-  position: relative; }
-  .main-box .prev {
-    position: absolute;
-    left: 0;
-    top: 186px; }
-  .main-box .next {
-    position: absolute;
-    right: 0;
-    top: 186px; }
-  .main-box .back-to-home {
-    width: 130px;
-    height: 41px;
-    -webkit-border-radius: 20.5px;
-    -moz-border-radius: 20.5px;
-    -ms-border-radius: 20.5px;
-    -o-border-radius: 20.5px;
-    border-radius: 20.5px;
-    color: #30d0fe;
-    text-align: center;
-    line-height: 41px;
-    border: 2px solid #30d0fe;
+.right-tab {
+  width: 290px;
+  position: absolute;
+  top: 125px;
+  right: 0; }
+  .right-tab li {
+    width: 290px;
+    height: 220px;
+    margin-bottom: 10px;
+    position: relative; }
+  .right-tab li:focus {
+    outline: none;
+    width: 304px;
+    height: 226px;
+    border: 3px solid #ffffff;
+    left: -10px; }
+  .right-tab .l1 .mask-l1 {
     position: absolute;
     bottom: 0;
-    left: 493px; }
-
-.main-content {
-  margin-top: 49px;
-  height: 500px;
-  width: 1122px;
-  position: relative; }
-  .main-content .desc {
-    width: 390px;
-    height: 500px;
-    position: absolute;
-    right: 0;
-    top: 0;
-    background: url("../img/text-bg.png"); }
-    .main-content .desc p {
-      padding-left: 70px; }
-    .main-content .desc .title {
-      font-size: 30px;
-      color: #333;
-      margin-top: 30px; }
-    .main-content .desc .time {
-      color: #999999; }
-    .main-content .desc .p3 {
-      width: 271px;
-      color: #333;
-      margin-top: 32px; }
-  .main-content .prev {
-    position: absolute;
     left: 0;
-    top: 228px; }
-  .main-content .next {
+    width: 290px;
+    height: 92px; }
+  .right-tab .l1:focus .mask-l1 {
+    width: 304px; }
+  .right-tab .l2 .mask-l2 {
     position: absolute;
-    right: 415px;
-    top: 228px; }
+    bottom: 0;
+    left: 0;
+    width: 290px;
+    height: 220px; }
+  .right-tab .l2:focus .mask-l2 {
+    width: 304px;
+    height: 226px; }
 
-.btm {
-  margin-top: 30px; }
+.btm-tab {
+  position: absolute;
+  bottom: 0;
+  left: 0; }
+  .btm-tab li {
+    float: left;
+    width: 320px;
+    height: 125px;
+    background: #061332; }
+    .btm-tab li .li-box {
+      width: 150px;
+      margin: 48px auto 0;
+      overflow: hidden;
+      color: #7b8cf1;
+      text-align: left; }
+      .btm-tab li .li-box p {
+        white-space: nowrap; }
+      .btm-tab li .li-box img {
+        margin-right: 5px; }
+  .btm-tab li:focus {
+    outline: none;
+    background: url("../img/mask_tab_btn.png") no-repeat; }
 
 /*# sourceMappingURL=index.css.map */

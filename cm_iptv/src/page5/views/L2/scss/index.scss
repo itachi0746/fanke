@@ -1,0 +1,23 @@
+@import "../../../styles/common";
+@import "../../../styles/mixin";
+
+body {
+
+  color: #fff;
+  overflow: hidden;
+  //background: #000000 no-repeat;
+}
+
+
+.main {
+  width: 1152px;
+  height: 720px;
+  margin: 0 auto;
+  position: relative;
+  //top: 36px;
+}
+
+.head {
+  position: relative;
+  top: 36px;
+}

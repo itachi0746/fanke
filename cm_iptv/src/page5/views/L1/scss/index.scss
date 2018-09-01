@@ -1,0 +1,141 @@
+@import "../../../styles/common";
+@import "../../../styles/mixin";
+
+body {
+
+  color: #fff;
+  overflow: hidden;
+  //background: #000000 no-repeat;
+}
+
+.mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 771px;
+  height: 595px;
+  background: url("../img/mask_bg.png") no-repeat;
+}
+
+.main {
+  width: 1152px;
+  height: 720px;
+  margin: 0 auto;
+  position: relative;
+  //top: 36px;
+}
+
+.head {
+  position: relative;
+  top: 36px;
+}
+.welcome {
+  position: absolute;
+  top: 283px;
+  .p1 {
+    font-size: 60px;
+    line-height: 1;
+  }
+  .p2 {
+    font-size: 34.5px;
+    margin-top: 21px;
+    line-height: 1;
+
+
+  }
+}
+.play {
+  position: absolute;
+  top: 477px;
+  width: 221px;
+  height: 58px;
+  @include borderRadius(29px);
+  border: 3px solid #ffffff;
+  text-align: center;
+  line-height: 58px;
+}
+
+.right-tab {
+  width: 290px;
+  position: absolute;
+  top: 125px;
+  right: 0;
+  li {
+    width: 290px;
+    height: 220px;
+    margin-bottom: 10px;
+    position: relative;
+
+  }
+  li:focus {
+    outline: none;
+    width: 304px;
+    height: 226px;
+    border: 3px solid #ffffff;
+    left: -10px;
+  }
+
+  .l1 {
+    .mask-l1 {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 290px;
+      height: 92px;
+    }
+  }
+  .l1:focus {
+
+    .mask-l1 {
+      width: 304px;
+
+    }
+  }
+  .l2 {
+    .mask-l2 {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 290px;
+      height: 220px;
+    }
+  }
+  .l2:focus {
+
+    .mask-l2 {
+      width: 304px;
+      height: 226px;
+    }
+  }
+}
+
+.btm-tab {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  li {
+    float: left;
+    width: 320px;
+    height: 125px;
+    background: #061332;
+    .li-box {
+      width: 150px;
+      margin: 48px auto 0;
+      overflow: hidden;
+      color: #7b8cf1;
+      text-align: left;
+      p {
+        //width: 80px;
+        white-space:nowrap;
+      }
+      img {
+        margin-right: 5px;
+      }
+    }
+  }
+  li:focus {
+    outline: none;
+    background: url("../img/mask_tab_btn.png") no-repeat;
+  }
+}

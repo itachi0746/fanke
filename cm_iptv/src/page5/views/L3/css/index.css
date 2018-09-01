@@ -78,91 +78,40 @@ body {
   animation: backOpacity 2s ease-in-out infinite; }
 
 body {
-  background-image: url("../assets/backbg.png");
   color: #fff;
-  overflow: hidden; }
+  overflow: hidden;
+  background: #000000 no-repeat; }
 
 .main {
-  width: 1122px;
+  width: 1152px;
+  height: 720px;
   margin: 0 auto;
-  position: relative;
-  top: 34px; }
-
-.head {
-  overflow: hidden; }
-  .head .line {
-    margin: 0 5px; }
-  .head p {
-    line-height: 1; }
-  .head .p1 {
-    font-size: 38px; }
-
-.location {
-  margin-top: 29px;
-  color: #e4d5fe; }
-
-.main-box {
-  height: 504px;
-  width: 1122px;
   position: relative; }
-  .main-box .prev {
-    position: absolute;
-    left: 0;
-    top: 186px; }
-  .main-box .next {
-    position: absolute;
-    right: 0;
-    top: 186px; }
-  .main-box .back-to-home {
-    width: 130px;
-    height: 41px;
-    -webkit-border-radius: 20.5px;
-    -moz-border-radius: 20.5px;
-    -ms-border-radius: 20.5px;
-    -o-border-radius: 20.5px;
-    border-radius: 20.5px;
-    color: #30d0fe;
-    text-align: center;
-    line-height: 41px;
-    border: 2px solid #30d0fe;
-    position: absolute;
-    bottom: 0;
-    left: 493px; }
 
-.main-content {
-  margin-top: 49px;
-  height: 500px;
-  width: 1122px;
-  position: relative; }
-  .main-content .desc {
-    width: 390px;
-    height: 500px;
-    position: absolute;
-    right: 0;
-    top: 0;
-    background: url("../img/text-bg.png"); }
-    .main-content .desc p {
-      padding-left: 70px; }
-    .main-content .desc .title {
-      font-size: 30px;
-      color: #333;
-      margin-top: 30px; }
-    .main-content .desc .time {
-      color: #999999; }
-    .main-content .desc .p3 {
-      width: 271px;
-      color: #333;
-      margin-top: 32px; }
-  .main-content .prev {
-    position: absolute;
-    left: 0;
-    top: 228px; }
-  .main-content .next {
-    position: absolute;
-    right: 415px;
-    top: 228px; }
+.title {
+  position: absolute;
+  top: 484px;
+  left: 0; }
 
-.btm {
-  margin-top: 30px; }
+.desc {
+  position: absolute;
+  top: 619px;
+  left: 0;
+  width: 849px; }
+
+.btn {
+  position: absolute;
+  top: 619px;
+  right: 0;
+  width: 220px;
+  height: 57px;
+  border: 3px solid #ffffff;
+  -webkit-border-radius: 29px;
+  -moz-border-radius: 29px;
+  -ms-border-radius: 29px;
+  -o-border-radius: 29px;
+  border-radius: 29px;
+  text-align: center;
+  line-height: 57px; }
 
 /*# sourceMappingURL=index.css.map */

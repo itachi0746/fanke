@@ -1,0 +1,96 @@
+@import "../../../styles/common";
+@import "../../../styles/mixin";
+
+body {
+  background-image: url("../img/img_bg.png");
+  color: #fff;
+  overflow: hidden;
+}
+
+.main {
+  width: 1152px;
+  height: 720px;
+  margin: 0 auto;
+  position: relative;
+  //top: 36px;
+}
+
+.head {
+  position: relative;
+  top: 36px;
+  overflow: hidden;
+  .date {
+    width: 115px;
+    height: 48px;
+    float: left;
+    color: $fd;
+
+  }
+  .weather {
+    float: left;
+    margin-right: 20px;
+
+  }
+  .time {
+    font-size: 48px;
+    float: left;
+  }
+}
+.location {
+  margin-top: 64px;
+  color: $fd;
+}
+
+.list {
+  margin-top: 51px;
+  //overflow: hidden;
+  height: 445px;
+  overflow-y: scroll;
+
+  ul {
+    //overflow-y: scroll;
+    //overflow: hidden;
+    //margin-top: -5px;
+  }
+  li {
+    width: 340px;
+    height: 203px;
+    border: 3px solid transparent;
+    @include borderRadius(4px);
+    margin: 0 31px 31px 0;
+    background-color: blue;
+    p {
+      text-align: center;
+    }
+    .p1 {
+      font-size: 24px;
+      margin-top: 79px;
+
+    }
+    .p2 {
+      color: $fd;
+    }
+  }
+  li:focus {
+    border: 3px solid #ededed;
+    outline: none;
+    top: -5px;
+    position: relative;
+  }
+}
+.list::-webkit-scrollbar{
+  width:10px;
+  height:4px;
+}
+.list::-webkit-scrollbar-track{
+  background: #2e2e2e;
+}
+.list::-webkit-scrollbar-thumb{
+  background: #575757;
+}
+.list::-webkit-scrollbar-thumb:hover{
+  background: #747474;
+}
+.list::-webkit-scrollbar-corner {
+  background: #f6f6f6;
+}
