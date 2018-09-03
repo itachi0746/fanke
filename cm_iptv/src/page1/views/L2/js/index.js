@@ -52,19 +52,6 @@ var scale1 = rightContent.clientHeight / rightMenu.clientHeight;
 // 自定义缩小比列
 var scale2 = myScroll.clientHeight / rightContent.clientHeight;
 var h1 = myScroll.clientHeight * scale1;
-// console.log(myScrollBar)
-// console.log(rightContent.clientHeight)
-// console.log(rightMenu.clientHeight)
-// console.log(scale1)
-// console.log(myScrollBar.style.height)
-
-//为了合理设置高度，设置滑块的最小高度
-// if (h1 < 50) {
-//   h1 = 50;
-// } else if (scale1 >= 1) {
-//   //说明当前内容能过完全显示在可视区域内，不需要滚动条
-//   myScroll.style.display = "none";
-// }
 //  自定义滚动条的高度
 myScrollBar.style.height = h1 + 'px';
 
@@ -83,9 +70,11 @@ function moveUl(index, target) {
   // target.style.top = t + 'px';
 
   var st = rightContent.scrollTop;
-  rightMenu.style.top = -st + 'px';
+  // rightMenu.style.top = -st + 'px';
     console.log(st);
+    console.log(rightMenu.style.top);
   myScrollBar.style.top = st * scale1 * scale2 + 'px';
+  // myScrollBar.style.top = st * scale1 + 'px';
   console.log('myScrollBar',myScrollBar.style.top);
 
 }
