@@ -33,9 +33,12 @@ body {
 .main-content {
   margin-top: 65px;
   height: 593px;
+  position: relative;
   .left-menu {
     width: 198px;
     padding: 38px 0;
+    position: relative;
+    top: 0;
     li {
       @include wh(198px, 52px);
       margin: 23px 0;
@@ -69,13 +72,20 @@ body {
     height: 593px;
     overflow-y: auto;
     padding-right: 70px;
+    //position: relative;
     ul {
+      -webkit-transition: all .3s;
+      -moz-transition: all .3s;
+      -ms-transition: all .3s;
+      -o-transition: all .3s;
+      transition: all .3s;
+      position: relative;
+      top: 0;
       li {
         @include wh(708px, 156px);
         @include borderRadius(12px);
         background: url("../img/mask_list.png");
         border: 3px solid transparent;
-
         margin-bottom: 19px;
 
         div {
@@ -113,19 +123,49 @@ body {
   .right-content::-webkit-scrollbar{
     width:10px;
     height:4px;
+    display: none;
   }
+  // 滚动槽
   .right-content::-webkit-scrollbar-track{
-    background: #f6f6f6;
+    background: #414460;
     @include borderRadius(5px);
   }
+  // 滚动条
   .right-content::-webkit-scrollbar-thumb{
     background: #aaa;
     @include borderRadius(5px);
   }
-  .right-content::-webkit-scrollbar-thumb:hover{
-    background: #747474;
-  }
+  //.right-content::-webkit-scrollbar-thumb:hover{
+  //  background: #747474;
+  //}
   .right-content::-webkit-scrollbar-corner {
     background: #f6f6f6;
+  }
+}
+
+
+// 自定义滚动条
+.scroll {
+  height: 342px;
+  width: 10px;
+  background-color: #414460;
+  @include borderRadius(5px);
+  position: absolute;
+  top: 128px;
+  right: 0px;
+
+  .scroll-bar {
+    @include borderRadius(5px);
+    width: 10px;
+    height: 100px;
+    background: #aaa;
+    position: relative;
+    top: 0;
+    left: 0;
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    -ms-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s;
   }
 }

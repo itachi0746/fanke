@@ -15,10 +15,10 @@
     </div>
 
     <div class="right">
-      <img src="../../assets/head/logo_chinamobile.png" alt="">
+      <img src="img/head/logo_chinamobile.png" alt="">
       <span>中国移动</span>
-      <img class="and" src="../../assets/head/icon_logo_and.png" alt="">
-      <img src="../../assets/head/logo_hotel.png" alt="">
+      <img class="and" src="img/head/icon_logo_and.png" alt="">
+      <img src="img/head/logo_hotel.png" alt="">
       <span>白云酒店</span>
     </div>
 
@@ -28,7 +28,7 @@
   <!--主要内容区域 开始-->
   <div class="main-content oh">
     <!--左部tab菜单 开始-->
-    <ul class="left-menu left">
+    <ul class="left-menu left" id="left-menu">
       <li tabindex="-1">
         <div class="no-active">
           全部菜品
@@ -39,34 +39,51 @@
       </li>
       <li tabindex="-1">
         <div class="no-active">
-          全部菜品
+          午餐套餐
         </div>
         <div class="is-active">
-          全部菜品
+          午餐套餐
         </div>
       </li>
       <li tabindex="-1">
         <div class="no-active">
-          全部菜品
+          星厨推荐
         </div>
         <div class="is-active">
-          全部菜品
+          星厨推荐
         </div>
       </li>
       <li tabindex="-1">
         <div class="no-active">
-          全部菜品
+          热销单品
         </div>
         <div class="is-active">
-          全部菜品
+          热销单品
+        </div>
+      </li>
+      <li tabindex="-1">
+        <div class="no-active">
+          儿童套餐
+        </div>
+        <div class="is-active">
+          儿童套餐
+        </div>
+      </li>
+      <li tabindex="-1">
+        <div class="no-active">
+          特制饮品
+        </div>
+        <div class="is-active">
+          特制饮品
         </div>
       </li>
 
     </ul>
     <!--左部tab菜单 结束-->
+
     <!--右部tab对应页 开始-->
-    <div class="right-content">
-      <ul>
+    <div class="right-content" id="right-content">
+      <ul id="right-menu">
         <li tabindex="-1">
           <div>
             <p class="food-name">泡芙</p>
@@ -149,12 +166,21 @@
         </li>
 
       </ul>
+
+
     </div>
     <!--右部tab对应页 结束-->
 
+    <!--模拟滚动条-->
+    <div class="scroll" id="scroll">
+      <div class="scroll-bar" id="scroll-bar" style="">
+      </div>
+    </div>
   </div>
   <!--主要内容区域 结束-->
 
 </div>
+<script src="js/index.js"></script>
+
 </body>
 </html>

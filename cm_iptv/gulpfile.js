@@ -1,11 +1,10 @@
 
 var config = {
-  // src: "src/assets", // 文件资源css,js,image等
-  // srcView: "src/View/Company2", // 文件资源html等
-  server: "src/page5/views/L3", // 服务器根目录
-  target: "index.html" // 要监视(执行)的html文件
-  // dest: "dev/assets", // 生产环境文件夹
-  // destView: "dev/View/Company2" // 生产环境文件夹
+
+  server: "src/page1/views", // 服务器根目录
+  // server: "./", // 服务器根目录
+  target: "/page1/views/L1/index.html" // 要监视(执行)的html文件
+
 };
 
 // 一次安装
@@ -21,8 +20,8 @@ gulp.task('browser', function () {
     browserSync.init({
         files: ['**'],  // 修改HTML也刷新
         server: {
-            baseDir: config.server,  // 设置服务器的根目录
-            index: config.target // 指定默认打开的文件
+            baseDir: config.server  // 设置服务器的根目录
+            // index: config.target // 指定默认打开的文件
         },
         port: 8050  // 指定访问服务器的端口号
     });

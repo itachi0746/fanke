@@ -7,7 +7,7 @@ body, div, img, span, header, footer, nav, section, aside, article, ul, dl, dt, 
   text-decoration: none;
   border: none;
   font-weight: normal;
-  font-family: SimHei,"榛戜綋", Arial, sans-serif; }
+  font-family: SimHei,"黑体", Arial, sans-serif; }
   body:hover, div:hover, img:hover, span:hover, header:hover, footer:hover, nav:hover, section:hover, aside:hover, article:hover, ul:hover, dl:hover, dt:hover, dd:hover, li:hover, a:hover, p:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, i:hover, b:hover, textarea:hover, button:hover, input:hover, select:hover, figure:hover, figcaption:hover {
     outline: none; }
 
@@ -101,10 +101,13 @@ body {
 
 .main-content {
   margin-top: 65px;
-  height: 593px; }
+  height: 593px;
+  position: relative; }
   .main-content .left-menu {
     width: 198px;
-    padding: 38px 0; }
+    padding: 38px 0;
+    position: relative;
+    top: 0; }
     .main-content .left-menu li {
       width: 198px;
       height: 52px;
@@ -133,40 +136,49 @@ body {
     height: 593px;
     overflow-y: auto;
     padding-right: 70px; }
-    .main-content .right-content ul li {
-      width: 708px;
-      height: 156px;
-      -webkit-border-radius: 12px;
-      -moz-border-radius: 12px;
-      -ms-border-radius: 12px;
-      -o-border-radius: 12px;
-      border-radius: 12px;
-      background: url("../img/mask_list.png");
-      border: 3px solid transparent;
-      margin-bottom: 19px; }
-      .main-content .right-content ul li div {
-        margin: 27px 34px 0; }
-        .main-content .right-content ul li div img {
-          vertical-align: baseline; }
-      .main-content .right-content ul li p {
-        line-height: .9; }
-      .main-content .right-content ul li .food-name {
-        font-size: 30px;
-        color: #f1f1f1;
-        margin-bottom: 10px; }
-      .main-content .right-content ul li .food-name-en, .main-content .right-content ul li .recommend {
-        font-size: 18px;
-        color: #9a9ea5; }
-      .main-content .right-content ul li .food-name-en {
-        margin-bottom: 39px; }
-    .main-content .right-content ul li:focus {
-      outline: none;
-      border: 3px solid #ff6961; }
+    .main-content .right-content ul {
+      -webkit-transition: all .3s;
+      -moz-transition: all .3s;
+      -ms-transition: all .3s;
+      -o-transition: all .3s;
+      transition: all .3s;
+      position: relative;
+      top: 0; }
+      .main-content .right-content ul li {
+        width: 708px;
+        height: 156px;
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 12px;
+        -ms-border-radius: 12px;
+        -o-border-radius: 12px;
+        border-radius: 12px;
+        background: url("../img/mask_list.png");
+        border: 3px solid transparent;
+        margin-bottom: 19px; }
+        .main-content .right-content ul li div {
+          margin: 27px 34px 0; }
+          .main-content .right-content ul li div img {
+            vertical-align: baseline; }
+        .main-content .right-content ul li p {
+          line-height: .9; }
+        .main-content .right-content ul li .food-name {
+          font-size: 30px;
+          color: #f1f1f1;
+          margin-bottom: 10px; }
+        .main-content .right-content ul li .food-name-en, .main-content .right-content ul li .recommend {
+          font-size: 18px;
+          color: #9a9ea5; }
+        .main-content .right-content ul li .food-name-en {
+          margin-bottom: 39px; }
+      .main-content .right-content ul li:focus {
+        outline: none;
+        border: 3px solid #ff6961; }
   .main-content .right-content::-webkit-scrollbar {
     width: 10px;
-    height: 4px; }
+    height: 4px;
+    display: none; }
   .main-content .right-content::-webkit-scrollbar-track {
-    background: #f6f6f6;
+    background: #414460;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     -ms-border-radius: 5px;
@@ -179,9 +191,37 @@ body {
     -ms-border-radius: 5px;
     -o-border-radius: 5px;
     border-radius: 5px; }
-  .main-content .right-content::-webkit-scrollbar-thumb:hover {
-    background: #747474; }
   .main-content .right-content::-webkit-scrollbar-corner {
     background: #f6f6f6; }
+
+.scroll {
+  height: 342px;
+  width: 10px;
+  background-color: #414460;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  position: absolute;
+  top: 128px;
+  right: 0px; }
+  .scroll .scroll-bar {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+    width: 10px;
+    height: 100px;
+    background: #aaa;
+    position: relative;
+    top: 0;
+    left: 0;
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    -ms-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s; }
 
 /*# sourceMappingURL=index.css.map */
