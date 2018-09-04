@@ -2,6 +2,7 @@ var UL = document.getElementById('menu');
 var allLi = UL.getElementsByTagName('li');
 console.log(allLi);
 
+
 window.onload = function () {
   // onload中  图片已加载完成
   allLi[0].focus();
