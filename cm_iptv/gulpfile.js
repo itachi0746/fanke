@@ -2,9 +2,9 @@ var config = {
   src: "src", // 要搬运的目录
   moveTo: "iptv",  // 搬运去的目录
 
-  server: "src/page4/views" // 服务器根目录
+  server: "src", // 服务器根目录
   // server: "./", // 服务器根目录
-  // target: "/page1/views/L1/index.html" // 要监视(执行)的html文件
+  target: "index.html" // 要监视(执行)的html文件
 
 };
 
@@ -22,8 +22,8 @@ gulp.task('browser', function () {
   browserSync.init({
     files: ['**'],  // 修改HTML也刷新
     server: {
-      baseDir: config.server  // 设置服务器的根目录
-      // index: config.target // 指定默认打开的文件
+      baseDir: config.server,  // 设置服务器的根目录
+      index: config.target // 指定默认打开的文件
     },
     port: 8050  // 指定访问服务器的端口号
   });

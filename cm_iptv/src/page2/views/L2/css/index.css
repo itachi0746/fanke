@@ -1,178 +1,95 @@
-@charset "UTF-8";
-body, div, img, span, header, footer, nav, section, aside, article, ul, dl, dt, dd, li, a, p, h1, h2, h3, h4, h5, h6, i, b, textarea, button, input, select, figure, figcaption {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  font-style: normal;
-  text-decoration: none;
-  border: none;
-  font-weight: normal;
-  font-family: SimHei,"榛戜綋", Arial, sans-serif; }
-  body:hover, div:hover, img:hover, span:hover, header:hover, footer:hover, nav:hover, section:hover, aside:hover, article:hover, ul:hover, dl:hover, dt:hover, dd:hover, li:hover, a:hover, p:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, i:hover, b:hover, textarea:hover, button:hover, input:hover, select:hover, figure:hover, figcaption:hover {
-    outline: none; }
+/*
+Error: Undefined variable: "$btnfocus".
+        on line 117 of index.scss
 
-img {
-  vertical-align: middle; }
+112:       text-align: center;
+113:       float: left;
+114:       margin-left: 10px;
+115:     }
+116:     li:focus {
+117:       border: 3px solid $btnfocus;
+118:       outline: none;
+119:     }
+120:   }
+121: }
 
-input[type="button"], input[type="submit"], input[type="search"], input[type="reset"] {
-  -webkit-appearance: none; }
-
-textarea {
-  -webkit-appearance: none; }
-
-body {
-  width: 1280px;
-  height: 720px;
-  background: #F5F5F5 no-repeat;
-  position: relative;
-  font-size: 20px;
-  color: #ffffff; }
-
-.oh {
-  overflow: hidden; }
-
-.clear:after {
-  content: '';
-  display: block;
-  clear: both; }
-
-.clear {
-  zoom: 1; }
-
-.back_img {
-  background-repeat: no-repeat;
-  background-size: 100% 100%; }
-
-.margin {
-  margin: 0 auto; }
-
-.left {
-  float: left; }
-
-.right {
-  float: right; }
-
-.hide {
-  display: none !important; }
-
-.show {
-  display: block !important; }
-
-.ellipsis {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap; }
-
-@keyframes backOpacity {
-  0% {
-    opacity: 1; }
-  25% {
-    opacity: 0.5; }
-  50% {
-    opacity: 1; }
-  75% {
-    opacity: 0.5; }
-  100% {
-    opacity: 1; } }
-.animation_opactiy {
-  animation: backOpacity 2s ease-in-out infinite; }
-
-body {
-  background-image: url("../img/bg_mask_1.png");
-  color: #fff;
-  overflow: hidden; }
-
-.main {
-  width: 1210px;
-  margin: 0 auto;
-  position: relative;
-  top: 37px; }
-
-.head {
-  overflow: hidden; }
-  .head .and {
-    margin: 0 7px; }
-  .head .right {
-    font-size: 20px;
-    color: #fff;
-    line-height: 1; }
-    .head .right img {
-      vertical-align: baseline; }
-
-.main-content {
-  margin-top: 127px;
-  height: 561px; }
-  .main-content .tab {
-    width: 208px;
-    float: left; }
-    .main-content .tab li {
-      width: 208px;
-      height: 66px;
-      margin-bottom: 31px; }
-      .main-content .tab li div {
-        width: 208px;
-        height: 66px;
-        font-size: 24px;
-        color: #fff; }
-        .main-content .tab li div span {
-          position: relative;
-          top: 3px; }
-        .main-content .tab li div p {
-          padding: 17px 0 0 35px; }
-      .main-content .tab li div:focus {
-        background-image: url("../img/bg_nav_sel.png");
-        outline: none; }
-
-.time {
-  position: absolute;
-  left: 0;
-  top: 647px; }
-  .time p {
-    padding-left: 35px; }
-
-.tab-page {
-  float: left;
-  width: 1072px;
-  height: 404px;
-  margin-top: 25px; }
-  .tab-page .box {
-    padding-left: 83px;
-    overflow: hidden; }
-    .tab-page .box ul li {
-      width: 326px;
-      height: 404px;
-      float: left;
-      background-color: #fff;
-      position: relative; }
-      .tab-page .box ul li .li-title {
-        width: 326px;
-        height: 76px;
-        line-height: 76px;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        text-align: center;
-        font-size: 26px;
-        background: url("../img/bg_card_mask.png") no-repeat; }
-  .tab-page .page-num {
-    margin-top: 59px;
-    padding-right: 35px; }
-    .tab-page .page-num li {
-      color: #f1f1f1;
-      border: 3px solid #9a9ea5;
-      width: 36px;
-      height: 36px;
-      -webkit-border-radius: 50%;
-      -moz-border-radius: 50%;
-      -ms-border-radius: 50%;
-      -o-border-radius: 50%;
-      border-radius: 50%;
-      line-height: 36px;
-      text-align: center;
-      float: left;
-      margin-left: 10px; }
-    .tab-page .page-num li:focus {
-      border: 3px solid #c08d56;
-      outline: none; }
-
-/*# sourceMappingURL=index.css.map */
+Backtrace:
+index.scss:117
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/script/tree/variable.rb:49:in `_perform'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/script/tree/node.rb:50:in `perform'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/script/tree/list_literal.rb:75:in `block in _perform'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/script/tree/list_literal.rb:75:in `map'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/script/tree/list_literal.rb:75:in `_perform'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/script/tree/node.rb:50:in `perform'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:398:in `visit_prop'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/base.rb:36:in `visit'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:158:in `block in visit'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/stack.rb:79:in `block in with_base'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/stack.rb:135:in `with_frame'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/stack.rb:79:in `with_base'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:158:in `visit'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:440:in `block (2 levels) in visit_rule'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:440:in `map'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:440:in `block in visit_rule'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:179:in `with_environment'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:438:in `visit_rule'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/base.rb:36:in `visit'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:158:in `block in visit'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/stack.rb:79:in `block in with_base'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/stack.rb:135:in `with_frame'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/stack.rb:79:in `with_base'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:158:in `visit'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:440:in `block (2 levels) in visit_rule'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:440:in `map'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:440:in `block in visit_rule'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:179:in `with_environment'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:438:in `visit_rule'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/base.rb:36:in `visit'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:158:in `block in visit'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/stack.rb:79:in `block in with_base'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/stack.rb:135:in `with_frame'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/stack.rb:79:in `with_base'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:158:in `visit'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:440:in `block (2 levels) in visit_rule'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:440:in `map'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:440:in `block in visit_rule'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:179:in `with_environment'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:438:in `visit_rule'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/base.rb:36:in `visit'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:158:in `block in visit'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/stack.rb:79:in `block in with_base'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/stack.rb:135:in `with_frame'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/stack.rb:79:in `with_base'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:158:in `visit'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/base.rb:52:in `block in visit_children'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/base.rb:52:in `map'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/base.rb:52:in `visit_children'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:167:in `block in visit_children'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:179:in `with_environment'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:166:in `visit_children'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/base.rb:36:in `block in visit'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:186:in `visit_root'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/base.rb:36:in `visit'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:157:in `visit'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/visitors/perform.rb:10:in `visit'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/root_node.rb:36:in `css_tree'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/tree/root_node.rb:29:in `render_with_sourcemap'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/engine.rb:389:in `_render_with_sourcemap'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/engine.rb:307:in `render_with_sourcemap'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/plugin/compiler.rb:462:in `update_stylesheet'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/plugin/compiler.rb:209:in `each'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/plugin.rb:82:in `update_stylesheets'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/exec/sass_scss.rb:338:in `watch_or_update'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/exec/sass_scss.rb:51:in `process_result'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/exec/base.rb:50:in `parse'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/exec/base.rb:18:in `parse!'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.7/bin/scss:13:in `<top (required)>'
+C:/Ruby24-x64/bin/scss:23:in `load'
+C:/Ruby24-x64/bin/scss:23:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: Undefined variable: \"$btnfocus\".\A         on line 117 of index.scss\A \A 112:       text-align: center;\A 113:       float: left;\A 114:       margin-left: 10px;\A 115:     }\A 116:     li:focus {\A 117:       border: 3px solid $btnfocus;\A 118:       outline: none;\A 119:     }\A 120:   }\A 121: }"; }
