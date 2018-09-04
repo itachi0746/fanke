@@ -52,7 +52,7 @@ var scale1 = rightContent.clientHeight / rightMenu.clientHeight;
 // 自定义缩小比列
 var scale2 = myScroll.clientHeight / rightContent.clientHeight;
 var h1 = myScroll.clientHeight * scale1;
-//  自定义滚动条的高度
+//  滚动条的高度
 myScrollBar.style.height = h1 + 'px';
 
 // 移动菜单
@@ -70,11 +70,12 @@ function moveUl(index, target) {
   // target.style.top = t + 'px';
 
   var st = rightContent.scrollTop;
-  // rightMenu.style.top = -st + 'px';
+  rightContent.scrollTop = '0px';  // scrollTop跟top同时用会使位置错误, 先把scrollTop归0, 再使用top移动元素
+  rightMenu.style.top = -st + 'px';
     console.log(st);
     console.log(rightMenu.style.top);
-  myScrollBar.style.top = st * scale1 * scale2 + 'px';
-  // myScrollBar.style.top = st * scale1 + 'px';
+  myScrollBar.style.top = st * scale1 * scale2 + 'px';  // 缩小后的
+  // myScrollBar.style.top = st * scale1 + 'px';  // 缩小前的
   console.log('myScrollBar',myScrollBar.style.top);
 
 }

@@ -112,6 +112,9 @@ body {
   margin-top: 51px;
   height: 445px;
   overflow-y: scroll; }
+  .list ul {
+    padding-top: 5px;
+    font-size: 0; }
   .list li {
     width: 340px;
     height: 203px;
@@ -122,7 +125,8 @@ body {
     -o-border-radius: 4px;
     border-radius: 4px;
     margin: 0 31px 31px 0;
-    background-color: blue; }
+    background-color: blue;
+    display: inline-block; }
     .list li p {
       text-align: center; }
     .list li .p1 {

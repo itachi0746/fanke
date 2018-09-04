@@ -7,7 +7,7 @@ body, div, img, span, header, footer, nav, section, aside, article, ul, dl, dt, 
   text-decoration: none;
   border: none;
   font-weight: normal;
-  font-family: SimHei,"榛戜綋", Arial, sans-serif; }
+  font-family: SimHei,"黑体", Arial, sans-serif; }
   body:hover, div:hover, img:hover, span:hover, header:hover, footer:hover, nav:hover, section:hover, aside:hover, article:hover, ul:hover, dl:hover, dt:hover, dd:hover, li:hover, a:hover, p:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, i:hover, b:hover, textarea:hover, button:hover, input:hover, select:hover, figure:hover, figcaption:hover {
     outline: none; }
 
@@ -128,5 +128,55 @@ body {
     position: absolute;
     bottom: 0;
     left: 493px; }
+  .main-box .tab {
+    height: 354px;
+    width: 863px;
+    margin: 0 auto;
+    position: relative;
+    top: 54px; }
+    .main-box .tab li {
+      border: 3px solid #ffffff;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      -ms-border-radius: 50%;
+      -o-border-radius: 50%;
+      border-radius: 50%;
+      position: absolute;
+      text-align: center;
+      background-color: blue; }
+    .main-box .tab .l1, .main-box .tab .l5 {
+      width: 155px;
+      height: 155px;
+      top: 75px;
+      z-index: 1; }
+      .main-box .tab .l1 span, .main-box .tab .l5 span {
+        position: relative;
+        top: 171px; }
+    .main-box .tab .l1 {
+      left: 0; }
+    .main-box .tab .l5 {
+      right: 0; }
+    .main-box .tab .l2, .main-box .tab .l4 {
+      width: 205px;
+      height: 205px;
+      top: 49px;
+      z-index: 2; }
+      .main-box .tab .l2 span, .main-box .tab .l4 span {
+        position: relative;
+        top: 222px; }
+    .main-box .tab .l2 {
+      left: 108px; }
+    .main-box .tab .l4 {
+      right: 108px; }
+    .main-box .tab .l3 {
+      width: 305px;
+      height: 305px;
+      top: 0;
+      z-index: 3;
+      left: 279px;
+      border: 3px solid #82bdff; }
+      .main-box .tab .l3 span {
+        position: relative;
+        top: 331px; }
 
 /*# sourceMappingURL=index.css.map */

@@ -59,4 +59,66 @@ body {
     bottom: 0;
     left: 493px;
   }
+  .tab {
+    height: 354px;
+    width: 863px;
+    margin: 0 auto;
+    position: relative;
+    top: 54px;
+    //background-color: #fff;
+    li {
+      border: 3px solid #ffffff;
+      @include borderRadius(50%);
+      position: absolute;
+      text-align: center;
+      background-color: blue;
+
+    }
+    .l1,.l5 {
+      width: 155px;
+      height: 155px;
+      top: 75px;
+      z-index: 1;
+
+      span {
+        position: relative;
+        top: 171px;
+      }
+    }
+    .l1 {
+      left: 0;
+    }
+    .l5 {
+      right: 0;
+    }
+    .l2,.l4 {
+      width: 205px;
+      height: 205px;
+      top: 49px;
+      z-index: 2;
+
+      span {
+        position: relative;
+        top: 222px;
+      }
+    }
+    .l2 {
+      left: 108px;
+    }
+    .l4 {
+      right: 108px;
+    }
+    .l3 {
+      width: 305px;
+      height: 305px;
+      top: 0;
+      z-index: 3;
+      left: 279px;
+      border: 3px solid #82bdff;
+      span {
+        position: relative;
+        top: 331px;
+      }
+    }
+  }
 }

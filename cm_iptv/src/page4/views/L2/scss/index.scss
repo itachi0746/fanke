@@ -50,7 +50,8 @@ body {
   ul {
     //overflow-y: scroll;
     //overflow: hidden;
-    //margin-top: -5px;
+    padding-top: 5px;
+    font-size: 0;
   }
   li {
     width: 340px;
@@ -59,6 +60,8 @@ body {
     @include borderRadius(4px);
     margin: 0 31px 31px 0;
     background-color: blue;
+    display: inline-block;
+
     p {
       text-align: center;
     }
@@ -76,6 +79,7 @@ body {
     outline: none;
     top: -5px;
     position: relative;
+    //margin-top: -5px;
   }
 }
 .list::-webkit-scrollbar{
