@@ -7,45 +7,76 @@ var myScrollBar = document.getElementById('scroll-bar');
 var leftLi = leftMenu.getElementsByTagName('li');
 var rightLi = rightMenu.getElementsByTagName('li');
 
+
+var Rindex = 0;  // 右菜单下标
+var Lindex = 0;  // 左菜单下标
+var onR = true;  // 焦点是否在右菜单
+
+
+// 焦点切换(当前有焦点的元素的下标,键值,数组)
+var changeFocus = function (nowFocus,keyValue,arr)  {
+  var all = arr.length;
+  if (keyValue === 38) {  // 按上
+    nowFocus <= 0 ? nowFocus = all - 1 : nowFocus--;
+  }
+  if (keyValue === 40) {  // 按下
+    nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
+  }
+
+  if(onR) {
+    Rindex = nowFocus;
+    arr[nowFocus].focus();
+    moveUl()
+  } else {
+    $(leftLi[Lindex]).find('.is-active').removeClass('show');
+
+    Lindex = nowFocus;
+    arr[nowFocus].focus();
+  }
+
+};
+
 window.onload = function () {
   // onload中  图片已加载完成
-  rightLi[0].focus();
+  rightLi[Rindex].focus();
+  // $(leftLi[Lindex]).find('.is-active').toggleClass('show');
   rightLi[rightLi.length - 1].style.marginBottom = 0 + 'px';
   // console.log(rightLi)
 
-  window.document.onkeypress = function (keyEvent) {
+  window.document.onkeydown = function (keyEvent) {
     keyEvent = keyEvent ? keyEvent : window.event;
     var keyValue = keyEvent.which ? keyEvent.which : keyEvent.keyCode;
-    console.log(keyValue)
-    changeFocus(keyValue)
+    console.log(keyValue);
 // return true;
 
+    if (keyValue === 37) {  // 按左
+      onR = false;
+      changeFocus(Lindex,keyValue,leftLi);
+    }
+    if (keyValue === 39) {  // 按右
+      onR = true;
+      changeFocus(Rindex,keyValue,rightLi);
+    }
+    if (keyValue === 38) {  // 按上
+      onR?changeFocus(Rindex,keyValue,rightLi):changeFocus(Lindex,keyValue,leftLi)
+    }
+    if (keyValue === 40) {  // 按下
+      onR?changeFocus(Rindex,keyValue,rightLi):changeFocus(Lindex,keyValue,leftLi)
+
+    }
+
     if (keyValue === 13) {
-      window.location.href = '../L3/index.html';
+      nextPage(Rindex)
     }
   }
 
 
 };
 
-var nowFocus = 0;
 
-// 焦点切换
-function changeFocus(keyValue) {
-  var all = rightLi.length;
-  if (keyValue === 97) {
-    nowFocus <= 0 ? nowFocus = all - 1 : nowFocus--;
-  }
-  if (keyValue === 100) {
-    nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
-  }
-  // console.log(allLi[nowFocus],nowFocus)
-  rightLi[nowFocus].focus();
-  moveUl(nowFocus, rightMenu);
-}
 
 var t = 0;  // ul的top
-var h = rightLi[0].clientHeight;  // 每个li的高度
+// var h = rightLi[0].clientHeight;  // 每个li的高度
 
 // 原比例
 var scale1 = rightContent.clientHeight / rightMenu.clientHeight;
@@ -56,18 +87,7 @@ var h1 = myScroll.clientHeight * scale1;
 myScrollBar.style.height = h1 + 'px';
 
 // 移动菜单
-function moveUl(index, target) {
-  // var all = rightLi.length;
-  // t += h;
-  //
-  // if (index >= all - 1) {
-  //   t = rightMenu.clientHeight - rightContent.clientHeight;
-  // }
-  // if (index === 0) {
-  //   t = 0;
-  // }
-  // console.log(rightContent.scrollTop)
-  // target.style.top = t + 'px';
+function moveUl() {
 
   var st = rightContent.scrollTop;
   rightContent.scrollTop = '0px';  // scrollTop跟top同时用会使位置错误, 先把scrollTop归0, 再使用top移动元素
@@ -81,8 +101,8 @@ function moveUl(index, target) {
 }
 
 // 页面跳转
-function toL2Page(index) {
-  window.location.href = '../L2/index.html';
+function nextPage(index) {
+  window.location.href = '../L3/index.html?' + 'id=' + index;
 }
 
 

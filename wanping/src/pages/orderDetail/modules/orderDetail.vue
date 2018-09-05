@@ -51,7 +51,7 @@
           <!--上传功能action="/Fileupdate/AddFile"  开始-->
           <el-upload
             class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="/Fileupdate/AddFile"
             accept=".jpg,.png,.mp4"
             :data="data"
             :before-upload="beforeUpload"
@@ -67,20 +67,7 @@
       </ul>
 
       <div class="pay_ment">{{resData.OrderStatus}}</div>
-      <!--上传功能action="/Fileupdate/AddFile"  开始-->
-      <!--<el-upload-->
-      <!--class="upload-demo"-->
-      <!--action="https://jsonplaceholder.typicode.com/posts/"-->
-      <!--accept=".jpg,.png"-->
-      <!--:data="data"-->
-      <!--:before-upload="beforeUpload"-->
-      <!--:on-change="handleChange"-->
-      <!--:on-success="handleSuccess">-->
-      <!--<el-button size="small" type="primary">上传图片素材</el-button>-->
-      <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
-      <!--</el-upload>-->
 
-      <!--上传功能  结束-->
 
     </section>
   </div>
@@ -116,9 +103,12 @@
 //      this.fileList3 = fileList.slice(-3);
       },
       beforeUpload(file) {
+        console.log(file.type)
         const isJPG = file.type === 'image/jpeg';
-        const isMP4 = file.type === 'mp4';
+        const isMP4 = file.type === 'video/mp4';
         const fileSize = file.size / 1024 / 1024;  // w文件的大小 M
+        console.log(fileSize)
+
         const isLt2M = fileSize < 2;
         const isLt10M = fileSize < 10;
 

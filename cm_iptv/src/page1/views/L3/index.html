@@ -5,6 +5,8 @@
   <meta name="page-view-size" content="1280*720"/>
   <title>三级页面</title>
   <link rel="stylesheet" href="css/index.css">
+  <script src="../../../plugins/jquery-1.8.2.min.js"></script>
+
 </head>
 <body>
 <div class="main">
@@ -15,10 +17,10 @@
     </div>
 
     <div class="right">
-      <img src="../../assets/head/logo_chinamobile.png" alt="">
+      <img src="img/head/logo_chinamobile.png" alt="">
       <span>中国移动</span>
-      <img class="and" src="../../assets/head/icon_logo_and.png" alt="">
-      <img src="../../assets/head/logo_hotel.png" alt="">
+      <img class="and" src="img/head/icon_logo_and.png" alt="">
+      <img src="img/head/logo_hotel.png" alt="">
       <span>白云酒店</span>
     </div>
 
@@ -38,8 +40,7 @@
       奶香味十足的熬糖版牛轧糖，加以各种坚果和果干，牛轧糖口感更加丰富，甜而不腻。熬糖版的牛轧糖总会回赠你更高层次的味觉享受，加以各种坚果和果干，值得一试！
     </div>
     <div class="btn-box">
-      <div class="btn" tabindex="-1"></div>
-      <!--<div class="btn-active hide"></div>-->
+      <div id="btn" class="btn" tabindex="-1"></div>
     </div>
   </div>
   <!--中间内容区域  结束-->
@@ -51,7 +52,7 @@
       <p>其他推荐</p>
     </div>
     <div class="other-list">
-      <ul>
+      <ul id="menu">
         <li tabindex="-1">
           <p>南瓜</p>
         </li>
@@ -71,5 +72,6 @@
   </div>
   <!--底部 结束-->
 </div>
+<script src="js/index.js"></script>
 </body>
 </html>

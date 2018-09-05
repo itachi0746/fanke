@@ -4,7 +4,7 @@
     <Header :headName="headName"></Header>
     <el-upload
       class="upload-demo"
-      action="https://jsonplaceholder.typicode.com/posts/"
+      action="/Fileupdate/AddFile"
       accept=".jpg,.png,.mp4"
       :on-change="handleChange"
       :on-success="handleSuccess"
@@ -19,51 +19,55 @@
 
 <script>
   import Header from '@/components/header/header.vue'
+  //  action="https://jsonplaceholder.typicode.com/posts/"
+  export default {
+    data() {
+      return {
+        headName: '上传素材',
+        fileList3: []
+      }
+    },
 
-export default {
-  data() {
-    return {
-      headName: '上传素材',
-      fileList3: []
-  }},
+    components: {
+      Header
+    },
 
-  components: {
-    Header
-  },
+    computed: {},
 
-  computed: {},
-
-  methods: {
-    handleChange(file, fileList) {
+    methods: {
+      handleChange(file, fileList) {
 //      this.fileList3 = fileList.slice(-3);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
 
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
+      },
+      handleSuccess() {
+        console.log('上传成功')
+      },
+      handleError(err) {
+        console.log(err)
       }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
-      }
-      return isJPG && isLt2M;
+
     },
-    handleSuccess() {
-      console.log('上传成功')
+
+    created() {
     },
-    handleError(err) {
-      console.log(err)
+
+    mounted() {
+    },
+
+    beforeDestroy() {
     }
-
-  },
-
-  created() {},
-
-  mounted() {},
-
-  beforeDestroy() {}
-}
+  }
 </script>
 
 <style lang='scss' scoped>

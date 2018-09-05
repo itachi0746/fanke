@@ -12,15 +12,16 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        // target: 'http://192.168.10.172/MallService',  // 通过本地服务器将你的请求转发到这个地址
-        target: 'http://wap2.jierutek.com/MallService',  // 通过本地服务器将你的请求转发到这个地址
+        target: 'http://localhost:16789/MallService',  // 通过本地服务器将你的请求转发到这个地址
+        // target: 'http://wap2.jierutek.com/MallService',  // 通过本地服务器将你的请求转发到这个地址
         changeOrigin: true,  // 设置这个参数可以避免跨域
         pathRewrite: {
           '^/api': ''
         }
       },
       '/Fileupdate': {
-        target: 'http://wap2.jierutek.com/MallService',  // 通过本地服务器将你的请求转发到这个地址
+        // target: 'http://wap2.jierutek.com/MallService',  // 通过本地服务器将你的请求转发到这个地址
+        target: 'http://localhost:16789/MallService',  // 通过本地服务器将你的请求转发到这个地址
         changeOrigin: true,  // 设置这个参数可以避免跨域
         pathRewrite: {
           '^/Fileupdate': ''

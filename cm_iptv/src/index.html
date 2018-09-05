@@ -10,5 +10,38 @@
 <a href="page3/views/L1">page3</a>
 <a href="page4/views/L1">page4</a>
 <a href="page5/views/L1">page5</a>
+<script>
+  var a = document.getElementsByTagName('a');
+  console.log(a);
+  var index = 0;
+  a[index].focus();
+
+  // 焦点切换(当前有焦点的元素的下标,键值,数组)
+  var changeFocus = function (nowFocus,keyValue,arr)  {
+    var all = arr.length;
+    if (keyValue === 37) {  // 按左
+      nowFocus <= 0 ? nowFocus = all - 1 : nowFocus--;
+    }
+    if (keyValue === 39) {  // 按右
+      nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
+    }
+    index = nowFocus;
+    arr[nowFocus].focus();
+  };
+
+  // 监听按钮
+  window.document.onkeydown = function (keyEvent) {
+    keyEvent = keyEvent ? keyEvent : window.event;
+    var keyValue = keyEvent.which ? keyEvent.which : keyEvent.keyCode;
+    console.log(keyValue);
+//    console.log('index',index);
+    changeFocus(index,keyValue,a);
+// return true;
+
+//        //判断当前获取焦点的元素方法1
+//        var actId1 = document.activeElement.id;
+
+  }
+</script>
 </body>
 </html>

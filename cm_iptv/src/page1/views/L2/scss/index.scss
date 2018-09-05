@@ -44,7 +44,7 @@ body {
       @include wh(198px, 52px);
       margin: 23px 0;
       //background-color: #fff;
-
+      position: relative;
       div {
         @include wh(198px, 52px);
         line-height: 52px;
@@ -54,6 +54,9 @@ body {
       .is-active {
         background: url("../img/btn_list_sel.png") no-repeat;
         @include sc(26px, $f1);
+        position: absolute;
+        top: 0;
+        left: 0;
         display: none;
       }
     }
