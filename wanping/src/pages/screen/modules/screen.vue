@@ -90,7 +90,7 @@
 <script>
   import Calendar from 'vue-calendar-component';
   import Header from '../../../components/header/header.vue'
-  import {postData} from '@/server'
+  import {postData,link} from '@/server'
   import getUrlParms from '@/config/utils'
 
 

@@ -18,40 +18,32 @@
         <p class="data-head">
           <span>日期: {{resData.OrderDate}}</span>
         </p>
-        <!--<li v-for="(item,index) in resData.Items" :key="item.PsId">-->
-        <!--<p class="food_name ellipsis">{{item.PsName}}</p>-->
-        <!--<div class="quantity_price">-->
-        <!--<span>X{{item.Total}}</span>-->
-        <!--<span>¥{{item.Amount}}</span>-->
-        <!--</div>-->
-        <!--&lt;!&ndash;上传功能action="/Fileupdate/AddFile"  开始&ndash;&gt;-->
-        <!--<el-upload-->
-        <!--class="upload-demo"-->
-        <!--action="https://jsonplaceholder.typicode.com/posts/"-->
-        <!--accept=".jpg,.png"-->
-        <!--:data="data"-->
-        <!--:before-upload="beforeUpload"-->
-        <!--:on-change="handleChange"-->
-        <!--:on-success="handleSuccess">-->
-        <!--<el-button size="small" type="primary">上传图片素材</el-button>-->
-        <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
-        <!--</el-upload>-->
-        <!--&lt;!&ndash;上传功能  结束&ndash;&gt;-->
 
-        <!--</li>-->
-        <li>
+        <li v-for="(item,index) in resData.Items" :key="item.PsId">
           <div class="li-div">
-            <p class="food_name ellipsis">{{'名字'}}</p>
+            <p class="food_name ellipsis">{{item.PsName}}</p>
             <div class="quantity_price">
-              <span>X{{'数量'}}</span>
-              <span>¥{{'价格'}}</span>
+              <span>X{{item.Total}}</span>
+              <span>¥{{item.Amount}}</span>
             </div>
           </div>
+
+          <!--已上传文件列表 开始-->
+          <section class="file-list">
+            <el-button type="primary" size="small" @click="showFile" :loading="btnLoading" :id="item.DtlId">{{btnTips}}</el-button>
+            <section v-if="showFiles">
+              <p class="file-item">
+                <i class="el-icon-document"></i>
+                1241414235236
+              </p>
+            </section>
+          </section>
+          <!--已上传文件列表 结束-->
 
           <!--上传功能action="/Fileupdate/AddFile"  开始-->
           <el-upload
             class="upload-demo"
-            action="/Fileupdate/AddFile"
+            action="/api/AddFile"
             accept=".jpg,.png,.mp4"
             :data="data"
             :before-upload="beforeUpload"
@@ -70,14 +62,16 @@
 
 
     </section>
+
+
   </div>
-  <!--  结束-->
+  <!-- 结束 -->
 </template>
 
 <script>
   import Header from '@/components/header/header.vue'
   import getUrlParms from '@/config/utils'
-  import {postData} from '@/server'
+  import {postData, link} from '@/server'
   import {Message} from 'element-ui'
 
 
@@ -88,7 +82,10 @@
         fileList3: [],
         resData: {},
         data: {},  // 上传文件时要传的data
-        OrderId: ''
+        OrderId: '',
+        showFiles: false,
+        btnTips: '查看已上传素材',
+        btnLoading: false
       }
     },
 
@@ -99,6 +96,12 @@
     computed: {},
 
     methods: {
+      showFile() {
+        this.showFiles = !this.showFiles;
+        this.btnTips = this.showFiles?'隐藏已上传素材':'查看已上传素材';
+        const url = '/GetFiles';
+        postData(url)  // todo 要传detailId
+      },
       handleChange(file, fileList) {
 //      this.fileList3 = fileList.slice(-3);
       },
@@ -165,6 +168,7 @@
     },
 
     mounted() {
+//      console.log(link)
       this.data = {
         OrderId: '1',
         DetailId: '1'
@@ -209,12 +213,16 @@
         @include sc(.75rem, black);
         padding: .5rem;
       }
+      .data-head:nth-child(2) {
+        border-bottom: 5px solid #f5f5f5;
+      }
       li {
         @include fj;
         flex-direction: column;
         /*align-items: center;*/
         padding: 0 .5rem;
         line-height: 2rem;
+        border-bottom: 5px solid #f5f5f5;
         .food_name {
           @include sc(.6rem, #666);
           flex: 4;
@@ -232,7 +240,6 @@
         }
         .li-div {
           @include fj;
-
         }
       }
     }
@@ -261,6 +268,23 @@
     /*text-align: right;*/
     span {
       color: #ffffff;
+    }
+  }
+
+  .file-list {
+    background-color: #fff;
+    padding: .5rem;
+
+    .file-item {
+      font-size: 14px;
+      color: #606266;
+      line-height: 1.8;
+      margin-top: 5px;
+      position: relative;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      border-radius: 4px;
+      width: 100%;
     }
   }
 </style>

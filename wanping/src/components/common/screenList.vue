@@ -29,7 +29,7 @@
 </template>
 
 <script>
-  import {postData} from '../../server'
+  import {postData,link} from '../../server'
 
   export default {
     data() {

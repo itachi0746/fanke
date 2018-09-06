@@ -9,7 +9,9 @@
           <div class="title-shop">
             <div class="tcont">
               <div class="shopcb">
-                <i class="fa fa-circle-o"></i>
+                <!--<i class="fa fa-circle-o"></i>-->
+                <el-radio v-model="radio" label="1">备选项</el-radio>
+                <el-radio v-model="radio" label="2">备选项</el-radio>
               </div>
               <div class="shop-name">
                 <span>商家名字</span>
@@ -83,8 +85,9 @@
     data() {
       return {
         page: 'Cart',
-        headName: '购物车'
-
+        headName: '购物车',
+        message: '111',
+        radio: '1'
       }
     },
 

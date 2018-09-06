@@ -70,7 +70,7 @@
 </template>
 
 <script>
-  import {postData} from '@/server'
+  import {postData,link} from '@/server'
   import BScroll from 'better-scroll'
 
   export default {

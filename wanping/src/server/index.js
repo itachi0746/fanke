@@ -106,9 +106,13 @@ Axios.interceptors.response.use(
   }
 );
 
+// 保存页面跳转的链接
+let link = {
+  'order': '111'
+};
 
 // 封装axios的post请求
-export function postData(url, params = {}) {
+let postData = function(url, params = {}) {
   return new Promise((resolve, reject) => {
     Axios.post(url, params)
       .then(response => {
@@ -119,7 +123,23 @@ export function postData(url, params = {}) {
         reject(error);
       })
   })
-}
+};
+
+export {link,postData}
+
+// // 封装axios的post请求
+// export function postData(url, params = {}) {
+//   return new Promise((resolve, reject) => {
+//     Axios.post(url, params)
+//       .then(response => {
+//         resolve(response.data);
+//       })
+//       .catch((error) => {
+//         console.log('请求出错');
+//         reject(error);
+//       })
+//   })
+// }
 
 
 // 对axios的实例重新封装成一个plugin ,方便 Vue.use(xxxx)

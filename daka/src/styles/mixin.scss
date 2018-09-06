@@ -1,7 +1,7 @@
-$blue: #3297f5;
-$bc: #e4e4e4;
-$fc:#fff;
-$payColor: #ff5000;
+@charset "UTF-8";
+$f1: #f1f1f1;
+$f1d: #9a9ea5;
+$fd: #bcbbb9;
 
 // 背景图片地址和大小
 @mixin bis($url) {
@@ -24,6 +24,13 @@ $payColor: #ff5000;
   right:0;
 }
 
+//border-box
+@mixin bdbox {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 //定位上下左右居中
 @mixin center {
   position: absolute;
@@ -33,7 +40,8 @@ $payColor: #ff5000;
   -moz-transform: translate(-50%,-50%);
   -ms-transform: translate(-50%,-50%);
   -o-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);}
+  transform: translate(-50%,-50%);
+}
 
 //定位上下居中
 @mixin ct {
@@ -78,22 +86,5 @@ $payColor: #ff5000;
 @mixin fj($type: space-between){
   display: flex;
   justify-content: $type;
-
 }
 
-// 促  惠  字体效果
-%_cu ,%_hui{
-  @include sc(.7rem ,#fff);
-  @include wh(1rem, 1rem);
-  @include borderRadius(2px);
-  display: inline-block;
-  text-align: center;
-}
-
-%_cu {
-  background-color: orange;
-}
-
-%_hui {
-  background-color: #ff8298;
-}

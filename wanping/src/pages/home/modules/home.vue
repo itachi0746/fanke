@@ -48,7 +48,7 @@
   import Footer from 'components/footer/footer'
   import aFilter from './filter'
 //  import BScroll from 'better-scroll'
-  import {postData} from '@/server'
+  import {postData,link} from '@/server'
   import { swiper, swiperSlide } from 'vue-awesome-swiper';
   import 'swiper/dist/css/swiper.css'
 
