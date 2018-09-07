@@ -1,7 +1,8 @@
 var config = {
   src: "src", // 要搬运的目录
   moveTo: "daka",  // 搬运去的目录
-  dest: "src/css",  // 编译scss输出的目录
+  scss: "src/upload",  // 要编译的scss目录
+  dest: "src/upload",  // 编译scss输出的目录
   server: "src", // 服务器根目录
   // server: "./", // 服务器根目录
   target: "index.html" // 要监视(执行)的html文件
@@ -26,7 +27,7 @@ gulp.task('browser', function () {
   browserSync.init({
     files: ['**'],  // 修改HTML也刷新
     server: {
-      baseDir: config.server,  // 设置服务器的根目录
+      baseDir: config.scss,  // 设置服务器的根目录
       index: config.target // 指定默认打开的文件
     },
     port: 8050  // 指定访问服务器的端口号
@@ -45,7 +46,7 @@ gulp.task('clean', function (cb) {
 // 编译,合并,重命名,加前缀,压缩
 gulp.task('scss', [], function (cb) {
   pump([
-      gulp.src(config.src + '/scss/*.scss'),
+      gulp.src(config.scss + '/scss/*.scss'),
       sass(),
       // concat('index.css'),  //合并后的文件名
       // rename({suffix: '.min'}),
@@ -63,7 +64,7 @@ gulp.task('scss', [], function (cb) {
       //   //保留所有特殊前缀 当你用autoprefixer生成的浏览器前缀，如果不加这个参数，有可能将会删除你的部分前缀
       // ),
       sourcemaps.write('.'),
-      gulp.dest(config.dest)
+      gulp.dest(config.dest + '/css')
     ], cb
   );
 });
@@ -76,7 +77,7 @@ gulp.task('move', function () {
 
 // 监听文件变改
 gulp.task('watch', [], function(cb) {
-  gulp.watch([config.server + "/scss/*.scss",config.src + '/styles/*.scss'], ['scss']);
+  gulp.watch([config.scss + "/scss/*.scss",config.src + '/styles/*.scss'], ['scss']);
 
 });
 

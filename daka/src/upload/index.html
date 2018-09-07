@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>上传文件</title>
+  <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+<div class="btm-bg">
+  <img class="bgimg" src="img/img2.png" alt="">
+
+  <div class="peo-bg">
+
+    <img class="img4" src="img/g1.png" alt="">
+    <img class="img5" src="img/g2.png" alt="">
+  </div>
+
+  <div class="form">
+    <p id="test">点击上传文件</p>
+    <form enctype="multipart/form-data">
+      <p>点击上传文件<input type="file" id="csv_file" name="csv_file"/></p>
+      <div id="import" class="import">导入</div>
+    </form>
+  </div>
+
+</div>
+
+<script src="js/rem.js"></script>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script type="application/javascript">
+  var showfile = function () {
+    console.log($('#csv_file').html())
+
+  }
+  $('#test').click(function () {
+    $('#csv_file').click()
+  })
+
+  $("#import").click(function () {
+    var files = $('#csv_file').prop('files');
+    var data = new FormData();
+    data.append('csv_file', files[0]);
+//    debugger
+
+    console.log(files)
+    $.ajax({
+      type: 'POST',
+      url: "/api/MallService/AddFile",
+      data: data,
+      cache: false,
+      processData: false,
+      contentType: false,
+      success: function (ret) {
+        alert('上传成功');
+        showfile()
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

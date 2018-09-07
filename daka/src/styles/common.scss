@@ -6,11 +6,15 @@ body, div, img, span, header, footer, nav, section, aside, article, ul, dl, dt, 
   text-decoration: none;
   border: none;
   font-weight: normal;
-  font-family: "Microsoft YaHei", Arial, sans-serif;
+  font-family: 'Microsoft Yahei',Tahoma,Helvetica,Arial,sans-serif;
 
   &:hover{
     outline: none;
   }
+}
+
+body {
+  line-height: 1.42857143;
 }
 
 img {
