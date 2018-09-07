@@ -126,34 +126,29 @@ html, body {
 
 .peo-bg {
   position: absolute;
-  z-index: 10;
+  z-index: 50;
   width: 90%; }
   .peo-bg img {
-    position: absolute; }
-  .peo-bg .img1 {
-    top: -1.8rem;
-    left: -.5rem;
-    width: 5.75rem;
-    height: 3.34rem; }
-  .peo-bg .img2 {
-    top: -2.5rem;
-    right: -.5rem;
-    width: 4.25rem;
-    height: 4.25rem; }
-  .peo-bg .img3 {
-    width: 9rem;
-    height: 6rem;
-    top: -5.1rem;
-    left: 3.75rem; }
+    position: absolute;
+    z-index: 50; }
   .peo-bg .img4 {
     width: 2.6rem;
     height: 2.6rem;
-    left: 0;
-    top: -5rem; }
+    left: 4rem;
+    top: -1rem; }
   .peo-bg .img5 {
     width: 2.6rem;
     height: 2.6rem;
-    right: 0;
-    top: -6rem; }
+    right: 4rem;
+    top: -1rem; }
+
+.csv_file {
+  display: block; }
+
+.up {
+  position: absolute;
+  z-index: 50;
+  top: 6rem;
+  left: 1rem; }
 
 /*# sourceMappingURL=index.css.map */

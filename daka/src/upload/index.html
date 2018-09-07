@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <title>上传文件</title>
+  <link rel="stylesheet" href="css/eleUI.css">
   <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
@@ -17,47 +18,115 @@
     <img class="img5" src="img/g2.png" alt="">
   </div>
 
-  <div class="form">
-    <p id="test">点击上传文件</p>
-    <form enctype="multipart/form-data">
-      <p>点击上传文件<input type="file" id="csv_file" name="csv_file"/></p>
-      <div id="import" class="import">导入</div>
-    </form>
-  </div>
+  <!--<div class="form">-->
+    <!--<p id="test">点击上传文件</p>-->
+    <!--<form enctype="multipart/form-data">-->
+      <!--<p><input type="file" id="csv_file" class="csv_file" name="csv_file"/></p>-->
+      <!--<div id="import" class="import">导入</div>-->
+    <!--</form>-->
+    <!--<p id="file-name"></p>-->
+  <!--</div>-->
 
+  <div id="up" class="up">
+    <el-upload
+            class="upload-demo"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :before-remove="beforeRemove"
+            multiple
+            :limit="3"
+            :on-exceed="handleExceed"
+            :file-list="fileList">
+      <el-button size="small" type="primary">点击上传</el-button>
+      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+    </el-upload>
+  </div>
 </div>
 
 <script src="js/rem.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/eleUI.js"></script>
 <script src="js/jquery-3.3.1.min.js"></script>
-<script type="application/javascript">
-  var showfile = function () {
-    console.log($('#csv_file').html())
 
-  }
-  $('#test').click(function () {
-    $('#csv_file').click()
-  })
-
-  $("#import").click(function () {
-    var files = $('#csv_file').prop('files');
-    var data = new FormData();
-    data.append('csv_file', files[0]);
-//    debugger
-
-    console.log(files)
-    $.ajax({
-      type: 'POST',
-      url: "/api/MallService/AddFile",
-      data: data,
-      cache: false,
-      processData: false,
-      contentType: false,
-      success: function (ret) {
-        alert('上传成功');
-        showfile()
+<script>
+  new Vue(
+    {
+      el: '#up',
+      data() {
+      return {
+//        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
+      };
+    },
+    methods: {
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+      handleExceed(files, fileList) {
+        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      },
+      beforeRemove(file, fileList) {
+        return this.$confirm(`确定移除 ${ file.name }？`);
       }
-    });
-  });
+    }
+    }
+  )
+
+//  export default {
+//
+//    data() {
+//      return {
+//        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
+//      };
+//    },
+//    methods: {
+//      handleRemove(file, fileList) {
+//        console.log(file, fileList);
+//      },
+//      handlePreview(file) {
+//        console.log(file);
+//      },
+//      handleExceed(files, fileList) {
+//        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+//      },
+//      beforeRemove(file, fileList) {
+//        return this.$confirm(`确定移除 ${ file.name }？`);
+//      }
+//    }
+//  }
+//  var f = document.getElementById('csv_file');
+
+//  var showfile = function () {
+//    console.log(f.files)
+//
+//  };
+//  $('#test').click(function () {
+//    f.click()
+//  });
+//
+//  $("#import").click(function () {
+//    var files = f.prop('files');
+//    var data = new FormData();
+//    data.append('csv_file', files[0]);
+////    debugger
+//    showfile();
+
+//    $.ajax({
+//      type: 'POST',
+//      url: "/api/MallService/AddFile",
+//      data: data,
+//      cache: false,
+//      processData: false,
+//      contentType: false,
+//      success: function (ret) {
+//        alert('上传成功');
+//        showfile()
+//      }
+//    });
+//  });
 </script>
 
 </body>
