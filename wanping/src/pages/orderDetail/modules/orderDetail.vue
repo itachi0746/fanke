@@ -96,6 +96,11 @@
     computed: {},
 
     methods: {
+//      beforeRemove(file) {
+//        console.log(this)
+//        return this.$confirm(`确定移除 ${ file.name }？`);
+//      },
+
       showFile() {
         this.showFiles = !this.showFiles;
         this.btnTips = this.showFiles?'隐藏已上传素材':'查看已上传素材';

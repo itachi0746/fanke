@@ -18,85 +18,48 @@
     <img class="img5" src="img/g2.png" alt="">
   </div>
 
-  <!--<div class="form">-->
-    <!--<p id="test">点击上传文件</p>-->
-    <!--<form enctype="multipart/form-data">-->
-      <!--<p><input type="file" id="csv_file" class="csv_file" name="csv_file"/></p>-->
-      <!--<div id="import" class="import">导入</div>-->
-    <!--</form>-->
-    <!--<p id="file-name"></p>-->
-  <!--</div>-->
 
   <div id="up" class="up">
     <el-upload
             class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="/api/MallService/AddFile"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
-            :before-remove="beforeRemove"
-            multiple
-            :limit="3"
-            :on-exceed="handleExceed"
-            :file-list="fileList">
-      <el-button size="small" type="primary">点击上传</el-button>
-      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            :before-upload="beforeUpload"
+            :limit="1"
+            :on-success="handleSuccess">
+      <el-button  type="primary">点击上传</el-button>
+      <div slot="tip" class="el-upload__tip">只能上传图片或者mp4/mov格式的视频，且图片不超过2M，视频不超过10M。</div>
     </el-upload>
+    <transition class="el-fade-in-linear">
+      <el-button class="right" size="small" type="primary" @click="preview" v-show="showpBtn"> 预览 </el-button>
+
+    </transition>
+
+    <div class="Vbox" v-show="hasVideo" @click="preview">
+      <video ref="video" controls @click.stop>
+        <source :src="Vsrc" type="video/mp4">
+        您的浏览器不支持 video 标签。
+      </video>
+    </div>
   </div>
+
+  <div class="rule-box">
+    <header>活动奖励</header>
+    <p>7天打卡完成可获得红包 <span class="red">xx元</span></p>
+    <p>
+      尾数为9.19.29的前200名可获得520亲子健爱卡
+    </p>
+  </div>
+
 </div>
 
 <script src="js/rem.js"></script>
-<script src="js/vue.js"></script>
+<script src="js/vue.min.js"></script>
 <script src="js/eleUI.js"></script>
-<script src="js/jquery-3.3.1.min.js"></script>
 
-<script>
-  new Vue(
-    {
-      el: '#up',
-      data() {
-      return {
-//        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
-      };
-    },
-    methods: {
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-      handlePreview(file) {
-        console.log(file);
-      },
-      handleExceed(files, fileList) {
-        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-      },
-      beforeRemove(file, fileList) {
-        return this.$confirm(`确定移除 ${ file.name }？`);
-      }
-    }
-    }
-  )
+<script src="js/index.js">
 
-//  export default {
-//
-//    data() {
-//      return {
-//        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
-//      };
-//    },
-//    methods: {
-//      handleRemove(file, fileList) {
-//        console.log(file, fileList);
-//      },
-//      handlePreview(file) {
-//        console.log(file);
-//      },
-//      handleExceed(files, fileList) {
-//        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-//      },
-//      beforeRemove(file, fileList) {
-//        return this.$confirm(`确定移除 ${ file.name }？`);
-//      }
-//    }
-//  }
 //  var f = document.getElementById('csv_file');
 
 //  var showfile = function () {

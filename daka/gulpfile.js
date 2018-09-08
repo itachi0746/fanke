@@ -71,7 +71,7 @@ gulp.task('scss', [], function (cb) {
 
 // 搬运文件
 gulp.task('move', function () {
-  return gulp.src([config.src + '/**/*.css', config.src + '/**/*.js', config.src + '/**/*.png', config.src + '/**/*.html', '!' + config.src + '/*/views/*/scss/', '!' + config.src + '/styles/'])
+  return gulp.src([config.src + '/**/*.css', config.src + '/**/*.js', config.src + '/**/*.png', config.src + '/**/*.html', config.src + '/**/*.ttf', config.src + '/**/*.woff', '!' + config.src + '/*/views/*/scss/', '!' + config.src + '/styles/'])
     .pipe(gulp.dest(config.moveTo));
 });
 
