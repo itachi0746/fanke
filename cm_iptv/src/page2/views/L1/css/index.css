@@ -7,7 +7,7 @@ body, div, img, span, header, footer, nav, section, aside, article, ul, dl, dt, 
   text-decoration: none;
   border: none;
   font-weight: normal;
-  font-family: SimHei,"黑体", Arial, sans-serif; }
+  font-family: SimHei,"榛戜綋", Arial, sans-serif; }
   body:hover, div:hover, img:hover, span:hover, header:hover, footer:hover, nav:hover, section:hover, aside:hover, article:hover, ul:hover, dl:hover, dt:hover, dd:hover, li:hover, a:hover, p:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, i:hover, b:hover, textarea:hover, button:hover, input:hover, select:hover, figure:hover, figcaption:hover {
     outline: none; }
 
@@ -119,9 +119,9 @@ body {
           top: 3px; }
         .main-content .tab li div p {
           padding: 17px 0 0 35px; }
-      .main-content .tab li div:focus {
-        background-image: url("../img/bg_nav_sel.png");
-        outline: none; }
+    .main-content .tab li:focus {
+      background-image: url("../img/bg_nav_sel.png");
+      outline: none; }
     .main-content .tab .tab-btm p {
       padding-left: 35px; }
 
@@ -139,18 +139,22 @@ body {
   .tab-content .box {
     padding-left: 83px;
     overflow: hidden; }
-    .tab-content .box div {
+    .tab-content .box ul {
+      position: relative;
+      left: 0;
+      width: 1320px; }
+    .tab-content .box li {
       margin: 0 23px 23px 0;
       float: left; }
-      .tab-content .box div p {
+      .tab-content .box li p {
         line-height: 1.2; }
-      .tab-content .box div .p1 {
+      .tab-content .box li .p1 {
         margin: 24px 0 0 24px; }
-      .tab-content .box div .p2 {
+      .tab-content .box li .p2 {
         font-size: 26px;
         color: #fff;
         margin-left: 24px; }
-      .tab-content .box div .p3 {
+      .tab-content .box li .p3 {
         font-size: 36px;
         color: #fff;
         margin-left: 24px; }
@@ -168,5 +172,8 @@ body {
       outline: none; }
   .tab-content .tab-btm {
     padding-left: 83px; }
+
+.left-ul-l1 {
+  background-image: url("../img/bg_nav_sel.png"); }
 
 /*# sourceMappingURL=index.css.map */

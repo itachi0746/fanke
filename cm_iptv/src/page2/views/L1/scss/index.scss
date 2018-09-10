@@ -52,12 +52,13 @@ body {
 
         }
       }
-      div:focus {
-        background-image: url('../img/bg_nav_sel.png');
-        outline: none;
-      }
 
     }
+    li:focus {
+      background-image: url('../img/bg_nav_sel.png');
+      outline: none;
+    }
+
     .tab-btm {
       p {
         padding-left: 35px;
@@ -80,7 +81,13 @@ body {
   .box {
     padding-left: 83px;
     overflow: hidden;
-    div {
+
+    ul {
+      position: relative;
+      left: 0;
+      width: 1320px;
+    }
+    li {
       margin: 0 23px 23px 0;
       float: left;
       p {
@@ -123,4 +130,9 @@ body {
     padding-left: 83px;
 
   }
+}
+
+.left-ul-l1 {
+  background-image: url('../img/bg_nav_sel.png');
+
 }
