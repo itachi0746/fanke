@@ -1,8 +1,8 @@
-var config = {
+let config = {
   src: "src", // 要搬运的目录
   moveTo: "daka",  // 搬运去的目录
-  scss: "src/upload",  // 要编译的scss目录
-  dest: "src/upload",  // 编译scss输出的目录
+  scss: "src/index",  // 要编译的scss目录
+  dest: "src/index",  // 编译scss输出的目录
   server: "src", // 服务器根目录
   // server: "./", // 服务器根目录
   target: "index.html" // 要监视(执行)的html文件
@@ -11,7 +11,7 @@ var config = {
 
 // 一次安装
 // npm install pump gulp-sass gulp-clean gulp-autoprefixer gulp-clean-css gulp-imagemin gulp-changed gulp-sourcemaps gulp-uglify run-sequence gulp-rename gulp-htmlmin gulp-postcss imagemin-pngquant gulp-cache gulp-concat del browser-sync --save-dev
-var gulp = require('gulp'),
+let gulp = require('gulp'),
   clean = require('gulp-clean'),
   pump = require('pump'),
   autoprefixer = require('gulp-autoprefixer'),
@@ -71,7 +71,7 @@ gulp.task('scss', [], function (cb) {
 
 // 搬运文件
 gulp.task('move', function () {
-  return gulp.src([config.src + '/**/*.css', config.src + '/**/*.js', config.src + '/**/*.png', config.src + '/**/*.html', config.src + '/**/*.ttf', config.src + '/**/*.woff', '!' + config.src + '/*/views/*/scss/', '!' + config.src + '/styles/'])
+  return gulp.src([config.src + '/**/*.{css,js,html}', config.src + '/**/*.{png,jpg}', config.src + '/**/*.{ttf,woff}','!' + config.src + '/*/views/*/scss/', '!' + config.src + '/styles/'])
     .pipe(gulp.dest(config.moveTo));
 });
 

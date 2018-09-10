@@ -3,17 +3,21 @@
   <div class="shopping-cart">
     <Header :headName="headName"></Header>
 
-    <section class="items">
-      <div class="item">
+    <section v-if="cart.length === 0" class="empty-states">
+      <span>这里是空的，快去逛逛吧</span>
+    </section>
+    <section v-else class="items">
+      <div class="item" v-for="item in cart" :key="item.ItemId">
         <div class="shop">
           <div class="title-shop">
             <div class="tcont">
-              <div class="shopcb">
-                <!--<i class="fa fa-circle-o"></i>-->
+              <div class="shopcb" @click="selGood($event)" :id="item.ItemId">
+                <i class="fa fa-circle-o" v-show="!item.Checked"></i>
+                <i class="fa fa-check-circle-o" v-show="item.Checked"></i>
 
               </div>
               <div class="shop-name">
-                <span>商家名字</span>
+                <span>{{item.BusinessName}}</span>
                 <i class="fa fa-angle-right"></i>
               </div>
               <div class="state">
@@ -24,26 +28,31 @@
         </div>
 
         <div class="pdt-shop">
-          <div>
-            <i class="fa fa-circle-o"></i>
-          </div>
+          <!--<div>-->
+          <!--<i class="fa fa-circle-o" v-show="!item.checked"></i>-->
+          <!--<i class="fa fa-check-circle-o" v-show="item.checked"></i>-->
+          <!--</div>-->
           <div class="item-detail">
             <div class="img-box">
               <img src="../../../assets/item.png" alt="">
             </div>
             <div class="detail-box-r">
               <p>
-                <span>产品名字 信息xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>
+                <span>{{item.PsName}}</span>
               </p>
-              <p class="pay">
-                <i>¥</i><span>1000</span>
+
+              <p class="item-pay">
+                <span class="pay-num">数量: {{item.Amount}}</span>
+
+                <span class="pay-span"><i>¥</i>{{item.Total}}</span>
 
                 <!--<span class="number">-->
-                  <!--<button class="decrease disabled">-</button>-->
-                  <!--<input id="number" type="number" value="1" readonly="readonly">-->
-                  <!--<button class="increase">+</button>-->
+                <!--<button class="decrease disabled">-</button>-->
+                <!--<input id="number" type="number" value="1" readonly="readonly">-->
+                <!--<button class="increase">+</button>-->
                 <!--</span>-->
               </p>
+
             </div>
 
 
@@ -63,7 +72,7 @@
       </div>
       <div class="pay">
         <span>合计：</span>
-        <span>¥0.00</span>
+        <span>¥{{totalPrice}}</span>
       </div>
       <div class="btn">
         <span>结算(</span>
@@ -78,15 +87,18 @@
 
 <script>
   import Header from '../../../components/header/header.vue'
-
+  import {postData} from '@/server'
 
   export default {
     data() {
       return {
         page: 'Cart',
         headName: '购物车',
-        message: '111',
-        radio: '1'
+        cart: [],
+        checkAllFlag: false,  // 是不是全选了
+        selectedNum: 0,
+        delFlag: false,
+        totalPrice: 0
       }
     },
 
@@ -96,7 +108,35 @@
 
     computed: {},
 
-    methods: {},
+    created() {
+      const url = '/GetBaskets';
+      postData(url).then((res) => {
+          console.log(res)
+          this.cart = res.Data;
+//          this.cart.forEach(item=> {
+////            item.checked = false;
+////            this.$set(item,'checked',false);
+//
+//          });
+//          console.log(this.cart)
+        }
+      )
+    },
+
+    methods: {
+      selGood(e) {
+        const id = e.currentTarget.id;
+//        console.log(e.currentTarget)
+//        console.log(e.target)
+        this.cart.forEach(item => {
+//          item.ItemId = id ? item.checked = true : '';
+          if (item.ItemId === id) {
+            item.Checked = !item.Checked;
+            console.log(11)
+          }
+        })
+      }
+    },
 
     mounted() {
 //      产品名字
@@ -109,7 +149,6 @@
 
 <style lang='scss' scoped>
   @import "src/style/mixin";
-
 
   .item {
     margin-top: .5rem;
@@ -200,17 +239,22 @@
             word-break: break-all;
             @include sc(.8rem, #969696);
           }
-          .pay {
+          .item-pay {
             padding-left: .5rem;
             width: 100%;
-            i, span {
+            @include fj();
+            align-items: center;
+            i, .pay-span {
               color: $payColor;
+            }
+            .pay-num {
+              @include sc(.7rem, #666);
             }
             span {
               font-size: 1rem;
             }
             .number {
-              @include wh(7rem,100%);
+              @include wh(7rem, 100%);
               border-radius: 3px;
               float: right;
 
@@ -269,9 +313,8 @@
     position: fixed;
     bottom: 0;
     background-color: #fff;
-    @include wh(100%,2.4rem);
+    @include wh(100%, 2.4rem);
     box-shadow: 0 -0.02667rem 0.05333rem rgba(0, 0, 0, 0.1);
-
 
     div {
       font-size: .8rem;
@@ -284,7 +327,7 @@
       justify-content: center;
 
       .fa {
-        @include sc(1rem,#969696);
+        @include sc(1rem, #969696);
       }
     }
     .ft-all {
@@ -302,7 +345,6 @@
         color: $payColor;
       }
 
-
     }
     .btn {
       width: 5rem;
@@ -317,5 +359,12 @@
       }
     }
 
+  }
+
+  .empty-states {
+    padding-top: 60px;
+    font-size: 18px;
+    color: #AEB0B7;
+    text-align: center;
   }
 </style>

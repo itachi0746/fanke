@@ -5,7 +5,8 @@ let a = new Vue(
       return {
         hasVideo: false,
         Vsrc: '',
-        showpBtn: false
+        showpBtn: false,
+        // isVideo: false
       };
     },
     methods: {
@@ -14,7 +15,8 @@ let a = new Vue(
         this.$refs.video.pause();
       },
       handleSuccess() {
-        this.showpBtn = true;
+
+        // this.showpBtn = this.isVideo;  // 如果是视频,展示预览btn
         this.$message({
           message: '上传成功',
           type: 'success'
@@ -25,17 +27,18 @@ let a = new Vue(
 
         console.log(file, fileList);
       },
-      handlePreview(file) {
-        console.log(file);
-      },
+      // handlePreview(file) {
+      //   console.log(file);
+      // },
       beforeUpload(file) {
         // console.log(file.type);
         const reg = /image/gi;  // 匹配image/*
         const reg2 = /video\/(mov|mp4)/gi;  // 匹配video/mov 或者 video/mp4
         const isImage = reg.test(file.type);
         const isMP4 = reg2.test(file.type);
+        // this.isVideo = isMP4;
         const fileSize = file.size / 1024 / 1024;  // 文件的大小 M
-        console.log('文件大小是:'+fileSize+'M','类型是:'+file.type);
+        console.log('文件大小是:' + fileSize + 'M', '类型是:' + file.type);
 
         const isLt2M = fileSize < 2;
         const isLt10M = fileSize < 10;
@@ -77,4 +80,4 @@ let a = new Vue(
   }
 );
 
-console.log(a)
+// console.log(a)

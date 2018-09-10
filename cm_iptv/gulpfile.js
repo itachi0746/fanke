@@ -66,7 +66,7 @@ gulp.task('clean', function (cb) {
 
 // 搬运文件
 gulp.task('move', function () {
-  return gulp.src([config.src + '/**/*.css', config.src + '/**/*.js', config.src + '/**/*.png', config.src + '/**/*.html', '!' + config.src + '/*/views/*/scss/', '!' + config.src + '/styles/'])
+  return gulp.src([config.src + '/**/*.css', config.src + '/**/*.js', config.src + '/**/*.png', config.src + '/**/*.html', '!' + config.src + '/*/views/*/scss/', '!' + config.src + '/styles/','!' + config.src + '/*/views/L2/','!' + config.src + '/*/views/L3/'])
     .pipe(gulp.dest(config.moveTo));
 });
 

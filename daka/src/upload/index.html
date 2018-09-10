@@ -20,6 +20,7 @@
 
 
   <div id="up" class="up">
+    <!--上传部分-->
     <el-upload
             class="upload-demo"
             action="/api/MallService/AddFile"
@@ -36,6 +37,7 @@
 
     </transition>
 
+    <!--视频部分-->
     <div class="Vbox" v-show="hasVideo" @click="preview">
       <video ref="video" controls @click.stop>
         <source :src="Vsrc" type="video/mp4">

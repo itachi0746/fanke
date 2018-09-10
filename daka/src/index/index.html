@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>打卡活动首页</title>
+  <link rel="stylesheet" href="css/eleUI.css">
+  <link rel="stylesheet" href="css/index.css">
+
+</head>
+<body>
+<!--轮播 开始-->
+<div id="carousel" class="carousel">
+  <!--<span class="demonstration">Click 指示器触发</span>-->
+  <el-carousel trigger="click" height="12.5rem">
+    <el-carousel-item v-for="item in items" :key="item.id">
+      <img :src="item.src" alt=""  @click="clickCarousel($event)" :id="item.link">
+    </el-carousel-item>
+  </el-carousel>
+</div>
+<!--轮播 结束-->
+
+<div class="ABox" id="ABox">
+  <ul>
+    <li v-for="act in acts" :key="act.id" @click="clickAct($event)" :id="act.id">
+      <span>{{act.name}}</span>
+      <div class="li-div">
+        <i class="el-icon-arrow-right"></i>
+
+      </div>
+
+  </ul>
+</div>
+
+
+<script src="js/rem.js"></script>
+<script src="js/vue.min.js"></script>
+<!--<script src="js/vue.js"></script>-->
+<script src="js/eleUI.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>

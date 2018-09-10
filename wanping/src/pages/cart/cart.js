@@ -5,7 +5,7 @@ import App from './cart.vue'
 import 'font-awesome/css/font-awesome.min.css'
 // import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/radio.css';
-import {Radio} from 'element-ui'
+// import {Radio} from 'element-ui'
 import '@/config/rem'
 import axiosPlugin from '@/server'
 // import router from './router'
@@ -13,7 +13,7 @@ import axiosPlugin from '@/server'
 
 Vue.config.productionTip = false;
 Vue.use(axiosPlugin);
-Vue.use(Radio);
+// Vue.use(Radio);
 
 
 /* eslint-disable no-new */
