@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <title>上传文件</title>
-  <link rel="stylesheet" href="css/eleUI.css">
   <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
@@ -21,26 +20,22 @@
 
   <div id="up" class="up">
     <!--上传部分-->
-    <el-upload
-            class="upload-demo"
-            action="/api/MallService/AddFile"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-upload="beforeUpload"
-            :limit="1"
-            :on-success="handleSuccess">
-      <el-button  type="primary">点击上传</el-button>
-      <div slot="tip" class="el-upload__tip">只能上传图片或者mp4/mov格式的视频，且图片不超过2M，视频不超过10M。</div>
-    </el-upload>
-    <transition class="el-fade-in-linear">
-      <el-button class="right" size="small" type="primary" @click="preview" v-show="showpBtn"> 预览 </el-button>
+    <button  class="Btn UpBtn">上传文件</button>
+    <button  class="Btn preBtn" id="preBtn">预览</button>
 
-    </transition>
+    <input type="file" name="files" id="j-file" class="hide">
+    <!--如果要预览图-->
+    <!--<div id="preview1" class="preview"></div>-->
+
+    <!--文件名字-->
+    <div id="msg1" class="msg"></div>
 
     <!--视频部分-->
-    <div class="Vbox" v-show="hasVideo" @click="preview">
-      <video ref="video" controls @click.stop>
-        <source :src="Vsrc" type="video/mp4">
+    <div class="Vbox hide" id="Vbox">
+      <video class="video" id="video" controls>
+        <!-- <source src="img/WeChat_20180905180357.mp4" type="video/mp4"> -->
+        <!-- <source src="" type="video/mp4"> -->
+
         您的浏览器不支持 video 标签。
       </video>
     </div>
@@ -55,10 +50,11 @@
   </div>
 
 </div>
-
+<script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/rem.js"></script>
-<script src="js/vue.min.js"></script>
-<script src="js/eleUI.js"></script>
+<!--<script src="js/vue.min.js"></script>-->
+<script src="js/layer.js"></script>
+<script src="js/mbUploadify.min.js"></script>
 
 <script src="js/index.js">
 

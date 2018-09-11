@@ -1,8 +1,8 @@
 let config = {
   src: "src", // 要搬运的目录
   moveTo: "daka",  // 搬运去的目录
-  scss: "src/index",  // 要编译的scss目录
-  dest: "src/index",  // 编译scss输出的目录
+  scss: "src/upload",  // 要编译的scss目录
+  dest: "src/upload",  // 编译scss输出的目录
   server: "src", // 服务器根目录
   // server: "./", // 服务器根目录
   target: "index.html" // 要监视(执行)的html文件
@@ -19,6 +19,7 @@ let gulp = require('gulp'),
   postcss = require('gulp-postcss'),
   sass = require('gulp-sass'),
   sourcemaps = require('gulp-sourcemaps'),
+  babel = require('gulp-babel');
   browserSync = require('browser-sync').create();
 
 
@@ -42,6 +43,14 @@ gulp.task('clean', function (cb) {
     clean()
   ], cb);
 });
+
+// 编译es6
+gulp.task('es6', function () {
+    return gulp.src(config.scss + '/js/index.js')
+      .pipe(babel())
+      .pipe(gulp.dest(config.src + '/js2/'))
+});
+
 
 // 编译,合并,重命名,加前缀,压缩
 gulp.task('scss', [], function (cb) {

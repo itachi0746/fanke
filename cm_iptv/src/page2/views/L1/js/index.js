@@ -14,23 +14,34 @@ var onR = true;  // 焦点是否在右菜单
 // 焦点切换(当前有焦点的元素的下标,键值,数组)
 var changeFocus = function (nowFocus,keyValue,arr)  {
   var all = arr.length;
-  if (keyValue === 38) {  // 按上
-    nowFocus <= 0 ? nowFocus = all - 1 : nowFocus--;
-  }
-  if (keyValue === 40) {  // 按下
-    nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
-  }
-
   if(onR) {
-    Rindex = nowFocus;
-    arr[nowFocus].focus();
-    moveUl()
+    if (keyValue === 39) {  // 按右
+      nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
+    }
   } else {
-    // $(leftLi[Lindex]).find('.is-active').removeClass('show');
-    leftLi[0].css('backgroundImage','');
+    if (keyValue === 38) {  // 按上
+      nowFocus <= 0 ? nowFocus = all - 1 : nowFocus--;
+    }
+    if (keyValue === 40) {  // 按下
+      nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
+    }
+    leftLi[0].css('background','');
     Lindex = nowFocus;
     arr[nowFocus].focus();
+
   }
+
+
+  // if(onR) {
+  //   Rindex = nowFocus;
+  //   arr[nowFocus].focus();
+  //   moveUl()
+  // } else {
+  //   // $(leftLi[Lindex]).find('.is-active').removeClass('show');
+  //   leftLi[0].css('backgroundImage','');
+  //   Lindex = nowFocus;
+  //   arr[nowFocus].focus();
+  // }
 
 };
 
@@ -48,22 +59,33 @@ window.onload = function () {
 // return true;
 
     if (keyValue === 37) {  // 按左
-      if(Rindex===0||Rindex===3) {
-        onR = false;
-        changeFocus(Lindex,keyValue,leftLi);
-      } else {
-        changeFocus(Rindex,keyValue,rightLi);
+      if(onR) {
+        if(Rindex===0||Rindex===3) {
+          onR = false;
+          changeFocus(Lindex,keyValue,leftLi);
+        } else {
+          changeFocus(Rindex,keyValue,rightLi);
+        }
       }
+
 
     }
     if (keyValue === 39) {  // 按右
-      onR = true;
-      changeFocus(Rindex,keyValue,rightLi);
+      if(onR) {
+        // onR = true;
+        changeFocus(Rindex,keyValue,rightLi);
+      } else {
+        onR = true;
+        changeFocus(Rindex,keyValue,rightLi);
+
+      }
+
     }
     if (keyValue === 38) {  // 按上
       // onR?changeFocus(Rindex,keyValue,rightLi):changeFocus(Lindex,keyValue,leftLi)
       if(onR) {
         Rindex>=3?Rindex-=3:Rindex;
+        changeFocus(Rindex,keyValue,rightLi)
 
       } else {
         changeFocus(Lindex,keyValue,leftLi)
@@ -84,16 +106,16 @@ window.onload = function () {
 
 
 
-var t = 0;  // ul的top
-// var h = rightLi[0].clientHeight;  // 每个li的高度
-
-// 原比例
-var scale1 = rightContent.clientHeight / rightMenu.clientHeight;
-// 自定义缩小比列
-var scale2 = myScroll.clientHeight / rightContent.clientHeight;
-var h1 = myScroll.clientHeight * scale1;
-//  滚动条的高度
-myScrollBar.style.height = h1 + 'px';
+// var t = 0;  // ul的top
+// // var h = rightLi[0].clientHeight;  // 每个li的高度
+//
+// // 原比例
+// var scale1 = rightContent.clientHeight / rightMenu.clientHeight;
+// // 自定义缩小比列
+// var scale2 = myScroll.clientHeight / rightContent.clientHeight;
+// var h1 = myScroll.clientHeight * scale1;
+// //  滚动条的高度
+// myScrollBar.style.height = h1 + 'px';
 
 // 移动菜单
 function moveUl() {

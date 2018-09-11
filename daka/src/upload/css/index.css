@@ -142,24 +142,37 @@ html, body {
     right: 4rem;
     top: -1rem; }
 
+.Btn {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 4px;
+  border: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: block;
+  font-size: 18px;
+  height: 41px;
+  outline: 0;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  color: #fff;
+  background-color: #26a2ff;
+  width: 100%; }
+
+.preBtn {
+  margin-top: 1rem; }
+
 .csv_file {
   display: block; }
 
 .up {
   position: absolute;
   z-index: 50;
-  top: 8rem;
+  top: 5rem;
   left: 1rem;
   width: 90%; }
-
-.el-message-box {
-  width: 90%; }
-
-.el-icon-close-tip {
-  display: none !important; }
-
-.upload-demo {
-  text-align: center; }
 
 .Vbox {
   position: fixed;

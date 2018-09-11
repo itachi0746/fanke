@@ -69,6 +69,40 @@ html, body {
   }
 }
 
+.Btn {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 4px;
+  border: 0;
+  box-sizing: border-box;
+  //color: inherit;
+  display: block;
+  font-size: 18px;
+  height: 41px;
+  outline: 0;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  color: #fff;
+  background-color: #26a2ff;
+  width: 100%;
+}
+.preBtn {
+  margin-top: 1rem;
+}
+//
+//.UpBtn:after {
+//  background-color: #000;
+//  content: " ";
+//  opacity: 0;
+//  top: 0;
+//  right: 0;
+//  bottom: 0;
+//  left: 0;
+//  position: absolute;
+//}
+
 .csv_file {
   display: block;
 }
@@ -76,22 +110,9 @@ html, body {
 .up {
   position: absolute;
   z-index: 50;
-  top: 8rem;
+  top: 5rem;
   left: 1rem;
   width: 90%;
-}
-
-.el-message-box {
-  width: 90%;
-}
-
-.el-icon-close-tip {
-  display: none!important;
-}
-
-.upload-demo {
-  text-align: center;
-
 }
 
 .Vbox {
