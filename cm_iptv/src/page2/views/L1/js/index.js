@@ -11,37 +11,79 @@ var Lindex = 0;  // 左菜单下标
 var onR = true;  // 焦点是否在右菜单
 
 
-// 焦点切换(当前有焦点的元素的下标,键值,数组)
-var changeFocus = function (nowFocus,keyValue,arr)  {
-  var all = arr.length;
-  if(onR) {
-    if (keyValue === 39) {  // 按右
-      nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
-    }
-  } else {
-    if (keyValue === 38) {  // 按上
-      nowFocus <= 0 ? nowFocus = all - 1 : nowFocus--;
-    }
-    if (keyValue === 40) {  // 按下
-      nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
-    }
-    leftLi[0].css('background','');
-    Lindex = nowFocus;
-    arr[nowFocus].focus();
+// 焦点切换(当前有焦点的元素的下标,键值,数组)  38 40 37 39 | 38 40 37 39
+// var changeFocus = function (nowFocus, keyValue, arr) {
+//   var all = arr.length;
+//   if (onR) {
+//     if (keyValue === 39) {  // 按右
+//       nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
+//     }
+//   } else {
+//     if (keyValue === 38) {  // 按上
+//       nowFocus <= 0 ? nowFocus = all - 1 : nowFocus--;
+//     }
+//     if (keyValue === 40) {  // 按下
+//       nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
+//     }
+//     leftLi[0].css('background', '');
+//     Lindex = nowFocus;
+//     arr[nowFocus].focus();
+//
+//   }
+// };
 
+var changeFocusL = function (nowFocus, keyValue, arr) {
+  var all = arr.length;
+
+  if (keyValue === 39) {  // 按右
+    Lindex = nowFocus;
+    rightLi[0].focus();
+    onR = true;
+    return
   }
 
+  if (keyValue === 38) {  // 按上
+    nowFocus <= 0 ? nowFocus = all - 1 : nowFocus--;
+  }
+  if (keyValue === 40) {  // 按下
+    nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
+  }
+  $(leftLi[0]).removeClass('LActive');
+  Lindex = nowFocus;
+  arr[nowFocus].focus();
 
-  // if(onR) {
-  //   Rindex = nowFocus;
-  //   arr[nowFocus].focus();
-  //   moveUl()
-  // } else {
-  //   // $(leftLi[Lindex]).find('.is-active').removeClass('show');
-  //   leftLi[0].css('backgroundImage','');
-  //   Lindex = nowFocus;
-  //   arr[nowFocus].focus();
-  // }
+};
+var changeFocusR = function (nowFocus, keyValue, arr) {
+  var all = arr.length;
+
+  if (keyValue === 39) {  // 按右
+    nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
+  }
+  if (keyValue === 37) {  // 按左
+    if (nowFocus === 0 || nowFocus === 3) {
+      onR = false;
+      // changeFocus(Lindex,keyValue,leftLi);
+      leftLi[Lindex].focus();
+      return
+    } else {
+      nowFocus <= 0 ? nowFocus = all - 1 : nowFocus--;
+      // arr[nowFocus].focus();
+      // changeFocus(Rindex, keyValue, rightLi);
+    }
+  }
+
+  if (keyValue === 38) {  // 按上
+    nowFocus >= 3 ? nowFocus -= 3 : nowFocus;
+    // arr[nowFocus].focus();
+    // changeFocus(Rindex, keyValue, rightLi)
+  }
+  if (keyValue === 40) {  // 按下
+    nowFocus < 3 ? nowFocus += 3 : nowFocus;
+    // arr[nowFocus].focus();
+  }
+  // leftLi[0].removeClass('LActive');
+  Rindex = nowFocus;
+  arr[nowFocus].focus();
 
 };
 
@@ -56,54 +98,19 @@ window.onload = function () {
     keyEvent = keyEvent ? keyEvent : window.event;
     var keyValue = keyEvent.which ? keyEvent.which : keyEvent.keyCode;
     console.log(keyValue);
-// return true;
+    onR?changeFocusR(Rindex,keyValue,rightLi):changeFocusL(Lindex,keyValue,leftLi);
 
-    if (keyValue === 37) {  // 按左
-      if(onR) {
-        if(Rindex===0||Rindex===3) {
-          onR = false;
-          changeFocus(Lindex,keyValue,leftLi);
-        } else {
-          changeFocus(Rindex,keyValue,rightLi);
-        }
-      }
-
-
-    }
-    if (keyValue === 39) {  // 按右
-      if(onR) {
-        // onR = true;
-        changeFocus(Rindex,keyValue,rightLi);
-      } else {
-        onR = true;
-        changeFocus(Rindex,keyValue,rightLi);
-
-      }
-
-    }
-    if (keyValue === 38) {  // 按上
-      // onR?changeFocus(Rindex,keyValue,rightLi):changeFocus(Lindex,keyValue,leftLi)
-      if(onR) {
-        Rindex>=3?Rindex-=3:Rindex;
-        changeFocus(Rindex,keyValue,rightLi)
-
-      } else {
-        changeFocus(Lindex,keyValue,leftLi)
-      }
-    }
-    if (keyValue === 40) {  // 按下
-      onR?changeFocus(Rindex,keyValue,rightLi):changeFocus(Lindex,keyValue,leftLi)
-
-    }
-
-    if (keyValue === 13) {
+    if (keyValue === 13) {  // 按OK
       nextPage(Rindex)
+    }
+    if (keyValue === 71) {  // 按返回
+      // nextPage(Rindex)
+      window.location.back();
     }
   }
 
 
 };
-
 
 
 // var t = 0;  // ul的top
@@ -127,7 +134,7 @@ function moveUl() {
   console.log(rightMenu.style.top);
   myScrollBar.style.top = st * scale1 * scale2 + 'px';  // 缩小后的
   // myScrollBar.style.top = st * scale1 + 'px';  // 缩小前的
-  console.log('myScrollBar',myScrollBar.style.top);
+  console.log('myScrollBar', myScrollBar.style.top);
 
 }
 
