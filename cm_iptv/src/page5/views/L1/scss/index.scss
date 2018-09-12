@@ -54,6 +54,10 @@ body {
   text-align: center;
   line-height: 58px;
 }
+.play:focus {
+  background: #281479;
+  outline: none;
+}
 
 .right-tab {
   width: 290px;
@@ -65,7 +69,18 @@ body {
     height: 220px;
     margin-bottom: 10px;
     position: relative;
+    .li-div {
+      position: absolute;
+      top: 160px;
+      left: 16px;
+    }
+    .p1 {
+      @include sc(22.8px,#8a98ff);
+    }
+    .p2 {
+      @include sc(20px,#8a98ff);
 
+    }
   }
   li:focus {
     outline: none;

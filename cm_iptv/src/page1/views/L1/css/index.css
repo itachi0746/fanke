@@ -114,12 +114,7 @@ body {
     overflow: hidden;
     width: 1520px;
     position: relative;
-    left: 0;
-    -webkit-transition: all .3s;
-    -moz-transition: all .3s;
-    -ms-transition: all .3s;
-    -o-transition: all .3s;
-    transition: all .3s; }
+    left: 0; }
   .tab-menu li {
     width: 302px;
     height: 102px;

@@ -259,4 +259,7 @@ body {
     .tab-content .box5 .li4 {
       background-color: #d6b35f; }
 
+*:focus {
+  border: 3px solid #fff; }
+
 /*# sourceMappingURL=index.css.map */

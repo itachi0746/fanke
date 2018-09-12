@@ -12,32 +12,13 @@ var onR = true;  // 焦点是否在右菜单
 
 
 // 焦点切换(当前有焦点的元素的下标,键值,数组)  38 40 37 39 | 38 40 37 39
-// var changeFocus = function (nowFocus, keyValue, arr) {
-//   var all = arr.length;
-//   if (onR) {
-//     if (keyValue === 39) {  // 按右
-//       nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
-//     }
-//   } else {
-//     if (keyValue === 38) {  // 按上
-//       nowFocus <= 0 ? nowFocus = all - 1 : nowFocus--;
-//     }
-//     if (keyValue === 40) {  // 按下
-//       nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
-//     }
-//     leftLi[0].css('background', '');
-//     Lindex = nowFocus;
-//     arr[nowFocus].focus();
-//
-//   }
-// };
 
 var changeFocusL = function (nowFocus, keyValue, arr) {
   var all = arr.length;
 
   if (keyValue === 39) {  // 按右
     Lindex = nowFocus;
-    rightLi[0].focus();
+    rightLi[Rindex].focus();
     onR = true;
     return
   }
@@ -62,37 +43,28 @@ var changeFocusR = function (nowFocus, keyValue, arr) {
   if (keyValue === 37) {  // 按左
     if (nowFocus === 0 || nowFocus === 3) {
       onR = false;
-      // changeFocus(Lindex,keyValue,leftLi);
       leftLi[Lindex].focus();
       return
     } else {
       nowFocus <= 0 ? nowFocus = all - 1 : nowFocus--;
-      // arr[nowFocus].focus();
-      // changeFocus(Rindex, keyValue, rightLi);
     }
   }
 
   if (keyValue === 38) {  // 按上
     nowFocus >= 3 ? nowFocus -= 3 : nowFocus;
-    // arr[nowFocus].focus();
-    // changeFocus(Rindex, keyValue, rightLi)
   }
   if (keyValue === 40) {  // 按下
     nowFocus < 3 ? nowFocus += 3 : nowFocus;
-    // arr[nowFocus].focus();
   }
-  // leftLi[0].removeClass('LActive');
   Rindex = nowFocus;
   arr[nowFocus].focus();
-
+  // moveUl(nowFocus,rightMenu)
 };
 
 window.onload = function () {
   // onload中  图片已加载完成
   rightLi[Rindex].focus();
-  // $(leftLi[Lindex]).find('.is-active').toggleClass('show');
-  // rightLi[rightLi.length - 1].style.marginBottom = 0 + 'px';
-  // console.log(rightLi)
+
 
   window.document.onkeydown = function (keyEvent) {
     keyEvent = keyEvent ? keyEvent : window.event;
@@ -125,23 +97,15 @@ window.onload = function () {
 // myScrollBar.style.height = h1 + 'px';
 
 // 移动菜单
-function moveUl() {
+function moveUl(i,ul) {
 
-  var st = rightContent.scrollTop;
-  rightContent.scrollTop = '0px';  // scrollTop跟top同时用会使位置错误, 先把scrollTop归0, 再使用top移动元素
-  rightMenu.style.top = -st + 'px';
-  console.log(st);
-  console.log(rightMenu.style.top);
-  myScrollBar.style.top = st * scale1 * scale2 + 'px';  // 缩小后的
-  // myScrollBar.style.top = st * scale1 + 'px';  // 缩小前的
-  console.log('myScrollBar', myScrollBar.style.top);
 
 }
 
 // 页面跳转
-function nextPage(index) {
-  window.location.href = '../L3/index.html?' + 'id=' + index;
-}
+// function nextPage(index) {
+//   window.location.href = '../L3/index.html?' + 'id=' + index;
+// }
 
 
 

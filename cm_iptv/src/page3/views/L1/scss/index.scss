@@ -2,7 +2,6 @@
 @import "../../../../styles/mixin";
 
 body {
-  //background-image: url("../../../assets/backbg.png");
   background-image: url("../assets/backbg.png");
   color: #fff;
   overflow: hidden;
@@ -201,4 +200,8 @@ body {
       background-color: #d6b35f;
     }
   }
+}
+
+*:focus {
+  border: 3px solid #fff;
 }

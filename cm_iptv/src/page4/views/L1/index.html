@@ -5,7 +5,8 @@
   <meta name="page-view-size" content="1280*720"/>
   <title>一级页面</title>
   <link href="./css/index.css" rel="stylesheet">
-  <!--<link href="views/L1/css/index.css" rel="stylesheet">-->
+  <script src="../../../plugins/jquery-1.8.2.min.js"></script>
+
 </head>
 <body>
 <div class="main">
@@ -33,7 +34,7 @@
     <p class="p1">欢迎下榻</p>
     <p class="p2">
       <span>希尔顿酒店</span>
-      <span class="btn" tabindex="-1"></span>
+      <span class="btn" id="btn" tabindex="-1"></span>
     </p>
   </div>
   <!--欢迎语 结束-->
@@ -58,7 +59,7 @@
 
 <!--底部tab 开始-->
 <div class="btm-tab">
-  <ul>
+  <ul class="btm-ul" id="btm-ul">
     <li class="l1" tabindex="-1">
       <p class="p1">酒店介绍</p>
       <p class="p2">Hotel Introduction</p>
@@ -84,7 +85,5 @@
 <!--底部tab 结束-->
 
 </body>
-<script>
-
-</script>
+<script src="js/index.js"></script>
 </html>

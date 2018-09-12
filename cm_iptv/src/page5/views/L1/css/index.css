@@ -7,7 +7,7 @@ body, div, img, span, header, footer, nav, section, aside, article, ul, dl, dt, 
   text-decoration: none;
   border: none;
   font-weight: normal;
-  font-family: SimHei,"榛戜綋", Arial, sans-serif; }
+  font-family: SimHei,"黑体", Arial, sans-serif; }
   body:hover, div:hover, img:hover, span:hover, header:hover, footer:hover, nav:hover, section:hover, aside:hover, article:hover, ul:hover, dl:hover, dt:hover, dd:hover, li:hover, a:hover, p:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, i:hover, b:hover, textarea:hover, button:hover, input:hover, select:hover, figure:hover, figcaption:hover {
     outline: none; }
 
@@ -124,6 +124,10 @@ body {
   text-align: center;
   line-height: 58px; }
 
+.play:focus {
+  background: #281479;
+  outline: none; }
+
 .right-tab {
   width: 290px;
   position: absolute;
@@ -134,6 +138,16 @@ body {
     height: 220px;
     margin-bottom: 10px;
     position: relative; }
+    .right-tab li .li-div {
+      position: absolute;
+      top: 160px;
+      left: 16px; }
+    .right-tab li .p1 {
+      font-size: 22.8px;
+      color: #8a98ff; }
+    .right-tab li .p2 {
+      font-size: 20px;
+      color: #8a98ff; }
   .right-tab li:focus {
     outline: none;
     width: 304px;
