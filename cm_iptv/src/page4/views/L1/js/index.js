@@ -36,7 +36,9 @@ var changeFocusT = function (keyValue) {
 
 
 window.onload = function () {
-  // onload中  图片已加载完成
+    // alert(window.Navigation)
+
+    // onload中  图片已加载完成
   allLi[index].focus();
 
   window.document.onkeydown = function (keyEvent) {
@@ -48,6 +50,11 @@ window.onload = function () {
     if (keyValue === 13) {  // 按ok
       // nextPage(index)
     }
+      if (keyValue === 8) {  // 按返回
+          // nextPage(Rindex)
+          window.location.back(-1);
+
+      }
   }
 };
 

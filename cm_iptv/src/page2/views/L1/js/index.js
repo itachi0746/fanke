@@ -1,6 +1,10 @@
+
+
 // var rightContent = document.getElementById('right-content');
 var leftMenu = document.getElementById('left-ul');
 var rightMenu = document.getElementById('right-ul');
+var bb = document.getElementById('bb');
+console.log(bb)
 
 var leftLi = leftMenu.getElementsByTagName('li');
 var rightLi = rightMenu.getElementsByTagName('li');
@@ -62,24 +66,35 @@ var changeFocusR = function (nowFocus, keyValue, arr) {
 };
 
 window.onload = function () {
+
+// var n = new Navigation();
+// n.disableDefaultNavigation();
   // onload中  图片已加载完成
-  rightLi[Rindex].focus();
+  // rightLi[Rindex].focus();
+    bb.focus();
 
 
   window.document.onkeydown = function (keyEvent) {
     keyEvent = keyEvent ? keyEvent : window.event;
     var keyValue = keyEvent.which ? keyEvent.which : keyEvent.keyCode;
-    console.log(keyValue);
-    onR?changeFocusR(Rindex,keyValue,rightLi):changeFocusL(Lindex,keyValue,leftLi);
+    // alert('onkeydown',keyValue);
+    // onR?changeFocusR(Rindex,keyValue,rightLi):changeFocusL(Lindex,keyValue,leftLi);
 
     if (keyValue === 13) {  // 按OK
       nextPage(Rindex)
     }
-    if (keyValue === 71) {  // 按返回
+    if (keyValue === 8) {  // 按返回
       // nextPage(Rindex)
-      window.location.back();
+
+        // window.location.back(-1);
     }
-  }
+  };
+
+    // window.document.onkeypress = function (keyEvent) {
+    //     keyEvent = keyEvent ? keyEvent : window.event;
+    //     var keyValue = keyEvent.which ? keyEvent.which : keyEvent.keyCode;
+    //     // alert('onkeypress',keyValue);
+    // }
 
 
 };

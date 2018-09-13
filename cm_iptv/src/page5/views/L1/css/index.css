@@ -11,6 +11,9 @@ body, div, img, span, header, footer, nav, section, aside, article, ul, dl, dt, 
   body:hover, div:hover, img:hover, span:hover, header:hover, footer:hover, nav:hover, section:hover, aside:hover, article:hover, ul:hover, dl:hover, dt:hover, dd:hover, li:hover, a:hover, p:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, i:hover, b:hover, textarea:hover, button:hover, input:hover, select:hover, figure:hover, figcaption:hover {
     outline: none; }
 
+a:focus {
+  outline: none; }
+
 img {
   vertical-align: middle; }
 

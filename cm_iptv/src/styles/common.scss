@@ -13,6 +13,10 @@ body, div, img, span, header, footer, nav, section, aside, article, ul, dl, dt, 
   }
 }
 
+a:focus {
+  outline: none;
+}
+
 img {
   vertical-align: middle;
 }

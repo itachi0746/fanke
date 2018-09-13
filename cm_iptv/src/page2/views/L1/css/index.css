@@ -7,9 +7,12 @@ body, div, img, span, header, footer, nav, section, aside, article, ul, dl, dt, 
   text-decoration: none;
   border: none;
   font-weight: normal;
-  font-family: SimHei,"榛戜綋", Arial, sans-serif; }
+  font-family: SimHei,"黑体", Arial, sans-serif; }
   body:hover, div:hover, img:hover, span:hover, header:hover, footer:hover, nav:hover, section:hover, aside:hover, article:hover, ul:hover, dl:hover, dt:hover, dd:hover, li:hover, a:hover, p:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, i:hover, b:hover, textarea:hover, button:hover, input:hover, select:hover, figure:hover, figcaption:hover {
     outline: none; }
+
+a:focus {
+  outline: none; }
 
 img {
   vertical-align: middle; }
@@ -105,21 +108,22 @@ body {
   .main-content .tab {
     width: 208px;
     float: left; }
-    .main-content .tab li {
+    .main-content .tab a {
       width: 208px;
       height: 66px;
-      margin-bottom: 31px; }
-      .main-content .tab li div {
+      margin-bottom: 31px;
+      float: left; }
+      .main-content .tab a div {
         width: 208px;
         height: 66px;
         font-size: 24px;
         color: #fff; }
-        .main-content .tab li div span {
+        .main-content .tab a div span {
           position: relative;
           top: 3px; }
-        .main-content .tab li div p {
+        .main-content .tab a div p {
           padding: 17px 0 0 35px; }
-    .main-content .tab li:focus {
+    .main-content .tab a:focus {
       background-image: url("../img/bg_nav_sel.png");
       outline: none; }
     .main-content .tab .tab-btm p {
@@ -143,18 +147,18 @@ body {
       position: relative;
       left: 0;
       width: 1320px; }
-    .tab-content .box li {
+    .tab-content .box a {
       margin: 0 23px 23px 0;
       float: left; }
-      .tab-content .box li p {
+      .tab-content .box a p {
         line-height: 1.2; }
-      .tab-content .box li .p1 {
+      .tab-content .box a .p1 {
         margin: 24px 0 0 24px; }
-      .tab-content .box li .p2 {
+      .tab-content .box a .p2 {
         font-size: 26px;
         color: #fff;
         margin-left: 24px; }
-      .tab-content .box li .p3 {
+      .tab-content .box a .p3 {
         font-size: 36px;
         color: #fff;
         margin-left: 24px; }
@@ -164,10 +168,10 @@ body {
     .tab-content .box .s-box {
       width: 236px;
       height: 236px; }
-    .tab-content .box .b-box:focus {
+    .tab-content .box a.b-box:focus {
       background-image: url("../img/img_card1_sel.png");
       outline: none; }
-    .tab-content .box .s-box:focus {
+    .tab-content .box a.s-box:focus {
       background-image: url("../img/img_card2_sel.png");
       outline: none; }
   .tab-content .tab-btm {

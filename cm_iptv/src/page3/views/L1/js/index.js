@@ -1,6 +1,7 @@
 // var rightContent = document.getElementById('right-content');
 var LUl = document.getElementById('left-ul');
 var RUl = document.getElementById('right-ul');
+var aaa = document.getElementById('aaa');
 var box = $('.box');
 
 var leftLi = LUl.getElementsByTagName('li');
@@ -118,7 +119,14 @@ var changeFocusR = function (nowFocus, kv, arr) {
 
 window.onload = function () {
   // onload中  图片已加载完成
-  box[Boxindex].focus();
+  //   var a = new Navigation();
+  //   alert(a)
+  //   alert(JSON.stringify(a));
+aaa.focus()
+
+  // box[Boxindex].focus();
+
+
   // $(leftLi[Lindex]).find('.is-active').toggleClass('show');
   // rightLi[rightLi.length - 1].style.marginBottom = 0 + 'px';
   // console.log(rightLi)
@@ -127,15 +135,17 @@ window.onload = function () {
     keyEvent = keyEvent ? keyEvent : window.event;
     var keyValue = keyEvent.which ? keyEvent.which : keyEvent.keyCode;
     console.log(keyValue);
-    onR?changeFocusR(Rindex,keyValue,rightLi):changeFocusL(Lindex,keyValue,leftLi);
+      // alert(keyValue)
+
+      // onR?changeFocusR(Rindex,keyValue,rightLi):changeFocusL(Lindex,keyValue,leftLi);
 
     if (keyValue === 13) {  // 按OK
-      nextPage(Rindex)
-    }
-    if (keyValue === 71) {  // 按返回
       // nextPage(Rindex)
-      window.location.back();
     }
+      if (keyValue === 8 || keyValue === '8') {  // 按返回
+          // nextPage(Rindex)
+          window.location.back(-1);
+      }
   }
 
 

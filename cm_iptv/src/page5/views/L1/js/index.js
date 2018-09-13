@@ -123,10 +123,10 @@ window.onload = function () {
     if (keyValue === 13) {  // 按OK
       // nextPage(Rindex)
     }
-    if (keyValue === 71) {  // 按返回
-      // nextPage(Rindex)
-      window.location.back();
-    }
+      if (keyValue === 8) {  // 按返回
+          // nextPage(Rindex)
+          window.location.back(-1);
+      }
   }
 
 

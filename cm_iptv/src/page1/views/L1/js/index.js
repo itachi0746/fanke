@@ -1,5 +1,6 @@
 var UL = document.getElementById('menu');
 var allLi = UL.getElementsByTagName('li');
+var a1 = document.getElementById('a1');
 // console.log(allLi);
 
 
@@ -19,22 +20,28 @@ var changeFocus = function (nowFocus,keyValue,arr)  {
   moveUl(index,allLi)
 };
 
-
 window.onload = function () {
   // onload中  图片已加载完成
-  allLi[index].focus();
+  // allLi[index].focus();
+  //   var n = new Navigation();
+  //   n.disableDefaultNavigation();
+    a1.focus();
   // console.log('p1l100')
 
   window.document.onkeydown = function (keyEvent) {
     keyEvent = keyEvent ? keyEvent : window.event;
     var keyValue = keyEvent.which ? keyEvent.which : keyEvent.keyCode;
     console.log(keyValue)
-    changeFocus(index,keyValue,allLi)
+    // changeFocus(index,keyValue,allLi)
 // return true;
 
     if (keyValue === 13) {
       // nextPage(index)
     }
+      if (keyValue === 8) {  // 按返回
+          // nextPage(Rindex)
+          window.location.back(-1);
+      }
   }
 };
 
