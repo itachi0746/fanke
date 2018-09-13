@@ -1,0 +1,79 @@
+@import "../../styles/common";
+@import "../../styles/mixin";
+
+
+html, body {
+  height: 100%;
+  //background-color: #efefef;
+  position: relative;
+  background: #CE2729;
+}
+
+
+.list {
+  position: relative;
+  top: 2rem;
+  background-attachment: initial;
+  background-clip: initial;
+  background-color: initial;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#C42B2B), color-stop(0.01, rgba(196, 43, 43, 0.8)), color-stop(0.15, rgba(232, 65, 68, 0)), color-stop(0.84, rgba(232, 65, 68, 0)), color-stop(0.85, rgba(232, 65, 68, 0.0588235)), to(rgba(196, 43, 43, 0.8)));
+  background-origin: initial;
+  background-position-x: initial;
+  background-position-y: initial;
+  background-repeat-x: initial;
+  background-repeat-y: initial;
+  background-size: initial;
+  padding-bottom: 4%;
+  //padding-left: 0px;
+  //padding-right: 0px;
+  //padding-top: 4%;
+}
+
+.title {
+  width: 45%;
+  text-align: center;
+
+  img {
+    width: 100%;
+  }
+}
+
+.text {
+  color: #FFF6A7;
+  font-size: 15px;
+  padding: 10px;
+
+  header {
+    font-size: 0;
+    background-color: #b52224;
+    border-radius: 10px;
+    padding: .5rem 0;
+
+    p {
+      display: inline-block;
+      width: 33%;
+      text-align: center;
+      font-size: 15px;
+
+    }
+  }
+
+}
+
+li {
+  background-color: #CE2729;
+  color: #FFF6A7;
+
+  border-radius: 10px;
+  font-size: 0;
+  //@include fj();
+  //align-items: center;
+  p {
+    display: inline-block;
+    width: 33%;
+    text-align: center;
+    font-size: 15px;
+
+  }
+
+}
