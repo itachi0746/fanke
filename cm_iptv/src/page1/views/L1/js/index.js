@@ -1,48 +1,80 @@
 var UL = document.getElementById('menu');
 var allLi = UL.getElementsByTagName('li');
-var a1 = document.getElementById('a1');
 // console.log(allLi);
-
-
 var index = 0;  // 标记当前焦点元素
 
-// 焦点切换(当前有焦点的元素的下标,键值,数组)
-var changeFocus = function (nowFocus,keyValue,arr)  {
+
+
+function keyEvent(event) {
+  event = event ? event : window.event;
+  var keyType = getKeyBoardType(event.keyCode);
+  console.log(keyType)
+
+  changeFocus(index,keyType,allLi)
+}
+
+function changeFocus (i,kt,arr)  {
   var all = arr.length;
-  if (keyValue === 37) {  // 按左
-    nowFocus <= 0 ? nowFocus = all - 1 : nowFocus--;
+  if (kt === 'LEFT') {  // 按左
+    i <= 0 ? i = all - 1 : i--;
   }
-  if (keyValue === 39) {  // 按右
-    nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
+  if (kt === 'RIGHT') {  // 按右
+    i >= all - 1 ? i = 0 : i++;
   }
-  index = nowFocus;
-  arr[nowFocus].focus();
+  index = i;
+  activeDom(index,allLi);
   moveUl(index,allLi)
-};
+}
+
+function activeDom(i,arr) {
+  for(var m=0;m<arr.length;m++) {
+    arr[m].getElementsByClassName('is-active')[0].classList.remove('show')
+
+  }
+  arr[i].getElementsByClassName('is-active')[0].classList.add('show');
+
+}
+
+
+// // 焦点切换(当前有焦点的元素的下标,键值,数组)
+// var changeFocus = function (nowFocus,keyValue,arr)  {
+//   var all = arr.length;
+//   if (keyValue === 37) {  // 按左
+//     nowFocus <= 0 ? nowFocus = all - 1 : nowFocus--;
+//   }
+//   if (keyValue === 39) {  // 按右
+//     nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
+//   }
+//   index = nowFocus;
+//   arr[nowFocus].focus();
+//   moveUl(index,allLi)
+// };
 
 window.onload = function () {
   // onload中  图片已加载完成
-  // allLi[index].focus();
-  //   var n = new Navigation();
-  //   n.disableDefaultNavigation();
-    a1.focus();
-  // console.log('p1l100')
+  allLi[index].getElementsByClassName('is-active')[0].classList.add('show');
 
-  window.document.onkeydown = function (keyEvent) {
-    keyEvent = keyEvent ? keyEvent : window.event;
-    var keyValue = keyEvent.which ? keyEvent.which : keyEvent.keyCode;
-    console.log(keyValue)
-    // changeFocus(index,keyValue,allLi)
-// return true;
+  document.onirkeypress = keyEvent;
+  document.onkeypress = keyEvent;
+  //   a1.focus();
+  // console.log(a1.dataset)
 
-    if (keyValue === 13) {
-      // nextPage(index)
-    }
-      if (keyValue === 8) {  // 按返回
-          // nextPage(Rindex)
-          window.location.back(-1);
-      }
-  }
+//   window.document.onkeydown = function (keyEvent) {
+//     keyEvent = keyEvent ? keyEvent : window.event;
+//     var keyValue = keyEvent.which ? keyEvent.which : keyEvent.keyCode;
+//     console.log(keyValue)
+//     // console.log($(':focus').attr("name"))
+//     // changeFocus(index,keyValue,allLi)
+// // return true;
+//
+//     if (keyValue === 13) {
+//       // nextPage(index)
+//     }
+//       if (keyValue === 8) {  // 按返回
+//           // nextPage(Rindex)
+//           window.location.back(-1);
+//       }
+//   }
 };
 
 

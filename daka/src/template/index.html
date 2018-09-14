@@ -37,5 +37,21 @@
     </ul>
   </div>
 <!--<div class="aa"></div>-->
+  <script>
+    var li = document.querySelectorAll('li');
+//    console.log(li);
+    for(var i=0;i<li.length;i++) {
+      // 按钮点击变色
+      li[i].ontouchstart  = function() {
+        this.style.background = '#ef6c6c'
+      };
+      li[i].ontouchend  = function() {
+        this.style.background = 'lightcoral'
+
+      };
+    }
+
+  </script>
 </body>
+
 </html>

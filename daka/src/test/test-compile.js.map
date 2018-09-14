@@ -1,1 +1,0 @@
-{"version":3,"sources":["test.js"],"names":[],"mappings":";;AAAA,SAAS,EAAT,GAAc;AACZ,MAAI,IAAI,GAAR;AACA,MAAI,IAAI,GAAR;AACD","file":"test-compile.js","sourcesContent":["function aa() {\r\n  let a = 111;\r\n  let c = 111;\r\n}"]}

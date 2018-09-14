@@ -1,8 +1,8 @@
 let config = {
   src: "src", // 要搬运的目录
   moveTo: "daka",  // 搬运去的目录
-  scss: "src/prize",  // 要编译的scss目录
-  dest: "src/prize",  // 编译scss输出的目录
+  scss: "src/template",  // 要编译的scss目录
+  dest: "src/template",  // 编译scss输出的目录
   server: "src", // 服务器根目录
   // server: "./", // 服务器根目录
   target: "index.html" // 要监视(执行)的html文件

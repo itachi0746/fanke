@@ -37,6 +37,8 @@ body {
 .tab-menu {
   position: absolute;
   top: 558px;
+  width: 103%;
+  overflow: hidden;
   ul {
     overflow: hidden;
     width: 1520px;
@@ -48,11 +50,13 @@ body {
     //-o-transition: all .3s;
     //transition: all .3s;
   //}
-  //li {
-  //  @include wh(302px,102px);
-  //  font-size: 24px;
-  //  float: left;
+  li {
+    @include wh(302px,102px);
+    font-size: 24px;
+    float: left;
     //text-align: center;
+    position: relative;
+  }
 
     a {
       @include wh(302px,102px);
@@ -61,15 +65,15 @@ body {
         float: left;
     }
 
-    a:focus {
-      outline: none;
-      .is-active {
-        display: block;
-      }
-      .no-active {
-        display: none;
-      }
-    }
+    //li:focus {
+    //  outline: none;
+    //  .is-active {
+    //    display: block;
+    //  }
+    //  .no-active {
+    //    display: none;
+    //  }
+    //}
 
     p {
       padding-left: 82px;
@@ -79,6 +83,7 @@ body {
     }
     .is-active {
       @include wh(100%,100%);
+      @include allcover;
       display: none;
     }
     .no-active {
