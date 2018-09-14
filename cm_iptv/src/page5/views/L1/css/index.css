@@ -127,9 +127,8 @@ body {
   text-align: center;
   line-height: 58px; }
 
-.play:focus {
-  background: #281479;
-  outline: none; }
+.play.active {
+  background: #281479; }
 
 .right-tab {
   width: 290px;
@@ -151,8 +150,7 @@ body {
     .right-tab li .p2 {
       font-size: 20px;
       color: #8a98ff; }
-  .right-tab li:focus {
-    outline: none;
+  .right-tab li.active {
     width: 304px;
     height: 226px;
     border: 3px solid #ffffff;
@@ -194,8 +192,7 @@ body {
         white-space: nowrap; }
       .btm-tab li .li-box img {
         margin-right: 5px; }
-  .btm-tab li:focus {
-    outline: none;
+  .btm-tab li.active {
     background: url("../img/mask_tab_btn.png") no-repeat; }
 
 /*# sourceMappingURL=index.css.map */

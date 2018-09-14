@@ -14,6 +14,11 @@ function keyEvent(event) {
 }
 
 function changeFocus (i,kt,arr)  {
+  if(kt === 'BACK') {
+    //todo
+    location.href = 'http://211.139.180.160:8090/GDEpg/epg/login!index.action?itvAccount='+ GetQueryString('itvAccount');
+    return
+  }
   var all = arr.length;
   if (kt === 'LEFT') {  // 按左
     i <= 0 ? i = all - 1 : i--;
@@ -56,25 +61,7 @@ window.onload = function () {
 
   document.onirkeypress = keyEvent;
   document.onkeypress = keyEvent;
-  //   a1.focus();
-  // console.log(a1.dataset)
 
-//   window.document.onkeydown = function (keyEvent) {
-//     keyEvent = keyEvent ? keyEvent : window.event;
-//     var keyValue = keyEvent.which ? keyEvent.which : keyEvent.keyCode;
-//     console.log(keyValue)
-//     // console.log($(':focus').attr("name"))
-//     // changeFocus(index,keyValue,allLi)
-// // return true;
-//
-//     if (keyValue === 13) {
-//       // nextPage(index)
-//     }
-//       if (keyValue === 8) {  // 按返回
-//           // nextPage(Rindex)
-//           window.location.back(-1);
-//       }
-//   }
 };
 
 

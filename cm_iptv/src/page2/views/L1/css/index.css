@@ -108,22 +108,22 @@ body {
   .main-content .tab {
     width: 208px;
     float: left; }
-    .main-content .tab a {
+    .main-content .tab li {
       width: 208px;
       height: 66px;
       margin-bottom: 31px;
       float: left; }
-      .main-content .tab a div {
+      .main-content .tab li div {
         width: 208px;
         height: 66px;
         font-size: 24px;
         color: #fff; }
-        .main-content .tab a div span {
+        .main-content .tab li div span {
           position: relative;
           top: 3px; }
-        .main-content .tab a div p {
+        .main-content .tab li div p {
           padding: 17px 0 0 35px; }
-    .main-content .tab a:focus {
+    .main-content .tab li.active {
       background-image: url("../img/bg_nav_sel.png");
       outline: none; }
     .main-content .tab .tab-btm p {
@@ -147,18 +147,18 @@ body {
       position: relative;
       left: 0;
       width: 1320px; }
-    .tab-content .box a {
+    .tab-content .box li {
       margin: 0 23px 23px 0;
       float: left; }
-      .tab-content .box a p {
+      .tab-content .box li p {
         line-height: 1.2; }
-      .tab-content .box a .p1 {
+      .tab-content .box li .p1 {
         margin: 24px 0 0 24px; }
-      .tab-content .box a .p2 {
+      .tab-content .box li .p2 {
         font-size: 26px;
         color: #fff;
         margin-left: 24px; }
-      .tab-content .box a .p3 {
+      .tab-content .box li .p3 {
         font-size: 36px;
         color: #fff;
         margin-left: 24px; }
@@ -168,12 +168,10 @@ body {
     .tab-content .box .s-box {
       width: 236px;
       height: 236px; }
-    .tab-content .box a.b-box:focus {
-      background-image: url("../img/img_card1_sel.png");
-      outline: none; }
-    .tab-content .box a.s-box:focus {
-      background-image: url("../img/img_card2_sel.png");
-      outline: none; }
+    .tab-content .box .b-box.active {
+      background-image: url("../img/img_card1_sel.png"); }
+    .tab-content .box .s-box.active {
+      background-image: url("../img/img_card2_sel.png"); }
   .tab-content .tab-btm {
     padding-left: 83px; }
 

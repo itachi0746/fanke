@@ -47,19 +47,21 @@ body {
     height: 100px;
     line-height: 100px;
     overflow: hidden;
+    position: relative;
     span {
       float: left;
-
+      position: relative;
+      z-index: 10;
     }
     .btn {
+      z-index: 5;
       width: 100px;
       height: 100px;
       display: inline-block;
       background: url("../img/btn_play_unsel.png") no-repeat;
     }
-    .btn:focus {
+    .btn.active {
       background: url("../img/btn_play_sel.png") no-repeat;
-      outline: none;
     }
   }
 }
@@ -107,8 +109,7 @@ body {
       margin-top: 48px;
     }
   }
-  li:focus {
-    outline: none;
+  li.active {
     border: 3px solid #f0eceb;
     margin-top: -5px;
   }

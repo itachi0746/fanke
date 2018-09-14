@@ -1,5 +1,6 @@
 
         onload = function () {
+            
             ai.post({
                 url: 'Hotel/GetHotelCategoryList',
                 data: {

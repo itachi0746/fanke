@@ -78,12 +78,15 @@ body {
     ul {
       margin: 24px 0;
     }
-    a {
+    li {
       height: 60px;
       width: 180px;
       text-align: center;
       line-height: 60px;
       display: inline-block;
+    }
+    li.active {
+      border: 3px solid #ffffff;
     }
     .bg2 {
       position: absolute;
@@ -95,7 +98,6 @@ body {
 
     }
   }
-
 }
 
 .tab-content {
@@ -187,6 +189,7 @@ body {
         margin-top: 20px;
       }
     }
+
     .li1 {
       background-color: #089abd;
     }
@@ -201,7 +204,6 @@ body {
     }
   }
 }
-
-*:focus {
-  border: 3px solid #fff;
+.active {
+  border: 3px solid #ffffff!important;
 }

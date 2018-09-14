@@ -116,17 +116,20 @@ body {
     font-size: 54px;
     height: 100px;
     line-height: 100px;
-    overflow: hidden; }
+    overflow: hidden;
+    position: relative; }
     .welcome .p2 span {
-      float: left; }
+      float: left;
+      position: relative;
+      z-index: 10; }
     .welcome .p2 .btn {
+      z-index: 5;
       width: 100px;
       height: 100px;
       display: inline-block;
       background: url("../img/btn_play_unsel.png") no-repeat; }
-    .welcome .p2 .btn:focus {
-      background: url("../img/btn_play_sel.png") no-repeat;
-      outline: none; }
+    .welcome .p2 .btn.active {
+      background: url("../img/btn_play_sel.png") no-repeat; }
 
 .wifi {
   margin-top: 57px;
@@ -165,8 +168,7 @@ body {
       padding-left: 107px; }
     .btm-tab li .p1 {
       margin-top: 48px; }
-  .btm-tab li:focus {
-    outline: none;
+  .btm-tab li.active {
     border: 3px solid #f0eceb;
     margin-top: -5px; }
   .btm-tab .l1 {

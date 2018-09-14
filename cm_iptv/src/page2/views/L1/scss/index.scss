@@ -37,7 +37,7 @@ body {
     ul {
       //overflow: hidden;
     }
-    a {
+    li {
       @include wh(208px,66px);
       margin-bottom: 31px;
       float: left;
@@ -56,7 +56,7 @@ body {
       }
 
     }
-    a:focus {
+    li.active {
       background-image: url('../img/bg_nav_sel.png');
       outline: none;
     }
@@ -89,7 +89,7 @@ body {
       left: 0;
       width: 1320px;
     }
-    a {
+    li {
       margin: 0 23px 23px 0;
       float: left;
       p {
@@ -117,14 +117,12 @@ body {
     .s-box {
       @include wh(236px,236px);
     }
-    a.b-box:focus {
+    .b-box.active {
       background-image: url('../img/img_card1_sel.png');
-      outline: none;
 
     }
-    a.s-box:focus {
+    .s-box.active {
       background-image: url('../img/img_card2_sel.png');
-      outline: none;
 
     }
   }

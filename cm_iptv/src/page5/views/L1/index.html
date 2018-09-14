@@ -5,7 +5,7 @@
   <meta name="page-view-size" content="1280*720"/>
   <title>一级页面</title>
   <link href="./css/index.css" rel="stylesheet">
-  <script src="../../../plugins/jquery-1.8.2.min.js"></script>
+  <!--<script src="../../../plugins/jquery-1.8.2.min.js"></script>-->
 </head>
 <body>
 <!--遮罩-->
@@ -35,13 +35,13 @@
     <p class="p2">Welcome to W Hotel</p>
   </div>
   <!--欢迎语 结束-->
-  <div class="play" id="play" tabindex="-1">
+  <div class="play" id="play">
     播放影片
   </div>
 
   <div class="right-tab">
     <ul id="R-ul">
-      <li class="l1" tabindex="-1">
+      <li class="l1 active">
         <img class="mask-l1" src="img/mask_about_hotel.png" alt="">
         <div class="li-div">
           <p class="p1">
@@ -52,7 +52,7 @@
           </p>
         </div>
       </li>
-      <li class="l2" tabindex="-1">
+      <li class="l2">
         <img class="mask-l2" src="img/mask_my_room.png" alt="">
         <div class="li-div">
           <p class="p1">
@@ -71,7 +71,7 @@
 <!--底部tab 开始-->
 <div class="btm-tab">
   <ul id="B-ul">
-    <li tabindex="-1">
+    <li>
       <div class="li-box">
         <img class="left" src="img/icon_service.png" alt="">
         <div class="left">
@@ -80,7 +80,7 @@
         </div>
       </div>
     </li>
-    <li tabindex="-1">
+    <li>
       <div class="li-box">
         <img class="left" src="img/icon_shopping.png" alt="">
         <div class="left">
@@ -89,7 +89,7 @@
         </div>
       </div>
     </li>
-    <li tabindex="-1">
+    <li>
       <div class="li-box">
         <img class="left" src="img/icon_entertmain.png" alt="">
         <div class="left">
@@ -98,7 +98,7 @@
         </div>
       </div>
     </li>
-    <li tabindex="-1">
+    <li>
       <div class="li-box">
         <img class="left" src="img/icon_business.png" alt="">
         <div class="left">
@@ -112,5 +112,6 @@
 <!--底部tab 结束-->
 
 </body>
+<script src="js/utils.js"></script>
 <script src="js/index.js"></script>
 </html>

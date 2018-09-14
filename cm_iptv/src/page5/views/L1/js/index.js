@@ -7,88 +7,76 @@ var RLi = RUl.getElementsByTagName('li');
 
 
 var Rindex = 0;  // 右菜单下标
-var Bindex = 0;  // 左菜单下标
+var Bindex = 0;  // xia菜单下标
 var onT = true;  // 焦点是否在上
 var onBtn = false;
 
-// 焦点切换(当前有焦点的元素的下标,键值,数组)   38 40 37 39
-
-
-var changeFocusB = function (nowFocus, kv, arr) {
+// 焦点切换(当前有焦点的元素的下标,键值,数组)   'UP' 'DOWN' 'LEFT' 'RIGHT'
+var changeFocusB = function (nowFocus, kt, arr) {
   var all = arr.length;
 
-  if (kv === 39) {  // 按右
+  if (kt === 'RIGHT') {  // 按右
     nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
   }
-  if (kv === 37) {  // 按左
+  if (kt === 'LEFT') {  // 按左
     nowFocus <= 0 ? nowFocus = all - 1 : nowFocus--;
   }
 
-  if (kv === 38) {  // 按上
+  if (kt === 'UP') {  // 按上
     onT = true;
+    initDom(arr);
     if(nowFocus<=1) {
       onBtn = true;
-      btn.focus();
+      btn.classList.add('active');
     } else {
       onBtn = false;
-      RLi[Rindex].focus();
+      RLi[Rindex].classList.add('active');
     }
     return
   }
-  // if (kv === 40) {  // 按下
-  //   nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
-  // }
-  // $(leftLi[0]).removeClass('LActive');
   Bindex = nowFocus;
-  arr[nowFocus].focus();
-
+  // arr[Bindex].classList.add('active');
+  activeDom(Bindex,arr)
 };
-var changeFocusT = function (nowFocus, kv, arr) {
+var changeFocusT = function (nowFocus, kt, arr) {
   if(onBtn) {
-    if(kv===39) {  // 按右
+    if(kt==='RIGHT') {  // 按右
       onBtn = false;
-      RLi[Rindex].focus();
+      btn.classList.remove('active');
+      RLi[Rindex].classList.add('active');
 
     }
-    if(kv===40) {  // 按下
+    if(kt==='DOWN') {  // 按下
       onBtn = false;
       onT = false;
-      BLi[Bindex].focus();
+      BLi[Bindex].classList.add('active');
     }
   } else {
-    var all = arr.length;
-    // if (kv === 39) {  // 按右
-    //   onBtn = true;
-    //   nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
-    // }
-    if (kv === 37) {  // 按左
-      onBtn = true;
-      btn.focus();
-      // return
-    }
+    // var all = arr.length;
 
-    if (kv === 38) {  // 按上
+    if (kt === 'LEFT') {  // 按左
+      onBtn = true;
+      initDom(arr);
+      btn.classList.add('active');
+    }
+    if (kt === 'UP') {  // 按上
       if(nowFocus >= 1) {
         nowFocus--;
-        arr[nowFocus].focus();
         Rindex = nowFocus;
-
-      } else {
-        // nowFocus++;
-        // arr[nowFocus].focus();
+        activeDom(Rindex,arr);
       }
     }
-    if (kv === 40) {  // 按下
+    if (kt === 'DOWN') {  // 按下
       if(nowFocus >= 1) {
         Rindex = nowFocus;
         onT = false;
         onBtn = false;
-        BLi[Bindex].focus();
-
+        initDom(arr);
+        BLi[Bindex].classList.add('active');
       } else {
         nowFocus++;
         Rindex = nowFocus;
-        arr[nowFocus].focus();
+        activeDom(Rindex,arr);
       }
     }
   }
@@ -96,67 +84,65 @@ var changeFocusT = function (nowFocus, kv, arr) {
 
 };
 
-// var changeFocusBtn = function (kv) {
-//   if(kv===39) {
+// var changeFocusBtn = function (kt) {
+//   if(kv==='RIGHT') {
 //     onBtn = false;
 //     RLi[Rindex].focus();
 //
 //   }
-//   if(kv===40) {
+//   if(kv==='DOWN') {
 //     onBtn = false;
 //     onT = false;
 //     BLi[Bindex].focus();
 //   }
 // }
 
+// window.onload = function () {
+//   // onload中  图片已加载完成
+//   RLi[Rindex].focus();
+//
+//
+//   window.document.onkeydown = function (keyEvent) {
+//     keyEvent = keyEvent ? keyEvent : window.event;
+//     var keyValue = keyEvent.which ? keyEvent.which : keyEvent.keyCode;
+//     console.log(keyValue);
+//     onT?changeFocusT(Rindex,keyValue,RLi):changeFocusB(Bindex,keyValue,BLi);
+//
+//     if (keyValue === 13) {  // 按OK
+//       // nextPage(Rindex)
+//     }
+//       if (keyValue === 8) {  // 按返回
+//           // nextPage(Rindex)
+//           window.location.back(-1);
+//       }
+//   }
+// };
 window.onload = function () {
+
   // onload中  图片已加载完成
-  RLi[Rindex].focus();
-
-
-  window.document.onkeydown = function (keyEvent) {
-    keyEvent = keyEvent ? keyEvent : window.event;
-    var keyValue = keyEvent.which ? keyEvent.which : keyEvent.keyCode;
-    console.log(keyValue);
-    onT?changeFocusT(Rindex,keyValue,RLi):changeFocusB(Bindex,keyValue,BLi);
-
-    if (keyValue === 13) {  // 按OK
-      // nextPage(Rindex)
-    }
-      if (keyValue === 8) {  // 按返回
-          // nextPage(Rindex)
-          window.location.back(-1);
-      }
-  }
-
+  document.onirkeypress = keyEvent;
+  document.onkeypress = keyEvent;
 
 };
-
-
-// var t = 0;  // ul的top
-// // var h = rightLi[0].clientHeight;  // 每个li的高度
-//
-// // 原比例
-// var scale1 = rightContent.clientHeight / rightMenu.clientHeight;
-// // 自定义缩小比列
-// var scale2 = myScroll.clientHeight / rightContent.clientHeight;
-// var h1 = myScroll.clientHeight * scale1;
-// //  滚动条的高度
-// myScrollBar.style.height = h1 + 'px';
-
-// 移动菜单
-function moveUl() {
-
-  var st = rightContent.scrollTop;
-  rightContent.scrollTop = '0px';  // scrollTop跟top同时用会使位置错误, 先把scrollTop归0, 再使用top移动元素
-  rightMenu.style.top = -st + 'px';
-  console.log(st);
-  console.log(rightMenu.style.top);
-  myScrollBar.style.top = st * scale1 * scale2 + 'px';  // 缩小后的
-  // myScrollBar.style.top = st * scale1 + 'px';  // 缩小前的
-  console.log('myScrollBar', myScrollBar.style.top);
+function keyEvent(event) {
+  event = event ? event : window.event;
+  var keyType = getKeyBoardType(event.keyCode);
+  console.log(keyType);
+  onT?changeFocusT(Rindex,keyType,RLi):changeFocusB(Bindex,keyType,BLi);
+}
+function activeDom(i,arr) {
+  for(var m=0;m<arr.length;m++) {
+    arr[m].classList.remove('active')
+  }
+  arr[i].classList.add('active');
 
 }
+function initDom(arr) {
+  for(var m=0;m<arr.length;m++) {
+    arr[m].classList.remove('active')
+  }
+}
+
 
 // 页面跳转
 function nextPage(index) {

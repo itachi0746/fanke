@@ -1,107 +1,102 @@
 // var rightContent = document.getElementById('right-content');
 var LUl = document.getElementById('left-ul');
 var RUl = document.getElementById('right-ul');
-var aaa = document.getElementById('aaa');
-var box = $('.box');
 
 var leftLi = LUl.getElementsByTagName('li');
 var rightLi = RUl.getElementsByTagName('li');
+var box = document.getElementsByClassName('box');
 
 var Boxindex = 0;
 var Rindex = 0;  // 右菜单下标
 var Lindex = 0;  // 左菜单下标
-var onR = true;  // 焦点是否在右菜单
-var onBox = true;
+var onR = false;  // 焦点是否在右菜单
+var onBox = false;  // 右上
 
 // 焦点切换(当前有焦点的元素的下标,键值,数组)  38 40 37 39
-
-
 var changeFocusL = function (nowFocus, kv, arr) {
   var all = arr.length;
 
-  if (kv === 39) {  // 按右
+  if (kv === 'RIGHT') {  // 按右
     if(Lindex <=4) {
       onBox = true;
       Boxindex = 0;
-      box[Boxindex].focus();
-
+      box[Boxindex].classList.add('active');
     } else {
       Rindex = 0;
-      rightLi[Rindex].focus();
-
+      rightLi[Rindex].classList.add('active');
     }
-
     Lindex = nowFocus;
-    // rightLi[Rindex].focus();
     onR = true;
     return
   }
 
-  if (kv === 38) {  // 按上
+  if (kv === 'UP') {  // 按上
     nowFocus <= 0 ? nowFocus = all - 1 : nowFocus--;
   }
-  if (kv === 40) {  // 按下
+  if (kv === 'DOWN') {  // 按下
     nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
   }
-  // $(leftLi[0]).removeClass('LActive');
   Lindex = nowFocus;
-  arr[nowFocus].focus();
-
+  activeDom(Lindex,leftLi)
 };
 
 
 var changeFocusR = function (nowFocus, kv, arr) {
   if(onBox) {
-    if(kv === 37) {  // 按左
+    if(kv === 'LEFT') {  // 按左
       if(Boxindex<=0) {
         onBox = false;
         onR = false;
-        leftLi[Lindex].focus();
+        initDom(box);
+        leftLi[Lindex].classList.add('active');
       }else {
         Boxindex--;
-        box[Boxindex].focus();
+        activeDom(Boxindex,box);
       }
     }
-    if(kv === 39) {  // 按右
+    if(kv === 'RIGHT') {  // 按右
       Boxindex>=1?Boxindex=0:Boxindex++;
-      box[Boxindex].focus();
+      activeDom(Boxindex,box);
     }
-    if(kv === 40) {  // 按下
+    if(kv === 'DOWN') {  // 按下
       // if(Boxindex===0) {
       onBox = false;
-      rightLi[Rindex].focus();
+      initDom(box);
+      rightLi[Rindex].classList.add('active');
       // }
     }
 
   } else {
 
     var all = arr.length;
-    if (kv === 39) {  // 按右
+    if (kv === 'RIGHT') {  // 按右
       nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
       Rindex = nowFocus;
-      arr[nowFocus].focus();
-
+      activeDom(Rindex,arr)
     }
-    if (kv === 37) {  // 按左
+    if (kv === 'LEFT') {  // 按左
       if (nowFocus === 0) {
         onR = false;
-        // changeFocus(Lindex,kv,leftLi);
-        leftLi[Lindex].focus();
+        initDom(arr);
+        leftLi[Lindex].classList.add('active');
         return
       } else {
         nowFocus <= 0 ? nowFocus = all - 1 : nowFocus--;
         Rindex = nowFocus;
-        arr[nowFocus].focus();
+        activeDom(Rindex,arr)
       }
     }
 
-    if (kv === 38) {  // 按上
+    if (kv === 'UP') {  // 按上
+      initDom(arr);
+
       if(nowFocus <= 2) {
+
         Boxindex = 0;
-        box[Boxindex].focus();
+        box[Boxindex].classList.add('active');
       } else {
         Boxindex = 1;
-        box[Boxindex].focus();
+        box[Boxindex].classList.add('active');
       }
       onBox = true;
       Rindex = nowFocus;
@@ -117,39 +112,60 @@ var changeFocusR = function (nowFocus, kv, arr) {
 
 };
 
+// window.onload = function () {
+//   // onload中  图片已加载完成
+//   // $(leftLi[Lindex]).find('.is-active').toggleClass('show');
+//   // rightLi[rightLi.length - 1].style.marginBottom = 0 + 'px';
+//   // console.log(rightLi)
+//
+//   window.document.onkeydown = function (keyEvent) {
+//     keyEvent = keyEvent ? keyEvent : window.event;
+//     var keyValue = keyEvent.which ? keyEvent.which : keyEvent.keyCode;
+//     console.log(keyValue);
+//       // alert(keyValue)
+//
+//       // onR?changeFocusR(Rindex,keyValue,rightLi):changeFocusL(Lindex,keyValue,leftLi);
+//
+//     if (keyValue === 13) {  // 按OK
+//       // nextPage(Rindex)
+//     }
+//       if (keyValue === 8 || keyValue === '8') {  // 按返回
+//           // nextPage(Rindex)
+//           window.location.back(-1);
+//       }
+//   }
+// };
+
+
 window.onload = function () {
+
   // onload中  图片已加载完成
-  //   var a = new Navigation();
-  //   alert(a)
-  //   alert(JSON.stringify(a));
-aaa.focus()
-
-  // box[Boxindex].focus();
-
-
-  // $(leftLi[Lindex]).find('.is-active').toggleClass('show');
-  // rightLi[rightLi.length - 1].style.marginBottom = 0 + 'px';
-  // console.log(rightLi)
-
-  window.document.onkeydown = function (keyEvent) {
-    keyEvent = keyEvent ? keyEvent : window.event;
-    var keyValue = keyEvent.which ? keyEvent.which : keyEvent.keyCode;
-    console.log(keyValue);
-      // alert(keyValue)
-
-      // onR?changeFocusR(Rindex,keyValue,rightLi):changeFocusL(Lindex,keyValue,leftLi);
-
-    if (keyValue === 13) {  // 按OK
-      // nextPage(Rindex)
-    }
-      if (keyValue === 8 || keyValue === '8') {  // 按返回
-          // nextPage(Rindex)
-          window.location.back(-1);
-      }
-  }
-
+  document.onirkeypress = keyEvent;
+  document.onkeypress = keyEvent;
 
 };
+function keyEvent(event) {
+  event = event ? event : window.event;
+  var keyType = getKeyBoardType(event.keyCode);
+  console.log(keyType);
+  if(keyType === 'BACK') {
+    location.href = 'http://211.139.180.160:8090/GDEpg/epg/login!index.action?itvAccount='+ GetQueryString('itvAccount');
+    return
+  }
+  onR?changeFocusR(Rindex,keyType,rightLi):changeFocusL(Lindex,keyType,leftLi);
+}
+function activeDom(i,arr) {
+  for(var m=0;m<arr.length;m++) {
+    arr[m].classList.remove('active')
+  }
+  arr[i].classList.add('active');
+
+}
+function initDom(arr) {
+  for(var m=0;m<arr.length;m++) {
+    arr[m].classList.remove('active')
+  }
+}
 
 
 // var t = 0;  // ul的top

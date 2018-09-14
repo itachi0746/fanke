@@ -5,59 +5,62 @@ var allLi = btmUl.getElementsByTagName('li');
 
 
 var index = 0;  // 标记当前焦点元素
-var onB = true;
+var onB = true;  // 焦点在下
 
 // 焦点切换(当前有焦点的元素的下标,键值,数组)
-var changeFocusB = function (nowFocus,keyValue,arr)  {
+var changeFocusB = function (nowFocus,kt,arr)  {
   var all = arr.length;
-  if (keyValue === 37) {  // 按左
+  if (kt === 'LEFT') {  // 按左
     nowFocus <= 0 ? nowFocus = all - 1 : nowFocus--;
   }
-  if (keyValue === 39) {  // 按右
+  if (kt === 'RIGHT') {  // 按右
     nowFocus >= all - 1 ? nowFocus = 0 : nowFocus++;
   }
-  if (keyValue === 38) {  // 按上
-    btn.focus();
+  if (kt === 'UP') {  // 按上
+    initDom(arr);
+    btn.classList.add('active');
     onB = false;
     return
   }
   index = nowFocus;
-  arr[nowFocus].focus();
+  // arr[nowFocus].focus();
+  activeDom(index,allLi);
   moveUl(index,allLi)
 };
 
-var changeFocusT = function (keyValue) {
-  if (keyValue === 40) {  // 按下
-    allLi[index].focus();
+var changeFocusT = function (kt) {
+  if (kt === 'DOWN') {  // 按下
+    btn.classList.remove('active');
+    allLi[index].classList.add('active');
     onB = true;
   }
-
 };
-
 
 window.onload = function () {
-    // alert(window.Navigation)
 
-    // onload中  图片已加载完成
-  allLi[index].focus();
+  // onload中  图片已加载完成
+  document.onirkeypress = keyEvent;
+  document.onkeypress = keyEvent;
 
-  window.document.onkeydown = function (keyEvent) {
-    keyEvent = keyEvent ? keyEvent : window.event;
-    var keyValue = keyEvent.which ? keyEvent.which : keyEvent.keyCode;
-    console.log(keyValue)
-    onB?changeFocusB(index,keyValue,allLi):changeFocusT(keyValue);
-
-    if (keyValue === 13) {  // 按ok
-      // nextPage(index)
-    }
-      if (keyValue === 8) {  // 按返回
-          // nextPage(Rindex)
-          window.location.back(-1);
-
-      }
-  }
 };
+function keyEvent(event) {
+  event = event ? event : window.event;
+  var keyType = getKeyBoardType(event.keyCode);
+  console.log(keyType);
+  onB?changeFocusB(index,keyType,allLi):changeFocusT(keyType);
+}
+function activeDom(i,arr) {
+  for(var m=0;m<arr.length;m++) {
+    arr[m].classList.remove('active')
+  }
+  arr[i].classList.add('active');
 
+}
+function initDom(arr) {
+  for(var m=0;m<arr.length;m++) {
+    arr[m].classList.remove('active')
+  }
+}
 
 // 移动菜单
 function moveUl(i,arr) {
