@@ -22,10 +22,25 @@ html,body {
     width: 100%;
     height: 239px;
     background-color: lightblue;
+    position: relative;
+
+    div {
+      width: 100%;
+      height: 100%;
+      @include allcover();
+
+    }
+
 
     video {
       width: 100%;
       height: 100%;
+      @include allcover();
+
+    }
+
+    .pBtn {
+      @include center();
     }
   }
 

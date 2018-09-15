@@ -11,10 +11,18 @@
   <div class="dsc-box">
     <p class="dsc">描述描述</p>
     <div class="media">
-      <video>
-        <source src="" type="video/mp4">
-        您的浏览器不支持 video 标签。
-      </video>
+      <div id="vbox" class="hide">
+        <video id="video">
+          <source src="" type="video/mp4">
+          您的浏览器不支持 video 标签。
+        </video>
+      </div>
+      <div id="abox" class="">
+        <audio id="audio" class="hide" src="img/yaoyiyao.mp3"></audio>
+        <img id="pBtn" class="pBtn" src="img/play.png" alt="">
+        <img id="pBtn2" class="pBtn hide" src="img/pause-circle.png" alt="">
+      </div>
+
     </div>
 
   </div>
@@ -52,6 +60,7 @@
     }
 
   </script>
+  <script src="js/index.js"></script>
 </body>
 
 </html>

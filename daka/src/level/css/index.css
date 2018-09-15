@@ -106,150 +106,96 @@ html, body {
     top: 0;
     left: 0;
     z-index: 20; }
-
-.import {
-  width: 10rem;
-  height: 2rem;
-  text-align: center;
-  color: #ff0000;
-  line-height: 2rem;
-  border-radius: 5rem;
-  background-color: #f5e938;
-  margin: 4rem auto; }
-
-.form {
-  position: absolute;
-  top: 6rem;
-  left: 0;
-  z-index: 30;
-  padding: 20px; }
+  .btm-bg .btn {
+    width: 10rem;
+    height: 2rem;
+    text-align: center;
+    color: #ff0000;
+    line-height: 2rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    background-color: #f5e938;
+    border-radius: 5rem;
+    top: 20%;
+    z-index: 30; }
+  .btm-bg .rebox {
+    position: relative;
+    z-index: 30; }
+  .btm-bg .sign-in-box {
+    z-index: 30;
+    position: absolute;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 20px;
+    margin-top: 6rem;
+    font-size: 15px; }
+    .btm-bg .sign-in-box p span:nth-child(3) {
+      float: right; }
+  .btm-bg .rule-box {
+    border-radius: 10px;
+    z-index: 30;
+    width: 90%;
+    height: 8rem;
+    position: absolute;
+    top: 79%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    background-color: #e63c3c;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px 20px;
+    color: #f5e938;
+    font-size: 15px; }
+    .btm-bg .rule-box header {
+      font-size: 20px;
+      text-align: center;
+      font-weight: bold; }
 
 .peo-bg {
   position: absolute;
-  z-index: 50;
+  z-index: 10;
   width: 90%; }
   .peo-bg img {
-    position: absolute;
-    z-index: 50; }
+    position: absolute; }
+  .peo-bg .img1 {
+    top: -1.8rem;
+    left: -.5rem;
+    width: 5.75rem;
+    height: 3.34rem; }
+  .peo-bg .img2 {
+    top: -2.5rem;
+    right: -.5rem;
+    width: 4.25rem;
+    height: 4.25rem; }
+  .peo-bg .img3 {
+    width: 9rem;
+    height: 6rem;
+    top: -5.1rem;
+    left: 3.75rem; }
   .peo-bg .img4 {
     width: 2.6rem;
     height: 2.6rem;
-    left: 4rem;
-    top: -1rem; }
+    left: 0;
+    top: -5rem; }
   .peo-bg .img5 {
     width: 2.6rem;
     height: 2.6rem;
-    right: 4rem;
-    top: -1rem; }
+    right: 0;
+    top: -6rem; }
 
-.page-progress .mt-progress {
-  width: 100%;
+.level-img {
+  width: 80%;
+  height: 20rem;
   position: absolute;
-  top: 5px; }
-
-.p {
-  font-size: 0.8rem;
-  color: #4e4b4b; }
-
-.mt-progress, .mt-progress > * {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex; }
-
-.mt-progress-content {
-  position: relative;
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1; }
-
-.mt-progress-progress, .mt-progress-runway {
-  position: absolute;
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%);
-  top: 50%; }
-
-.mt-progress-runway {
-  left: 0;
-  right: 0;
-  background-color: #ebebeb;
-  height: 3px; }
-
-.mt-progress-progress {
-  height: 3px;
-  display: block;
-  background-color: #26a2ff;
-  width: 0; }
-
-.mt-progress-progress, .mt-progress-runway {
-  position: absolute;
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%);
-  top: 50%; }
-
-.Btn {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  border-radius: 4px;
-  border: 0;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  display: block;
-  font-size: 18px;
-  height: 41px;
-  outline: 0;
-  overflow: hidden;
-  position: relative;
-  text-align: center;
-  color: #fff;
-  background-color: #26a2ff;
-  width: 100%; }
-
-.preBtn {
-  margin-top: 1rem; }
-
-.csv_file {
-  display: block; }
-
-.up {
-  position: absolute;
-  z-index: 50;
-  top: 5rem;
-  left: 1rem;
-  width: 90%; }
-
-.Vbox {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 999;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8); }
-  .Vbox video {
-    width: 100%;
-    height: 50%;
-    background-color: #fff; }
-
-.rule-box {
-  border-radius: 10px;
-  z-index: 30;
-  width: 90%;
-  height: 8rem;
-  position: absolute;
-  top: 81%;
+  top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  background-color: #e63c3c;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  padding: 10px 20px;
-  color: #f5e938;
-  font-size: 15px; }
-  .rule-box header {
-    font-size: 20px;
-    text-align: center;
-    font-weight: bold; }
+  z-index: 30; }
 
 /*# sourceMappingURL=index.css.map */

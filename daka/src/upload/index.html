@@ -20,8 +20,22 @@
 
   <div id="up" class="up">
     <!--上传部分-->
-    <button  class="Btn UpBtn">上传文件</button>
-    <button  class="Btn preBtn" id="preBtn">预览</button>
+    <button class="Btn UpBtn">上传文件</button>
+    <!--进度条-->
+    <!--<div class='container'>-->
+    <!--<span id="progress"></span>-->
+    <!--<span id="p-num">100%</span>-->
+    <!--</div>-->
+    <div class="mt-progress hide">
+      <div class="p">0%</div>
+      <div class="mt-progress-content">
+        <div class="mt-progress-runway"></div>
+        <div class="mt-progress-progress" id="mt-progress-progress"></div>
+      </div>
+      <div class="p" id="text">100%</div>
+    </div>
+
+    <button class="Btn preBtn" id="preBtn">预览</button>
 
     <input type="file" name="files" id="j-file" class="hide">
     <!--如果要预览图-->
@@ -33,8 +47,6 @@
     <!--视频部分-->
     <div class="Vbox hide" id="Vbox">
       <video class="video" id="video" controls>
-        <!-- <source src="img/WeChat_20180905180357.mp4" type="video/mp4"> -->
-        <!-- <source src="" type="video/mp4"> -->
 
         您的浏览器不支持 video 标签。
       </video>
@@ -54,40 +66,40 @@
 <script src="js/rem.js"></script>
 <!--<script src="js/vue.min.js"></script>-->
 <script src="js/layer.js"></script>
-<script src="js/mbUploadify.min.js"></script>
+<script src="js/mbUploadify.js"></script>
 
 <script src="js/index.js">
 
-//  var f = document.getElementById('csv_file');
+  //  var f = document.getElementById('csv_file');
 
-//  var showfile = function () {
-//    console.log(f.files)
-//
-//  };
-//  $('#test').click(function () {
-//    f.click()
-//  });
-//
-//  $("#import").click(function () {
-//    var files = f.prop('files');
-//    var data = new FormData();
-//    data.append('csv_file', files[0]);
-////    debugger
-//    showfile();
+  //  var showfile = function () {
+  //    console.log(f.files)
+  //
+  //  };
+  //  $('#test').click(function () {
+  //    f.click()
+  //  });
+  //
+  //  $("#import").click(function () {
+  //    var files = f.prop('files');
+  //    var data = new FormData();
+  //    data.append('csv_file', files[0]);
+  ////    debugger
+  //    showfile();
 
-//    $.ajax({
-//      type: 'POST',
-//      url: "/api/MallService/AddFile",
-//      data: data,
-//      cache: false,
-//      processData: false,
-//      contentType: false,
-//      success: function (ret) {
-//        alert('上传成功');
-//        showfile()
-//      }
-//    });
-//  });
+  //    $.ajax({
+  //      type: 'POST',
+  //      url: "/api/MallService/AddFile",
+  //      data: data,
+  //      cache: false,
+  //      processData: false,
+  //      contentType: false,
+  //      success: function (ret) {
+  //        alert('上传成功');
+  //        showfile()
+  //      }
+  //    });
+  //  });
 </script>
 
 </body>

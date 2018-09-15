@@ -4,12 +4,10 @@ var btn = $('.UpBtn'),
   preBtn = $('#preBtn');
   JF = document.getElementById('j-file');
 
-var src = '';
+var src = '',
 // var sourceDom = $('<source src="' + src + '">');
-var sourceDom = null;
+sourceDom = null;
 
-// video.append(sourceDom);
-// console.log(video.currentSrc);
 
 Vbox.on('click',function () {  
   Vbox.toggleClass('hide');
@@ -53,7 +51,6 @@ var upload1 = new mbUploadify({
   load: function(e) {
     console.log('laoding', e);
     // document.getElementById('preview1').innerHTML += '<img src="' + e.target.result + '">';
-
   },
   /*上传失败*/
   error: function(file, msg) {
@@ -91,7 +88,11 @@ var upload1 = new mbUploadify({
   //上传开始
   loadstart: function() {},
   //上传进度
-  progress: function() {},
+  progress: function(file) {
+    console.log('pro',file.target)
+    // var percent = Math.round(e.loaded * 100 / e.total);
+    // console.log(percent)
+  },
   //上传完成，不管成功失败
   loadend: function() {},
   //ajax上传失败
@@ -100,22 +101,3 @@ var upload1 = new mbUploadify({
   uploadComplete: function() {}
 });
 
-// function check() {
-//   if (JF.value === '') {
-//     alert('不能空');
-//   }
-//
-//   // console.log(JF.files[0].size); // 文件字节数
-//
-//   // var files = $('#fileId').prop('files'); //获取到文件列表
-//   if (JF.files.length === 0) {
-//     alert('请选择文件');
-//   } else {
-//     var reader = new FileReader(); //新建一个FileReader
-//     reader.readAsText(files[0], 'UTF-8'); //读取文件
-//     reader.onload = function(evt) {
-//       //读取完文件之后会回来这里
-//       var fileString = evt.target.result; // 读取文件内容
-//     };
-//   }
-// }

@@ -1,12 +1,12 @@
 @import "../../styles/common";
 @import "../../styles/mixin";
 
-
 html, body {
   height: 100%;
   background-color: rgb(245, 233, 56);
   position: relative;
 }
+
 .btm-bg {
   width: 100%;
   height: 26rem;
@@ -37,6 +37,7 @@ html, body {
   background-color: rgb(245, 233, 56);
   margin: 4rem auto;
 }
+
 .form {
   position: absolute;
   top: 6rem;
@@ -69,6 +70,54 @@ html, body {
   }
 }
 
+
+.page-progress .mt-progress {
+  width: 100%;
+  position: absolute;
+  top: 5px;
+
+}
+
+.p {
+  @include sc(.8rem,#4e4b4b);
+}
+
+.mt-progress, .mt-progress>* {
+  display: flex;
+}
+.mt-progress-content {
+  position: relative;
+
+  flex: 1;
+}
+.mt-progress-progress, .mt-progress-runway {
+  position: absolute;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  top: 50%;
+}
+.mt-progress-runway {
+  left: 0;
+  right: 0;
+  background-color: #ebebeb;
+  height: 3px;
+}
+.mt-progress-progress {
+  height: 3px;
+
+  display: block;
+  background-color: #26a2ff;
+  width: 0;
+}
+
+.mt-progress-progress, .mt-progress-runway {
+  position: absolute;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  top: 50%;
+}
+
+
 .Btn {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -88,9 +137,11 @@ html, body {
   background-color: #26a2ff;
   width: 100%;
 }
+
 .preBtn {
   margin-top: 1rem;
 }
+
 //
 //.UpBtn:after {
 //  background-color: #000;
@@ -122,7 +173,7 @@ html, body {
   z-index: 999;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,.8);
+  background-color: rgba(0, 0, 0, .8);
   video {
     width: 100%;
     height: 50%;
@@ -149,7 +200,7 @@ html, body {
   header {
     font-size: 20px;
     text-align: center;
-    font-weight:bold;
+    font-weight: bold;
   }
 
 }
