@@ -4,12 +4,16 @@
     <section class="head">
       <header>
         <div class="back" @click="goBack">
-
           <i class="fa fa-angle-left left"></i>
         </div>
         <div class="head-font">
-
           <span>{{ title }}</span>
+        </div>
+        <div class="edit">
+          <div v-if="this.headName==='购物车'" @click="handleEdit">
+            <span v-show="!this.isEdit">编辑</span>
+            <span v-show="this.isEdit">完成</span>
+          </div>
         </div>
 
       </header>
@@ -22,11 +26,18 @@
 
   export default {
     props: {
-      headName: String
+      headName: String,
+      editState: Boolean
     },
     data() {
       return {
-        title: this.headName
+        title: this.headName,
+        isEdit: this.editState
+      }
+    },
+    watch: {
+      editState() {
+        this.isEdit = this.editState
       }
     },
 
@@ -37,6 +48,10 @@
     methods: {
       goBack() {
         window.history.go(-1)
+      },
+      handleEdit() {
+        this.isEdit = !this.isEdit;
+        this.$emit('onEdit')
       }
     },
 
@@ -58,29 +73,29 @@
       width: 100%;
       padding: .3rem .5rem;
       border-bottom: 0.05rem solid #f5f5f5;
-      /*display: flex;*/
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       background-color: $blue;
-      position: relative;
 
       .back {
         overflow: hidden;
-        width: 20%;
+        flex: 1;
       }
       .head-font {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        -webkit-transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-        width: 50%;
+        flex: 3;
         color: #fff;
         text-align: center;
 
         span {
-          font-weight:bold;
+          font-weight: bold;
           color: #fff;
         }
+      }
+      .edit {
+        flex: 1;
+        font-size: .7rem;
+        text-align: right;
       }
     }
 

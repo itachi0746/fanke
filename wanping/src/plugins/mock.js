@@ -13,10 +13,10 @@ const pFun = function () {
   let arr = [];
 
   // for (let i = 1; i <= n; i++) {
-    let newItem = {
-      'Id|+1': 1, Name: '显示屏'+Random.string( 'number', 3 ), 'Price|+10': 100, Flowrate: '1000'
-    };
-    arr.push(newItem)
+  let newItem = {
+    'Id|+1': 1, Name: '显示屏' + Random.string('number', 3), 'Price|+10': 100, Flowrate: '1000'
+  };
+  arr.push(newItem)
   // }
 
   return arr
@@ -95,7 +95,6 @@ const PList = function () {
 };
 
 
-
 let city = {
   'Data': PList,
   Success: true,
@@ -125,6 +124,32 @@ let screenListShop = {
 
 Mock.mock('http://www.bai.com/screenListShop', {
   'data': screenListShop,
+});
+
+// ==============================================================================
+// 购物车 Id:id
+const cart = function () {
+  let arr = [];
+  let n = 5;
+
+  for (let i = 1; i <= n; i++) {
+    let newItem = {
+      'ItemId': '' + i,
+      BusinessName: '万达广场' + Random.string('number', 3),
+      'PsName': '屏幕名字' + i,
+      'Total': 100 * i,
+      'Checked': false,
+      'Amount': i,
+    };
+    arr.push(newItem)
+  }
+
+  return arr
+};
+
+
+Mock.mock('http://www.bai.com/GetBaskets', {
+  'Data': cart(),
 });
 
 export default Mock

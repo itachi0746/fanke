@@ -1,84 +1,94 @@
 <template>
   <!--购物车 开始-->
   <div class="shopping-cart">
-    <Header :headName="headName"></Header>
+    <Header :headName="headName" :editState="delFlag" @onEdit="handleEdit"></Header>
 
     <section v-if="cart.length === 0" class="empty-states">
       <span>这里是空的，快去逛逛吧</span>
     </section>
     <section v-else class="items">
-      <div class="item" v-for="item in cart" :key="item.ItemId">
-        <div class="shop">
-          <div class="title-shop">
-            <div class="tcont">
-              <div class="shopcb" @click="selGood($event)" :id="item.ItemId">
-                <i class="fa fa-circle-o" v-show="!item.Checked"></i>
-                <i class="fa fa-check-circle-o" v-show="item.Checked"></i>
+      <ul>
+        <li class="item" v-for="item in cart" :key="item.ItemId">
+          <div class="shop">
+            <div class="title-shop">
+              <div class="tcont">
+                <div class="shopcb" @click="selGood($event)" :id="item.ItemId">
+                  <i class="fa fa-circle-o" v-show="!item.Checked"></i>
+                  <i class="fa fa-check-circle-o" v-show="item.Checked"></i>
 
-              </div>
-              <div class="shop-name">
-                <span>{{item.BusinessName}}</span>
-                <i class="fa fa-angle-right"></i>
-              </div>
-              <div class="state">
-                <span>删除</span>
+                </div>
+                <div class="shop-name">
+                  <span>{{item.BusinessName}}</span>
+                  <i class="fa fa-angle-right"></i>
+                </div>
+                <!--<div class="state" @click="delItem" :data-id="item.ItemId">-->
+                  <!--<span>删除</span>-->
+                <!--</div>-->
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="pdt-shop">
-          <!--<div>-->
-          <!--<i class="fa fa-circle-o" v-show="!item.checked"></i>-->
-          <!--<i class="fa fa-check-circle-o" v-show="item.checked"></i>-->
-          <!--</div>-->
-          <div class="item-detail">
-            <div class="img-box">
-              <img src="../../../assets/item.png" alt="">
+          <div class="pdt-shop">
+            <!--<div>-->
+            <!--<i class="fa fa-circle-o" v-show="!item.checked"></i>-->
+            <!--<i class="fa fa-check-circle-o" v-show="item.checked"></i>-->
+            <!--</div>-->
+            <div class="item-detail">
+              <div class="img-box">
+                <img src="../../../assets/item.png" alt="">
+              </div>
+              <div class="detail-box-r">
+                <p>
+                  <span>{{item.PsName}}</span>
+                </p>
+
+                <p class="item-pay">
+                  <span class="pay-num">数量: {{item.Amount}}</span>
+
+                  <span class="pay-span"><i>¥</i>{{item.Total}}</span>
+
+                  <!--<span class="number">-->
+                  <!--<button class="decrease disabled">-</button>-->
+                  <!--<input id="number" type="number" value="1" readonly="readonly">-->
+                  <!--<button class="increase">+</button>-->
+                  <!--</span>-->
+                </p>
+
+              </div>
+
+
             </div>
-            <div class="detail-box-r">
-              <p>
-                <span>{{item.PsName}}</span>
-              </p>
-
-              <p class="item-pay">
-                <span class="pay-num">数量: {{item.Amount}}</span>
-
-                <span class="pay-span"><i>¥</i>{{item.Total}}</span>
-
-                <!--<span class="number">-->
-                <!--<button class="decrease disabled">-</button>-->
-                <!--<input id="number" type="number" value="1" readonly="readonly">-->
-                <!--<button class="increase">+</button>-->
-                <!--</span>-->
-              </p>
-
-            </div>
-
-
           </div>
-        </div>
 
-      </div>
+        </li>
+
+      </ul>
     </section>
 
     <section class="confrim-order">
-      <div class="ft-cb">
-        <i class="fa fa-circle-o"></i>
+      <div class="ft-cb" @click="selAll">
+        <i class="fa fa-circle-o" v-show="!checkAllFlag"></i>
+        <i class="fa fa-check-circle-o" v-show="checkAllFlag"></i>
 
       </div>
       <div class="ft-all">
         <span>全选</span>
       </div>
       <div class="pay">
-        <span>合计：</span>
-        <span>¥{{totalPrice}}</span>
+        <div v-if="!this.delFlag">
+          <span>合计：</span>
+          <span>¥{{totalPrice}}</span>
+        </div>
       </div>
-      <div class="btn">
+      <div class="btn" v-if="!this.delFlag">
         <span>结算(</span>
-        <span>0</span>
+        <span>{{selectedNum}}</span>
         <span>)</span>
-
+      </div>
+      <div class="btn" v-if="this.delFlag" @click="doDel">
+        <span>删除(</span>
+        <span>{{selectedNum}}</span>
+        <span>)</span>
       </div>
     </section>
   </div>
@@ -106,10 +116,22 @@
       Header
     },
 
-    computed: {},
+    computed: {
+//      computePrice() {
+//        let result = 0;
+//        if (this.cart.length !== 0) {
+//          this.cart.forEach(item => {
+//            result = item.checked ? result += item.Total : result;
+//            console.log(result)
+//            debugger
+//          })
+//        }
+//        return result
+//      }
+    },
 
     created() {
-      const url = '/GetBaskets';
+      const url = 'http://www.bai.com/GetBaskets';
       postData(url).then((res) => {
           console.log(res)
           this.cart = res.Data;
@@ -124,18 +146,90 @@
     },
 
     methods: {
+      /**
+       * @method 选择商品
+       * @param {Object} e 事件对象
+       */
       selGood(e) {
         const id = e.currentTarget.id;
-//        console.log(e.currentTarget)
-//        console.log(e.target)
-        this.cart.forEach(item => {
-//          item.ItemId = id ? item.checked = true : '';
+
+        this.cart.every(item => {
           if (item.ItemId === id) {
+//            debugger
             item.Checked = !item.Checked;
-            console.log(11)
+            if (item.Checked) {
+              this.totalPrice += item.Total;
+              this.selectedNum++
+            } else {
+              this.totalPrice -= item.Total;
+              this.selectedNum--
+            }
+//            debugger
+            // 设置全选
+            this.selectedNum === this.cart.length
+              ? this.checkAllFlag = true
+              : this.checkAllFlag = false;
+            return false
           }
+          return true
         })
+      },
+      /**
+       * @method 全选
+       */
+      selAll() {
+        this.checkAllFlag = !this.checkAllFlag;
+        let temp = 0;
+
+        if (this.checkAllFlag) {
+          this.selectedNum = this.cart.length;
+          this.cart.forEach(item => {
+            item.Checked = true;
+            temp += item.Total;
+          })
+        } else {
+          this.selectedNum = 0;
+          this.cart.forEach(item => {
+            item.Checked = false;
+          })
+        }
+        this.totalPrice = temp;
+
+      },
+      /**
+       * @method 删除购车中的项目
+       * @param {Object} e 事件对象
+       */
+      delItem(e) {
+        const id = e.currentTarget.getAttribute('data-id');
+        for (let i = 0; i < this.cart.length; i++) {
+          if (this.cart[i].ItemId === id) {
+            this.cart.splice(i, 1);
+            break
+          }
+        }
+
+        console.log(id);
+      },
+      doDel() {
+        this.cart = this.cart.filter(function (item) {
+          return !item.Checked
+        });
+        // 重置 被选商品数量、全选状态、删除状态
+        this.selectedNum = 0;
+        this.checkAllFlag = false;
+        this.delFlag = !this.delFlag;
+      },
+      /**
+      * @method 点击编辑
+      */
+      handleEdit() {
+//        console.log('isedint')
+        this.delFlag = !this.delFlag;
+        console.log(this.delFlag)
+
       }
+
     },
 
     mounted() {
@@ -150,10 +244,18 @@
 <style lang='scss' scoped>
   @import "src/style/mixin";
 
+  .items {
+    /*margin-bottom: 2.4rem;*/
+    height: 29rem;
+    overflow-y: scroll;
+    cursor: pointer;
+  }
+
   .item {
     margin-top: .5rem;
     background-color: #fff;
     margin-bottom: 1px;
+    min-height: 7.65rem;
 
     .title-shop {
       width: 100%;

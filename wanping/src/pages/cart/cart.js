@@ -8,8 +8,8 @@ import 'element-ui/lib/theme-chalk/radio.css';
 // import {Radio} from 'element-ui'
 import '@/config/rem'
 import axiosPlugin from '@/server'
-// import router from './router'
-
+// 引入mockjs
+require('../../plugins/mock')
 
 Vue.config.productionTip = false;
 Vue.use(axiosPlugin);
