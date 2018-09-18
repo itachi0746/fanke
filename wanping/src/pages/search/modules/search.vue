@@ -3,11 +3,35 @@
   <div class="search-page">
     <Header :headName="headName"></Header>
     <form class="search-form">
-      <input type="search" name="search" placeholder="请输入商家或地址名称" class="search-input">
-      <input type="submit" name="submit" class="search-submit">
+      <input type="search" name="search" placeholder="请输入商家或地址名称" class="search-input" v-model="searchValue" @input="checkInput">
+      <input type="submit" name="submit" class="search-submit" @click.prevent="searchTarget('')">
     </form>
 
-    <section class="search-history">
+    <section v-if="businessList.length">
+      <h4 class="title">商家</h4>
+      <!--<ScreenListAll :searchResult="businessList"></ScreenListAll>-->
+      <ul class="list_container">
+        <li class="list_li" v-for="(item,index) in businessList" :key="item.Id" @click="toScreen($event)"
+            :id="item.Id">
+          <section class="item_left">
+            <img src="../../../assets/default.jpg" class="restaurant_img">
+          </section>
+          <section class="item_right">
+            <div class="item_right_text">
+              <p>
+                <span>{{item.Name}}</span>
+              </p>
+              <p>人气{{item.Flowrate}},销量</p>
+              <p>距离</p>
+            </div>
+          </section>
+        </li>
+      </ul>
+      <p class="empty_data">没有更多了</p>
+
+    </section>
+
+    <section class="search-history" v-else>
       <h4 class="title">搜索历史</h4>
       <ul>
         <li class="history-list">
@@ -26,13 +50,20 @@
 <script>
   import Footer from '../../../components/footer/footer.vue'
   import Header from '../../../components/header/header.vue'
-
+//  import ScreenListAll from '../../../components/common/screenListAll.vue'
+  import {getStore,setStore} from '../../../config/store'
+  import {postData} from '../../../server/index'
 
   export default {
     data() {
       return {
         headName: '搜索',
-        page: 'Search'
+        page: 'Search',
+        searchValue: '', // 搜索内容
+        businessList: [], // 搜索返回的结果
+        searchHistory: [], // 搜索历史记录
+        showHistory: true, // 是否显示历史记录，只有在返回搜索结果后隐藏
+        emptyResult: false, // 搜索结果为空时显示
 
       }
     },
@@ -43,7 +74,64 @@
 
     computed: {},
 
-    methods: {},
+    methods: {
+      //点击提交按钮，搜索结果并显示，同时将搜索内容存入历史记录
+      async searchTarget(historyValue){
+        if (historyValue) {
+          this.searchValue = historyValue;
+        }else if (!this.searchValue) {
+          return
+        }
+
+        //隐藏历史记录
+        this.showHistory = false;
+        //获取搜索结果
+//        this.restaurantList = await searchRestaurant(this.geohash, this.searchValue);
+        const url = '/GetProducts';
+        this.businessList = await postData(url,this.searchValue).then((res) => {return res.Data.Models});
+        console.log(this.businessList);
+        this.emptyResult = !this.businessList.length;
+
+        /**
+         * 点击搜索结果进入下一页面时进行判断是否已经有一样的历史记录
+         * 如果没有则新增，如果有则不做重复储存，判断完成后进入下一页
+         */
+        let history = getStore('searchHistory');
+        if (history) {
+          let checkrepeat = false;
+          this.searchHistory = JSON.parse(history);
+          this.searchHistory.forEach(item => {
+            if (item == this.searchValue) {
+              checkrepeat = true;
+            }
+          });
+          if (!checkrepeat) {
+            this.searchHistory.push(this.searchValue)
+          }
+        }else {
+          this.searchHistory.push(this.searchValue)
+        }
+        setStore('searchHistory',this.searchHistory)
+      },
+      //搜索结束后，删除搜索内容直到为空时清空搜索结果，并显示历史记录
+      checkInput(){
+        if (this.searchValue === '') {
+          this.showHistory = true; //显示历史记录
+          this.businessList = []; //清空搜索结果
+          this.emptyResult = false; //隐藏搜索为空提示
+        }
+      },
+      //点击删除按钮，删除当前历史记录
+      deleteHistory(index){
+        this.searchHistory.splice(index, 1);
+        setStore('searchHistory',this.searchHistory);
+      },
+      //清除所有历史记录
+      clearAllHistory(){
+        this.searchHistory = [];
+        setStore('searchHistory',this.searchHistory);
+      }
+    },
 
     mounted() {
     },
@@ -55,6 +143,58 @@
 
 <style lang='scss' scoped>
   @import "src/style/mixin";
+
+  .list_container{
+    background-color: #fff;
+  }
+  .list_li{
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem;
+    border-bottom: 0.025rem solid $bc;
+    .item_left{
+      margin-right: 0.25rem;
+      .restaurant_img{
+        @include wh(2.5rem, 2.5rem);
+      }
+    }
+    .item_right{
+      font-size: 0.55rem;
+      flex: 1;
+      .item_right_text{
+        padding-bottom: 0.25rem;
+        border-bottom: 0.025rem solid $bc;
+        p{
+          line-height: .9rem;
+        }
+        .pay_icon{
+          margin-bottom: -0.08rem;
+        }
+      }
+      .item_right_detail{
+        margin-top: 0.25rem;
+        li{
+          font-size: 0;
+          span{
+            font-size: .5rem;
+            vertical-align: middle;
+            display: inline-block;
+            margin-bottom: 0.2rem;
+          }
+          .activities_icon{
+            @include sc(.5rem, #fff);
+            font-weight: bold;
+            padding: .04rem;
+            border-radius: 0.15rem;
+            margin-right: 0.125rem;
+          }
+          .only_phone{
+            color: #FF6000;
+          }
+        }
+      }
+    }
+  }
 
   .search-form {
     display: flex;
@@ -88,14 +228,15 @@
     }
   }
 
+  .title {
+    font-size: 0.7rem;
+    line-height: 2rem;
+    text-indent: 0.5rem;
+    font-weight: bold;
+    color: #666;
+  }
   .search-history {
-    .title {
-      font-size: 0.7rem;
-      line-height: 2rem;
-      text-indent: 0.5rem;
-      font-weight: bold;
-      color: #666;
-    }
+
     .clear-history {
       background-color: #fff;
       color: #3190e8;
@@ -121,6 +262,13 @@
       @include sc(.8rem,#666);
     }
   }
-
+  .empty_data {
+    font-size: 0.6rem;
+    color: #666;
+    text-align: center;
+    line-height: 2rem;
+    margin-bottom: 2.3rem;
+    background-color: #fff;
+  }
 
 </style>

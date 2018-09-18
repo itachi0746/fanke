@@ -2,7 +2,7 @@
   <div id="shoplist">
     <!--商家列表-->
     <div class="shoplist-container">
-      <div class="shoplist-item" v-for="(item,index) in screenList" :key="item.Id" @click="toScreen($event)"
+      <div class="shoplist-item" v-for="(item, index) in screenList" :key="item.Id" @click="toScreen($event)"
            :id="item.Id">
         <p class="shop-name">
           {{ item.Name }}
@@ -50,6 +50,9 @@
         isEnd: false
       }
     },
+//    props: {
+//      searchResult: Array
+//    },
 
 //  components: {},
 
@@ -78,7 +81,15 @@
     },
 
     created() {
-      this.getData()
+//      if(this.searchResult.length){
+//        console.log('ttt');
+//        this.screenList = this.searchResult;
+//        this.loadMoreSwitch = true;
+//        this.sum = res.PageCount  // 总页数
+//      } else {
+//        this.getData()
+//      }
+     this.getData()
     },
     mounted() {
 

@@ -22,7 +22,7 @@
                   <i class="fa fa-angle-right"></i>
                 </div>
                 <!--<div class="state" @click="delItem" :data-id="item.ItemId">-->
-                  <!--<span>删除</span>-->
+                <!--<span>删除</span>-->
                 <!--</div>-->
               </div>
             </div>
@@ -108,7 +108,6 @@
         checkAllFlag: false,  // 是不是全选了
         selectedNum: 0,
         delFlag: false,
-        totalPrice: 0
       }
     },
 
@@ -117,30 +116,24 @@
     },
 
     computed: {
-//      computePrice() {
-//        let result = 0;
-//        if (this.cart.length !== 0) {
-//          this.cart.forEach(item => {
-//            result = item.checked ? result += item.Total : result;
-//            console.log(result)
-//            debugger
-//          })
-//        }
-//        return result
-//      }
+      totalPrice() {
+        let result = 0;
+        this.cart.forEach(item => {
+//            item.Checked ? result += item.Total : result;
+          item.Checked && (result += parseFloat(item.Total));
+        });
+        return result
+      }
     },
 
     created() {
       const url = 'http://www.bai.com/GetBaskets';
+//      const url = '/GetBaskets';
       postData(url).then((res) => {
-          console.log(res)
+          console.log(res);
           this.cart = res.Data;
-//          this.cart.forEach(item=> {
-////            item.checked = false;
-////            this.$set(item,'checked',false);
-//
-//          });
-//          console.log(this.cart)
+          console.log(1111)
+
         }
       )
     },
@@ -158,10 +151,8 @@
 //            debugger
             item.Checked = !item.Checked;
             if (item.Checked) {
-              this.totalPrice += item.Total;
               this.selectedNum++
             } else {
-              this.totalPrice -= item.Total;
               this.selectedNum--
             }
 //            debugger
@@ -179,13 +170,10 @@
        */
       selAll() {
         this.checkAllFlag = !this.checkAllFlag;
-        let temp = 0;
-
         if (this.checkAllFlag) {
           this.selectedNum = this.cart.length;
           this.cart.forEach(item => {
             item.Checked = true;
-            temp += item.Total;
           })
         } else {
           this.selectedNum = 0;
@@ -193,26 +181,13 @@
             item.Checked = false;
           })
         }
-        this.totalPrice = temp;
-
       },
       /**
        * @method 删除购车中的项目
-       * @param {Object} e 事件对象
        */
-      delItem(e) {
-        const id = e.currentTarget.getAttribute('data-id');
-        for (let i = 0; i < this.cart.length; i++) {
-          if (this.cart[i].ItemId === id) {
-            this.cart.splice(i, 1);
-            break
-          }
-        }
-
-        console.log(id);
-      },
       doDel() {
-        this.cart = this.cart.filter(function (item) {
+        let cart = this.cart;
+        this.cart = cart.filter(function (item) {
           return !item.Checked
         });
         // 重置 被选商品数量、全选状态、删除状态
@@ -221,8 +196,8 @@
         this.delFlag = !this.delFlag;
       },
       /**
-      * @method 点击编辑
-      */
+       * @method 点击编辑
+       */
       handleEdit() {
 //        console.log('isedint')
         this.delFlag = !this.delFlag;
