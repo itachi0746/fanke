@@ -15,6 +15,7 @@ Vue.use(axiosPlugin);
 Vue.use(Upload);
 Vue.use(Button);
 
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

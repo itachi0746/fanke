@@ -14,7 +14,7 @@
         <li class="list_li" v-for="(item,index) in businessList" :key="item.Id" @click="toScreen($event)"
             :id="item.Id">
           <section class="item_left">
-            <img src="../../../assets/default.jpg" class="restaurant_img">
+            <img :src="item.Img" class="restaurant_img">
           </section>
           <section class="item_right">
             <div class="item_right_text">
@@ -31,15 +31,15 @@
 
     </section>
 
-    <section class="search-history" v-else>
+    <section class="search-history" v-if="searchHistory.length&&showHistory">
       <h4 class="title">搜索历史</h4>
       <ul>
-        <li class="history-list">
-          <span class="history-text ellipsis">aa</span>
-          <i class="fa fa-times"></i>
+        <li class="history-list" v-for="(item, index) in searchHistory" :key="index" >
+          <span class="history-text ellipsis"  @click="searchTarget(item)">{{item}}</span>
+          <i class="fa fa-times" @click="deleteHistory(index)"></i>
         </li>
       </ul>
-      <footer class="clear-history">清空历史记录</footer>
+      <footer class="clear-history" @click="clearAllHistory">清空历史记录</footer>
     </section>
 
     <Footer :page="page"></Footer>
@@ -97,6 +97,7 @@
          * 如果没有则新增，如果有则不做重复储存，判断完成后进入下一页
          */
         let history = getStore('searchHistory');
+        console.log(history);
         if (history) {
           let checkrepeat = false;
           this.searchHistory = JSON.parse(history);
@@ -134,6 +135,9 @@
     },
 
     mounted() {
+      if (getStore('searchHistory')) {
+        this.searchHistory = JSON.parse(getStore('searchHistory'));
+      }
     },
 
     beforeDestroy() {
@@ -270,5 +274,6 @@
     margin-bottom: 2.3rem;
     background-color: #fff;
   }
+
 
 </style>

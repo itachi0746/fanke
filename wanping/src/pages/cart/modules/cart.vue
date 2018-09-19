@@ -8,7 +8,7 @@
     </section>
     <section v-else class="items">
       <ul>
-        <li class="item" v-for="item in cart" :key="item.ItemId">
+        <li class="item" v-for="(item,index) in cart" :key="item.ItemId">
           <div class="shop">
             <div class="title-shop">
               <div class="tcont">
@@ -144,6 +144,7 @@
        * @param {Object} e 事件对象
        */
       selGood(e) {
+//        console.log(e);
         const id = e.currentTarget.id;
 
         this.cart.every(item => {

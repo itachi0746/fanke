@@ -9,7 +9,7 @@ import 'element-ui/lib/theme-chalk/radio.css';
 import '@/config/rem'
 import axiosPlugin from '@/server'
 // 引入mockjs
-// require('../../plugins/mock');
+require('../../plugins/mock');
 
 Vue.config.productionTip = false;
 Vue.use(axiosPlugin);
