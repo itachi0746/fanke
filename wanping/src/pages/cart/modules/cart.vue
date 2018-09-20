@@ -315,7 +315,7 @@
 
           p {
             word-break: break-all;
-            @include sc(.8rem, #969696);
+            @include sc(.8rem, #333);
           }
           .item-pay {
             padding-left: .5rem;
@@ -326,7 +326,7 @@
               color: $payColor;
             }
             .pay-num {
-              @include sc(.7rem, #666);
+              @include sc(.7rem, #333);
             }
             span {
               font-size: 1rem;

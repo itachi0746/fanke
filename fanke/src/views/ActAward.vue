@@ -2,14 +2,70 @@
   <div style="position: relative;">
     <div class="poupMainInfo actAward" id="poupMainInfo">
       <ul id="awardInfoBox">
-        <li class="codeInfoBox" @click="" v-for="(prize, index) in prizeData" :key="index">
+        <!--<li class="codeInfoBox" @click="" v-for="(prize, index) in prizeData" :key="index">-->
+          <!--<div class="isEmptyAward ellipsis" style="width: 11rem;margin-left:0.6rem;font-size:0.7rem;">-->
+            <!--<p class="awardStyle">{{ prize.PrizeName }}：</p>-->
+            <!--<p class="awardName">{{ prize.PrizeDesc }}</p>-->
+            <!--<p class="awardTime">{{ prize.PrizeDate }}</p>-->
+          <!--</div>-->
+        <!--</li>-->
+
+        <li class="codeInfoBox">
           <div class="isEmptyAward ellipsis" style="width: 11rem;margin-left:0.6rem;font-size:0.7rem;">
-            <p class="awardStyle">{{ prize.PrizeName }}：</p>
-            <p class="awardName">{{ prize.PrizeDesc }}</p>
-            <p class="awardTime">{{ prize.PrizeDate }}</p>
+            <p class="awardStyle">111111</p>
+            <p class="awardName">222222</p>
+            <p class="awardTime">333333</p>
           </div>
         </li>
-
+        <li class="codeInfoBox">
+          <div class="isEmptyAward ellipsis" style="width: 11rem;margin-left:0.6rem;font-size:0.7rem;">
+            <p class="awardStyle">111111</p>
+            <p class="awardName">222222</p>
+            <p class="awardTime">333333</p>
+          </div>
+        </li>
+        <li class="codeInfoBox">
+          <div class="isEmptyAward ellipsis" style="width: 11rem;margin-left:0.6rem;font-size:0.7rem;">
+            <p class="awardStyle">111111</p>
+            <p class="awardName">222222</p>
+            <p class="awardTime">333333</p>
+          </div>
+        </li>
+        <li class="codeInfoBox">
+          <div class="isEmptyAward ellipsis" style="width: 11rem;margin-left:0.6rem;font-size:0.7rem;">
+            <p class="awardStyle">111111</p>
+            <p class="awardName">222222</p>
+            <p class="awardTime">333333</p>
+          </div>
+        </li>
+        <li class="codeInfoBox">
+          <div class="isEmptyAward ellipsis" style="width: 11rem;margin-left:0.6rem;font-size:0.7rem;">
+            <p class="awardStyle">111111</p>
+            <p class="awardName">222222</p>
+            <p class="awardTime">333333</p>
+          </div>
+        </li>
+        <li class="codeInfoBox">
+          <div class="isEmptyAward ellipsis" style="width: 11rem;margin-left:0.6rem;font-size:0.7rem;">
+            <p class="awardStyle">111111</p>
+            <p class="awardName">222222</p>
+            <p class="awardTime">333333</p>
+          </div>
+        </li>
+        <li class="codeInfoBox">
+          <div class="isEmptyAward ellipsis" style="width: 11rem;margin-left:0.6rem;font-size:0.7rem;">
+            <p class="awardStyle">111111</p>
+            <p class="awardName">222222</p>
+            <p class="awardTime">333333</p>
+          </div>
+        </li>
+        <li class="codeInfoBox">
+          <div class="isEmptyAward ellipsis" style="width: 11rem;margin-left:0.6rem;font-size:0.7rem;">
+            <p class="awardStyle">111111</p>
+            <p class="awardName">222222</p>
+            <p class="awardTime">333333</p>
+          </div>
+        </li>
       </ul>
     </div>
     <div class="line2">
@@ -34,32 +90,47 @@
     created() {
 
       // 请求我的奖品
-      const url = '/exam/MyPrize';
-      this.$http({
-        url: url,//api 代理到json文件地址，后面的后缀是文件中的对象或者是数组
-        method: 'post',//请求方式
-        //这里可以添加axios文档中的各种配置
-      }).then(res => {
-        console.log(res.data, '请求奖品数据成功');
-        this.prizeData = res.data.Data
-
-        //即定时器 20ms
-        this.$nextTick(() => {
-          //$refs绑定元素
-          if (!this.scroll) {
-            this.scroll = new BScroll('#poupMainInfo', {
-              //开启点击事件 默认为false
-              click: true
-            });
-
-          }
-        });
-      }).catch(err => {
-        console.log(err, '请求错误');
-//        alert('出错啦')
-
-      });
+//      const url = '/exam/MyPrize';
+//      this.$http({
+//        url: url,//api 代理到json文件地址，后面的后缀是文件中的对象或者是数组
+//        method: 'post',//请求方式
+//        //这里可以添加axios文档中的各种配置
+//      }).then(res => {
+//        console.log(res.data, '请求奖品数据成功');
+//        this.prizeData = res.data.Data
+//
+//        //即定时器 20ms
+//        this.$nextTick(() => {
+//          //$refs绑定元素
+//          if (!this.scroll) {
+//            this.scroll = new BScroll('#poupMainInfo', {
+//              //开启点击事件 默认为false
+//              click: true
+//            });
+//
+//          }
+//        });
+//      }).catch(err => {
+//        console.log(err, '请求错误');
+////        alert('出错啦')
+//
+//      });
     },
+    mounted() {
+      this.$nextTick(() => {
+        //$refs绑定元素
+        if (!this.scroll) {
+          this.scroll = new BScroll('#poupMainInfo', {
+            //开启点击事件 默认为false
+            click: true
+          });
+          this.scroll.refresh();
+          console.log(this.scroll);
+
+        }
+      });
+
+    }
 
   }
 </script>
@@ -117,11 +188,11 @@
     text-overflow: ellipsis;
   }
 
-  .poupMainInfo, .actAward {
+  .poupMainInfo.actAward {
     height: 25.25rem;
-    position: relative;
+    /*position: relative;*/
     overflow-y: auto;
-    top: 0;
+    /*top: 0;*/
     /*bottom:5rem;*/
     color: #ffffff;
     font-size: 0.7rem;

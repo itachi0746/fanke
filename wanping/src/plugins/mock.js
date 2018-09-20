@@ -95,15 +95,15 @@ const PList = function () {
 };
 
 
-let city = {
-  'Data': PList,
-  Success: true,
-  Code: null
-};
+// let city = {
+//   'Data': PList,
+//   Success: true,
+//   Code: null
+// };
 
 
 Mock.mock('http://www.bai.com/city', {
-  'data': city,
+  'Data': PList(),
 });
 
 // ==============================================================================

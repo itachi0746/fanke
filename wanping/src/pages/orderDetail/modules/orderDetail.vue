@@ -32,8 +32,8 @@
           <section class="file-list">
             <el-button type="primary" size="small" @click="showFile($event,index)" :loading="btnLoading"
                        :data-DtlId="item.DtlId">
-              <label v-if="item.showFiles">查看已上传素材</label>
-              <label v-else>隐藏已上传素材</label>
+              <label v-show="item.showFiles">隐藏已上传素材</label>
+              <label v-show="!item.showFiles">查看已上传素材</label>
             </el-button>
             <ul v-show="item.showFiles">
               <!--<li class="file-item">-->
@@ -62,7 +62,7 @@
             :data="data"
             :before-upload="beforeUpload"
             :on-change="handleChange"
-            :on-remove="beforeRemove"
+            :before-remove="beforeRemove"
             :on-success="handleSuccess">
             <el-button size="small" type="primary">上传素材</el-button>
           </el-upload>
@@ -79,7 +79,6 @@
 
     </section>
 
-
   </div>
   <!-- 结束 -->
 </template>
@@ -88,7 +87,7 @@
   import Header from '@/components/header/header.vue'
   import getUrlParms from '@/config/utils'
   import {postData, link} from '@/server'
-  import {Message,MessageBox} from 'element-ui'
+  import {Message, MessageBox} from 'element-ui'
 
 
   export default {
@@ -99,8 +98,6 @@
         resData: {},
         data: {},  // 上传文件时要传的data
         OrderId: '',
-//        showFiles: false,
-//        btnTips: '查看已上传素材',
         btnLoading: false
       }
     },
@@ -113,17 +110,14 @@
 
     methods: {
       beforeRemove(file) {
-//        console.log(this)?
         MessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
           center: true
         }).then(() => {
-          Message({
-            type: 'success',
-            message: '删除成功!'
-          });
+
+          this.handleRemove();  // todo 传参
           return true
         }).catch(() => {
           Message({
@@ -132,8 +126,34 @@
           });
           return false
         });
+        return false  // 阻止删除
+
       },
 
+      /**
+       * @method 删除文件
+       * @param {String} DtlId detailId
+       * @param {String} FId FileId
+       */
+      handleRemove(DtlId, FId) {
+        const url = '/DeleteFile';
+        const data = {
+          DetailId: DtlId,
+          FileId: FId
+        };
+        postData(url, data).then(() => {
+          Message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        });
+      },
+
+      /**
+       * @method 显示出已上传文件
+       * @param {Object} e 事件对象
+       * @param {Number} i 下标
+       */
       showFile(e, i) {
         const dtlId = e.currentTarget.getAttribute('data-DtlId');
 //        console.log(dtlId);
@@ -141,7 +161,7 @@
 //        this.showFiles = !this.showFiles;
         this.btnTips = this.resData.Items[i].showFiles ? '隐藏已上传素材' : '查看已上传素材';
         const url = '/GetFiles';
-        postData(url)  // todo 要传detailId
+        postData(url,dtlId)  // todo 请求查看已上传文件,要传detailId
       },
       handleChange(file, fileList) {
 //      this.fileList3 = fileList.slice(-3);
@@ -191,11 +211,6 @@
           type: "success"
         });
 
-//        左对齐
-        let fileList = document.querySelectorAll(".el-upload-list__item");
-        fileList.forEach((item) => {
-          item.style.textAlign = 'left';
-        })
       },
     },
     created() {
@@ -349,5 +364,13 @@
 <style>
   .el-message-box {
     width: 90%;
+  }
+
+  .el-upload-list__item {
+    text-align: left;
+  }
+
+  .el-icon-close-tip {
+    display: none !important;
   }
 </style>

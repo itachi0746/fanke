@@ -18,7 +18,7 @@
 
     </div>
 
-    <div :class="['filter-container', {hide:isHide}]">
+    <div class="filter-container" v-show="!isHide">
       <div class="filter-head">
         <div>
           <span>地区</span>
@@ -29,7 +29,7 @@
       </div>
       <div class="category-container">
         <div class="wrapper category-left" ref="wrapper" id="category-left">
-          <ul class="content">
+          <ul class="content" id="C1">
 
             <li :class="['category-left-li', {category_active:index===activeIndex}]"
                 v-for="(item,index) in spaceList" :key="item.Id" @click="toggleLi(index)">
@@ -43,6 +43,7 @@
             </li>
 
           </ul>
+
         </div>
         <div class="wrapper category-right" ref="wrapper" id="category-right">
 
@@ -63,7 +64,7 @@
       </div>
     </div>
     <!--遮罩层-->
-    <div class="back-cover" :class="{hide:isHide}" @touchmove.prevent></div>
+    <div class="back-cover" @click="toggleFilter" v-show="!isHide"></div>
 
   </div>
   <!--  结束-->
@@ -72,6 +73,9 @@
 <script>
   import {postData,link} from '@/server'
   import BScroll from 'better-scroll'
+//  import Fmover from 'finger-mover'
+//  import simulationScrollY from 'simulation-scroll-y'
+//  import ScrollFlipPage from 'scroll-flip-page'
 
   export default {
     data() {
@@ -83,7 +87,9 @@
       }
     },
 
-    components: {},
+    components: {
+
+    },
 
     computed: {
       areaList() {  // 地区列表
@@ -94,11 +100,28 @@
     },
 
     methods: {
+      show() {
+        if(!this.scroll) {
+          this.scroll = new BScroll('#category-left', {
+            //开启点击事件 默认为false
+            click: true
+          });
+//          this.scroll.refresh();
+          console.log(this.scroll);
+        } else {
+          this.scroll.refresh();
+        }
+
+      },
+
       toggleLi(index) {
         this.activeIndex = index
       },
       toggleFilter() {
-        this.isHide = !this.isHide
+        this.isHide = !this.isHide;
+        this.show();
+//        this.scroll.refresh();
+        console.log(this.scroll);
 
       },
       doSelectArea() {
@@ -107,26 +130,34 @@
     },
 
     created() {
-//      postData('http://www.bai.com/city').then((res) => {
-////        console.log(res)
-//        this.spaceList = res.data.Data;
-////        this.areaList =
-//        //      即定时器 20ms
-//        this.$nextTick(() => {
+      postData('http://www.bai.com/city').then((res) => {
+          this.spaceList = res.Data;
+          //      即定时器 20ms
+
+        this.$nextTick(()=> {
+          this.show();
 //          this.scroll = new BScroll('#category-left', {
 //            //开启点击事件 默认为false
 //            click: true
 //          });
-//          this.scroll2 = new BScroll('#category-right', {
-//            //开启点击事件 默认为false
-//            click: true
-//          })
-//        });
+//          this.scroll.refresh();
 //
-//        }
-//      )
+//          console.log(this.scroll);
+        })
+
+//            this.scroll2 = new BScroll('#category-right', {
+//
+//              //开启点击事件 默认为false
+//              click: true
+//            })
+
+//          });
+
+        }
+      )
     },
     mounted() {
+
     },
 
     beforeDestroy() {
@@ -152,7 +183,7 @@
   .sort-item {
     margin: .2rem 0;
     font-size: .7rem;
-    color: #ddd;
+    color: #666;
     width: 33.3%;
     height: 1.2rem;
     line-height: 1.2rem;
@@ -215,20 +246,19 @@
 
   }
 
-  .wrapper, .category-left {
-    width: 100%;
-    position: relative;
-    top: 0px;
+  /*.wrapper, .category-left {*/
+    /*width: 100%;*/
+    /*!*position: relative;*!*/
+    /*!*top: 0px;*!*/
+    /*overflow: hidden;*/
+    /*z-index: 1;*/
+  /*}*/
+
+  .wrapper {
+    /*position: relative;*/
     overflow: hidden;
     z-index: 1;
-  }
-
-  .wrapper, .category-right {
-    width: 100%;
-    /*position: relative;*/
-    /*top: 0px;*/
-    overflow-y: auto;
-    z-index: 1;
+    /*top: 0;*/
   }
 
   .category-left {
@@ -238,10 +268,13 @@
     flex: 2;
     background-color: #f1f1f1;
     height: 20rem;
+    /*position: relative;*/
+
 
     .category-left-li {
       @include fj;
       padding: 0.2rem 0.5rem;
+      min-height: 1.5rem;
     }
     .category_active {
       background-color: #fff;
@@ -288,4 +321,7 @@
     z-index: 12;
     width: 100%;
   }
+.content {
+  height: 30rem;
+}
 </style>

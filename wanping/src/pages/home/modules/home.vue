@@ -2,7 +2,7 @@
   <div id="home">
 
     <!--选地区-->
-    <aFilter></aFilter>
+    <aFilter ref="af"></aFilter>
     <!--轮播图 开始-->
     <swiper :options="swiperOption" ref="mySwiper" v-if="Ads.length">
       <swiper-slide v-for="(item,index) in Ads" :key="item.Index">
@@ -99,7 +99,7 @@
     mounted() {
 //      即定时器 20ms
       this.$nextTick(() => {
-
+        this.$refs.af.show();
       });
 
 //      this.timer1 = setTimeout(() => {
@@ -159,8 +159,9 @@
 
   .recommend-title {
     font-size: .75rem;
-    padding-left: .8rem;
-    padding-bottom: .3rem;
+    /*padding-left: .8rem;*/
+    /*padding-bottom: .3rem;*/
+    padding: .3rem 0 .3rem .8rem;
   }
 
   .recommend-item-wrap {

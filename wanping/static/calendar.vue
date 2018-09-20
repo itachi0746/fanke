@@ -65,7 +65,7 @@ wh_content_item_tag {
   font-size: 15px;
   width: 13.4%;
   text-align: center;
-  color: #fff;
+  color: #333;
   position: relative;
 }
 .wh_content_item {

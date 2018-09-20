@@ -6,9 +6,10 @@ import 'font-awesome/css/font-awesome.min.css'
 import 'element-ui/lib/theme-chalk/message.css';
 import '@/config/rem'
 import axiosPlugin from '@/server'
-
 import $ from 'jquery'
 
+// 引入mockjs
+require('../../plugins/mock');
 
 
 Vue.config.productionTip = false;
