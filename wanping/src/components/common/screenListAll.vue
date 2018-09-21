@@ -38,7 +38,7 @@
 </template>
 
 <script>
-  import {postData,link} from '../../server'
+  import {postData, link} from '../../server'
 
   export default {
     data() {
@@ -66,7 +66,7 @@
         const data = {
           pageindex: this.page
         };
-        postData(url,data).then((res) => {
+        postData(url, data).then((res) => {
           console.log(res)
           this.screenList = this.screenList.concat(res.Data.Models);
           this.loadMoreSwitch = true;
@@ -77,46 +77,84 @@
       toScreen(event) {
         const targetId = event.currentTarget.id;
         window.location.href = 'screen.html?id=' + targetId;
+      },
+      // 获取窗口滚动条高度
+      getScrollTop() {
+        let scrollTop = 0;
+        if (document.documentElement && document.documentElement.scrollTop) {
+          scrollTop = document.documentElement.scrollTop;
+        } else if (document.body) {
+          scrollTop = document.body.scrollTop;
+        }
+//        console.log(scrollTop)
+        return scrollTop;
+      },
+//获取窗口可视范围的高度
+      getClientHeight() {
+        let clientHeight = 0;
+        if (document.body.clientHeight && document.documentElement.clientHeight) {
+          clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+        } else {
+          clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+        }
+//        console.log(clientHeight)
+        return clientHeight;
       }
     },
 
     created() {
-//      if(this.searchResult.length){
-//        console.log('ttt');
-//        this.screenList = this.searchResult;
-//        this.loadMoreSwitch = true;
-//        this.sum = res.PageCount  // 总页数
-//      } else {
-//        this.getData()
-//      }
-     this.getData()
+
+      this.getData()
     },
     mounted() {
 
       window.onload = () => {
 
         /*监听加载更多*/
-        $(window).scroll(() => {
-//          console.log(1)
-          if (this.loadMoreSwitch) {
-//            console.log(2)
+//        $(window).scroll(() => {
+////          console.log(1)
+//          if (this.loadMoreSwitch) {
+////            console.log(2)
+////
+//            if (this.page >= this.sum) {
+//              this.isEnd = true;  // 没有更多了
+//              return;
+//            }
+//            // 当滚动到最底部以上50像素时， 加载新内容
+//            // 核心代码
+//            if ($('#app').height() - $(window).scrollTop() - $(window).height() < 50) {
+//              this.page++;
+//              this.getData();
+//              console.log('下拉加载更多')
+//            }
+//          }
 //
+//        });
+
+//
+        window.onscroll = () => {
+          if (this.loadMoreSwitch) {
             if (this.page >= this.sum) {
               this.isEnd = true;  // 没有更多了
               return;
             }
             // 当滚动到最底部以上50像素时， 加载新内容
             // 核心代码
-            if ($('#app').height() - $(window).scrollTop() - $(window).height() < 50) {
+            let appH = document.getElementById("app").offsetHeight,
+              wt = this.getScrollTop(),
+              wh = this.getClientHeight();
+            console.log(appH, wt, wh);
+            if (appH - wt - wh < 100) {
               this.page++;
               this.getData();
               console.log('下拉加载更多')
             }
+
           }
+        }
 
-        });
+
       }
-
     }
 
 //  beforeDestroy: function() {}

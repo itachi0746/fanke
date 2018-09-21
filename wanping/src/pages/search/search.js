@@ -2,8 +2,9 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './search.vue'
-import 'font-awesome/css/font-awesome.min.css'
+
 import '../../config/rem'
+import '@/style/font/iconfont.css'
 // import router from './router'
 // import axios from 'axios'
 

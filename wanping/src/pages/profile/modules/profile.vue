@@ -8,12 +8,12 @@
         <div class="user-info">
           <p>qwe123</p>
           <p>
-            <i class="fa fa-mobile-phone"></i>
+            <i class="icon iconfont icon-phone"></i>
             <span class="icon-mobile-number">没绑定手机号</span>
           </p>
         </div>
         <div class="arrow">
-          <i class="fa fa-angle-right"></i>
+          <i class="icon iconfont icon-youjiantou1"></i>
         </div>
       </section>
     </a>
@@ -28,25 +28,25 @@
       </div>
     </section>
     <section class="profile-1reTe">
-      <a href="#" class="myItem">
+      <a href="order.html" class="myItem">
         <aside>
-          <i class="fa fa-list-ul"></i>
+          <i class="icon iconfont icon-1mulu"></i>
         </aside>
         <div class="myItem-div">
           <span>我的订单</span>
           <span>
-            <i class="fa fa-angle-right"></i>
+            <i class="icon iconfont icon-youjiantou1"></i>
           </span>
         </div>
       </a>
       <a href="#" class="myItem">
         <aside>
-          <i class="fa fa-file-video-o"></i>
+          <i class="icon iconfont icon-video"></i>
         </aside>
         <div class="myItem-div">
           <span>我的视频</span>
           <span>
-            <i class="fa fa-angle-right"></i>
+            <i class="icon iconfont icon-youjiantou1"></i>
           </span>
         </div>
       </a>
@@ -134,7 +134,7 @@
       display: flex;
       align-items: center;
 
-      .fa {
+      .icon {
         color: #fff;
       }
     }
@@ -166,9 +166,8 @@
         font-size: 0.6rem;
         color: #fff;
       }
-      .fa {
-        width: 0.5rem;
-        height: 0.75rem;
+      .icon {
+
         display: inline-block;
         vertical-align: middle;
         line-height: 0.75rem;
@@ -190,8 +189,9 @@
       aside {
         display: flex;
         align-items: center;
-        width: 0.7rem;
-        height: 0.7rem;
+        justify-content: center;
+        width: 1rem;
+        height: 1rem;
         margin-left: -.866667rem;
         margin-right: .266667rem;
       }
@@ -203,11 +203,16 @@
         border-bottom: 1px solid #f1f1f1;
         padding: .5rem .3rem .5rem .2rem;
         font-size: 0.8rem;
+
+        span {
+          color: #666666;
+        }
       }
 
-      .fa {
+      .icon {
         @include sc(.8rem, #666)
       }
+
     }
   }
 </style>

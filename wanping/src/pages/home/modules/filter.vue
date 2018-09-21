@@ -5,15 +5,17 @@
     <div class="sort-container">
       <div class="sort-item" @click="toggleFilter">
         <span>城市</span>
-        <i class="fa fa-caret-down"></i>
+        <i class="icon iconfont icon-xiajiantou"></i>
       </div>
       <div class="sort-item">
         <span>地区</span>
-        <i class="fa fa-caret-down"></i>
+        <i class="icon iconfont icon-xiajiantou"></i>
+
       </div>
       <div class="sort-item">
         <span>特色</span>
-        <i class="fa fa-caret-down"></i>
+        <i class="icon iconfont icon-xiajiantou"></i>
+
       </div>
 
     </div>
@@ -38,7 +40,7 @@
               </div>
               <div>
                 <span class="category_count">{{ item.children.length }}</span>
-                <i class="fa fa-angle-right"></i>
+                <i class="icon iconfont icon-youjiantou1"></i>
               </div>
             </li>
 
@@ -49,7 +51,7 @@
 
           <ul class="content">
             <li class="category-right-li" v-for="(item,index) in areaList"
-            @click="doSelectArea">
+                @click="doSelectArea">
               <div>
                 <span>{{ item.Name }}</span>
               </div>
@@ -71,11 +73,9 @@
 </template>
 
 <script>
-  import {postData,link} from '@/server'
+  import {postData, link} from '@/server'
   import BScroll from 'better-scroll'
-//  import Fmover from 'finger-mover'
-//  import simulationScrollY from 'simulation-scroll-y'
-//  import ScrollFlipPage from 'scroll-flip-page'
+
 
   export default {
     data() {
@@ -87,31 +87,32 @@
       }
     },
 
-    components: {
-
-    },
+    components: {},
 
     computed: {
       areaList() {  // 地区列表
-        if(this.spaceList.length>0) {
+        if (this.spaceList.length > 0) {
           return this.spaceList[this.activeIndex].children;
         }
       }
     },
 
     methods: {
-      show() {
-        if(!this.scroll) {
+      init_scroll() {
+        if (!this.scroll) {
           this.scroll = new BScroll('#category-left', {
             //开启点击事件 默认为false
             click: true
           });
-//          this.scroll.refresh();
-          console.log(this.scroll);
+          this.scroll2 = new BScroll('#category-right', {
+            //开启点击事件 默认为false
+            click: true
+          });
         } else {
           this.scroll.refresh();
+          this.scroll2.refresh();
         }
-
+        console.log(this.scroll);
       },
 
       toggleLi(index) {
@@ -119,8 +120,12 @@
       },
       toggleFilter() {
         this.isHide = !this.isHide;
-        this.show();
-//        this.scroll.refresh();
+//        this.timer1 = setTimeout(() => {
+//          this.init_scroll();
+//        },1000)
+        this.$nextTick(() => {
+          this.init_scroll();
+        });
         console.log(this.scroll);
 
       },
@@ -130,29 +135,8 @@
     },
 
     created() {
-      postData('http://www.bai.com/city').then((res) => {
+      postData('/city').then((res) => {
           this.spaceList = res.Data;
-          //      即定时器 20ms
-
-        this.$nextTick(()=> {
-          this.show();
-//          this.scroll = new BScroll('#category-left', {
-//            //开启点击事件 默认为false
-//            click: true
-//          });
-//          this.scroll.refresh();
-//
-//          console.log(this.scroll);
-        })
-
-//            this.scroll2 = new BScroll('#category-right', {
-//
-//              //开启点击事件 默认为false
-//              click: true
-//            })
-
-//          });
-
         }
       )
     },
@@ -246,14 +230,6 @@
 
   }
 
-  /*.wrapper, .category-left {*/
-    /*width: 100%;*/
-    /*!*position: relative;*!*/
-    /*!*top: 0px;*!*/
-    /*overflow: hidden;*/
-    /*z-index: 1;*/
-  /*}*/
-
   .wrapper {
     /*position: relative;*/
     overflow: hidden;
@@ -270,7 +246,6 @@
     height: 20rem;
     /*position: relative;*/
 
-
     .category-left-li {
       @include fj;
       padding: 0.2rem 0.5rem;
@@ -279,7 +254,8 @@
     .category_active {
       background-color: #fff;
     }
-    .fa {
+    i {
+      font-size: .7rem;
       padding-left: .2rem;
       color: #878787;
     }
@@ -321,7 +297,8 @@
     z-index: 12;
     width: 100%;
   }
-.content {
-  height: 30rem;
-}
+
+  /*.content {*/
+    /*height: 30rem;*/
+  /*}*/
 </style>

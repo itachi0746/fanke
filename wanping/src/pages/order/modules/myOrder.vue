@@ -13,7 +13,8 @@
             <header class="order_item_right_header">
               <section class="order_header">
                 <h4><span class="ellipsis">{{order.OrderNo}} </span>
-                  <i class="fa fa-angle-right"></i>
+                  <!--<i class="fa fa-angle-right"></i>-->
+                  <i class="icon iconfont icon-youjiantou1"></i>
                 </h4>
                 <p class="order_time">{{order.OrderDate}}</p>
               </section>
@@ -134,8 +135,8 @@
               @include sc(.55rem, #999);
               line-height: .8rem;
             }
-            .fa {
-              padding-left: .5rem;
+            .icon {
+              /*padding-left: .5rem;*/
             }
           }
           .order_status{

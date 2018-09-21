@@ -97,10 +97,7 @@
     },
 
     mounted() {
-//      即定时器 20ms
-      this.$nextTick(() => {
-        this.$refs.af.show();
-      });
+
 
 //      this.timer1 = setTimeout(() => {
 //        this.scroll = new BScroll('#category-left', {

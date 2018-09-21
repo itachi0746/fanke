@@ -13,17 +13,14 @@
             <div class="title-shop">
               <div class="tcont">
                 <div class="shopcb" @click="selGood($event)" :id="item.ItemId">
-                  <i class="fa fa-circle-o" v-show="!item.Checked"></i>
-                  <i class="fa fa-check-circle-o" v-show="item.Checked"></i>
-
+                  <i class="icon iconfont icon-unchecked" v-show="!item.Checked"></i>
+                  <i class="icon iconfont icon-checked" v-show="item.Checked"></i>
                 </div>
                 <div class="shop-name">
                   <span>{{item.BusinessName}}</span>
-                  <i class="fa fa-angle-right"></i>
+                  <i class="icon iconfont icon-youjiantou1"></i>
                 </div>
-                <!--<div class="state" @click="delItem" :data-id="item.ItemId">-->
-                <!--<span>删除</span>-->
-                <!--</div>-->
+
               </div>
             </div>
           </div>
@@ -67,8 +64,8 @@
 
     <section class="confrim-order">
       <div class="ft-cb" @click="selAll">
-        <i class="fa fa-circle-o" v-show="!checkAllFlag"></i>
-        <i class="fa fa-check-circle-o" v-show="checkAllFlag"></i>
+        <i class="icon iconfont icon-unchecked" v-show="!checkAllFlag"></i>
+        <i class="icon iconfont icon-checked" v-show="checkAllFlag"></i>
 
       </div>
       <div class="ft-all">
@@ -127,13 +124,12 @@
     },
 
     created() {
-      const url = 'http://www.bai.com/GetBaskets';
-//      const url = '/GetBaskets';
+//      const url = 'http://www.bai.com/GetBaskets';
+      const url = '/GetBaskets';
       postData(url).then((res) => {
           console.log(res);
           this.cart = res.Data;
           console.log(1111)
-
         }
       )
     },
@@ -251,9 +247,12 @@
           align-items: center;
           margin-right: .5rem;
 
-          .fa {
-            @include sc(1rem, #969696);
+          .icon {
+            @include sc(1rem, #000);
 
+          }
+          .icon.icon-checked {
+            color: red;
           }
         }
         .shop-name {
@@ -261,8 +260,8 @@
           display: flex;
           align-items: center;
 
-          .fa {
-            @include sc(1rem, #969696);
+          .icon {
+            @include sc(.8rem, #969696);
             margin-left: .5rem;
           }
         }
@@ -404,8 +403,11 @@
       align-items: center;
       justify-content: center;
 
-      .fa {
-        @include sc(1rem, #969696);
+      .icon {
+        @include sc(1rem, #000);
+      }
+      .icon.icon-checked {
+        color: red;
       }
     }
     .ft-all {

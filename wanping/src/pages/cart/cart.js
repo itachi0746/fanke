@@ -2,14 +2,15 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './cart.vue'
-import 'font-awesome/css/font-awesome.min.css'
+
 // import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/radio.css';
 // import {Radio} from 'element-ui'
 import '@/config/rem'
+import '@/style/font/iconfont.css'
 import axiosPlugin from '@/server'
 // 引入mockjs
-require('../../plugins/mock');
+// require('../../plugins/mock');
 
 Vue.config.productionTip = false;
 Vue.use(axiosPlugin);

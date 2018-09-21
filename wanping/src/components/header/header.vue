@@ -4,7 +4,8 @@
     <section class="head">
       <header>
         <div class="back" @click="goBack">
-          <i class="fa fa-angle-left left"></i>
+          <!--<i class="fa fa-angle-left left"></i>-->
+          <i class="icon iconfont icon-zuojiantou"></i>
         </div>
         <div class="head-font">
           <span>{{ title }}</span>
@@ -96,11 +97,14 @@
         flex: 1;
         font-size: .7rem;
         text-align: right;
+        span {
+          color: #666666;
+        }
       }
     }
 
-    .fa {
-      font-size: 1.5em;
+    i {
+      font-size: 1rem;
       color: #fff;
     }
   }

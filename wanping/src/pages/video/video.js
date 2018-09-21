@@ -2,7 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './video.vue'
-import 'font-awesome/css/font-awesome.min.css'
+
 import '../../config/rem'
 // import router from './router'
 // import axios from 'axios'

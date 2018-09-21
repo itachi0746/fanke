@@ -36,7 +36,8 @@
       <ul>
         <li class="history-list" v-for="(item, index) in searchHistory" :key="index" >
           <span class="history-text ellipsis"  @click="searchTarget(item)">{{item}}</span>
-          <i class="fa fa-times" @click="deleteHistory(index)"></i>
+          <!--<i class="fa fa-times" @click="deleteHistory(index)"></i>-->
+          <i class="icon iconfont icon-i-close" @click="deleteHistory(index)"></i>
         </li>
       </ul>
       <footer class="clear-history" @click="clearAllHistory">清空历史记录</footer>
@@ -260,10 +261,10 @@
     .history-text {
       display: inline-block;
       width: 80%;
+      color: #666666;
     }
-    .fa {
-
-      @include sc(.8rem,#666);
+    .icon {
+      @include sc(.7rem,#666);
     }
   }
   .empty_data {
