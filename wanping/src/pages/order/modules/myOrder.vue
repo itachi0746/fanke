@@ -28,7 +28,7 @@
             </section>
           </section>
           <div class="order_again">
-            <span class="order_sum">合计 ¥100.00</span>
+            <span class="order_sum">合计 ¥{{order.Amount}}</span>
             <ComputeTime></ComputeTime>
           </div>
         </section>
@@ -77,8 +77,9 @@
     created() {
       const url = '/GetOrders';
       postData(url).then((res) => {
+        console.log("获得到数据了");
         console.log(res)
-        this.orderArr = res.Data;
+        this.orderArr = res.Data.Models;
       });
     },
     mounted() {

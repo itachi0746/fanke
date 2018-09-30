@@ -161,7 +161,10 @@
 //        this.showFiles = !this.showFiles;
         this.btnTips = this.resData.Items[i].showFiles ? '隐藏已上传素材' : '查看已上传素材';
         const url = '/GetFiles';
-        postData(url,dtlId)  // todo 请求查看已上传文件,要传detailId
+        const data = {
+          DetailId: dtlId
+        };
+        postData(url,data)  // todo 请求查看已上传文件,要传detailId
       },
       handleChange(file, fileList) {
 //      this.fileList3 = fileList.slice(-3);

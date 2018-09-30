@@ -135,7 +135,7 @@
     },
 
     created() {
-      postData('/city').then((res) => {
+      postData('/GetAreas').then((res) => {
           this.spaceList = res.Data;
         }
       )
