@@ -70,7 +70,8 @@
 
         console.log(Tindex)
 
-        window.location.href = 'orderDetail.html?OrderId=' + Tindex;
+        GoToPage("orderDetail","orderDetail.html",{OrderId:Tindex});
+        //window.location.href = 'orderDetail.html?OrderId=' + Tindex;
       }
     },
 
