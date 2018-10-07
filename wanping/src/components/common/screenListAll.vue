@@ -76,7 +76,8 @@
       },
       toScreen(event) {
         const targetId = event.currentTarget.id;
-        window.location.href = 'screen.html?id=' + targetId;
+        GoToPage("screen","screen.html",{id:targetId});
+       // window.location.href = 'screen.html?id=' + targetId;
       },
       // 获取窗口滚动条高度
       getScrollTop() {

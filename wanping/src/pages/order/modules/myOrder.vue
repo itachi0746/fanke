@@ -44,7 +44,7 @@
   import Footer from '@/components/footer/footer.vue'
   import Header from '@/components/header/header.vue'
   import ComputeTime from '../../../components/common/computeTime.vue'
-  import {postData,link} from '@/server'
+  import {postData} from '@/server'
 
 
   export default {

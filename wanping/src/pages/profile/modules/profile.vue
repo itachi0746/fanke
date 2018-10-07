@@ -28,7 +28,7 @@
       </div>
     </section>
     <section class="profile-1reTe">
-      <a href="order.html" class="myItem">
+      <a href="javascript: GoToPage('order','order.html',{})" class="myItem">
         <aside>
           <i class="icon iconfont icon-1mulu"></i>
         </aside>
@@ -39,7 +39,7 @@
           </span>
         </div>
       </a>
-      <a href="#" class="myItem">
+      <a href="javascript: GoToPage('index','index.html',{})" class="myItem">
         <aside>
           <i class="icon iconfont icon-video"></i>
         </aside>

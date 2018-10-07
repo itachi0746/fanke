@@ -6,7 +6,6 @@
  * @constructor
  */
 function GoToPage(pageName,defaultUrl,paramter) {
-  console.log("goto:"+defaultUrl);
   var theParamterArray=[];
   for(var key in paramter){
     theParamterArray.push(key+'='+paramter[key]);

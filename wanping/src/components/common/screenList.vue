@@ -29,7 +29,7 @@
 </template>
 
 <script>
-  import {postData,link} from '../../server'
+  import {postData} from '../../server'
 
   export default {
     data() {
@@ -44,7 +44,8 @@
 
     methods: {
       toScreen() {
-        window.location.href = 'screen.html'
+        GoToPage("screen","screen.html",{});
+       // window.location.href = 'screen.html'
       }
     },
 

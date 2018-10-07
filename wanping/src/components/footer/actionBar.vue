@@ -8,7 +8,7 @@
 </template>
 
 <script>
-  import {postData,link} from '../../server'
+  import {postData} from '../../server'
 //  console.log(Store)
 
   export default {

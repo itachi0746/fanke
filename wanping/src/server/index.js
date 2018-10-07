@@ -107,9 +107,9 @@ Axios.interceptors.response.use(
 );
 
 // 保存页面跳转的链接
-let link = {
+/*let link = {
   'order': '111'  // 全局跳转配置
-};
+};*/
 
 // 封装axios的post请求
 let postData = function(url, params = {}) {
@@ -127,7 +127,7 @@ let postData = function(url, params = {}) {
   })
 };
 
-export {link,postData}
+export {postData}
 
 // // 封装axios的post请求
 // export function postData(url, params = {}) {

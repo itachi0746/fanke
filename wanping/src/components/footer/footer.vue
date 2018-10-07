@@ -78,22 +78,27 @@ export default {
 
   methods: {
     toProfile() {
-      window.location.href = 'profile.html';
+      GoToPage("profile","profile.html",{});
+     // window.location.href = 'profile.html';
     },
     toSearch() {
-      window.location.href = 'search.html';
+      GoToPage("search","search.html",{});
+      //window.location.href = 'search.html';
 
     },
     toIndex() {
-      window.location.href = 'index.html';
+      GoToPage("index","index.html",{});
+      //window.location.href = 'index.html';
 
     },
     toOrder() {
-      window.location.href = 'order.html';
+      GoToPage("order","order.html",{});
+      //window.location.href = 'order.html';
 
     },
     toCart() {
-      window.location.href = 'cart.html';
+      GoToPage("cart","cart.html",{});
+     // window.location.href = 'cart.html';
 
     },
 

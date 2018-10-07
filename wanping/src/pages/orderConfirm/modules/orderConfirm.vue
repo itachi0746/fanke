@@ -36,7 +36,7 @@
 
 <script>
   import Header from '@/components/header/header.vue'
-  import {postData,link} from '../../../server'
+  import {postData} from '../../../server'
 
   export default {
     data() {
