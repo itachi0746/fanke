@@ -188,7 +188,7 @@
         this.sumNum = this.num;
         if (!repeated) {  // 不是重复的
           let newItem = {
-            id: this.itemId,
+            id: this.curDayObj.PsId,
             day: this.curDayObj.Date,
             num: this.sumNum,  // 数量
             price: this.UP,  // 单价
@@ -248,13 +248,15 @@
           sumPrice: this.sumPrice,
           items: this.selected
         };
-//        console.log(this.selected)
+       // console.log('选择数据'+JSON.stringify(data));
+//       console.log(this.selected)
         this.$router.push({name: 'OrderConfirm', params: {data: data}})
       },
       addToBasket() {  // 添加到购物车
+
         const url = '/AddToBasket';
         const data = [{
-          psid: 1,
+          psid: this.Id,
           date: '2018-08-17',
           count: 2
         }];
