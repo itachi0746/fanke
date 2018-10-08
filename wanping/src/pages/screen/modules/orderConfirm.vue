@@ -74,8 +74,8 @@
           let newItem = {
             "BasketDtlId": null,  // 购物车id
             "PsId": this.orderData.id,  // 产品id
-            "Count": item.num,  // 广告位数量
-            "Date": item.day + '',  // 日期
+            "Count": item.count,  // 广告位数量
+            "Date": item.date + '',  // 日期
             "Amount": item.sumPrice,  // 总价
             "Price": item.price  // 价格
           };

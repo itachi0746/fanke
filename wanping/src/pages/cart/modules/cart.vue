@@ -129,7 +129,6 @@
       postData(url).then((res) => {
           console.log(res);
           this.cart = res.Data;
-//          console.log(1111)
         }
       )
     },
