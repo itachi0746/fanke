@@ -3,7 +3,7 @@
     <!--商家列表-->
     <div class="shoplist-container">
       <div class="shoplist-item" v-for="(item, index) in screenList" :key="item.Id" @click="toScreen($event)"
-           :id="item.Id">
+           :data-id="item.Id">
         <p class="shop-name">
           {{ item.Name }}
           <span class="right">
@@ -45,7 +45,7 @@
       return {
         screenList: [],
         page: 1, // 一开始一页
-        sum: 5,  // 最多可以有几页
+        sum: 1,  // 最多可以有几页
         loadMoreSwitch: true,
         isEnd: false
       }
@@ -70,12 +70,13 @@
           console.log(res)
           this.screenList = this.screenList.concat(res.Data.Models);
           this.loadMoreSwitch = true;
-          this.sum = res.PageCount  // 总页数
+          this.sum = res.data.PageCount;  // 总页数
+//          console.log(this.sum)
         })
 
       },
       toScreen(event) {
-        const targetId = event.currentTarget.id;
+        const targetId = event.currentTarget.getAttribute('data-id');
         GoToPage("screen","screen.html",{id:targetId});
        // window.location.href = 'screen.html?id=' + targetId;
       },
@@ -135,7 +136,9 @@
 //
         window.onscroll = () => {
           if (this.loadMoreSwitch) {
+//            console.log('page',this.page,this.sum);
             if (this.page >= this.sum) {
+
               this.isEnd = true;  // 没有更多了
               return;
             }
@@ -144,7 +147,7 @@
             let appH = document.getElementById("app").offsetHeight,
               wt = this.getScrollTop(),
               wh = this.getClientHeight();
-            console.log(appH, wt, wh);
+//            console.log(appH, wt, wh);
             if (appH - wt - wh < 100) {
               this.page++;
               this.getData();

@@ -19,7 +19,7 @@
         </li>
         <li class="data-container">
           <span>数量</span>
-          <span>× {{item.num}}</span>
+          <span>× {{item.count}}</span>
         </li>
       </ul>
 

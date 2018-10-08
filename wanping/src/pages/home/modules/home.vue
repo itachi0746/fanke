@@ -19,7 +19,7 @@
       </div>
       <div class="recommend-item-container">
         <div class="recommend-item-wrap">
-          <div class="recommend-item" v-for="(item,index) in Recommends" :key="item.Id">
+          <div class="recommend-item" v-for="(item,index) in Recommends" :key="item.Id" @click="toScreen($event)" :data-id="item.Id">
             <div>
               <img :src="item.Img" alt="">
             </div>
@@ -110,6 +110,13 @@
 //        })
 //      }, 30);
 
+    },
+    methods: {
+      toScreen(e) {
+        const targetId = e.currentTarget.getAttribute('data-id');
+//        console.log(targetId);
+        GoToPage('screen','screen.html',{id:targetId})
+      }
     },
     components: {
       aFilter,

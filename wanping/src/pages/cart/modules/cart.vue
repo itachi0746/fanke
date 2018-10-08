@@ -40,9 +40,9 @@
                 </p>
 
                 <p class="item-pay">
-                  <span class="pay-num">数量: {{item.Amount}}</span>
+                  <span class="pay-num">数量: {{item.Total}}</span>
 
-                  <span class="pay-span"><i>¥</i>{{item.Total}}</span>
+                  <span class="pay-span"><i>¥</i>{{item.Amount}}</span>
 
                   <!--<span class="number">-->
                   <!--<button class="decrease disabled">-</button>-->
@@ -116,8 +116,8 @@
       totalPrice() {
         let result = 0;
         this.cart.forEach(item => {
-//            item.Checked ? result += item.Total : result;
-          item.Checked && (result += parseFloat(item.Total));
+//            item.Checked ? result += item.Amount : result;
+          item.Checked && (result += parseFloat(item.Amount));
         });
         return result
       }
@@ -129,7 +129,7 @@
       postData(url).then((res) => {
           console.log(res);
           this.cart = res.Data;
-          console.log(1111)
+//          console.log(1111)
         }
       )
     },
@@ -184,6 +184,8 @@
        */
       doDel() {
         let cart = this.cart;
+        let arrData = this.calCart();
+
         this.cart = cart.filter(function (item) {
           return !item.Checked
         });
@@ -191,6 +193,10 @@
         this.selectedNum = 0;
         this.checkAllFlag = false;
         this.delFlag = !this.delFlag;
+
+        postData('/RemoveBasket',arrData).then((res) => {
+          console.log('删除成功',res)
+        })
       },
       /**
        * @method 点击编辑
@@ -200,7 +206,21 @@
         this.delFlag = !this.delFlag;
         console.log(this.delFlag)
 
+      },
+      /**
+       * @method 计算购物车中的项,把项的ItemId加入数组中并返回
+       */
+      calCart() {
+        let arr = [];
+        for (let item of this.cart) {
+          if(item.Checked) {
+            arr.push(item.ItemId);
+          }
+        }
+        console.log(arr);
+        return arr
       }
+
 
     },
 

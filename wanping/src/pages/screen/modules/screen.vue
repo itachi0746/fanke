@@ -51,11 +51,11 @@
 
         </p>
         <section v-if="selected.length">
-          <p v-for="(item,index) in selected" :key="item.id">
-            <span>{{item.day}}</span>
+          <p v-for="(item,index) in selected" :key="item.date">
+            <span>{{item.date}}</span>
             广告位数量:
-            <span>{{item.num}}</span>
-            <i class="el-icon-close right" @click="delSelected($event)" :id="item.id"></i>
+            <span>{{item.count}}</span>
+            <i class="el-icon-close right" @click="delSelected($event)" :date-date="item.date"></i>
           </p>
         </section>
         <section v-else>
@@ -84,12 +84,16 @@
         <li class="buy-btn" @click="buy">购买</li>
       </ul>
     </div>
+
+    <!--loading-->
+    <Loading v-show="isLoading"></Loading>
   </div>
 </template>
 
 <script>
   import Calendar from 'vue-calendar-component';
   import Header from '../../../components/header/header.vue'
+  import Loading from '../../../components/common/loading.vue'
   import {postData} from '@/server'
   import getUrlParms from '@/config/utils'
 
@@ -111,12 +115,14 @@
         curDayObj: null,  // 当前显示的某天的obj
         selected: [],  // 已选择的广告位
         itemId: 0,  // 所选择时段的id
+        isLoading: false
       }
     },
 
     components: {
       Calendar,
-      Header
+      Header,
+      Loading
     },
 
     computed: {
@@ -188,28 +194,31 @@
         this.sumNum = this.num;
         if (!repeated) {  // 不是重复的
           let newItem = {
-            id: this.curDayObj.PsId,
-            day: this.curDayObj.Date,
-            num: this.sumNum,  // 数量
+            psid: this.Id,
+            date: this.curDayObj.Date,
+            count: this.sumNum,  // 数量
             price: this.UP,  // 单价
             sumPrice: this.UP * this.sumNum  // 总价
           };
           this.itemId++;
           this.selected.push(newItem);
         } else {  // 重复的
-          repeated.num += this.sumNum;  // 重新计算数量
-          repeated.num = repeated.num > this.curDayObj.Remain ? this.curDayObj.Remain : repeated.num;  // 防止超出
-          repeated.sumPrice = repeated.num * repeated.price;  // 重新计算总价
+          repeated.count += this.sumNum;  // 重新计算数量
+          repeated.count = repeated.count > this.curDayObj.Remain ? this.curDayObj.Remain : repeated.count;  // 防止超出
+          repeated.sumPrice = repeated.count * repeated.price;  // 重新计算总价
 
         }
 
       },
+      /**
+       * @method 判断是否有重复,并返回结果
+       * @param {String} date 日期
+       */
       isRepeated(date) {
         let temp = null;
 
         for (let i = 0; i < this.selected.length; i++) {
-          if (this.selected[i].day === date) {
-//            console.log(1);
+          if (this.selected[i].date === date) {
             temp = this.selected[i];
             break
           }
@@ -220,10 +229,10 @@
       delSelected(event) {  // 删除选中的时段
 //        console.log(event.currentTarget);
 //        console.log(event.target);
-        const Tindex = parseInt(event.target.id);
+        const Tdate = event.target.getAttribute('date-date');
 
         for(let i=0;i<this.selected.length;i++) {
-          if (this.selected[i].id === Tindex) {
+          if (this.selected[i].date === Tdate) {
 //            console.log(index, item.id);
             this.selected.splice(i, 1);
             break;
@@ -253,16 +262,17 @@
         this.$router.push({name: 'OrderConfirm', params: {data: data}})
       },
       addToBasket() {  // 添加到购物车
-
+        this.isLoading = true;
         const url = '/AddToBasket';
-        const data = [{
-          psid: this.Id,
-          date: '2018-08-17',
-          count: 2
-        }];
-        postData(url, data).then((res) => {
-          console.log('AddToBasket', res)
-
+//        const dataArr = [{
+//          psid: this.Id,
+//          date: this.curDayObj.Date,
+//          count: 2
+//        }];
+        postData(url, this.selected).then((res) => {
+          console.log('AddToBasket', res);
+          this.isLoading = false;
+          GoToPage('cart','cart.html',{})
         });
       }
     },
