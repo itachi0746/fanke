@@ -272,7 +272,8 @@
         postData(url, this.selected).then((res) => {
           console.log('AddToBasket', res);
           this.isLoading = false;
-          GoToPage('cart','cart.html',{})
+          console.log(this.selected);
+          GoToPage('cart','cart.html',{'sel': this.selected})
         });
       }
     },

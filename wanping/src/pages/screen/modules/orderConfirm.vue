@@ -65,6 +65,9 @@
         };
         postData(url, data).then((res) => {
           console.log(res)
+          const url = res.NextStep;
+          console.log(url)
+
           // TODO
         })
       },

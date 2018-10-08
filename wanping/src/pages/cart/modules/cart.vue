@@ -77,7 +77,7 @@
           <span>¥{{totalPrice}}</span>
         </div>
       </div>
-      <div class="btn" v-if="!this.delFlag">
+      <div class="btn" v-if="!this.delFlag" @click="handleOrder">
         <span>结算(</span>
         <span>{{selectedNum}}</span>
         <span>)</span>
@@ -95,6 +95,7 @@
 <script>
   import Header from '../../../components/header/header.vue'
   import {postData} from '@/server'
+  import getUrlParms from '@/config/utils'
 
   export default {
     data() {
@@ -124,6 +125,8 @@
     },
 
     created() {
+//      const data = getUrlParms();
+      console.log(data);
 //      const url = 'http://www.bai.com/GetBaskets';
       const url = '/GetBaskets';
       postData(url).then((res) => {
@@ -218,9 +221,37 @@
         }
         console.log(arr);
         return arr
+      },
+      handleOrder() {
+        const url = '/ConfirmOrder';
+        const data = {
+          "FromBasket": true,
+          items: this.handleItems()
+        };
+        postData(url, data).then((res) => {
+          console.log(res)
+          const url = res.NextStep;
+          console.log(url)
+
+          // TODO
+        })
+      },
+      handleItems() {
+        let arr = [];
+        this.orderData.items.forEach((item,index)=> {
+          let newItem = {
+            "BasketDtlId": null,  // 购物车id
+            "PsId": this.orderData.id,  // 产品id
+            "Count": item.count,  // 广告位数量
+            "Date": item.date + '',  // 日期
+            "Amount": item.sumPrice,  // 总价
+            "Price": item.price  // 价格
+          };
+          arr.push(newItem)
+
+        });
+        return arr
       }
-
-
     },
 
     mounted() {
