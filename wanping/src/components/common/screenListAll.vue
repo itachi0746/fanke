@@ -3,7 +3,7 @@
     <!--商家列表-->
     <div class="shoplist-container">
       <div class="shoplist-item" v-for="(item, index) in screenList" :key="item.Id" @click="toScreen($event)"
-           :data-id="item.Id">
+           :data-pid="item.Id">
         <p class="shop-name">
           {{ item.Name }}
           <span class="right">
@@ -70,15 +70,15 @@
           console.log(res)
           this.screenList = this.screenList.concat(res.Data.Models);
           this.loadMoreSwitch = true;
-          this.sum = res.data.PageCount;  // 总页数
+          this.sum = res.Data.PageCount;  // 总页数
 //          console.log(this.sum)
         })
 
       },
       toScreen(event) {
-        const targetId = event.currentTarget.getAttribute('data-id');
-        GoToPage("screen","screen.html",{id:targetId});
-       // window.location.href = 'screen.html?id=' + targetId;
+        const targetId = event.currentTarget.getAttribute('data-pid');
+        GoToPage("screen", "screen.html", {'pid': targetId});
+        // window.location.href = 'screen.html?id=' + targetId;
       },
       // 获取窗口滚动条高度
       getScrollTop() {

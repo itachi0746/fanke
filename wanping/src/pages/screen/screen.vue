@@ -1,17 +1,16 @@
 <template>
   <div id="app">
-    <router-view/>
-    <!--<Screen></Screen>-->
+    <Screen></Screen>
   </div>
 </template>
 
 <script>
-//  import Screen from './modules/screen.vue'
+  import Screen from './modules/screen.vue'
 
   export default {
     name: 'App',
     components: {
-//      Screen
+      Screen
     },
   }
 </script>

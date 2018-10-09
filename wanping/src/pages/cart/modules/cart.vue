@@ -126,7 +126,7 @@
 
     created() {
 //      const data = getUrlParms();
-      console.log(data);
+//      console.log(data);
 //      const url = 'http://www.bai.com/GetBaskets';
       const url = '/GetBaskets';
       postData(url).then((res) => {
@@ -222,30 +222,29 @@
         console.log(arr);
         return arr
       },
+      /**
+       * @method 结算
+       */
       handleOrder() {
-        const url = '/ConfirmOrder';
+//        const url = '/ConfirmOrder';
+        const url = '/PlaceOrder';
         const data = {
           "FromBasket": true,
-          items: this.handleItems()
+          "items": this.handleItems()
         };
         postData(url, data).then((res) => {
-          console.log(res)
-          const url = res.NextStep;
-          console.log(url)
-
-          // TODO
+          console.log(res);
+          GoToPage('orderConfirm','orderConfirm.html',{'id':res.Data,"fromBasket": true})
         })
       },
+      /**
+       * @method 计算购物车中的项,把项的ItemId加入数组中并返回
+       */
       handleItems() {
         let arr = [];
-        this.orderData.items.forEach((item,index)=> {
+        this.cart.forEach((item)=> {
           let newItem = {
-            "BasketDtlId": null,  // 购物车id
-            "PsId": this.orderData.id,  // 产品id
-            "Count": item.count,  // 广告位数量
-            "Date": item.date + '',  // 日期
-            "Amount": item.sumPrice,  // 总价
-            "Price": item.price  // 价格
+            "BasketDtlId": item.ItemId,  // 购物车明细id
           };
           arr.push(newItem)
 

@@ -51,11 +51,11 @@
 
         </p>
         <section v-if="selected.length">
-          <p v-for="(item,index) in selected" :key="item.date">
-            <span>{{item.date}}</span>
+          <p v-for="(item,index) in selected" :key="item.Date">
+            <span>{{item.Date}}</span>
             广告位数量:
-            <span>{{item.count}}</span>
-            <i class="el-icon-close right" @click="delSelected($event)" :date-date="item.date"></i>
+            <span>{{item.Count}}</span>
+            <i class="el-icon-close right" @click="delSelected($event)" :data-date="item.Date"></i>
           </p>
         </section>
         <section v-else>
@@ -81,7 +81,7 @@
     <div class="actionBar">
       <ul>
         <li class="shop-car" @click="addToBasket">加入购物车</li>
-        <li class="buy-btn" @click="buy">购买</li>
+        <li class="buy-btn" @click="handleOrder">购买</li>
       </ul>
     </div>
 
@@ -133,7 +133,7 @@
         let result = 0;
         if (this.selected.length) {
           this.selected.forEach((item) => {
-            result += item.sumPrice;
+            result += item.Amount;
           });
         }
         return result
@@ -194,11 +194,11 @@
         this.sumNum = this.num;
         if (!repeated) {  // 不是重复的
           let newItem = {
-            psid: this.Id,
-            date: this.curDayObj.Date,
-            count: this.sumNum,  // 数量
-            price: this.UP,  // 单价
-            sumPrice: this.UP * this.sumNum  // 总价
+            'PsId': this.Id,
+            'Date': this.curDayObj.Date,
+            'Count': this.sumNum,  // 数量
+            'Price': this.UP,  // 单价
+            'Amount': this.UP * this.sumNum  // 总价
           };
           this.itemId++;
           this.selected.push(newItem);
@@ -218,7 +218,7 @@
         let temp = null;
 
         for (let i = 0; i < this.selected.length; i++) {
-          if (this.selected[i].date === date) {
+          if (this.selected[i].Date === date) {
             temp = this.selected[i];
             break
           }
@@ -227,12 +227,10 @@
 
       },
       delSelected(event) {  // 删除选中的时段
-//        console.log(event.currentTarget);
-//        console.log(event.target);
-        const Tdate = event.target.getAttribute('date-date');
+        const Tdate = event.target.getAttribute('data-date');
 
         for(let i=0;i<this.selected.length;i++) {
-          if (this.selected[i].date === Tdate) {
+          if (this.selected[i].Date === Tdate) {
 //            console.log(index, item.id);
             this.selected.splice(i, 1);
             break;
@@ -241,15 +239,7 @@
 
       },
 
-//      dateFormat(date) {
-//        date = typeof date === 'string' ? new Date(date.replace(/\-/g, '-')) : date;
-//        let month = date.getMonth() + 1;
-//        month = month < 10 ? '0' + month : month;
-//        let day = date.getDate();
-//        day = day < 10 ? '0' + day : day;
-//        return date.getFullYear() + '-' + month + '-' + day;
-//      },
-      buy() {
+      buy() {  // 购买 确认下单
 
         let data = {
           name: this.resData.Name,
@@ -257,9 +247,8 @@
           sumPrice: this.sumPrice,
           items: this.selected
         };
-       // console.log('选择数据'+JSON.stringify(data));
-//       console.log(this.selected)
-        this.$router.push({name: 'OrderConfirm', params: {data: data}})
+        GoToPage('orderConfirm','orderConfirm.html',{})
+
       },
       addToBasket() {  // 添加到购物车
         this.isLoading = true;
@@ -271,17 +260,51 @@
 //        }];
         postData(url, this.selected).then((res) => {
           console.log('AddToBasket', res);
-          this.isLoading = false;
-          console.log(this.selected);
-          GoToPage('cart','cart.html',{'sel': this.selected})
+//          console.log(this.selected);
+          GoToPage('cart','cart.html',{})
         });
+      },
+      /**
+       * @method 购买
+       */
+      handleOrder() {
+        this.isLoading = true;
+//        const url = '/ConfirmOrder';
+        const url = '/PlaceOrder';
+        const data = {
+          "FromBasket": false,
+          "items": this.selected
+        };
+        postData(url, data).then((res) => {
+          console.log(res);
+//          this.isLoading = false;
+          GoToPage('orderConfirm','orderConfirm.html',{'id':res.Data,'fromBasket': false})
+        })
+      },
+      /**
+       * @method 计算购物车中的项,把项的ItemId加入数组中并返回
+       */
+      handleItems() {
+        let arr = [];
+        this.selected.forEach((item)=> {
+          let newItem = {
+            "PsId": item.PsId,  // 产品id
+            "Count": item.Count,  // 广告位数量
+            "Date": item.Date,  // 日期
+            "Amount": item.Amount,  // 总价
+            "Price": item.Price  // 价格
+          };
+          arr.push(newItem)
+
+        });
+        return arr
       }
     },
 
     created() {
 //      const myDate = new Date();
       const args = getUrlParms();
-      this.Id = args.id;
+      this.Id = args.pid;
 //      console.log(args);
 
       const url = '/Detail';

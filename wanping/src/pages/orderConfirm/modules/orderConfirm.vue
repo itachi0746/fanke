@@ -3,32 +3,35 @@
   <div class="order">
     <Header :headName="headName"></Header>
 
-    <section class="order-data">
+    <section class="order-data" v-if="orderData" v-for="(item) in orderData">
       <header>
         订单信息
       </header>
+      <p class="screenName">{{item.PsName}}</p>
+
       <ul>
         <li class="data-container">
-          <p class="product-name ellipsis">屏幕名称xxxxxxxxxxxxxxxxxxxxx</p>
+          <p class="product-name ellipsis">{{item.Date}}</p>
         </li>
         <li class="data-container">
           <span>单价</span>
-          <span>¥ 100</span>
+          <span>¥ {{item.Price}}</span>
         </li>
         <li class="data-container">
           <span>数量</span>
-          <span>× 10</span>
+          <span>× {{item.Count}}</span>
         </li>
       </ul>
+
       <section class="total-price">
         <span>订单总价</span>
-        <span>待支付 ¥1000</span>
+        <span>待支付 ¥{{item.Amount}}</span>
       </section>
     </section>
 
     <section class="confrim-order">
-      <p>待支付 ¥1000.0</p>
-      <p @click="handleOrder">确认下单</p>
+      <p>待支付 ¥{{totalPrice}}</p>
+      <p @click="placeOrder">确认下单</p>
     </section>
   </div>
   <!--订单 结束-->
@@ -37,11 +40,15 @@
 <script>
   import Header from '@/components/header/header.vue'
   import {postData} from '../../../server'
+  import getUrlParms from '@/config/utils'
+
 
   export default {
     data() {
       return {
-        headName: '确认订单'
+        headName: '确认订单',
+        orderData: [],
+        fromBasket: false  // 是否来自购物车
       }
     },
 
@@ -49,33 +56,66 @@
       Header
     },
 
-    computed: {},
+    computed: {
+      totalPrice() {
+        let result = 0;
+        this.orderData.forEach((item) => {
+          result += item.Amount;
+        });
+        return result
+      }
+    },
 
     methods: {
-      handleOrder() {
+      /**
+       * @method 确认下单
+       */
+      placeOrder() {
         const url = '/ConfirmOrder';
         const data = {
-          "FromBasket": false,
-          items: [{
-            "BasketDtlId": "1",  // 购物车id
-            "PsId": "12",  // 产品id
-            "Count": "10",  // 广告位数量
-            "Date": "2018-08-18",
-            "Amount": '1000',  // 总价
-            "Price": "100"  // 价格
-          }]
+          "FromBasket": this.fromBasket,
+          "items": this.handleItems()
         };
         postData(url, data).then((res) => {
-          console.log(res)
-          // TODO
+          console.log(res);
+          const url = res.NextStep;
+          console.log(url)
+
+          // TODO 支付
         })
+      },
+      handleItems() {
+        let arr = [];
+        this.orderData.forEach((item)=> {
+          let newItem = {
+            "BasketDtlId": item.ItemId,  // 购物车明细id
+            "PsId": item.PsId,  // 产品id
+            "Count": item.Count,  // 广告位数量
+            "Date": item.Date,  // 日期
+            "Amount": item.Amount,  // 总价
+            "Price": item.Price  // 价格
+          };
+          arr.push(newItem)
+        });
+        return arr
       }
+    },
+    created() {
+      const data = getUrlParms();
+      this.fromBasket = data.fromBasket;
+//      console.log(data);
+      const url = '/GetPlaceOrder';
+      postData(url,data.id).then((res) => {
+        console.log(res);
+        this.orderData = res.Data;
+      })
+
     },
 
     mounted() {
 //      const key = 'SUM_PRIZE';
 //      const sumPrice = Store.fetch(key);
-//      console.log(sumPrice)
+      console.log('confirm mountred')
     },
 
     beforeDestroy() {
@@ -101,6 +141,10 @@
     }
     ul {
       border-bottom: 0.05rem solid #f5f5f5;
+
+    }
+    .screenName {
+      padding: .5rem;
 
     }
   }

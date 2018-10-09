@@ -2,7 +2,7 @@
   <div id="home">
 
     <!--选地区-->
-    <aFilter ref="af"></aFilter>
+    <!--<aFilter ref="af"></aFilter>-->
     <!--轮播图 开始-->
     <swiper :options="swiperOption" ref="mySwiper" v-if="Ads.length">
       <swiper-slide v-for="(item,index) in Ads" :key="item.Index">
@@ -19,7 +19,7 @@
       </div>
       <div class="recommend-item-container">
         <div class="recommend-item-wrap">
-          <div class="recommend-item" v-for="(item,index) in Recommends" :key="item.Id" @click="toScreen($event)" :data-id="item.Id">
+          <div class="recommend-item" v-for="(item,index) in Recommends" :key="item.Id" @click="toScreen($event)" :data-pid="item.Id">
             <div>
               <img :src="item.Img" alt="">
             </div>
@@ -46,7 +46,7 @@
 <script>
   import screenListAll from 'components/common/screenListAll'
   import Footer from 'components/footer/footer'
-  import aFilter from './filter'
+//  import aFilter from './filter'
 //  import BScroll from 'better-scroll'
   import {postData} from '@/server'
   import { swiper, swiperSlide } from 'vue-awesome-swiper';
@@ -113,13 +113,13 @@
     },
     methods: {
       toScreen(e) {
-        const targetId = e.currentTarget.getAttribute('data-id');
-//        console.log(targetId);
-        GoToPage('screen','screen.html',{id:targetId})
+        const targetId = e.currentTarget.getAttribute('data-pid');
+        console.log(targetId);
+        GoToPage('screen','screen.html',{'pid':targetId})
       }
     },
     components: {
-      aFilter,
+//      aFilter,
       screenListAll,
       Footer,
       swiper,

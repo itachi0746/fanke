@@ -40,12 +40,13 @@
 <script>
   import Header from '@/components/header/header.vue'
   import {postData} from '../../../server'
+  import getUrlParms from '@/config/utils'
+
 
   export default {
     data() {
       return {
         headName: '确认订单',
-
         orderData: []
       }
     },
@@ -75,7 +76,7 @@
         let arr = [];
         this.orderData.items.forEach((item,index)=> {
           let newItem = {
-            "BasketDtlId": null,  // 购物车id
+            "BasketDtlId": null,  // 购物车明细id
             "PsId": this.orderData.id,  // 产品id
             "Count": item.count,  // 广告位数量
             "Date": item.date + '',  // 日期
@@ -83,14 +84,18 @@
             "Price": item.price  // 价格
           };
           arr.push(newItem)
-
         });
         return arr
       }
     },
     created() {
-      this.orderData = this.$route.params.data;
-      console.log('confirm created',this.orderData)
+      const data = getUrlParms();
+      console.log(data);
+//      this.orderData = this.$route.params.data;
+//      console.log('confirm created',this.orderData)
+      const url = '/GetPlaceOrder';
+
+//      postData(url,)
 
     },
 
