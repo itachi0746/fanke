@@ -32,7 +32,7 @@
             <!--</div>-->
             <div class="item-detail">
               <div class="img-box">
-                <img src="../../../assets/item.png" alt="">
+                <img :src="item.Img" alt="">
               </div>
               <div class="detail-box-r">
                 <p>

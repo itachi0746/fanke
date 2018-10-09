@@ -35,14 +35,14 @@
               <label v-show="item.showFiles">隐藏已上传素材</label>
               <label v-show="!item.showFiles">查看已上传素材</label>
             </el-button>
-            <ul v-show="item.showFiles">
+            <ul v-show="item.showFiles" v-for="(i) in item.Medias">
               <!--<li class="file-item">-->
               <!--<i class="el-icon-document"></i>-->
               <!--1241414235236-->
               <!--</li>-->
               <li tabindex="0" class="el-upload-list__item is-success" style="text-align: left;">
                 <a class="el-upload-list__item-name">
-                  <i class="el-icon-document"></i>test.mp4
+                  <i class="el-icon-document"></i>{{}}
                 </a>
                 <label class="el-upload-list__item-status-label"><i
                   class="el-icon-upload-success el-icon-circle-check"></i></label>
@@ -57,14 +57,14 @@
           <!--data是要发送的数据-->
           <el-upload
             class="upload-demo"
-            action="/api/AddFile"
+              action="/api/AddFile"
             accept=".jpg,.png,.mp4"
             :data="data"
             :before-upload="beforeUpload"
             :on-change="handleChange"
             :before-remove="beforeRemove"
             :on-success="handleSuccess">
-            <el-button size="small" type="primary">上传素材</el-button>
+            <el-button size="small" type="primary" @click.native="upload(index)">上传素材</el-button>
           </el-upload>
           <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
 
@@ -98,7 +98,9 @@
         resData: {},
         data: {},  // 上传文件时要传的data
         OrderId: '',
-        btnLoading: false
+        btnLoading: false,
+        DtlId: null,
+        fid: null
       }
     },
 
@@ -109,14 +111,19 @@
     computed: {},
 
     methods: {
+      upload(i) {
+        this.DtlId = this.resData.Items[i].DtlId;
+      },
+      /**
+       * @method 删除前的操作
+       */
       beforeRemove(file) {
-        MessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        MessageBox.confirm(`确定移除 ${ file.name }？`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
           center: true
         }).then(() => {
-
           this.handleRemove();  // todo 传参
           return true
         }).catch(() => {
@@ -132,16 +139,15 @@
 
       /**
        * @method 删除文件
-       * @param {String} DtlId detailId
-       * @param {String} FId FileId
+       * @param {String} FId 文件id
        */
-      handleRemove(DtlId, FId) {
+      handleRemove(FId) {
         const url = '/DeleteFile';
         const data = {
-          DetailId: DtlId,
-          FileId: FId
+          FileId: this.fid
         };
-        postData(url, data).then(() => {
+        postData(url, data).then((res) => {
+          console.log(res);
           Message({
             type: 'success',
             message: '删除成功!'
@@ -170,6 +176,11 @@
 //      this.fileList3 = fileList.slice(-3);
       },
       beforeUpload(file) {
+        this.data = {
+          OrderId: this.resData.OrderId,
+          DetailId: this.DtlId
+        };
+//        console.log(this.data);
         console.log(file.type)
         const isJPG = file.type === 'image/jpeg';
         const isMP4 = file.type === 'video/mp4';
@@ -207,7 +218,9 @@
         }
         return true
       },
-      handleSuccess() {
+      handleSuccess(res) {
+        this.fid = res.Data;
+        console.log(res);
         Message({
           showClose: true,
           message: '上传成功!',
@@ -226,7 +239,7 @@
       };
 
       postData(url, data).then((res) => {
-        console.log(res)
+        console.log(res);
         this.resData = res.Data;
         this.resData.Items.forEach((item) => {
           this.$set(item, 'showFiles', false);
@@ -235,11 +248,10 @@
     },
 
     mounted() {
-//      console.log(link)
-      this.data = {
-        OrderId: '1',
-        DetailId: '1'
-      }
+//      this.data = {
+//        OrderId: this.resData.OrderId,
+//        DetailId: '1'
+//      }
 
     },
 
