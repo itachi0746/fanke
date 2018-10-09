@@ -88,12 +88,14 @@
         <span>)</span>
       </div>
     </section>
+    <Loading v-show="isLoading"></Loading>
   </div>
   <!--购物车 结束-->
 </template>
 
 <script>
   import Header from '../../../components/header/header.vue'
+  import Loading from '../../../components/common/loading.vue'
   import {postData} from '@/server'
   import getUrlParms from '@/config/utils'
 
@@ -106,11 +108,13 @@
         checkAllFlag: false,  // 是不是全选了
         selectedNum: 0,
         delFlag: false,
+        isLoading : false
       }
     },
 
     components: {
-      Header
+      Header,
+      Loading
     },
 
     computed: {
@@ -226,6 +230,7 @@
        * @method 结算
        */
       handleOrder() {
+        this.isLoading = true;
 //        const url = '/ConfirmOrder';
         const url = '/PlaceOrder';
         const data = {

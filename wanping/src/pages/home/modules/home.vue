@@ -140,8 +140,8 @@
     /*margin-top: 1.6rem;*/
     width: 100%;
     position: relative;
-    top: 1.6rem;
-    height: 5rem;
+    /*top: 1.6rem;*/
+    height: 7rem;
 
     img {
       width: 100%;

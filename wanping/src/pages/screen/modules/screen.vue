@@ -284,21 +284,21 @@
       /**
        * @method 计算购物车中的项,把项的ItemId加入数组中并返回
        */
-      handleItems() {
-        let arr = [];
-        this.selected.forEach((item)=> {
-          let newItem = {
-            "PsId": item.PsId,  // 产品id
-            "Count": item.Count,  // 广告位数量
-            "Date": item.Date,  // 日期
-            "Amount": item.Amount,  // 总价
-            "Price": item.Price  // 价格
-          };
-          arr.push(newItem)
-
-        });
-        return arr
-      }
+//      handleItems() {
+//        let arr = [];
+//        this.selected.forEach((item)=> {
+//          let newItem = {
+//            "PsId": item.PsId,  // 产品id
+//            "Count": item.Count,  // 广告位数量
+//            "Date": item.Date,  // 日期
+//            "Amount": item.Amount,  // 总价
+//            "Price": item.Price  // 价格
+//          };
+//          arr.push(newItem)
+//
+//        });
+//        return arr
+//      }
     },
 
     created() {

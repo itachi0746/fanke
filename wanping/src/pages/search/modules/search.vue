@@ -1,9 +1,11 @@
 <template>
   <!--搜索  开始-->
   <div class="search-page">
+    <Loading v-show="isLoading"></Loading>
     <Header :headName="headName"></Header>
     <form class="search-form">
-      <input type="search" name="search" placeholder="请输入商家或地址名称" class="search-input" v-model="searchValue" @input="checkInput">
+      <input type="search" name="search" placeholder="请输入商家或地址名称" class="search-input" v-model="searchValue"
+             @input="checkInput">
       <input type="submit" name="submit" class="search-submit" @click.prevent="searchTarget('')">
     </form>
 
@@ -12,7 +14,7 @@
       <!--<ScreenListAll :searchResult="businessList"></ScreenListAll>-->
       <ul class="list_container">
         <li class="list_li" v-for="(item,index) in businessList" :key="item.Id" @click="toScreen($event)"
-            :id="item.Id">
+            :data-pid="item.Id">
           <section class="item_left">
             <img :src="item.Img" class="restaurant_img">
           </section>
@@ -34,9 +36,8 @@
     <section class="search-history" v-if="searchHistory.length&&showHistory">
       <h4 class="title">搜索历史</h4>
       <ul>
-        <li class="history-list" v-for="(item, index) in searchHistory" :key="index" >
-          <span class="history-text ellipsis"  @click="searchTarget(item)">{{item}}</span>
-          <!--<i class="fa fa-times" @click="deleteHistory(index)"></i>-->
+        <li class="history-list" v-for="(item, index) in searchHistory" :key="index">
+          <span class="history-text ellipsis" @click="searchTarget(item)">{{item}}</span>
           <i class="icon iconfont icon-i-close" @click="deleteHistory(index)"></i>
         </li>
       </ul>
@@ -51,8 +52,9 @@
 <script>
   import Footer from '../../../components/footer/footer.vue'
   import Header from '../../../components/header/header.vue'
-//  import ScreenListAll from '../../../components/common/screenListAll.vue'
-  import {getStore,setStore} from '../../../config/store'
+  import Loading from '../../../components/common/loading.vue'
+  //  import ScreenListAll from '../../../components/common/screenListAll.vue'
+  import {getStore, setStore} from '../../../config/store'
   import {postData} from '../../../server/index'
 
   export default {
@@ -65,22 +67,31 @@
         searchHistory: [], // 搜索历史记录
         showHistory: true, // 是否显示历史记录，只有在返回搜索结果后隐藏
         emptyResult: false, // 搜索结果为空时显示
-
+        isLoading: false
       }
     },
 
     components: {
-      Footer, Header
+      Footer, Header, Loading
     },
 
     computed: {},
 
     methods: {
+      /**
+       * @method 点击跳转
+       */
+      toScreen(event) {
+        const targetId = event.currentTarget.getAttribute('data-pid');
+        GoToPage("screen", "screen.html", {'pid': targetId});
+        // window.location.href = 'screen.html?id=' + targetId;
+      },
       //点击提交按钮，搜索结果并显示，同时将搜索内容存入历史记录
-      async searchTarget(historyValue){
+      async searchTarget(historyValue) {
+        this.isLoading = true;
         if (historyValue) {
           this.searchValue = historyValue;
-        }else if (!this.searchValue) {
+        } else if (!this.searchValue) {
           return
         }
 
@@ -89,7 +100,13 @@
         //获取搜索结果
 //        this.restaurantList = await searchRestaurant(this.geohash, this.searchValue);
         const url = '/GetProducts';
-        this.businessList = await postData(url,this.searchValue).then((res) => {return res.Data.Models});
+        const data = {
+          'KeyWords': this.searchValue
+        };
+        this.businessList = await postData(url, data).then((res) => {
+          this.isLoading = false;
+          return res.Data.Models
+        });
         console.log(this.businessList);
         this.emptyResult = !this.businessList.length;
 
@@ -110,13 +127,13 @@
           if (!checkrepeat) {
             this.searchHistory.push(this.searchValue)
           }
-        }else {
+        } else {
           this.searchHistory.push(this.searchValue)
         }
-        setStore('searchHistory',this.searchHistory)
+        setStore('searchHistory', this.searchHistory)
       },
       //搜索结束后，删除搜索内容直到为空时清空搜索结果，并显示历史记录
-      checkInput(){
+      checkInput() {
         if (this.searchValue === '') {
           this.showHistory = true; //显示历史记录
           this.businessList = []; //清空搜索结果
@@ -124,14 +141,14 @@
         }
       },
       //点击删除按钮，删除当前历史记录
-      deleteHistory(index){
+      deleteHistory(index) {
         this.searchHistory.splice(index, 1);
-        setStore('searchHistory',this.searchHistory);
+        setStore('searchHistory', this.searchHistory);
       },
       //清除所有历史记录
-      clearAllHistory(){
+      clearAllHistory() {
         this.searchHistory = [];
-        setStore('searchHistory',this.searchHistory);
+        setStore('searchHistory', this.searchHistory);
       }
     },
 
@@ -149,51 +166,52 @@
 <style lang='scss' scoped>
   @import "src/style/mixin";
 
-  .list_container{
+  .list_container {
     background-color: #fff;
   }
-  .list_li{
+
+  .list_li {
     display: flex;
     justify-content: center;
     padding: 0.5rem;
     border-bottom: 0.025rem solid $bc;
-    .item_left{
+    .item_left {
       margin-right: 0.25rem;
-      .restaurant_img{
+      .restaurant_img {
         @include wh(2.5rem, 2.5rem);
       }
     }
-    .item_right{
+    .item_right {
       font-size: 0.55rem;
       flex: 1;
-      .item_right_text{
+      .item_right_text {
         padding-bottom: 0.25rem;
         border-bottom: 0.025rem solid $bc;
-        p{
+        p {
           line-height: .9rem;
         }
-        .pay_icon{
+        .pay_icon {
           margin-bottom: -0.08rem;
         }
       }
-      .item_right_detail{
+      .item_right_detail {
         margin-top: 0.25rem;
-        li{
+        li {
           font-size: 0;
-          span{
+          span {
             font-size: .5rem;
             vertical-align: middle;
             display: inline-block;
             margin-bottom: 0.2rem;
           }
-          .activities_icon{
+          .activities_icon {
             @include sc(.5rem, #fff);
             font-weight: bold;
             padding: .04rem;
             border-radius: 0.15rem;
             margin-right: 0.125rem;
           }
-          .only_phone{
+          .only_phone {
             color: #FF6000;
           }
         }
@@ -240,6 +258,7 @@
     font-weight: bold;
     color: #666;
   }
+
   .search-history {
 
     .clear-history {
@@ -264,9 +283,10 @@
       color: #666666;
     }
     .icon {
-      @include sc(.7rem,#666);
+      @include sc(.7rem, #666);
     }
   }
+
   .empty_data {
     font-size: 0.6rem;
     color: #666;

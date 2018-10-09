@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'development') {
 
 const Axios = axios.create({
   baseURL: ROOT, // 因为我本地做了反向代理
-  timeout: 10000,
+  timeout: 100000,
   // responseType: "json",
   // withCredentials: true, // 是否允许带cookie这些
   // headers: {

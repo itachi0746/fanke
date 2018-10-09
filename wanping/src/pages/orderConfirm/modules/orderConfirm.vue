@@ -33,12 +33,15 @@
       <p>待支付 ¥{{totalPrice}}</p>
       <p @click="placeOrder">确认下单</p>
     </section>
+    <Loading v-show="isLoading"></Loading>
+
   </div>
   <!--订单 结束-->
 </template>
 
 <script>
   import Header from '@/components/header/header.vue'
+  import Loading from '../../../components/common/loading.vue'
   import {postData} from '../../../server'
   import getUrlParms from '@/config/utils'
 
@@ -48,12 +51,14 @@
       return {
         headName: '确认订单',
         orderData: [],
-        fromBasket: false  // 是否来自购物车
+        fromBasket: false,  // 是否来自购物车
+        isLoading: false
       }
     },
 
     components: {
-      Header
+      Header,
+      Loading
     },
 
     computed: {
@@ -68,27 +73,26 @@
 
     methods: {
       /**
-       * @method 确认下单
+       * @method 确认下单 跳转
        */
       placeOrder() {
+        this.isLoading = true;
         const url = '/ConfirmOrder';
         const data = {
           "FromBasket": this.fromBasket,
           "items": this.handleItems()
         };
+        console.log('data',data);
         postData(url, data).then((res) => {
           console.log(res);
-          const url = res.NextStep;
-          console.log(url)
-
-          // TODO 支付
+          window.location.href = res.NextStep;
         })
       },
       handleItems() {
         let arr = [];
         this.orderData.forEach((item)=> {
           let newItem = {
-            "BasketDtlId": item.ItemId,  // 购物车明细id
+            "BasketDtlId": item.BasketDtlId,  // 购物车明细id
             "PsId": item.PsId,  // 产品id
             "Count": item.Count,  // 广告位数量
             "Date": item.Date,  // 日期
@@ -97,12 +101,13 @@
           };
           arr.push(newItem)
         });
+        console.log('arr',arr);
         return arr
       }
     },
     created() {
       const data = getUrlParms();
-      this.fromBasket = data.fromBasket;
+      this.fromBasket = eval(data.fromBasket);
 //      console.log(data);
       const url = '/GetPlaceOrder';
       postData(url,data.id).then((res) => {
