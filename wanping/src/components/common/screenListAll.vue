@@ -50,9 +50,7 @@
         isEnd: false
       }
     },
-//    props: {
-//      searchResult: Array
-//    },
+//    props: ['loaded'],
 
 //  components: {},
 
@@ -72,6 +70,7 @@
           this.loadMoreSwitch = true;
           this.sum = res.Data.PageCount;  // 总页数
 //          console.log(this.sum)
+          this.$emit('loaded',true)
         })
 
       },
@@ -149,6 +148,7 @@
               wh = this.getClientHeight();
 //            console.log(appH, wt, wh);
             if (appH - wt - wh < 100) {
+              this.$emit('loaded',false);
               this.page++;
               this.getData();
               console.log('下拉加载更多')

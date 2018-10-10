@@ -85,7 +85,8 @@
         console.log('data',data);
         postData(url, data).then((res) => {
           console.log(res);
-          window.location.href = res.NextStep;
+//          window.location.href = res.NextStep;
+          GoToPage('',res.NextStep,{})
         })
       },
       handleItems() {

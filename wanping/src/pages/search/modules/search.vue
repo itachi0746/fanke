@@ -30,7 +30,6 @@
         </li>
       </ul>
       <p class="empty_data">没有更多了</p>
-
     </section>
 
     <section class="search-history" v-if="searchHistory.length&&showHistory">
@@ -43,6 +42,7 @@
       </ul>
       <footer class="clear-history" @click="clearAllHistory">清空历史记录</footer>
     </section>
+    <div class="search_none" v-if="emptyResult">很抱歉！无搜索结果</div>
 
     <Footer :page="page"></Footer>
   </div>
@@ -91,7 +91,9 @@
         this.isLoading = true;
         if (historyValue) {
           this.searchValue = historyValue;
-        } else if (!this.searchValue) {
+        }
+        else if (!this.searchValue) {
+          this.isLoading = false;
           return
         }
 
@@ -168,6 +170,15 @@
 
   .list_container {
     background-color: #fff;
+  }
+
+  .search_none{
+    margin: 0 auto;
+    @include sc(0.65rem, #333);
+    line-height: 1.75rem;
+    background-color: #fff;
+    text-align: center;
+    margin-top: 0.125rem;
   }
 
   .list_li {

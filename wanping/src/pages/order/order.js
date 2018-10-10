@@ -2,9 +2,9 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './order.vue'
-
 import '../../config/rem'
 import '@/style/font/iconfont.css'
+import 'element-ui/lib/theme-chalk/index.css';
 
 // import router from './router'
 // import axios from 'axios'

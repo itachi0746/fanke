@@ -1,11 +1,11 @@
 <template>
   <div id="home">
-
+    <Loading v-show="isLoading"></Loading>
     <!--选地区-->
     <!--<aFilter ref="af"></aFilter>-->
     <!--轮播图 开始-->
     <swiper :options="swiperOption" ref="mySwiper" v-if="Ads.length">
-      <swiper-slide v-for="(item,index) in Ads" :key="item.Index">
+      <swiper-slide v-for="(item,index) in Ads" :key="item.Index" @click="">
         <img :src="item.ImageUrl" alt="Ads">
       </swiper-slide>
       <div class="swiper-pagination"  slot="pagination"></div>
@@ -27,7 +27,6 @@
               {{item.Name}}
             </p>
           </div>
-
         </div>
       </div>
 
@@ -36,7 +35,7 @@
 
     <!--分割条-->
     <div class="division"></div>
-    <screenListAll></screenListAll>
+    <screenListAll @loaded="handleLoad"></screenListAll>
     <Footer :page="page"></Footer>
 
   </div>
@@ -45,6 +44,7 @@
 
 <script>
   import screenListAll from 'components/common/screenListAll'
+  import Loading from 'components/common/loading'
   import Footer from 'components/footer/footer'
 //  import aFilter from './filter'
 //  import BScroll from 'better-scroll'
@@ -58,6 +58,7 @@
       return {
         Ads: [],
         page: 'Home',
+        isLoading: true,
         Recommends: [],
         swiperOption: {
           pagination: {
@@ -116,6 +117,13 @@
         const targetId = e.currentTarget.getAttribute('data-pid');
         console.log(targetId);
         GoToPage('screen','screen.html',{'pid':targetId})
+      },
+      handleLoad(loaded) {
+        if(loaded) {
+          this.isLoading = false;
+        } else {
+          this.isLoading = true;
+        }
       }
     },
     components: {
@@ -123,7 +131,8 @@
       screenListAll,
       Footer,
       swiper,
-      swiperSlide
+      swiperSlide,
+      Loading
     },
 
     beforeDestroy: function () {

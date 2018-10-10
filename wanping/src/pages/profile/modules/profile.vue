@@ -6,7 +6,7 @@
       <section class="profile-link">
         <img class="privateImage" src="../../../assets/default.jpg" alt="">
         <div class="user-info">
-          <p>qwe123</p>
+          <p>用户名</p>
           <p>
             <i class="icon iconfont icon-phone"></i>
             <span class="icon-mobile-number">没绑定手机号</span>

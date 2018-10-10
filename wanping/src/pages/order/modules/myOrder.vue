@@ -5,15 +5,12 @@
 
     <ul class="order_list_ul">
       <li class="order_list_li" v-for="(order,index) in orderArr" :key="order.OrderId"
-          @click="toOrderDetail($event)" :id="order.OrderId"
-      >
-        <!--<img src="../../../assets/lm.jpg" class="restaurant_image">-->
+          @click="toOrderDetail($event)" :id="order.OrderId">
         <section class="order_item_right">
           <section>
             <header class="order_item_right_header">
               <section class="order_header">
                 <h4><span class="ellipsis">{{order.OrderNo}} </span>
-                  <!--<i class="fa fa-angle-right"></i>-->
                   <i class="icon iconfont icon-youjiantou1"></i>
                 </h4>
                 <p class="order_time">{{order.OrderDate}}</p>
@@ -22,14 +19,14 @@
                 {{order.OrderStatus}}
               </p>
             </header>
-            <section class="order_basket" v-for="(item,index) in order.Items" :key="item.OrderId">
+            <section class="order_basket" v-for="(item,index) in order.Items">
               <p class="order_name ellipsis">{{item.PsName}}</p>
               <p class="order_amount">¥{{item.Amount}}</p>
             </section>
           </section>
           <div class="order_again">
             <span class="order_sum">合计 ¥{{order.Amount}}</span>
-            <ComputeTime></ComputeTime>
+            <ComputeTime :timeData="order"></ComputeTime>
           </div>
         </section>
       </li>
@@ -67,11 +64,9 @@
         const Tindex = event.currentTarget.id;
 //        console.log(event.target)
 //        console.log(event.currentTarget )
+//        console.log(Tindex)
 
-        console.log(Tindex)
-
-        GoToPage("orderDetail","orderDetail.html",{OrderId:Tindex});
-        //window.location.href = 'orderDetail.html?OrderId=' + Tindex;
+        GoToPage("orderDetail","orderDetail.html",{OrderId:Tindex});  // TODo 支付完成的 跳去订单详情
       }
     },
 
