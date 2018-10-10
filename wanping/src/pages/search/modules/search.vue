@@ -53,6 +53,7 @@
   import Footer from '../../../components/footer/footer.vue'
   import Header from '../../../components/header/header.vue'
   import Loading from '../../../components/common/loading.vue'
+  import {MessageBox} from 'element-ui'
   //  import ScreenListAll from '../../../components/common/screenListAll.vue'
   import {getStore, setStore} from '../../../config/store'
   import {postData} from '../../../server/index'
@@ -84,7 +85,6 @@
       toScreen(event) {
         const targetId = event.currentTarget.getAttribute('data-pid');
         GoToPage("screen", "screen.html", {'pid': targetId});
-        // window.location.href = 'screen.html?id=' + targetId;
       },
       //点击提交按钮，搜索结果并显示，同时将搜索内容存入历史记录
       async searchTarget(historyValue) {
@@ -94,6 +94,9 @@
         }
         else if (!this.searchValue) {
           this.isLoading = false;
+          MessageBox.alert('搜索不能为空', '提示', {
+            confirmButtonText: '确定',
+          });
           return
         }
 
@@ -307,5 +310,11 @@
     background-color: #fff;
   }
 
+
+</style>
+<style>
+  .el-message-box {
+    width: 90%;
+  }
 
 </style>

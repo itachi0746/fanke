@@ -119,11 +119,7 @@
         GoToPage('screen','screen.html',{'pid':targetId})
       },
       handleLoad(loaded) {
-        if(loaded) {
-          this.isLoading = false;
-        } else {
-          this.isLoading = true;
-        }
+        this.isLoading = !loaded
       }
     },
     components: {

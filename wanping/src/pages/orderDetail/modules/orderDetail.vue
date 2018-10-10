@@ -28,16 +28,11 @@
 
           <!--已上传文件列表 开始-->
           <section class="file-list">
-            <el-button type="primary" size="small" @click="showFile($event,index)" :loading="btnLoading"
-                       :data-DtlId="item.DtlId">
+            <el-button type="primary" size="small" @click="showFile($event,index)" :data-DtlId="item.DtlId">
               <label v-show="item.showFiles">隐藏已上传素材</label>
               <label v-show="!item.showFiles">查看已上传素材</label>
             </el-button>
             <ul v-show="item.showFiles" v-for="(i) in item.Medias">
-              <!--<li class="file-item">-->
-              <!--<i class="el-icon-document"></i>-->
-              <!--1241414235236-->
-              <!--</li>-->
               <li tabindex="0" class="el-upload-list__item is-success" style="text-align: left;">
                 <a class="el-upload-list__item-name">
                   <i class="el-icon-document"></i>{{}}
@@ -51,20 +46,22 @@
           </section>
           <!--已上传文件列表 结束-->
 
-          <!--上传功能action="/Fileupdate/AddFile"  开始-->
+          <!--上传功能  开始-->
           <!--data是要发送的数据-->
           <el-upload
+            ref="upload2"
             class="upload-demo"
-              action="/api/AddFile"
-            accept=".jpg,.png,.mp4"
+            :action="upUrl"
             :data="data"
             :before-upload="beforeUpload"
             :on-change="handleChange"
             :before-remove="handleRemove"
+            :auto-upload="false"
             :on-success="handleSuccess">
-            <el-button size="small" type="primary" @click.native="upload(index)">上传素材</el-button>
+            <el-button slot="trigger" size="small" type="primary" @click.native="upload(index)">上传素材</el-button>
+            <el-button style="margin-left: 10px;" size="small" type="success" @click.native="submitUpload">上传到服务器</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
-          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
 
           <!--上传功能  结束-->
 
@@ -73,7 +70,6 @@
       </ul>
 
       <div class="pay_ment">{{resData.OrderStatus}}</div>
-
 
     </section>
 
@@ -87,18 +83,17 @@
   import {postData, link} from '@/server'
   import {Message, MessageBox} from 'element-ui'
 
-
   export default {
     data() {
       return {
         headName: '订单详情',
-        fileList3: [],
         resData: {},
         data: {},  // 上传文件时要传的data
         OrderId: '',
         btnLoading: false,
         DtlId: null,
-        fid: null
+        fid: null,
+        upUrl: '' // 上传url
       }
     },
 
@@ -109,6 +104,10 @@
     computed: {},
 
     methods: {
+      submitUpload() {
+        console.log(this.$refs.upload2)
+        this.$refs.upload2.clearFiles();
+      },
       upload(i) {
         this.DtlId = this.resData.Items[i].DtlId;
       },
@@ -140,6 +139,7 @@
        * @param {String} FId 文件id
        */
       handleRemove() {
+//        debugger
         const url = '/DeleteFile';
         const data = {
           FileId: this.fid
@@ -248,11 +248,14 @@
     },
 
     mounted() {
-//      this.data = {
-//        OrderId: this.resData.OrderId,
-//        DetailId: '1'
-//      }
-
+      // 环境的切换
+//      console.log(process.env.NODE_ENV);
+      if (process.env.NODE_ENV === 'development') {
+        this.upUrl = "/api/AddFile"
+      } else {
+        //生产环境下的地址
+        this.upUrl = "/MallService/AddFile";
+      }
     },
 
     beforeDestroy() {
