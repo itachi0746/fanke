@@ -203,9 +203,9 @@
           this.itemId++;
           this.selected.push(newItem);
         } else {  // 重复的
-          repeated.count += this.sumNum;  // 重新计算数量
-          repeated.count = repeated.count > this.curDayObj.Remain ? this.curDayObj.Remain : repeated.count;  // 防止超出
-          repeated.sumPrice = repeated.count * repeated.price;  // 重新计算总价
+          repeated.Count += this.sumNum;  // 重新计算数量
+          repeated.Count = repeated.Count > this.curDayObj.Remain ? this.curDayObj.Remain : repeated.Count;  // 防止超出
+          repeated.Amount = repeated.Count * repeated.Price;  // 重新计算总价
 
         }
 

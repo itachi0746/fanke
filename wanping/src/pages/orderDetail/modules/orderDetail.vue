@@ -6,10 +6,8 @@
     <section class="food_list">
       <a href="#" class="food_list_header">
         <div class="shop_name">
-          <!--<img src="../../../assets/lm.jpg">-->
           <span>订单信息</span>
         </div>
-        <!--<i class="fa fa-angle-right arrow_right"></i>-->
       </a>
       <p class="data-head">
         <span>订单编号: {{resData.OrderNo}}</span>
@@ -62,7 +60,7 @@
             :data="data"
             :before-upload="beforeUpload"
             :on-change="handleChange"
-            :before-remove="beforeRemove"
+            :before-remove="handleRemove"
             :on-success="handleSuccess">
             <el-button size="small" type="primary" @click.native="upload(index)">上传素材</el-button>
           </el-upload>
@@ -141,7 +139,7 @@
        * @method 删除文件
        * @param {String} FId 文件id
        */
-      handleRemove(FId) {
+      handleRemove() {
         const url = '/DeleteFile';
         const data = {
           FileId: this.fid
@@ -170,7 +168,9 @@
         const data = {
           DetailId: dtlId
         };
-        postData(url,data)  // todo 请求查看已上传文件,要传detailId
+        postData(url,data).then((res) => {
+          console.log(res)
+        })
       },
       handleChange(file, fileList) {
 //      this.fileList3 = fileList.slice(-3);

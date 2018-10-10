@@ -78,7 +78,6 @@
     created() {
       const url = '/GetOrders';
       postData(url).then((res) => {
-        console.log("获得到数据了");
         console.log(res)
         this.orderArr = res.Data.Models;
       });
@@ -168,7 +167,7 @@
             border-radius: .15rem;
           }
           .order_sum {
-
+            @include sc(.8rem, #333);
           }
         }
       }
