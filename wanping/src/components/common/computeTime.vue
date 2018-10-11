@@ -14,14 +14,10 @@
 <script>
   import {MessageBox} from 'element-ui'
 
-  //    import alertTip from '@/components/common/alertTip'
-  //
   export default {
     data() {
       return {
         countNum: 0,  // 订单有效剩余时间
-        showAlert: false,
-        alertText: null,
         time: 0  // 已经过时间
       }
     },

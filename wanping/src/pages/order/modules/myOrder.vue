@@ -1,7 +1,7 @@
 <template>
   <!--  开始-->
   <div class="myOrder">
-    <Header :headName="headName"></Header>
+    <Header :headName="headName" ref="header"></Header>
     <div class="wrapper" id="wrapper">
       <ul class="order_list_ul" v-if="orderArr.length">
         <li class="order_list_li" v-for="(order,index) in orderArr" :key="order.OrderId"
@@ -81,6 +81,17 @@
     computed: {},
 
     methods: {
+      //获取窗口可视范围的高度
+      getClientHeight() {
+        let clientHeight = 0;
+        if (document.body.clientHeight && document.documentElement.clientHeight) {
+          clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+        } else {
+          clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+        }
+        console.log(clientHeight);
+        return clientHeight;
+      },
       getData() {
         const url = '/GetOrders';
         this.pageNum++;
@@ -143,7 +154,10 @@
       this.getData();
     },
     mounted() {
+      this.getClientHeight();
+      console.log(this.$refs.header)
 
+      console.log(this.$refs.header.offsetHeight)
     },
 
     beforeDestroy() {
@@ -156,8 +170,12 @@
 
   .wrapper {
     /*position: relative;*/
+    /*bottom: 3rem;*/
+    /*top: 0;*/
     overflow: hidden;
     height: 29rem;
+    /*margin-bottom: 3.3rem;*/
+
   }
 
   .myOrder {

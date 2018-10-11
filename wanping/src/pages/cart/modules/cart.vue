@@ -255,11 +255,11 @@
 
         });
         return arr
-      }
+      },
+
     },
 
     mounted() {
-//      产品名字
     },
 
     beforeDestroy() {
@@ -271,7 +271,7 @@
   @import "src/style/mixin";
 
   .items {
-    /*margin-bottom: 2.4rem;*/
+    margin-bottom: 2.4rem;
     height: 29rem;
     overflow-y: scroll;
     cursor: pointer;
