@@ -1,8 +1,8 @@
 <template>
   <div id="shoplist">
     <!--商家列表-->
-    <div class="shoplist-container">
-      <div class="shoplist-item" v-for="(item, index) in screenList" :key="item.Id" @click="toScreen($event)"
+    <ul class="shoplist-container">
+      <li class="shoplist-item" v-for="(item, index) in screenList" :key="item.Id" @click="toScreen($event)"
            :data-pid="item.Id">
         <p class="shop-name">
           {{ item.Name }}
@@ -16,22 +16,21 @@
             <span>{{ item.Price }}</span>
             <span>起</span>
           </div>
-
         </div>
         <div class="discount">
-          <div>
+          <div v-show="item.HasSales">
             <span class="_cu">促</span>
-            <span>促销描述</span>
+            <span>{{item.SalesDesc}}</span>
           </div>
-          <div>
+          <div v-show="item.HasDiscount">
             <span class="_hui">惠</span>
             <span>{{item.DiscountDesc}}</span>
           </div>
-
         </div>
-      </div>
+      </li>
+      <!--<li class="empty_data">{{btmFont}}</li>-->
 
-    </div>
+    </ul>
     <p class="empty_data" v-if="!isEnd">加载更多</p>
     <p class="empty_data" v-else>没有更多了</p>
   </div>
@@ -39,6 +38,7 @@
 
 <script>
   import {postData, link} from '../../server'
+  import BScroll from 'better-scroll'
 
   export default {
     data() {
@@ -47,7 +47,9 @@
         page: 1, // 一开始一页
         sum: 1,  // 最多可以有几页
         loadMoreSwitch: true,
-        isEnd: false
+        isEnd: false,
+//        btmFont: '加载更多',
+
       }
     },
 //    props: ['loaded'],
@@ -100,7 +102,8 @@
         }
 //        console.log(clientHeight)
         return clientHeight;
-      }
+      },
+
     },
 
     created() {
@@ -151,7 +154,7 @@
               this.$emit('loaded',false);
               this.page++;
               this.getData();
-              console.log('下拉加载更多')
+              console.log('上拉加载更多')
             }
 
           }
@@ -172,6 +175,7 @@
   #shoplist {
     height: 100%;
     overflow-y: auto;
+
   }
 
   .shoplist-item {

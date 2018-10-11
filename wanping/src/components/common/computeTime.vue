@@ -19,22 +19,17 @@
   export default {
     data() {
       return {
-        countNum: 6,  // 总时间
+        countNum: 0,  // 订单有效剩余时间
         showAlert: false,
         alertText: null,
         time: 0  // 已经过时间
       }
     },
     mounted() {
-      this.countNum -= this.numTime;
+      this.countNum = this.timeData.RemainSeconds;  // 剩余时间
       this.remainingTime();
-//      console.log('11',this.timeData)
-
     },
     props: ['timeData'],
-//    components: {
-////      alertTip,
-//    },
     methods: {
 
       //计算时间
@@ -42,7 +37,7 @@
         clearInterval(this.timer);
         this.timer = setInterval(() => {
           this.countNum--;
-          if (this.countNum === 0) {
+          if (this.countNum <= 0) {
             clearInterval(this.timer);
             console.log('支付超时')
 //            MessageBox.alert('支付超时', '提示', {
@@ -63,7 +58,7 @@
     computed: {
       //转换时间成分秒
       remaining() {
-        if(this.countNum) {
+        if(this.countNum > 0) {
           let minute = parseInt(this.countNum / 60);
           let second = parseInt(this.countNum % 60);
           if (minute < 10) {

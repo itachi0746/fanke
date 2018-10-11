@@ -11,7 +11,6 @@
 
     <section v-if="businessList.length">
       <h4 class="title">商家</h4>
-      <!--<ScreenListAll :searchResult="businessList"></ScreenListAll>-->
       <ul class="list_container">
         <li class="list_li" v-for="(item,index) in businessList" :key="item.Id" @click="toScreen($event)"
             :data-pid="item.Id">
@@ -23,8 +22,27 @@
               <p>
                 <span>{{item.Name}}</span>
               </p>
-              <p>人气{{item.Flowrate}},销量</p>
-              <p>距离</p>
+              <section class="oh">
+                <p class="left">
+                  人流量{{item.Flowrate}}
+                </p>
+                <p class="right" style="color: #3297f5;">
+                  <span>¥</span>
+                  <span>{{ item.Price }}</span>
+                  <span>起</span>
+                </p>
+              </section>
+              <section class="discount oh">
+                <div v-show="item.HasSales" class="left">
+                  <span class="_cu">促</span>
+                  <span>{{item.SalesDesc}}</span>
+                </div>
+                <div v-show="item.HasDiscount" class="left">
+                  <span class="_hui">惠</span>
+                  <span>{{item.DiscountDesc}}</span>
+                </div>
+              </section>
+              <!--<p>距离</p>-->
             </div>
           </section>
         </li>
@@ -308,6 +326,28 @@
     line-height: 2rem;
     margin-bottom: 2.3rem;
     background-color: #fff;
+  }
+
+  // 促  惠  字体效果
+  .discount ._cu {
+    @include wh(.8rem, .8rem);
+    color: #ffffff;
+    @include borderRadius(2px);
+    display: inline-block;
+    text-align: center;
+    background-color: orange;
+    margin-right: .2rem;
+  }
+
+  .discount ._hui {
+    @include wh(.8rem, .8rem);
+    color: #ffffff;
+    @include borderRadius(2px);
+    display: inline-block;
+    text-align: center;
+    background-color: #ff8298;
+    margin-right: .2rem;
+
   }
 
 

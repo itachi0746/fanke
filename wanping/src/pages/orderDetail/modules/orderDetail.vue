@@ -56,10 +56,10 @@
             :before-upload="beforeUpload"
             :on-change="handleChange"
             :before-remove="handleRemove"
-            :auto-upload="false"
+            :auto-upload="true"
             :on-success="handleSuccess">
             <el-button slot="trigger" size="small" type="primary" @click.native="upload(index)">上传素材</el-button>
-            <el-button style="margin-left: 10px;" size="small" type="success" @click.native="submitUpload">上传到服务器</el-button>
+            <!--<el-button style="margin-left: 10px;" size="small" type="success" @click.native="submitUpload">上传到服务器</el-button>-->
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
 
@@ -90,9 +90,8 @@
         resData: {},
         data: {},  // 上传文件时要传的data
         OrderId: '',
-        btnLoading: false,
-        DtlId: null,
-        fid: null,
+        DtlId: '',
+        fid: '',
         upUrl: '' // 上传url
       }
     },
@@ -106,7 +105,7 @@
     methods: {
       submitUpload() {
         console.log(this.$refs.upload2)
-        this.$refs.upload2.clearFiles();
+        this.$refs.upload2.submit();
       },
       upload(i) {
         this.DtlId = this.resData.Items[i].DtlId;
@@ -115,6 +114,7 @@
        * @method 删除前的操作
        */
       beforeRemove(file) {
+        debugger
         MessageBox.confirm(`确定移除 ${ file.name }？`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -136,21 +136,23 @@
 
       /**
        * @method 删除文件
-       * @param {String} FId 文件id
+       * @param {String} file 文件对象
        */
-      handleRemove() {
+      handleRemove(file) {
 //        debugger
-        const url = '/DeleteFile';
-        const data = {
-          FileId: this.fid
-        };
-        postData(url, data).then((res) => {
-          console.log(res);
-          Message({
-            type: 'success',
-            message: '删除成功!'
+        if(file.status==='success') {  // 状态为success表示这是已经上传成功的文件,因为上传格式错误的文件也会自动调用这个方法
+          const url = '/DeleteFile';
+          const data = {
+            FileId: this.fid
+          };
+          postData(url, data).then((res) => {
+            console.log(res);
+            Message({
+              type: 'success',
+              message: '删除成功!'
+            });
           });
-        });
+        }
       },
 
       /**
