@@ -33,7 +33,8 @@
               <label v-show="!item.showFiles">查看已上传素材</label>
             </el-button>
             <ul>
-              <li tabindex="0"  v-show="item.showFiles" v-for="(i,index2) in fileList" :key="i.MediaId" class="el-upload-list__item is-success" style="text-align: left;">
+              <li tabindex="0" v-show="item.showFiles" v-for="(i,index2) in fileList" :key="i.MediaId"
+                  class="el-upload-list__item is-success" style="text-align: left;">
                 <a class="el-upload-list__item-name">
                   <i class="el-icon-document"></i>{{i.MediaName}}
                 </a>
@@ -129,7 +130,7 @@
        * @param {Object} e 事件对象
        * @param {String} index 下标
        */
-      handleRemove2(e,index) {
+      handleRemove2(e, index) {
         const mid = e.currentTarget.getAttribute('data-Mid');
         const url = '/DeleteFile';
         const data = {
@@ -138,8 +139,8 @@
         postData(url, data).then((res) => {
           console.log(res);
 
-          if(res.Success) {
-            this.fileList.splice(index,1);
+          if (res.Success) {
+            this.fileList.splice(index, 1);
 
             Message({
               type: 'success',
@@ -187,19 +188,58 @@
        * @method 删除文件
        * @param {String} file 文件对象
        */
-      handleRemove(file) {
+      async handleRemove(file,fileList) {
 //        debugger
+        let a = null;
         if (file.status === 'success') {  // 状态为success表示这是已经上传成功的文件,因为上传格式错误的文件也会自动调用这个方法
-          const url = '/DeleteFile';
-          const data = {
-            FileId: this.fid
-          };
-          postData(url, data).then((res) => {
-            console.log(res);
-            Message({
-              type: 'success',
-              message: '删除成功!'
+//          const url = '/DeleteFile';
+//          const data = {
+//            FileId: this.fid
+//          };
+//
+//          postData(url, data).then((res) => {
+//            console.log(res);
+//            if(res.Success) {
+//              Message({
+//                type: 'success',
+//                message: '删除成功!'
+//              });
+//            } else {
+//              Message({
+//                type: 'error',
+//                message: '删除失败!'
+//              });
+//              return Promise.reject('test');
+//            }
+//          });
+
+          await MessageBox.confirm(`确定移除 ${ file.name }？`, '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+            center: true
+          }).then(() => {
+            const url = '/DeleteFile';
+            const data = {
+              FileId: this.fid
+            };
+            postData(url, data).then((res) => {
+              console.log(res);
+              Message({
+                type: 'success',
+                message: '删除成功!'
+              });
+              a = true
+//              return true
             });
+          }).catch((e) => {
+            console.log(e)
+            Message({
+              type: 'info',
+              message: '已取消删除'
+            });
+            a = false
+//            return false
           });
         }
       },
@@ -215,7 +255,7 @@
         this.resData.Items[i].showFiles = !this.resData.Items[i].showFiles;
 //        this.showFiles = !this.showFiles;
         this.btnTips = this.resData.Items[i].showFiles ? '隐藏已上传素材' : '查看已上传素材';
-        if(this.resData.Items[i].showFiles) {
+        if (this.resData.Items[i].showFiles) {
           const url = '/GetFiles';
           const data = {
             DetailId: dtlId
@@ -280,7 +320,7 @@
             type: "success"
           });
         } else {
-          fileList.splice(0,1);
+          fileList.splice(0, 1);
           console.log('上传失败');
           Message({
             showClose: true,
