@@ -1,8 +1,8 @@
 <template>
   <!--  开始-->
   <div class="myOrder">
-    <Header :headName="headName" ref="header"></Header>
-    <div class="wrapper" id="wrapper">
+    <Header :headName="headName" @headerHeight="getHeaderHeight" :a="oktoGetH"></Header>
+    <div class="wrapper" id="wrapper" ref="wrapper">
       <ul class="order_list_ul" v-if="orderArr.length">
         <li class="order_list_li" v-for="(order,index) in orderArr" :key="order.OrderId"
             @click="toOrderDetail($event)" :id="order.OrderId">
@@ -35,7 +35,7 @@
 
     </div>
     <Loading v-show="isLoading"></Loading>
-    <Footer :page="page"></Footer>
+    <Footer :page="page" @footerHeight="getFooterHeight" :a="oktoGetH"></Footer>
   </div>
   <!--  结束-->
 </template>
@@ -59,6 +59,9 @@
         loadMoreSwitch: true,
         btmFont: '加载更多',
         isLoading: true,
+        HH: null,  // header高度
+        FH: null,  // footer高度
+        oktoGetH: false,
 
         options: {
           //开启点击事件 默认为false
@@ -81,6 +84,14 @@
     computed: {},
 
     methods: {
+      getFooterHeight(h) {
+        console.log(h);
+        this.FH = h;
+      },
+      getHeaderHeight(h) {
+        console.log(h);
+        this.HH = h;
+      },
       //获取窗口可视范围的高度
       getClientHeight() {
         let clientHeight = 0;
@@ -104,9 +115,10 @@
           this.pageCount = res.Data.PageCount;  // 总页数
 
           this.$nextTick(() => {
-            this.init_scroll()
+            this.init_scroll();
             this.btmFont = '加载更多';
           });
+          this.oktoGetH = true;
           this.loadMoreSwitch = true;
           this.pageNum === 1 ? this.isLoading = false : ''
 
@@ -154,10 +166,7 @@
       this.getData();
     },
     mounted() {
-      this.getClientHeight();
-      console.log(this.$refs.header)
-
-      console.log(this.$refs.header.offsetHeight)
+      const H = this.getClientHeight();
     },
 
     beforeDestroy() {

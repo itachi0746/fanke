@@ -46,8 +46,8 @@
        * @method 去支付
        */
       gotoPay() {
-        if(this.countNum) {
-          GoToPage('orderConfirm','orderConfirm.html',{})
+        if(this.countNum > 0) {
+          GoToPage('','/mall/PayOrder',{'id':this.timeData.OrderId})
         }
       }
     },

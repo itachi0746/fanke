@@ -46,21 +46,21 @@
           </section>
           <!--已上传文件列表 结束-->
 
-          <!--上传功能  开始-->
+          <!--上传功能 :http-request="uploadReq" 开始-->
           <!--data是要发送的数据-->
           <el-upload
             ref="upload2"
             class="upload-demo"
             :action="upUrl"
-            :data="data"
+            :data="IDData"
             :before-upload="beforeUpload"
-            :on-change="handleChange"
             :before-remove="handleRemove"
             :auto-upload="true"
+            :onError="uploadError"
             :on-success="handleSuccess">
             <el-button slot="trigger" size="small" type="primary" @click.native="upload(index)">上传素材</el-button>
             <!--<el-button style="margin-left: 10px;" size="small" type="success" @click.native="submitUpload">上传到服务器</el-button>-->
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2M</div>
           </el-upload>
 
           <!--上传功能  结束-->
@@ -88,7 +88,7 @@
       return {
         headName: '订单详情',
         resData: {},
-        data: {},  // 上传文件时要传的data
+        IDData: {},  // 上传文件时要传的data
         OrderId: '',
         DtlId: '',
         fid: '',
@@ -100,21 +100,48 @@
       Header
     },
 
-    computed: {},
+    computed: {
+
+    },
 
     methods: {
+      uploadReq(req) {
+        console.log(req);
+        let formData = new FormData();
+        formData.append('file',req.file);
+        formData.append('OrderId',this.OrderId);
+        formData.append('DtlId',this.OrderId);
+
+        postData('/AddFile',formData).then((res) => {
+          console.log(res)
+          if(res.Success) {
+            this.fid = res.Data;
+            console.log(111122);
+            Message({
+              showClose: true,
+              message: '上传成功!',
+              type: "success"
+            });
+          }
+        })
+      },
+
       submitUpload() {
         console.log(this.$refs.upload2)
         this.$refs.upload2.submit();
       },
       upload(i) {
         this.DtlId = this.resData.Items[i].DtlId;
+        this.IDData = {
+          'OrderId': this.resData.OrderId,
+          'DetailId': this.DtlId
+        };
       },
       /**
        * @method 删除前的操作
        */
       beforeRemove(file) {
-        debugger
+//        debugger
         MessageBox.confirm(`确定移除 ${ file.name }？`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -178,13 +205,13 @@
 //      this.fileList3 = fileList.slice(-3);
       },
       beforeUpload(file) {
-        this.data = {
-          OrderId: this.resData.OrderId,
-          DetailId: this.DtlId
-        };
-//        console.log(this.data);
+//        this.IDData = {
+//          OrderId: this.resData.OrderId,
+//          DetailId: this.DtlId
+//        };
         console.log(file.type)
         const isJPG = file.type === 'image/jpeg';
+        const isPNG = file.type === 'image/png';
         const isMP4 = file.type === 'video/mp4';
         const fileSize = file.size / 1024 / 1024;  // w文件的大小 M
         console.log(fileSize)
@@ -192,7 +219,7 @@
         const isLt2M = fileSize < 2;
         const isLt10M = fileSize < 10;
 
-        if (!isJPG && !isMP4) {
+        if (!isJPG && !isMP4 && !isPNG) {
           Message({
             showClose: true,
             message: '视频或图片的格式错误',
@@ -200,7 +227,7 @@
           });
           return false
         }
-        if (isJPG && !isLt2M) {
+        if ((isJPG || isPNG) && !isLt2M) {
           Message({
             showClose: true,
             message: '上传图片大小不能超过 2MB!',
@@ -229,6 +256,15 @@
           type: "success"
         });
 
+      },
+      // 上传错误
+      uploadError (response, file, fileList) {
+        console.log('上传失败，请重试！');
+        Message({
+          showClose: true,
+          message: '上传失败,请重试',
+          type: "error"
+        });
       },
     },
     created() {

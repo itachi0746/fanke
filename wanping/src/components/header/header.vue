@@ -1,7 +1,7 @@
 <template>
   <!--通用头部1  开始-->
   <div>
-    <section class="head">
+    <section class="head" ref="head" id="head">
       <header>
         <div class="back" @click="goBack">
           <!--<i class="fa fa-angle-left left"></i>-->
@@ -28,7 +28,8 @@
   export default {
     props: {
       headName: String,
-      editState: Boolean
+      editState: Boolean,
+      a: Boolean
     },
     data() {
       return {
@@ -39,6 +40,11 @@
     watch: {
       editState() {
         this.isEdit = this.editState
+      },
+      a() {
+        if(this.a) {
+          this.$emit('headerHeight',this.$refs.head.offsetHeight)
+        }
       }
     },
 
@@ -57,6 +63,13 @@
     },
 
     mounted() {
+//      let a = document.getElementById('head');
+//
+//      this.$nextTick(() => {
+//        console.log(this.$refs.head.offsetHeight,a.offsetHeight);
+//
+//      })
+//      this.$emit('headerHeight',this.$refs.head.offsetHeight)
     },
 
     beforeDestroy() {

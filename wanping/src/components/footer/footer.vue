@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="foot-guide">
-      <ul>
+      <ul ref="foot" id="foot">
         <li class="foot-guide-li" @click="toIndex" v-if="this.page==='Home'">
           <img src="../../assets/home2.png" alt="">
           <span class="chosen">主页</span>
@@ -57,7 +57,8 @@ export default {
   props: {
     page: {
       type: String,
-      default: 'Home'
+      default: 'Home',
+      a: Boolean
     }
   },
   data() {
@@ -74,7 +75,13 @@ export default {
 
   components: {},
 
-  computed: {},
+  watch: {
+    a() {
+      if(this.a) {
+        this.$emit('footerHeight',this.$refs.foot.offsetHeight)
+      }
+    }
+  },
 
   methods: {
     toProfile() {
@@ -107,7 +114,10 @@ export default {
   },
 
   mounted() {
-    console.log(this.page)
+
+//    console.log(this.$refs.foot.offsetHeight);
+//    this.$emit('footerHeight',this.$refs.foot.offsetHeight)
+
   },
 
   beforeDestroy() {}
