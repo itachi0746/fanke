@@ -65,12 +65,6 @@ export default {
   data() {
     return {
 
-      whatPage: [
-        {_is: false},
-        {_is: false},
-        {_is: false},
-        {_is: false}
-      ]
     }
   },
 

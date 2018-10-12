@@ -32,14 +32,14 @@
               <label v-show="item.showFiles">隐藏已上传素材</label>
               <label v-show="!item.showFiles">查看已上传素材</label>
             </el-button>
-            <ul v-show="item.showFiles" v-for="(i) in item.Medias">
-              <li tabindex="0" class="el-upload-list__item is-success" style="text-align: left;">
+            <ul>
+              <li tabindex="0"  v-show="item.showFiles" v-for="(i,index2) in fileList" :key="i.MediaId" class="el-upload-list__item is-success" style="text-align: left;">
                 <a class="el-upload-list__item-name">
-                  <i class="el-icon-document"></i>{{}}
+                  <i class="el-icon-document"></i>{{i.MediaName}}
                 </a>
                 <label class="el-upload-list__item-status-label"><i
                   class="el-icon-upload-success el-icon-circle-check"></i></label>
-                <i class="el-icon-close" @click="beforeRemove"></i>
+                <i class="el-icon-close" @click="handleRemove2($event,index2)" :data-Mid="i.MediaId"></i>
                 <i class="el-icon-close-tip">按 delete 键可删除</i>
               </li>
             </ul>
@@ -92,7 +92,8 @@
         OrderId: '',
         DtlId: '',
         fid: '',
-        upUrl: '' // 上传url
+        upUrl: '', // 上传url
+        fileList: []  // 已上传文件列表
       }
     },
 
@@ -123,10 +124,27 @@
           }
         })
       },
+      /**
+       * @method 删除已上传文件
+       */
+      handleRemove2(e,index) {
+        const mid = e.currentTarget.getAttribute('data-Mid');
+        const url = '/DeleteFile';
+        const data = {
+          FileId: mid
+        };
+        postData(url, data).then((res) => {
+          console.log(res);
 
-      submitUpload() {
-        console.log(this.$refs.upload2)
-        this.$refs.upload2.submit();
+          if(res.Success) {
+            this.fileList.splice(index,1);
+            
+            Message({
+              type: 'success',
+              message: '删除成功!'
+            });
+          }
+        });
       },
       /**
        * @method 获取明细id
@@ -201,6 +219,7 @@
         };
         postData(url, data).then((res) => {
           console.log(res)
+          this.fileList = res.Data
         })
       },
       handleChange(file, fileList) {

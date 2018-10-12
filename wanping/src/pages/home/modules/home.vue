@@ -155,7 +155,7 @@
 
   .recommend-container {
     width: 100%;
-    margin-top: 1.5rem;
+    margin-top: .5rem;
     height: 10rem;
     overflow: hidden;
   }
