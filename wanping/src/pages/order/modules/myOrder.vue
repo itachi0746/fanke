@@ -1,7 +1,7 @@
 <template>
   <!--  开始-->
   <div class="myOrder">
-    <Header :headName="headName" @headerHeight="getHeaderHeight" :a="oktoGetH"></Header>
+    <Header :headName="headName" @headerHeight="getHeight" :a="oktoGetH"></Header>
     <div class="wrapper" id="wrapper" ref="wrapper">
       <ul class="order_list_ul" v-if="orderArr.length">
         <li class="order_list_li" v-for="(order,index) in orderArr" :key="order.OrderId"
@@ -35,7 +35,7 @@
 
     </div>
     <Loading v-show="isLoading"></Loading>
-    <Footer :page="page" @footerHeight="getFooterHeight" :a="oktoGetH"></Footer>
+    <Footer :page="page" @footerHeight="getHeight" :a="oktoGetH"></Footer>
   </div>
   <!--  结束-->
 </template>
@@ -61,6 +61,8 @@
         isLoading: true,
         HH: null,  // header高度
         FH: null,  // footer高度
+        WH: null, // 窗口高度
+        times: 0,
         oktoGetH: false,
 
         options: {
@@ -81,17 +83,27 @@
       Header, Footer, ComputeTime, Loading
     },
 
-    computed: {},
+    watch: {
+
+    },
 
     methods: {
-      getFooterHeight(h) {
+      /**
+       * @method 用窗口高度减去头部脚部高度 计算主要内容wrapper的高度
+       * @param {String} h 高度
+       */
+      getHeight(h) {
+        this.times++;
         console.log(h);
-        this.FH = h;
+        this.WH -= h;
+
+        if(this.times===2) {
+          this.$refs.wrapper.style.height = this.WH + 'px';
+//          console.log(this.$refs.wrapper.style.height)
+        }
+
       },
-      getHeaderHeight(h) {
-        console.log(h);
-        this.HH = h;
-      },
+
       //获取窗口可视范围的高度
       getClientHeight() {
         let clientHeight = 0;
@@ -103,7 +115,11 @@
         console.log(clientHeight);
         return clientHeight;
       },
+      /**
+       * @method 获取数据
+       */
       getData() {
+        this.btmFont = '加载中...';
         const url = '/GetOrders';
         this.pageNum++;
         const data = {
@@ -113,10 +129,11 @@
           console.log(res)
           this.orderArr = this.orderArr.concat(res.Data.Models);
           this.pageCount = res.Data.PageCount;  // 总页数
-
+          if (this.pageNum > this.pageCount) {
+            this.btmFont = '没有更多数据了';
+          }
           this.$nextTick(() => {
             this.init_scroll();
-            this.btmFont = '加载更多';
           });
           this.oktoGetH = true;
           this.loadMoreSwitch = true;
@@ -127,7 +144,6 @@
       },
       toOrderDetail(event) {
         const Tindex = event.currentTarget.id;
-
         GoToPage("orderDetail", "orderDetail.html", {OrderId: Tindex});  // TODo 支付完成的 跳去订单详情
       },
       init_scroll() {
@@ -136,18 +152,14 @@
         } else {
           this.scroll.refresh();
         }
-        this.scroll.on('pullingUp', () => {
+        this.scroll.on('pullingUp', () => {  // 上拉加载
           if (this.loadMoreSwitch) {
             this.loadMoreSwitch = false;
             if (this.pageNum <= this.pageCount) {
               console.log('加载更多');
-              this.btmFont = '加载中...';
               this.getData();
               this.scroll.finishPullUp();
               this.scroll.refresh();
-            } else {
-              this.btmFont = '没有更多数据了';
-
             }
           }
         });
@@ -166,7 +178,8 @@
       this.getData();
     },
     mounted() {
-      const H = this.getClientHeight();
+      this.WH = this.getClientHeight();
+
     },
 
     beforeDestroy() {

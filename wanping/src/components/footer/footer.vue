@@ -58,8 +58,9 @@ export default {
     page: {
       type: String,
       default: 'Home',
-      a: Boolean
-    }
+    },
+    a: Boolean
+
   },
   data() {
     return {
@@ -78,6 +79,7 @@ export default {
   watch: {
     a() {
       if(this.a) {
+//        console.log(this.$refs.foot)
         this.$emit('footerHeight',this.$refs.foot.offsetHeight)
       }
     }

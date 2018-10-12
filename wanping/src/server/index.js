@@ -112,16 +112,16 @@ Axios.interceptors.response.use(
 };*/
 
 // 封装axios的post请求
-let postData = function(url, params = {}) {
-  var theRequestUrl=url;
-  console.log("开始访问:"+theRequestUrl);
+let postData = function (url, params = {}) {
+  let theRequestUrl = url;
+  console.log("开始访问:" + theRequestUrl);
   return new Promise((resolve, reject) => {
     Axios.post(url, params)
       .then(response => {
         resolve(response.data);
       })
       .catch((error) => {
-        console.log(theRequestUrl+':请求出错');
+        console.log(theRequestUrl + ':请求出错');
         reject(error);
       })
   })

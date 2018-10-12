@@ -3,7 +3,7 @@
     <!--商家列表-->
     <ul class="shoplist-container">
       <li class="shoplist-item" v-for="(item, index) in screenList" :key="item.Id" @click="toScreen($event)"
-           :data-pid="item.Id">
+          :data-pid="item.Id">
         <p class="shop-name">
           {{ item.Name }}
           <span class="right">
@@ -72,14 +72,13 @@
           this.loadMoreSwitch = true;
           this.sum = res.Data.PageCount;  // 总页数
 //          console.log(this.sum)
-          this.$emit('loaded',true)
+          this.$emit('loaded', true)
         })
 
       },
       toScreen(event) {
         const targetId = event.currentTarget.getAttribute('data-pid');
         GoToPage("screen", "screen.html", {'pid': targetId});
-        // window.location.href = 'screen.html?id=' + targetId;
       },
       // 获取窗口滚动条高度
       getScrollTop() {
@@ -113,34 +112,10 @@
     mounted() {
 
       window.onload = () => {
-
         /*监听加载更多*/
-//        $(window).scroll(() => {
-////          console.log(1)
-//          if (this.loadMoreSwitch) {
-////            console.log(2)
-////
-//            if (this.page >= this.sum) {
-//              this.isEnd = true;  // 没有更多了
-//              return;
-//            }
-//            // 当滚动到最底部以上50像素时， 加载新内容
-//            // 核心代码
-//            if ($('#app').height() - $(window).scrollTop() - $(window).height() < 50) {
-//              this.page++;
-//              this.getData();
-//              console.log('下拉加载更多')
-//            }
-//          }
-//
-//        });
-
-//
         window.onscroll = () => {
           if (this.loadMoreSwitch) {
-//            console.log('page',this.page,this.sum);
             if (this.page >= this.sum) {
-
               this.isEnd = true;  // 没有更多了
               return;
             }
@@ -151,15 +126,13 @@
               wh = this.getClientHeight();
 //            console.log(appH, wt, wh);
             if (appH - wt - wh < 100) {
-              this.$emit('loaded',false);
+              this.$emit('loaded', false);
               this.page++;
               this.getData();
               console.log('上拉加载更多')
             }
-
           }
         }
-
 
       }
     }

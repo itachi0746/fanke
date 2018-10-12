@@ -243,16 +243,17 @@
         })
       },
       /**
-       * @method 计算购物车中的项,把项的ItemId加入数组中并返回
+       * @method 计算购物车中的项,把选中的项的ItemId加入数组中并返回
        */
       handleItems() {
         let arr = [];
         this.cart.forEach((item)=> {
-          let newItem = {
-            "BasketDtlId": item.ItemId,  // 购物车明细id
-          };
-          arr.push(newItem)
-
+          if(item.Checked) {
+            let newItem = {
+              "BasketDtlId": item.ItemId,  // 购物车明细id
+            };
+            arr.push(newItem)
+          }
         });
         return arr
       },

@@ -134,6 +134,7 @@
 
   .order {
     width: 100%;
+    margin-bottom: 2.3rem;
     /*background-color: #fff;*/
   }
 
