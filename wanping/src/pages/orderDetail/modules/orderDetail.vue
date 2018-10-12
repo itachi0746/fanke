@@ -126,6 +126,8 @@
       },
       /**
        * @method 删除已上传文件
+       * @param {Object} e 事件对象
+       * @param {String} index 下标
        */
       handleRemove2(e,index) {
         const mid = e.currentTarget.getAttribute('data-Mid');
@@ -138,7 +140,7 @@
 
           if(res.Success) {
             this.fileList.splice(index,1);
-            
+
             Message({
               type: 'success',
               message: '删除成功!'
@@ -213,14 +215,17 @@
         this.resData.Items[i].showFiles = !this.resData.Items[i].showFiles;
 //        this.showFiles = !this.showFiles;
         this.btnTips = this.resData.Items[i].showFiles ? '隐藏已上传素材' : '查看已上传素材';
-        const url = '/GetFiles';
-        const data = {
-          DetailId: dtlId
-        };
-        postData(url, data).then((res) => {
-          console.log(res)
-          this.fileList = res.Data
-        })
+        if(this.resData.Items[i].showFiles) {
+          const url = '/GetFiles';
+          const data = {
+            DetailId: dtlId
+          };
+          postData(url, data).then((res) => {
+            console.log(res)
+            this.fileList = res.Data
+          })
+        }
+
       },
       handleChange(file, fileList) {
 //      this.fileList3 = fileList.slice(-3);
