@@ -108,7 +108,9 @@
     },
     created() {
       const data = getUrlParms();
-      this.fromBasket = eval(data.fromBasket);
+      this.fromBasket = data.frombasket;
+//      console.log(data)
+//      console.log(this.fromBasket)
 //      console.log(data);
       const url = '/GetPlaceOrder';
       postData(url,data.id).then((res) => {
