@@ -5,7 +5,7 @@
     <div class="wrapper" id="wrapper" ref="wrapper">
       <ul class="order_list_ul" v-if="orderArr.length">
         <li class="order_list_li" v-for="(order,index) in orderArr" :key="order.OrderId"
-            @click="toOrderDetail($event)" :id="order.OrderId">
+            @click="toOrderDetail($event,index)" :id="order.OrderId">
           <section class="order_item_right">
             <section>
               <header class="order_item_right_header">
@@ -142,9 +142,12 @@
         })
 
       },
-      toOrderDetail(event) {
-        const Tindex = event.currentTarget.id;
-        GoToPage("orderDetail", "orderDetail.html", {OrderId: Tindex});  // TODo 支付完成的 跳去订单详情
+      toOrderDetail(event,i) {
+        if(this.orderArr[i].OrderStatusVal !== 'BD0901') {
+          const Tindex = event.currentTarget.id;
+          GoToPage("orderDetail", "orderDetail.html", {OrderId: Tindex});  // TODo 支付完成的 跳去订单详情
+
+        }
       },
       init_scroll() {
         if (!this.scroll) {
