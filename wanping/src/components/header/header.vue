@@ -53,6 +53,10 @@
 
     methods: {
       goBack() {
+        if(this.headName==='订单详情') {
+          GoToPage('','order.html',{});
+          return
+        }
         window.history.go(-1)
       },
       handleEdit() {
