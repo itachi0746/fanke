@@ -95,7 +95,6 @@
         IDData: {},  // 上传文件时要传的data
         OrderId: '',
         DtlId: '',
-        fid: '',
         upUrl: '', // 上传url
         fileList: [],  // 已上传文件列表
         file: null  // 文件对象
@@ -109,26 +108,26 @@
     computed: {},
 
     methods: {
-      uploadReq(req) {
-        console.log(req);
-        let formData = new FormData();
-        formData.append('file', req.file);
-        formData.append('OrderId', this.OrderId);
-        formData.append('DtlId', this.OrderId);
-
-        postData('/AddFile', formData).then((res) => {
-          console.log(res)
-          if (res.Success) {
-            this.fid = res.Data;
-            console.log(111122);
-            Message({
-              showClose: true,
-              message: '上传成功!',
-              type: "success"
-            });
-          }
-        })
-      },
+//      uploadReq(req) {
+//        console.log(req);
+//        let formData = new FormData();
+//        formData.append('file', req.file);
+//        formData.append('OrderId', this.OrderId);
+//        formData.append('DtlId', this.OrderId);
+//
+//        postData('/AddFile', formData).then((res) => {
+//          console.log(res)
+//          if (res.Success) {
+//            this.fid = res.Data;
+//            console.log(111122);
+//            Message({
+//              showClose: true,
+//              message: '上传成功!',
+//              type: "success"
+//            });
+//          }
+//        })
+//      },
       /**
        * @method 删除已上传文件
        * @param {Object} e 事件对象
@@ -191,29 +190,29 @@
       /**
        * @method 删除前的操作
        */
-      beforeRemove(file, filelist) {
+//      beforeRemove(file, filelist) {
+////        return MessageBox.confirm(`确定移除 ${ file.name }？`, '提示', {
+////          confirmButtonText: '确定',
+////          cancelButtonText: '取消',
+////          type: 'warning',
+////          center: true,
+////
+////        })
 //        return MessageBox.confirm(`确定移除 ${ file.name }？`, '提示', {
 //          confirmButtonText: '确定',
 //          cancelButtonText: '取消',
 //          type: 'warning',
-//          center: true,
-//
-//        })
-        return MessageBox.confirm(`确定移除 ${ file.name }？`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-          center: true
-        }).then(() => {
-          this.handleRemove(file);  // todo 传参
-          console.log('删除成功');
-        }).catch(() => {
-          Message({
-            type: 'info',
-            message: '已取消删除'
-          });
-        });
-      },
+//          center: true
+//        }).then(() => {
+//          this.handleRemove(file);  // todo 传参
+//          console.log('删除成功');
+//        }).catch(() => {
+//          Message({
+//            type: 'info',
+//            message: '已取消删除'
+//          });
+//        });
+//      },
 
       /**
        * @method 删除文件
@@ -223,7 +222,6 @@
         console.log(file)
 
 //        debugger
-//        let a = null;
         if (file.status === 'success') {  // 状态为success表示这是已经上传成功的文件,因为上传格式错误的文件也会自动调用这个方法
           const url = '/DeleteFile';
           const data = {
@@ -242,38 +240,9 @@
                 type: 'error',
                 message: '删除失败!'
               });
-//              return Promise.reject('test');
             }
           });
 
-//          await MessageBox.confirm(`确定移除 ${ file.name }？`, '提示', {
-//            confirmButtonText: '确定',
-//            cancelButtonText: '取消',
-//            type: 'warning',
-//            center: true
-//          }).then(() => {
-//            const url = '/DeleteFile';
-//            const data = {
-//              FileId: this.fid
-//            };
-//            postData(url, data).then((res) => {
-//              console.log(res);
-//              Message({
-//                type: 'success',
-//                message: '删除成功!'
-//              });
-//              a = true
-////              return true
-//            });
-//          }).catch((e) => {
-//            console.log(e)
-//            Message({
-//              type: 'info',
-//              message: '已取消删除'
-//            });
-//            a = false
-////            return false
-//          });
         }
       },
 
@@ -287,7 +256,6 @@
 //        console.log(dtlId);
         this.resData.Items[i].showFiles = !this.resData.Items[i].showFiles;
 //        this.showFiles = !this.showFiles;
-        this.btnTips = this.resData.Items[i].showFiles ? '隐藏已上传素材' : '查看已上传素材';
         if (this.resData.Items[i].showFiles) {
           const url = '/GetFiles';
           const data = {
@@ -303,6 +271,10 @@
       handleChange(file, fileList) {
 //      this.fileList3 = fileList.slice(-3);
       },
+      /**
+       * @method 上传前,判断文件类型和大小
+       * @param {object} file 文件对象
+       */
       beforeUpload(file) {
         console.log(file.type)
         const isJPG = file.type === 'image/jpeg';
@@ -353,7 +325,7 @@
             type: "success"
           });
         } else {
-          fileList.splice(0, 1);
+//          fileList.splice(0, 1);
           console.log('上传失败');
           Message({
             showClose: true,
@@ -532,15 +504,15 @@
 
 </style>
 <style>
-  .el-message-box {
-    width: 90%;
-  }
+  /*.el-message-box {*/
+    /*width: 90%;*/
+  /*}*/
 
-  .el-upload-list__item {
-    text-align: left;
-  }
+  /*.el-upload-list__item {*/
+    /*text-align: left;*/
+  /*}*/
 
-  .el-icon-close-tip {
-    display: none !important;
-  }
+  /*.el-icon-close-tip {*/
+    /*display: none !important;*/
+  /*}*/
 </style>

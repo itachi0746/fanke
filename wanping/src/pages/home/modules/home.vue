@@ -84,12 +84,6 @@
         this.Recommends = res.Data
       });
 
-//      const url2 = '/GetProducts';
-//      postData(url2).then(res => {
-//        console.log(res)
-//
-//      });
-
     },
     computed: {
       swiper() {

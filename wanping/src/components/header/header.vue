@@ -4,7 +4,6 @@
     <section class="head" ref="head" id="head">
       <header>
         <div class="back" @click="goBack">
-          <!--<i class="fa fa-angle-left left"></i>-->
           <i class="icon iconfont icon-zuojiantou"></i>
         </div>
         <div class="head-font">

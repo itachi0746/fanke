@@ -59,8 +59,6 @@
         loadMoreSwitch: true,
         btmFont: '加载更多',
         isLoading: true,
-        HH: null,  // header高度
-        FH: null,  // footer高度
         WH: null, // 窗口高度
         times: 0,
         oktoGetH: false,
@@ -83,9 +81,7 @@
       Header, Footer, ComputeTime, Loading
     },
 
-    watch: {
-
-    },
+    watch: {},
 
     methods: {
       /**
@@ -97,7 +93,7 @@
         console.log(h);
         this.WH -= h;
 
-        if(this.times===2) {
+        if (this.times === 2) {
           this.$refs.wrapper.style.height = this.WH + 'px';
 //          console.log(this.$refs.wrapper.style.height)
         }
@@ -119,7 +115,6 @@
        * @method 获取数据
        */
       getData() {
-        this.btmFont = '加载中...';
         const url = '/GetOrders';
         this.pageNum++;
         const data = {
@@ -129,9 +124,12 @@
           console.log(res)
           this.orderArr = this.orderArr.concat(res.Data.Models);
           this.pageCount = res.Data.PageCount;  // 总页数
-          if (this.pageNum > this.pageCount) {
-            this.btmFont = '没有更多数据了';
-          }
+//          if (this.pageNum > this.pageCount) {
+//            this.btmFont = '没有更多数据了';
+//          } else {
+//            this.btmFont = '加载更多';
+//          }
+          this.btmFont = this.pageNum > this.pageCount ? '没有更多数据了' : '加载更多';
           this.$nextTick(() => {
             this.init_scroll();
           });
@@ -142,8 +140,8 @@
         })
 
       },
-      toOrderDetail(event,i) {
-        if(this.orderArr[i].OrderStatusVal !== 'BD0901') {
+      toOrderDetail(event, i) {
+        if (this.orderArr[i].OrderStatusVal !== 'BD0901') {
           const Tindex = event.currentTarget.id;
           GoToPage("orderDetail", "orderDetail.html", {OrderId: Tindex});  // TODo 支付完成的 跳去订单详情
 
@@ -160,6 +158,7 @@
             this.loadMoreSwitch = false;
             if (this.pageNum <= this.pageCount) {
               console.log('加载更多');
+              this.btmFont = '加载中...';
               this.getData();
               this.scroll.finishPullUp();
               this.scroll.refresh();

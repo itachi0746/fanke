@@ -114,3 +114,15 @@ html,body{
 .animation_opactiy{
   animation: backOpacity 2s ease-in-out infinite;
 }
+
+.el-message-box {
+  width: 90%;
+}
+
+.el-upload-list__item {
+  text-align: left;
+}
+
+.el-icon-close-tip {
+  display: none !important;
+}
