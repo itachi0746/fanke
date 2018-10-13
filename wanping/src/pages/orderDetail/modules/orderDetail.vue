@@ -62,7 +62,7 @@
                 <i class="el-icon-close-tip">按 delete 键可删除</i>
               </li>
             </ul>
-            <div slot="tip" class="el-upload__tip">上传图片(jpg/png)文件不超过2M,视频(mp4)文件不超过10M</div>
+            <div slot="tip" class="el-upload__tip">图片(jpg/png)文件不超过2M,视频(mp4)文件不超过10M</div>
 
           </section>
           <!--已上传文件列表 结束-->
