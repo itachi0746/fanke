@@ -94,7 +94,7 @@
         DtlId: '',
         fid: '',
         upUrl: '', // 上传url
-        fileList: []  // 已上传文件列表
+        fileList: [],  // 已上传文件列表
       }
     },
 
@@ -163,84 +163,89 @@
       /**
        * @method 删除前的操作
        */
-//      beforeRemove(file) {
-////        debugger
-//        MessageBox.confirm(`确定移除 ${ file.name }？`, '提示', {
+      beforeRemove(file,filelist) {
+//        return MessageBox.confirm(`确定移除 ${ file.name }？`, '提示', {
 //          confirmButtonText: '确定',
 //          cancelButtonText: '取消',
 //          type: 'warning',
-//          center: true
-//        }).then(() => {
-//          this.handleRemove();  // todo 传参
-//          return true
-//        }).catch(() => {
-//          Message({
-//            type: 'info',
-//            message: '已取消删除'
-//          });
-//          return false
-//        });
-//        return false  // 阻止删除
+//          center: true,
 //
-//      },
+//        })
+        return MessageBox.confirm(`确定移除 ${ file.name }？`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        }).then(() => {
+          this.handleRemove(file);  // todo 传参
+          console.log('删除成功');
+        }).catch(() => {
+          Message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
 
       /**
        * @method 删除文件
        * @param {String} file 文件对象
        */
-      async handleRemove(file,fileList) {
-//        debugger
-        let a = null;
-        if (file.status === 'success') {  // 状态为success表示这是已经上传成功的文件,因为上传格式错误的文件也会自动调用这个方法
-//          const url = '/DeleteFile';
-//          const data = {
-//            FileId: this.fid
-//          };
-//
-//          postData(url, data).then((res) => {
-//            console.log(res);
-//            if(res.Success) {
-//              Message({
-//                type: 'success',
-//                message: '删除成功!'
-//              });
-//            } else {
-//              Message({
-//                type: 'error',
-//                message: '删除失败!'
-//              });
-//              return Promise.reject('test');
-//            }
-//          });
+      handleRemove(file) {
+        console.log(file)
 
-          await MessageBox.confirm(`确定移除 ${ file.name }？`, '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-            center: true
-          }).then(() => {
-            const url = '/DeleteFile';
-            const data = {
-              FileId: this.fid
-            };
-            postData(url, data).then((res) => {
-              console.log(res);
+//        debugger
+//        let a = null;
+        if (file.status === 'success') {  // 状态为success表示这是已经上传成功的文件,因为上传格式错误的文件也会自动调用这个方法
+          const url = '/DeleteFile';
+          const data = {
+            FileId: this.fid
+          };
+
+          postData(url, data).then((res) => {
+            console.log(res);
+            if(res.Success) {
               Message({
                 type: 'success',
                 message: '删除成功!'
               });
-              a = true
-//              return true
-            });
-          }).catch((e) => {
-            console.log(e)
-            Message({
-              type: 'info',
-              message: '已取消删除'
-            });
-            a = false
-//            return false
+            } else {
+              Message({
+                type: 'error',
+                message: '删除失败!'
+              });
+//              return Promise.reject('test');
+            }
           });
+
+//          await MessageBox.confirm(`确定移除 ${ file.name }？`, '提示', {
+//            confirmButtonText: '确定',
+//            cancelButtonText: '取消',
+//            type: 'warning',
+//            center: true
+//          }).then(() => {
+//            const url = '/DeleteFile';
+//            const data = {
+//              FileId: this.fid
+//            };
+//            postData(url, data).then((res) => {
+//              console.log(res);
+//              Message({
+//                type: 'success',
+//                message: '删除成功!'
+//              });
+//              a = true
+////              return true
+//            });
+//          }).catch((e) => {
+//            console.log(e)
+//            Message({
+//              type: 'info',
+//              message: '已取消删除'
+//            });
+//            a = false
+////            return false
+//          });
         }
       },
 
