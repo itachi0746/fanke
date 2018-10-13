@@ -26,7 +26,7 @@
             </section>
             <div class="order_again">
               <span class="order_sum">合计 ¥{{order.Amount}}</span>
-              <ComputeTime :timeData="order"></ComputeTime>
+              <ComputeTime :timeData="order" v-show="order.OrderStatusVal==='BD0901'"></ComputeTime>
             </div>
           </section>
         </li>
