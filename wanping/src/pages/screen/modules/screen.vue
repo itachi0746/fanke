@@ -269,6 +269,7 @@
         postData(url, this.selected).then((res) => {
           console.log('AddToBasket', res);
 //          console.log(this.selected);
+          this.isLoading = false;
           GoToPage('cart','cart.html',{})
         });
       },
@@ -285,7 +286,7 @@
         };
         postData(url, data).then((res) => {
           console.log(res);
-//          this.isLoading = false;
+          this.isLoading = false;
           GoToPage('orderConfirm','orderConfirm.html',{'id':res.Data,'fromBasket': false})
         })
       },

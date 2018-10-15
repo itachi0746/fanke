@@ -93,6 +93,7 @@
         console.log('data',data);
         postData(url, data).then((res) => {
           console.log(res);
+          this.isLoading = false;
 //          window.location.href = res.NextStep;
           GoToPage('',res.NextStep,{})
         })

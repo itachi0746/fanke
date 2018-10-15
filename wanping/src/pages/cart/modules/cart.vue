@@ -249,6 +249,7 @@
         };
         postData(url, data).then((res) => {
           console.log(res);
+          this.isLoading = false;
           GoToPage('orderConfirm','orderConfirm.html',{'id':res.Data,"fromBasket": true})
         })
       },
