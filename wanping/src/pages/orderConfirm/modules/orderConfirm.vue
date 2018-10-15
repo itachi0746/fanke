@@ -44,7 +44,7 @@
   import Header from '@/components/header/header.vue'
   import Loading from '../../../components/common/loading.vue'
   import {postData} from '../../../server'
-  import getUrlParms from '@/config/utils'
+  import {getUrlParms,IOSConfig} from '@/config/utils'
 
 
   export default {
@@ -115,6 +115,7 @@
       }
     },
     created() {
+      IOSConfig();
       const data = getUrlParms();
       this.fromBasket = data.frombasket;
 //      console.log(data)

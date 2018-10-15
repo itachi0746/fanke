@@ -96,7 +96,7 @@
   import Header from '../../../components/header/header.vue'
   import Loading from '../../../components/common/loading.vue'
   import {postData} from '@/server'
-  import getUrlParms from '@/config/utils'
+  import {getUrlParms,IOSConfig} from '@/config/utils'
 
 
   export default {
@@ -324,7 +324,7 @@
     },
 
     created() {
-//      const myDate = new Date();
+      IOSConfig();
       const args = getUrlParms();
       this.Id = args.pid;
 //      console.log(args);

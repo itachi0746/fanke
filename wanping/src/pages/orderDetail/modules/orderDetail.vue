@@ -83,7 +83,7 @@
 
 <script>
   import Header from '@/components/header/header.vue'
-  import getUrlParms from '@/config/utils'
+  import {getUrlParms,IOSConfig} from '@/config/utils'
   import {postData, link} from '@/server'
   import {Message, MessageBox} from 'element-ui'
 

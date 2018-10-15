@@ -1,3 +1,21 @@
+
+let IOSConfig = function() {
+  let userAgent = navigator.userAgent;
+  if (userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('Mac') > -1) {
+    console.log('on iphone/mac')
+    window.addEventListener("popstate", function (e) {
+         // alert("后退");
+      self.location.reload();
+    }, false);
+    let state = {
+      title: "",
+      url: "#"
+    };
+    window.history.replaceState(state, "", "#");  }
+
+
+};
+
 // 获得url中的参数,放在对象中,然后返回这个对象
 function getUrlParms() {
   let args = {};
@@ -13,4 +31,5 @@ function getUrlParms() {
   return args;
 }
 
-export default getUrlParms
+
+export {getUrlParms,IOSConfig}

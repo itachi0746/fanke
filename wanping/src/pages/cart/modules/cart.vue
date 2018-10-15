@@ -99,7 +99,7 @@
   import Header from '../../../components/header/header.vue'
   import Loading from '../../../components/common/loading.vue'
   import {postData} from '@/server'
-  import getUrlParms from '@/config/utils'
+  import {getUrlParms,IOSConfig} from '@/config/utils'
 
   export default {
     data() {
@@ -138,6 +138,7 @@
     },
 
     created() {
+      IOSConfig();
 //      const data = getUrlParms();
 //      console.log(data);
 //      const url = 'http://www.bai.com/GetBaskets';
