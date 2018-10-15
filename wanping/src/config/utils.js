@@ -1,4 +1,4 @@
-
+let a = 1;
 let IOSConfig = function() {
   let userAgent = navigator.userAgent;
   if (userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('Mac') > -1) {
