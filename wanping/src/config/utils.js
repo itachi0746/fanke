@@ -5,13 +5,17 @@ let IOSConfig = function() {
     console.log('on iphone/mac')
     window.addEventListener("popstate", function (e) {
          // alert("后退");
+      console.log('后退')
       self.location.reload();
+
+      let state = {
+        title: "",
+        url: "#"
+      };
+      window.history.replaceState(state, "", "#");
     }, false);
-    let state = {
-      title: "",
-      url: "#"
-    };
-    window.history.replaceState(state, "", "#");  }
+
+  }
 
 
 };
