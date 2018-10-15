@@ -277,16 +277,18 @@
        */
       beforeUpload(file) {
         console.log(file.type)
-        const isJPG = file.type === 'image/jpeg';
-        const isPNG = file.type === 'image/png';
-        const isMP4 = file.type === 'video/mp4';
+        const ft = file.type.toLowerCase();
+        const isJPG = ft === 'image/jpeg';
+        const isPNG = ft === 'image/png';
+        const isMP4 = ft === 'video/mp4';
+        const isMOv = ft === 'video/mov';
         const fileSize = file.size / 1024 / 1024;  // w文件的大小 M
         console.log(fileSize)
 
         const isLt2M = fileSize < 2;
         const isLt10M = fileSize < 10;
 
-        if (!isJPG && !isMP4 && !isPNG) {
+        if (!isJPG && !isMP4 && !isPNG && !isMOv) {
           Message({
             showClose: true,
             message: '视频或图片的格式错误',
@@ -303,7 +305,7 @@
           return false
 
         }
-        if (isMP4 && !isLt10M) {
+        if ((isMP4 || isMOv) && !isLt10M) {
           Message({
             showClose: true,
             message: '上传视频大小不能超过 10MB!',

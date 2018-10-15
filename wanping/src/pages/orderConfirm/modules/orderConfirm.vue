@@ -34,6 +34,7 @@
       <p @click="placeOrder">确认下单</p>
     </section>
     <Loading v-show="isLoading"></Loading>
+    <div class="iosBtm" v-if="isIOS"></div>
 
   </div>
   <!--订单 结束-->
@@ -68,6 +69,13 @@
           result += item.Amount;
         });
         return result
+      },
+      isIOS() {
+        let userAgent = navigator.userAgent;
+        if (userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('Mac') > -1) {
+          console.log('on iphone/mac')
+          return true
+        }
       }
     },
 
@@ -212,5 +220,10 @@
       background-color: #56d176;
       text-align: center;
     }
+  }
+
+  .iosBtm {
+    width: 100%;
+    height: 3.5rem;
   }
 </style>

@@ -89,6 +89,8 @@
       </div>
     </section>
     <Loading v-show="isLoading"></Loading>
+    <div class="iosBtm" v-if="isIOS"></div>
+
   </div>
   <!--购物车 结束-->
 </template>
@@ -125,6 +127,13 @@
           item.Checked && (result += parseFloat(item.Amount));
         });
         return result
+      },
+      isIOS() {
+        let userAgent = navigator.userAgent;
+        if (userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('Mac') > -1) {
+          console.log('on iphone/mac')
+          return true
+        }
       }
     },
 
@@ -501,5 +510,10 @@
     font-size: 18px;
     color: #AEB0B7;
     text-align: center;
+  }
+
+  .iosBtm {
+    width: 100%;
+    height: 3.5rem;
   }
 </style>

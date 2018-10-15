@@ -63,6 +63,8 @@
     <div class="search_none" v-if="emptyResult">很抱歉！无搜索结果</div>
 
     <Footer :page="page"></Footer>
+    <!--<div class="iosBtm" v-if="isIOS"></div>-->
+
   </div>
   <!--搜索  结束-->
 </template>
@@ -94,7 +96,15 @@
       Footer, Header, Loading
     },
 
-    computed: {},
+    computed: {
+      isIOS() {
+        let userAgent = navigator.userAgent;
+        if (userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('Mac') > -1) {
+          console.log('on iphone/mac')
+          return true
+        }
+      }
+    },
 
     methods: {
       /**
@@ -350,11 +360,10 @@
 
   }
 
-
-</style>
-<style>
-  .el-message-box {
-    width: 90%;
+  .iosBtm {
+    width: 100%;
+    height: 3.5rem;
   }
 
 </style>
+

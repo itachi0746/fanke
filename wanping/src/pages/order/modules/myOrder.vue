@@ -35,6 +35,8 @@
 
     </div>
     <Loading v-show="isLoading"></Loading>
+    <div class="iosBtm" v-if="isIOS"></div>
+
     <Footer :page="page" @footerHeight="getHeight" :a="oktoGetH"></Footer>
   </div>
   <!--  结束-->
@@ -81,7 +83,15 @@
       Header, Footer, ComputeTime, Loading
     },
 
-    watch: {},
+    computed: {
+      isIOS() {
+        let userAgent = navigator.userAgent;
+        if (userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('Mac') > -1) {
+          console.log('on iphone/mac')
+          return true
+        }
+      }
+    },
 
     methods: {
       /**
@@ -308,5 +318,10 @@
     line-height: 2rem;
     margin-bottom: 2.3rem;
     background-color: #fff;
+  }
+
+  .iosBtm {
+    width: 100%;
+    height: 3.5rem;
   }
 </style>
