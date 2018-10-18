@@ -25,6 +25,24 @@
               <span>¥{{item.Amount}}</span>
             </div>
           </div>
+          <!--上传功能 :http-request="uploadReq" 开始-->
+          <!--data是要发送的数据-->
+          <el-upload
+            ref="upload2"
+            class="upload-demo"
+            :show-file-list="false"
+            :action="upUrl"
+            :data="IDData"
+            :before-upload="beforeUpload"
+            :before-remove="handleRemove"
+            :auto-upload="true"
+            :on-error="handleError"
+            :on-success="handleSuccess">
+            <el-button slot="trigger" size="small" type="primary" @click.native="upload(index)">上传素材</el-button>
+            <!--<el-button style="margin-left: 10px;" size="small" type="success" @click.native="submitUpload">上传到服务器</el-button>-->
+            <!--<div slot="tip" class="el-upload__tip">上传图片(jpg/png)文件不超过2M,视频(mp4)文件不超过10M</div>-->
+          </el-upload>
+          <!--上传功能  结束
 
           <!--已上传文件列表 开始-->
           <section class="file-list">
@@ -44,27 +62,12 @@
                 <i class="el-icon-close-tip">按 delete 键可删除</i>
               </li>
             </ul>
+            <div slot="tip" class="el-upload__tip">图片(jpg/png)文件不超过2M,视频(mp4)文件不超过10M</div>
+
           </section>
           <!--已上传文件列表 结束-->
 
-          <!--上传功能 :http-request="uploadReq" 开始-->
-          <!--data是要发送的数据-->
-          <el-upload
-            ref="upload2"
-            class="upload-demo"
-            :action="upUrl"
-            :data="IDData"
-            :before-upload="beforeUpload"
-            :before-remove="handleRemove"
-            :auto-upload="true"
-            :on-error="handleError"
-            :on-success="handleSuccess">
-            <el-button slot="trigger" size="small" type="primary" @click.native="upload(index)">上传素材</el-button>
-            <!--<el-button style="margin-left: 10px;" size="small" type="success" @click.native="submitUpload">上传到服务器</el-button>-->
-            <div slot="tip" class="el-upload__tip">上传图片(jpg/png)文件不超过2M,视频(mp4)文件不超过10M</div>
-          </el-upload>
 
-          <!--上传功能  结束-->
 
         </li>
 
@@ -80,7 +83,7 @@
 
 <script>
   import Header from '@/components/header/header.vue'
-  import getUrlParms from '@/config/utils'
+  import {getUrlParms,IOSConfig} from '@/config/utils'
   import {postData, link} from '@/server'
   import {Message, MessageBox} from 'element-ui'
 
@@ -92,9 +95,9 @@
         IDData: {},  // 上传文件时要传的data
         OrderId: '',
         DtlId: '',
-        fid: '',
         upUrl: '', // 上传url
-        fileList: []  // 已上传文件列表
+        fileList: [],  // 已上传文件列表
+        file: null  // 文件对象
       }
     },
 
@@ -105,48 +108,72 @@
     computed: {},
 
     methods: {
-      uploadReq(req) {
-        console.log(req);
-        let formData = new FormData();
-        formData.append('file', req.file);
-        formData.append('OrderId', this.OrderId);
-        formData.append('DtlId', this.OrderId);
-
-        postData('/AddFile', formData).then((res) => {
-          console.log(res)
-          if (res.Success) {
-            this.fid = res.Data;
-            console.log(111122);
-            Message({
-              showClose: true,
-              message: '上传成功!',
-              type: "success"
-            });
-          }
-        })
-      },
+//      uploadReq(req) {
+//        console.log(req);
+//        let formData = new FormData();
+//        formData.append('file', req.file);
+//        formData.append('OrderId', this.OrderId);
+//        formData.append('DtlId', this.OrderId);
+//
+//        postData('/AddFile', formData).then((res) => {
+//          console.log(res)
+//          if (res.Success) {
+//            this.fid = res.Data;
+//            console.log(111122);
+//            Message({
+//              showClose: true,
+//              message: '上传成功!',
+//              type: "success"
+//            });
+//          }
+//        })
+//      },
       /**
        * @method 删除已上传文件
        * @param {Object} e 事件对象
        * @param {String} index 下标
        */
       handleRemove2(e, index) {
-        const mid = e.currentTarget.getAttribute('data-Mid');
-        const url = '/DeleteFile';
-        const data = {
+        let mid = e.currentTarget.getAttribute('data-Mid');
+        let url = '/DeleteFile';
+        let data = {
           FileId: mid
         };
-        postData(url, data).then((res) => {
-          console.log(res);
+//        postData(url, data).then((res) => {
+//          console.log(res);
+//
+//          if (res.Success) {
+//            this.fileList.splice(index, 1);
+//
+//            Message({
+//              type: 'success',
+//              message: '删除成功!'
+//            });
+//          }
+//        });
 
-          if (res.Success) {
+        MessageBox.confirm('确定移除？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        }).then(() => {
+//          debugger
+          postData(url, data).then((res) => {
+//            debugger
+            console.log(res);
+
             this.fileList.splice(index, 1);
-
             Message({
               type: 'success',
               message: '删除成功!'
             });
-          }
+          });
+        }).catch(() => {
+          Message({
+            type: 'info',
+            message: '已取消删除'
+          });
         });
       },
       /**
@@ -163,84 +190,59 @@
       /**
        * @method 删除前的操作
        */
-//      beforeRemove(file) {
-////        debugger
-//        MessageBox.confirm(`确定移除 ${ file.name }？`, '提示', {
+//      beforeRemove(file, filelist) {
+////        return MessageBox.confirm(`确定移除 ${ file.name }？`, '提示', {
+////          confirmButtonText: '确定',
+////          cancelButtonText: '取消',
+////          type: 'warning',
+////          center: true,
+////
+////        })
+//        return MessageBox.confirm(`确定移除 ${ file.name }？`, '提示', {
 //          confirmButtonText: '确定',
 //          cancelButtonText: '取消',
 //          type: 'warning',
 //          center: true
 //        }).then(() => {
-//          this.handleRemove();  // todo 传参
-//          return true
+//          this.handleRemove(file);  // todo 传参
+//          console.log('删除成功');
 //        }).catch(() => {
 //          Message({
 //            type: 'info',
 //            message: '已取消删除'
 //          });
-//          return false
 //        });
-//        return false  // 阻止删除
-//
 //      },
 
       /**
        * @method 删除文件
        * @param {String} file 文件对象
        */
-      async handleRemove(file,fileList) {
-//        debugger
-        let a = null;
-        if (file.status === 'success') {  // 状态为success表示这是已经上传成功的文件,因为上传格式错误的文件也会自动调用这个方法
-//          const url = '/DeleteFile';
-//          const data = {
-//            FileId: this.fid
-//          };
-//
-//          postData(url, data).then((res) => {
-//            console.log(res);
-//            if(res.Success) {
-//              Message({
-//                type: 'success',
-//                message: '删除成功!'
-//              });
-//            } else {
-//              Message({
-//                type: 'error',
-//                message: '删除失败!'
-//              });
-//              return Promise.reject('test');
-//            }
-//          });
+      handleRemove(file) {
+        console.log(file)
 
-          await MessageBox.confirm(`确定移除 ${ file.name }？`, '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-            center: true
-          }).then(() => {
-            const url = '/DeleteFile';
-            const data = {
-              FileId: this.fid
-            };
-            postData(url, data).then((res) => {
-              console.log(res);
+//        debugger
+        if (file.status === 'success') {  // 状态为success表示这是已经上传成功的文件,因为上传格式错误的文件也会自动调用这个方法
+          const url = '/DeleteFile';
+          const data = {
+            FileId: this.file.MediaId
+          };
+
+          postData(url, data).then((res) => {
+            console.log(res);
+            if (res.Success) {
               Message({
                 type: 'success',
                 message: '删除成功!'
               });
-              a = true
-//              return true
-            });
-          }).catch((e) => {
-            console.log(e)
-            Message({
-              type: 'info',
-              message: '已取消删除'
-            });
-            a = false
-//            return false
+            } else {
+              Message({
+                type: 'error',
+                message: '删除失败!'
+              });
+            }
           });
+
         }
       },
 
@@ -254,7 +256,6 @@
 //        console.log(dtlId);
         this.resData.Items[i].showFiles = !this.resData.Items[i].showFiles;
 //        this.showFiles = !this.showFiles;
-        this.btnTips = this.resData.Items[i].showFiles ? '隐藏已上传素材' : '查看已上传素材';
         if (this.resData.Items[i].showFiles) {
           const url = '/GetFiles';
           const data = {
@@ -270,18 +271,24 @@
       handleChange(file, fileList) {
 //      this.fileList3 = fileList.slice(-3);
       },
+      /**
+       * @method 上传前,判断文件类型和大小
+       * @param {object} file 文件对象
+       */
       beforeUpload(file) {
         console.log(file.type)
-        const isJPG = file.type === 'image/jpeg';
-        const isPNG = file.type === 'image/png';
-        const isMP4 = file.type === 'video/mp4';
+        const ft = file.type.toLowerCase();
+        const isJPG = ft === 'image/jpeg';
+        const isPNG = ft === 'image/png';
+        const isMP4 = ft === 'video/mp4';
+        const isMOv = ft === 'video/mov';
         const fileSize = file.size / 1024 / 1024;  // w文件的大小 M
         console.log(fileSize)
 
         const isLt2M = fileSize < 2;
         const isLt10M = fileSize < 10;
 
-        if (!isJPG && !isMP4 && !isPNG) {
+        if (!isJPG && !isMP4 && !isPNG && !isMOv) {
           Message({
             showClose: true,
             message: '视频或图片的格式错误',
@@ -298,29 +305,29 @@
           return false
 
         }
-        if (isMP4 && !isLt10M) {
+        if ((isMP4 || isMOv) && !isLt10M) {
           Message({
             showClose: true,
             message: '上传视频大小不能超过 10MB!',
             type: "error"
           });
           return false
-
         }
         return true
       },
       handleSuccess(res, file, fileList) {
 //        console.log(res, file, fileList)
         if (res.Success) {
-          console.log('上传成功');
-          this.fid = res.Data;
+          console.log('上传成功',res);
+          this.file = res.Data;
+          this.fileList.unshift(this.file);
           Message({
             showClose: true,
             message: '上传成功!',
             type: "success"
           });
         } else {
-          fileList.splice(0, 1);
+//          fileList.splice(0, 1);
           console.log('上传失败');
           Message({
             showClose: true,
@@ -342,7 +349,7 @@
     },
     created() {
       const args = getUrlParms();
-      this.OrderId = args.OrderId;
+      this.OrderId = args.orderid || args.billid;
 
       const url = '/OrderDetail';
       const data = {
@@ -470,6 +477,14 @@
     padding: .5rem;
     text-align: right;
 
+    .el-upload-list__item {
+      -webkit-transition: all .3s;
+      -moz-transition: all .3s;
+      -ms-transition: all .3s;
+      -o-transition: all .3s;
+      transition: all .3s;
+    }
+
     .file-item {
       text-align: left;
       font-size: 14px;
@@ -491,15 +506,15 @@
 
 </style>
 <style>
-  .el-message-box {
-    width: 90%;
-  }
+  /*.el-message-box {*/
+    /*width: 90%;*/
+  /*}*/
 
-  .el-upload-list__item {
-    text-align: left;
-  }
+  /*.el-upload-list__item {*/
+    /*text-align: left;*/
+  /*}*/
 
-  .el-icon-close-tip {
-    display: none !important;
-  }
+  /*.el-icon-close-tip {*/
+    /*display: none !important;*/
+  /*}*/
 </style>

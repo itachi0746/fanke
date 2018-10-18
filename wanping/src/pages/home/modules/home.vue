@@ -37,6 +37,7 @@
     <div class="division"></div>
     <screenListAll @loaded="handleLoad"></screenListAll>
     <Footer :page="page"></Footer>
+    <!--<div class="iosBtm" v-if="isIOS"></div>-->
 
   </div>
 
@@ -84,16 +85,17 @@
         this.Recommends = res.Data
       });
 
-//      const url2 = '/GetProducts';
-//      postData(url2).then(res => {
-//        console.log(res)
-//
-//      });
-
     },
     computed: {
       swiper() {
         return this.$refs.mySwiper.swiper
+      },
+      isIOS() {
+        let userAgent = navigator.userAgent;
+        if (userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('Mac') > -1) {
+          console.log('on iphone/mac')
+          return true
+        }
       }
     },
 
@@ -226,4 +228,8 @@
     background-color: #555;
   }
 
+  .iosBtm {
+    width: 100%;
+    height: 3.5rem;
+  }
 </style>

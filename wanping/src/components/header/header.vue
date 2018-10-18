@@ -4,7 +4,6 @@
     <section class="head" ref="head" id="head">
       <header>
         <div class="back" @click="goBack">
-          <!--<i class="fa fa-angle-left left"></i>-->
           <i class="icon iconfont icon-zuojiantou"></i>
         </div>
         <div class="head-font">
@@ -54,6 +53,10 @@
 
     methods: {
       goBack() {
+        if(this.headName==='订单详情') {
+          GoToPage('','order.html',{});
+          return
+        }
         window.history.go(-1)
       },
       handleEdit() {

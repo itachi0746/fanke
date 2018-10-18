@@ -89,6 +89,8 @@
       </div>
     </section>
     <Loading v-show="isLoading"></Loading>
+    <div class="iosBtm" v-if="isIOS"></div>
+
   </div>
   <!--购物车 结束-->
 </template>
@@ -97,7 +99,7 @@
   import Header from '../../../components/header/header.vue'
   import Loading from '../../../components/common/loading.vue'
   import {postData} from '@/server'
-  import getUrlParms from '@/config/utils'
+  import {getUrlParms,IOSConfig} from '@/config/utils'
 
   export default {
     data() {
@@ -125,10 +127,18 @@
           item.Checked && (result += parseFloat(item.Amount));
         });
         return result
+      },
+      isIOS() {
+        let userAgent = navigator.userAgent;
+        if (userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('Mac') > -1) {
+          console.log('on iphone/mac')
+          return true
+        }
       }
     },
 
     created() {
+      IOSConfig();
 //      const data = getUrlParms();
 //      console.log(data);
 //      const url = 'http://www.bai.com/GetBaskets';
@@ -239,6 +249,7 @@
         };
         postData(url, data).then((res) => {
           console.log(res);
+          this.isLoading = false;
           GoToPage('orderConfirm','orderConfirm.html',{'id':res.Data,"fromBasket": true})
         })
       },
@@ -501,5 +512,10 @@
     font-size: 18px;
     color: #AEB0B7;
     text-align: center;
+  }
+
+  .iosBtm {
+    width: 100%;
+    height: 3.5rem;
   }
 </style>

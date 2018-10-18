@@ -1,3 +1,23 @@
+let a = 1;
+let IOSConfig = function() {
+  let userAgent = navigator.userAgent;
+  if (userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('Mac') > -1) {
+    console.log('on iphone/mac')
+    window.addEventListener("popstate", function (e) {
+         // alert("后退");
+      console.log('后退')
+      self.location.reload();
+    }, false);
+    let state = {
+      title: "",
+      url: "#"
+    };
+    window.history.replaceState(state, "", "#");
+  }
+
+
+};
+
 // 获得url中的参数,放在对象中,然后返回这个对象
 function getUrlParms() {
   let args = {};
@@ -6,11 +26,12 @@ function getUrlParms() {
   for (let i = 0; i < pairs.length; i++) {
     let pos = pairs[i].indexOf('=');//查找name=value
     if (pos === -1) continue;//如果没有找到就跳过
-    let argname = pairs[i].substring(0, pos);//提取name
+    let argname = pairs[i].substring(0, pos).toLowerCase();//提取name
     let value = pairs[i].substring(pos + 1);//提取value
     args[argname] = decodeURIComponent(value);//存为属性
   }
   return args;
 }
 
-export default getUrlParms
+
+export {getUrlParms,IOSConfig}

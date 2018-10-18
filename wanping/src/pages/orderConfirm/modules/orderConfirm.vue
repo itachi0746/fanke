@@ -34,6 +34,7 @@
       <p @click="placeOrder">确认下单</p>
     </section>
     <Loading v-show="isLoading"></Loading>
+    <div class="iosBtm" v-if="isIOS"></div>
 
   </div>
   <!--订单 结束-->
@@ -43,7 +44,7 @@
   import Header from '@/components/header/header.vue'
   import Loading from '../../../components/common/loading.vue'
   import {postData} from '../../../server'
-  import getUrlParms from '@/config/utils'
+  import {getUrlParms,IOSConfig} from '@/config/utils'
 
 
   export default {
@@ -68,6 +69,13 @@
           result += item.Amount;
         });
         return result
+      },
+      isIOS() {
+        let userAgent = navigator.userAgent;
+        if (userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('Mac') > -1) {
+          console.log('on iphone/mac')
+          return true
+        }
       }
     },
 
@@ -85,6 +93,7 @@
         console.log('data',data);
         postData(url, data).then((res) => {
           console.log(res);
+          this.isLoading = false;
 //          window.location.href = res.NextStep;
           GoToPage('',res.NextStep,{})
         })
@@ -107,8 +116,11 @@
       }
     },
     created() {
+      IOSConfig();
       const data = getUrlParms();
-      this.fromBasket = eval(data.fromBasket);
+      this.fromBasket = data.frombasket;
+//      console.log(data)
+//      console.log(this.fromBasket)
 //      console.log(data);
       const url = '/GetPlaceOrder';
       postData(url,data.id).then((res) => {
@@ -210,5 +222,10 @@
       background-color: #56d176;
       text-align: center;
     }
+  }
+
+  .iosBtm {
+    width: 100%;
+    height: 3.5rem;
   }
 </style>

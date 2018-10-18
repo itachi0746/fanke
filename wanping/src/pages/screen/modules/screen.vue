@@ -1,5 +1,5 @@
 <template>
-  <div class="screen-detail">
+  <div class="screen-detail" ref="screen">
     <Header :headName="headName"></Header>
     <div class="screen-data">
       <h5>{{resData.Name}}</h5>
@@ -87,6 +87,7 @@
 
     <!--loading-->
     <Loading v-show="isLoading"></Loading>
+    <div class="iosBtm" v-if="isIOS"></div>
   </div>
 </template>
 
@@ -95,7 +96,7 @@
   import Header from '../../../components/header/header.vue'
   import Loading from '../../../components/common/loading.vue'
   import {postData} from '@/server'
-  import getUrlParms from '@/config/utils'
+  import {getUrlParms,IOSConfig} from '@/config/utils'
 
 
   export default {
@@ -148,6 +149,13 @@
           return this.curDayObj.Date.split('-')[2];
         }
       },
+      isIOS() {
+        let userAgent = navigator.userAgent;
+        if (userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('Mac') > -1) {
+          console.log('on iphone/mac')
+          return true
+        }
+      }
 
     },
 
@@ -261,6 +269,7 @@
         postData(url, this.selected).then((res) => {
           console.log('AddToBasket', res);
 //          console.log(this.selected);
+          this.isLoading = false;
           GoToPage('cart','cart.html',{})
         });
       },
@@ -277,10 +286,24 @@
         };
         postData(url, data).then((res) => {
           console.log(res);
-//          this.isLoading = false;
+          this.isLoading = false;
           GoToPage('orderConfirm','orderConfirm.html',{'id':res.Data,'fromBasket': false})
         })
       },
+      /**
+       * @method ios微信浏览器底部操作栏兼容
+       */
+      calIOSMargin() {
+        let userAgent = navigator.userAgent;
+        if (userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('Mac') > -1) {
+          console.log('on iphone/mac')
+          let MB = window.getComputedStyle(this.$refs.screen).marginBottom;
+          console.log(MB)
+          console.log(parseInt(MB))
+          this.$refs.screen.style.marginBottom = parseInt(MB) + 30 + 'px';
+          console.log(this.$refs.screen.style.marginBottom)
+        }
+      }
       /**
        * @method 计算购物车中的项,把项的ItemId加入数组中并返回
        */
@@ -302,7 +325,7 @@
     },
 
     created() {
-//      const myDate = new Date();
+      IOSConfig();
       const args = getUrlParms();
       this.Id = args.pid;
 //      console.log(args);
@@ -327,7 +350,7 @@
       this.timeStampStart = this.timest()[0];
       this.timeStampOver = this.timest()[1];
       console.log('screen  mounted')
-
+//      this.calIOSMargin();
     },
 
     beforeDestroy() {
@@ -350,7 +373,6 @@
 
   .data-container {
     padding: .5rem;
-    margin-bottom: 4.3rem;
     p {
       position: relative;
       height: 1.3rem;
@@ -519,6 +541,13 @@
   .el-icon-close {
     margin: .2rem .2rem 0 0;
   }
+  .screen-detail {
+    margin-bottom: 4.3rem;
+  }
 
+  .iosBtm {
+    width: 100%;
+    height: 4.5rem;
+  }
 
 </style>

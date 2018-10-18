@@ -114,3 +114,16 @@ html,body{
 .animation_opactiy{
   animation: backOpacity 2s ease-in-out infinite;
 }
+
+// 覆盖element样式
+.el-message-box {
+  width: 90%!important;
+}
+
+.el-upload-list__item {
+  text-align: left!important;
+}
+
+.el-icon-close-tip {
+  display: none !important;
+}
