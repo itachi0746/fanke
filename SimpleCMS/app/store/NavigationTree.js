@@ -16,7 +16,7 @@ Ext.define('SimpleCMS.store.NavigationTree', {
         text: '空白页',
         viewType: 'pageblank',
         leaf: true,
-        visible: false
+        visible: true
       }
     ]
   }

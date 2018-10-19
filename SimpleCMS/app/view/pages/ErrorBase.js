@@ -1,8 +1,8 @@
-Ext.define('Admin.view.pages.ErrorBase', {
+Ext.define('SimpleCMS.view.pages.ErrorBase', {
     extend: 'Ext.window.Window',
 
     requires: [
-        'Admin.view.authentication.AuthenticationController',
+        'SimpleCMS.view.authentication.AuthenticationController',
         'Ext.container.Container',
         'Ext.form.Label',
         'Ext.layout.container.VBox',

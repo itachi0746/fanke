@@ -1,9 +1,9 @@
-Ext.define('Admin.view.pages.Error404Window', {
-    extend: 'Admin.view.pages.ErrorBase',
+Ext.define('SimpleCMS.view.pages.Error404Window', {
+    extend: 'SimpleCMS.view.pages.ErrorBase',
     xtype: 'page404',
 
     requires: [
-        'Admin.view.authentication.AuthenticationController',
+        'SimpleCMS.view.authentication.AuthenticationController',
         'Ext.container.Container',
         'Ext.form.Label',
         'Ext.layout.container.VBox',

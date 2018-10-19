@@ -5,7 +5,6 @@ Ext.define('SimpleCMS.view.main.Main', {
         'Ext.button.Segmented',
         'Ext.list.Tree',
 
-
         'SimpleCMS.view.main.MainContainerWrap',
         'SimpleCMS.view.main.MainController',
         'SimpleCMS.view.main.MainModel',

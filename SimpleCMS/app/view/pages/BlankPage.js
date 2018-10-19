@@ -1,4 +1,4 @@
-Ext.define('Admin.view.pages.BlankPage', {
+Ext.define('SimpleCMS.view.pages.BlankPage', {
     extend: 'Ext.container.Container',
     xtype: 'pageblank',
 

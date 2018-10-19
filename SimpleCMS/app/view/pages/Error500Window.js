@@ -1,5 +1,5 @@
-Ext.define('Admin.view.pages.Error500Window', {
-    extend: 'Admin.view.pages.ErrorBase',
+Ext.define('SimpleCMS.view.pages.Error500Window', {
+    extend: 'SimpleCMS.view.pages.ErrorBase',
     xtype: 'page500',
 
     requires: [

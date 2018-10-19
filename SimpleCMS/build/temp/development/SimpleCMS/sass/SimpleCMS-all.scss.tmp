@@ -1,10 +1,6 @@
 $app-name:  dynamic( 'SimpleCMS' );
-$image-search-path: 'C:/web/SimpleCMS/build/development/SimpleCMS/resources';
+$image-search-path: 'F:/web/SimpleCMS/build/development/SimpleCMS/resources';
 $theme-name:  dynamic( 'theme-triton' );
-$include-admin-view-pages-blankpage: dynamic(true);;
-$include-admin-view-pages-error404window: dynamic(true);;
-$include-admin-view-pages-error500window: dynamic(true);;
-$include-admin-view-pages-errorbase: dynamic(true);;
 $include-cfg: dynamic(true);;
 $include-ext-abstractcomponent: dynamic(true);;
 $include-ext-abstractcontainer: dynamic(true);;
@@ -932,6 +928,10 @@ $include-simplecms-view-main-main: dynamic(true);;
 $include-simplecms-view-main-maincontainerwrap: dynamic(true);;
 $include-simplecms-view-main-maincontroller: dynamic(true);;
 $include-simplecms-view-main-mainmodel: dynamic(true);;
+$include-simplecms-view-pages-blankpage: dynamic(true);;
+$include-simplecms-view-pages-error404window: dynamic(true);;
+$include-simplecms-view-pages-error500window: dynamic(true);;
+$include-simplecms-view-pages-errorbase: dynamic(true);;
 $include-url: dynamic(true);;
 $output-paths: ("path": "../resources");
 
@@ -1192,6 +1192,7 @@ $current-package: false;
 $current-resource-root: $SimpleCMS-resource-root;
 $relative-image-path-for-uis: $SimpleCMS-resource-path;
 @import '../../../../../sass/var/view/authentication/Dialog';
+@import '../../../../../sass/var/view/pages/BlankPage';
 @import '../../../../../sass/var/view/main/Main';
 
 
@@ -1411,4 +1412,6 @@ $relative-image-path-for-uis: $SimpleCMS-resource-path;
 @import '../../../../../sass/src/Application';
 @import '../../../../../sass/src/view/authentication/Dialog';
 @import '../../../../../sass/src/view/authentication/LockingWindow';
+@import '../../../../../sass/src/view/pages/BlankPage';
+@import '../../../../../sass/src/view/pages/Error404Window';
 @import '../../../../../sass/src/view/main/Main';
