@@ -1,2 +1,2 @@
 // @tag full-page
-// @require G:\extjs\test\app.js
+// @require C:\web\SimpleCMS\app.js

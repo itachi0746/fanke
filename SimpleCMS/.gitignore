@@ -5,7 +5,7 @@ ext/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
+sencha-error-*.log
 # Editor directories and files
 .idea
 .vscode

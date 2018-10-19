@@ -5,9 +5,12 @@ Ext.define('SimpleCMS.view.main.Main', {
         'Ext.button.Segmented',
         'Ext.list.Tree',
 
+
         'SimpleCMS.view.main.MainContainerWrap',
         'SimpleCMS.view.main.MainController',
         'SimpleCMS.view.main.MainModel',
+        'SimpleCMS.view.pages.*',
+        'SimpleCMS.view.authentication.*',
     ],
 
     controller: 'main',
@@ -36,7 +39,7 @@ Ext.define('SimpleCMS.view.main.Main', {
                     xtype: 'component',
                     reference: 'senchaLogo',
                     cls: 'sencha-logo',
-                    html: '<div class="main-logo"><img src="resources/images/company-logo.png">Sencha</div>',
+                    html: '<div class="main-logo"><img src="/resources/images/company-logo.png">Sencha</div>',
                     width: 250
                 },
                 {
