@@ -1,4 +1,3 @@
-let a = 1;
 let IOSConfig = function() {
   let userAgent = navigator.userAgent;
   if (userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('Mac') > -1) {
@@ -14,8 +13,6 @@ let IOSConfig = function() {
     };
     window.history.replaceState(state, "", "#");
   }
-
-
 };
 
 // 获得url中的参数,放在对象中,然后返回这个对象

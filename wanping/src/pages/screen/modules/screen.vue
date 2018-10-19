@@ -325,7 +325,7 @@
     },
 
     created() {
-      IOSConfig();
+//      IOSConfig();
       const args = getUrlParms();
       this.Id = args.pid;
 //      console.log(args);

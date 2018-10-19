@@ -116,7 +116,7 @@
       }
     },
     created() {
-      IOSConfig();
+//      IOSConfig();
       const data = getUrlParms();
       this.fromBasket = data.frombasket;
 //      console.log(data)

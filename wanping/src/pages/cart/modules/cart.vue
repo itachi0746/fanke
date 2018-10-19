@@ -138,7 +138,7 @@
     },
 
     created() {
-      IOSConfig();
+//      IOSConfig();
 //      const data = getUrlParms();
 //      console.log(data);
 //      const url = 'http://www.bai.com/GetBaskets';
