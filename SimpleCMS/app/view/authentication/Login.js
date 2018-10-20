@@ -10,7 +10,7 @@ Ext.define('SimpleCMS.view.authentication.Login', {
         'Ext.button.Button'
     ],
 
-    title: 'Let\'s Log In',
+    title: '登录页面',
     defaultFocus: 'authdialog', // Focus the Auth Form to force field focus as well
 
     items: [
@@ -34,17 +34,17 @@ Ext.define('SimpleCMS.view.authentication.Login', {
             items: [
                 {
                     xtype: 'label',
-                    text: 'Sign into your account'
+                    text: '使用账号登录'
                 },
                 {
                     xtype: 'textfield',
                     cls: 'auth-textbox',
-                    name: 'userid',
-                    bind: '{userid}',
+                    name: 'UserName',
+                    // bind: '{userid}',
                     height: 55,
                     hideLabel: true,
                     allowBlank : false,
-                    emptyText: 'user id',
+                    emptyText: '用户名',
                     triggers: {
                         glyphed: {
                             cls: 'trigger-glyph-noop auth-email-trigger'
@@ -56,10 +56,10 @@ Ext.define('SimpleCMS.view.authentication.Login', {
                     cls: 'auth-textbox',
                     height: 55,
                     hideLabel: true,
-                    emptyText: 'Password',
+                    emptyText: '密码',
                     inputType: 'password',
-                    name: 'password',
-                    bind: '{password}',
+                    name: 'Password',
+                    // bind: '{password}',
                     allowBlank : false,
                     triggers: {
                         glyphed: {
@@ -76,13 +76,14 @@ Ext.define('SimpleCMS.view.authentication.Login', {
                             flex : 1,
                             cls: 'form-panel-font-color rememberMeCheckbox',
                             height: 30,
-                            bind: '{persist}',
-                            boxLabel: 'Remember me'
+                            name: 'RememberMe',
+                            // bind: '{persist}',
+                            boxLabel: '记住我'
                         },
-                        {
-                            xtype: 'box',
-                            html: '<a href="#passwordreset" class="link-forgot-password"> Forgot Password ?</a>'
-                        }
+                        // {
+                        //     xtype: 'box',
+                        //     html: '<a href="#passwordreset" class="link-forgot-password"> Forgot Password ?</a>'
+                        // }
                     ]
                 },
                 {
@@ -92,44 +93,44 @@ Ext.define('SimpleCMS.view.authentication.Login', {
                     ui: 'soft-green',
                     iconAlign: 'right',
                     iconCls: 'x-fa fa-angle-right',
-                    text: 'Login',
+                    text: '登录',
                     formBind: true,
                     listeners: {
                         click: 'onLoginButton'
                     }
                 },
-                {
-                    xtype: 'box',
-                    html: '<div class="outer-div"><div class="seperator">OR</div></div>',
-                    margin: '10 0'
-                },
-                {
-                    xtype: 'button',
-                    scale: 'large',
-                    ui: 'facebook',
-                    iconAlign: 'right',
-                    iconCls: 'x-fa fa-facebook',
-                    text: 'Login with Facebook',
-                    listeners: {
-                        click: 'onFaceBookLogin'
-                    }
-                },
-                {
-                    xtype: 'box',
-                    html: '<div class="outer-div"><div class="seperator">OR</div></div>',
-                    margin: '10 0'
-                },
-                {
-                    xtype: 'button',
-                    scale: 'large',
-                    ui: 'gray',
-                    iconAlign: 'right',
-                    iconCls: 'x-fa fa-user-plus',
-                    text: 'Create Account',
-                    listeners: {
-                        click: 'onNewAccount'
-                    }
-                }
+                // {
+                //     xtype: 'box',
+                //     html: '<div class="outer-div"><div class="seperator">OR</div></div>',
+                //     margin: '10 0'
+                // },
+                // {
+                //     xtype: 'button',
+                //     scale: 'large',
+                //     ui: 'facebook',
+                //     iconAlign: 'right',
+                //     iconCls: 'x-fa fa-facebook',
+                //     text: 'Login with Facebook',
+                //     listeners: {
+                //         click: 'onFaceBookLogin'
+                //     }
+                // },
+                // {
+                //     xtype: 'box',
+                //     html: '<div class="outer-div"><div class="seperator">OR</div></div>',
+                //     margin: '10 0'
+                // },
+                // {
+                //     xtype: 'button',
+                //     scale: 'large',
+                //     ui: 'gray',
+                //     iconAlign: 'right',
+                //     iconCls: 'x-fa fa-user-plus',
+                //     text: 'Create Account',
+                //     listeners: {
+                //         click: 'onNewAccount'
+                //     }
+                // }
             ]
         }
     ],

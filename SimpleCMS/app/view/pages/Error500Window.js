@@ -28,8 +28,7 @@ Ext.define('SimpleCMS.view.pages.Error500Window', {
                 {
                     xtype: 'label',
                     cls: 'error-page-desc',
-                    html: '<div>Something went wrong and server could not process your request.</div>' +
-                          '<div>Try going back to our <a href="#dashboard"> Home page </a></div>'
+                    html: I18N.Page500
                 },
                 {
                     xtype: 'tbspacer',

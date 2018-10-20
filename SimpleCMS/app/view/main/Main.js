@@ -38,7 +38,7 @@ Ext.define('SimpleCMS.view.main.Main', {
                     xtype: 'component',
                     reference: 'senchaLogo',
                     cls: 'sencha-logo',
-                    html: '<div class="main-logo"><img src="/resources/images/company-logo.png">Sencha</div>',
+                    html: '<div class="main-logo"><img src="/resources/images/company-logo.png">后台管理系统</div>',
                     width: 250
                 },
                 {

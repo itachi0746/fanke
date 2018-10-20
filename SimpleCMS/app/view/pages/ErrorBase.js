@@ -13,7 +13,7 @@ Ext.define('SimpleCMS.view.pages.ErrorBase', {
     autoShow: true,
     cls: 'error-page-container',
     closable: false,
-    title: 'Sencha',
+    title: '页面不存在',
     titleAlign: 'center',
     maximized: true,
     modal: true,

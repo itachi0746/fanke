@@ -25,7 +25,7 @@ Ext.define('SimpleCMS.Application', {
 
   launch: function() {
     // TODO - Launch the application
-    console.log('launch');
+    console.log('app launch');
 
     Ext.util.Format.defaultValue = function(value, defaultValue) {
       return Ext.isEmpty(value) ? defaultValue : value;
@@ -34,8 +34,8 @@ Ext.define('SimpleCMS.Application', {
 
   onAppUpdate: function() {
     Ext.Msg.confirm(
-      'Application Update',
-      'This application has an update, reload?',
+      I18N.ApplicationUpdate,
+      I18N.ApplicationUpdateMsg,
       function(choice) {
         if (choice === 'yes') {
           window.location.reload();

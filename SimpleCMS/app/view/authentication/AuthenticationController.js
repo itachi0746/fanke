@@ -4,24 +4,28 @@ Ext.define('SimpleCMS.view.authentication.AuthenticationController', {
 
     //TODO: implement central Facebook OATH handling here
 
-    onFaceBookLogin : function() {
-        this.redirectTo('dashboard', true);
-    },
+    // onFaceBookLogin : function() {
+    //     this.redirectTo('dashboard', true);
+    // },
 
     onLoginButton: function() {
         this.redirectTo('dashboard', true);
     },
 
-    onLoginAsButton: function() {
-        this.redirectTo('login', true);
-    },
+    // onLoginAsButton: function() {
+    //     this.redirectTo('login', true);
+    // },
 
-    onNewAccount:  function() {
-        this.redirectTo('register', true);
-    },
+    // onNewAccount:  function() {
+    //     this.redirectTo('register', true);
+    // },
 
-    onSignupClick:  function() {
-        this.redirectTo('dashboard', true);
+    // onSignupClick:  function() {
+    //     this.redirectTo('dashboard', true);
+    // },
+
+    onReturnClick:  function() {
+        window.history.back();
     },
 
     onResetClick:  function() {

@@ -29,7 +29,7 @@ Ext.define('SimpleCMS.view.pages.Error404Window', {
                 {
                     xtype: 'label',
                     cls: 'error-page-desc',
-                    html: '<div>Seems you\'ve hit a wall!</div><div>Try going back to our <a href="#dashboard"> Home page </a></div>'
+                    html: I18N.Page404
                 },
                 {
                     xtype: 'tbspacer',
