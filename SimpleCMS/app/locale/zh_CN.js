@@ -22,7 +22,11 @@ Ext.define('SimpleCMS.locale.zh_CN', {
       Roles: '角色',
       Created: '创建日期',
       LastLogin: '上次登录',
-      
-    }
+    },
+    Add: '添加',
+    Edit: '编辑',
+    Delete: '删除',
+    Refresh: '刷新',
+    Count: '数量'
   }
 });
