@@ -6051,3 +6051,11 @@
 .x-button-header-small-cell > .x-grid-cell-inner >.x-btn-header-small {
     vertical-align: top;
 }
+/* C:/web/SimpleCMS/sass/src/view/user/Main.scss:10 */
+.email-inbox-panel .x-grid-body {
+    border-width: 1px;
+}
+/* C:/web/SimpleCMS/sass/src/view/user/Main.scss:14 */
+.email-inbox-panel .x-grid-cell-special {
+    border-right-width: 0;
+}

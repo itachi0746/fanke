@@ -3,7 +3,9 @@ Ext.define('SimpleCMS.view.pages.BlankPage', {
     xtype: 'pageblank',
 
     requires: [
-        'Ext.container.Container'
+        // 'SimpleCMS.view.grid.TableModel',
+        // 'SimpleCMS.view.grid.Table',
+        'Ext.container.Container',
     ],
 
     anchor : '100% -1',
@@ -19,6 +21,7 @@ Ext.define('SimpleCMS.view.pages.BlankPage', {
             xtype: 'box',
             cls: 'blank-page-container',
             html: '<div class=\'fa-outer-class\'><span class=\'x-fa fa-clock-o\'></span></div><h1>' + I18N.BlankPage + '</h1>',
+
         }
     ]
 });

@@ -147,6 +147,16 @@ Ext.define('SimpleCMS.view.main.MainController', {
 
   onRouteChange: function(id) {
     this.setCurrentView(id);
+  },
+  onLogout: function() {
+    alert('退出事件')
+    // Ext.Ajax.request({
+    //   url: URL.get('account', 'logout'),
+    //   scope: this,
+    //   success: function(response, opts) {
+    //     window.location.reload();
+    //   }
+    // });
   }
 
   // onSearchRouteChange: function () {

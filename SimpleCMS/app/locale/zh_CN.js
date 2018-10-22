@@ -11,6 +11,18 @@ Ext.define('SimpleCMS.locale.zh_CN', {
     Page500: '<div>>服务器内部错误</div>' + '<div>尝试返回 <a href="#dashboard"> 首页 </a></div>',
 
     PasswordRegexText: '密码格式错误!',
-    OldPasswordEqualNew: '新旧密码不能相同!'
+    OldPasswordEqualNew: '新旧密码不能相同!',
+
+    DefaultDatetimeFormat: '这是日期格式',
+    EmptyText: '没有任何数据',
+    Logout: '退出',
+    PasswordResetTitle: '修改密码',
+    UserModel: {
+      UserName: '用户名',
+      Roles: '角色',
+      Created: '创建日期',
+      LastLogin: '上次登录',
+      
+    }
   }
 });

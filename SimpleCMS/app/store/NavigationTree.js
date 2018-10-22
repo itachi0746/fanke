@@ -36,6 +36,12 @@ Ext.define('SimpleCMS.store.NavigationTree', {
         leaf: true,
         visible: false
       },
+      {
+        text: '用户管理',
+        viewType: 'userView',
+        leaf: true,
+        visible: true
+      },
     ]
   }
 });
