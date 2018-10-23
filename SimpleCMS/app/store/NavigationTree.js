@@ -48,6 +48,12 @@ Ext.define('SimpleCMS.store.NavigationTree', {
         leaf: true,
         visible: true
       },
+      {
+        text: '例子',
+        viewType: 'form-main',
+        leaf: true,
+        visible: true
+      },
     ]
   }
 });

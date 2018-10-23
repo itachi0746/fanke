@@ -9,9 +9,6 @@ Ext.define('SimpleCMS.view.main.Main', {
     'SimpleCMS.view.main.MainController',
     'SimpleCMS.view.main.MainModel',
 
-    // 'SimpleCMS.view.table.TableModel',
-    // 'SimpleCMS.view.table.Table',
-
     'SimpleCMS.view.pages.*',
     'SimpleCMS.view.authentication.*'
   ],
@@ -93,6 +90,7 @@ Ext.define('SimpleCMS.view.main.Main', {
             selectionchange: 'onNavigationTreeSelectionChange'
           }
         },
+        // 主要容器
         {
           xtype: 'container',
           flex: 1,
@@ -103,14 +101,7 @@ Ext.define('SimpleCMS.view.main.Main', {
             type: 'card',
             anchor: '100%'
           },
-        //   items: [
-        //     {
-        //       xtype: 'grid',
-        //       flex: 1,
-        //       reference: 'Table',
-        //       itemId: 'contentPanel'
-        //     }
-        //   ]
+
         }
       ]
     }

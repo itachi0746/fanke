@@ -1,6 +1,6 @@
 Ext.define('SimpleCMS.view.cardata.CarDataModel', {
   extend: 'Ext.data.Model',
-  alias: 'viewmodel.cardata',
+  alias: 'model.cardata',
 
   fields: [
     { name: 'orderNum', mapping: 'orderNum' },

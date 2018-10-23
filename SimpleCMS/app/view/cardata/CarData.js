@@ -1,24 +1,27 @@
-// var myData = [
-//   { orderNum: '1', carType: 'GS4', code: 'A01', state: '启用' },
-//   { orderNum: '2', carType: 'GS4', code: 'A02', state: '启用' },
-//   { orderNum: '3', carType: 'GS4', code: 'A03', state: '启用' },
-//   { orderNum: '4', carType: 'GS4', code: 'A04', state: '启用' }
-// ];
-// // Creation of first grid store
-// var carStore = Ext.create('Ext.data.Store', {
-//   model: 'CarDataModel',
-//   data: myData
-// });
+var myData = [
+  { orderNum: '1', carType: 'GS4', code: 'A01', state: '启用' },
+  { orderNum: '2', carType: 'GS4', code: 'A02', state: '启用' },
+  { orderNum: '3', carType: 'GS4', code: 'A03', state: '启用' },
+  { orderNum: '4', carType: 'GS4', code: 'A04', state: '启用' }
+];
+// Creation of first grid store
+var carStore = Ext.create('Ext.data.Store', {
+  model: 'SimpleCMS.view.cardata.CarDataModel',
+  data: myData
+});
 
 Ext.define('SimpleCMS.view.cardata.CarData', {
   extend: 'Ext.grid.Panel',
   xtype: 'cardatapage',
 
-  requires: ['SimpleCMS.view.cardata.CarDataModel','SimpleCMS.view.cardata.CarDataController'],
-  viewModel: 'cardata',
+  requires: [
+    'SimpleCMS.view.cardata.CarDataModel',
+    'SimpleCMS.view.cardata.CarDataController'
+  ],
+  model: 'cardata',
   controller: 'cardata',
-
-  // store: carStore,
+  // padding: 300,
+  store: carStore,
   stripeRows: true,
   title: '表格示例', // Title for the grid
   //  renderTo: 'gridDiv', // Div id where the grid has to be rendered
@@ -26,6 +29,22 @@ Ext.define('SimpleCMS.view.cardata.CarData', {
   collapsible: true, // property to collapse grid
   enableColumnMove: true, // property which alllows column to move to different position by dragging that column.
   enableColumnResize: true, // property which allows to resize column run time.
+
+  // Reusable actions
+  actions: {
+    edit: {
+      iconCls: 'x-fa fa-cog',
+      tooltip: '编辑',
+      handler: 'onSellClick',
+      flex: 1,
+    },
+    check: {
+      iconCls: 'x-fa fa-cog',
+      tooltip: '查看',
+      handler: 'onBuyClick',
+      flex: 1
+    }
+  },
   columns: [
     {
       header: '序号',
@@ -66,27 +85,9 @@ Ext.define('SimpleCMS.view.cardata.CarData', {
       sortable: false,
       xtype: 'actioncolumn',
       items: [
-        {
-          iconCls: 'x-fa fa-cog',
-          text: '编辑',
-          tooltip: 'Edit',
-          handler: function(grid, rowIndex, colIndex) {
-            var rec = grid.getStore().getAt(rowIndex);
-            console.log('编辑');
+        '@edit',
+        '@check'
 
-            // alert('Edit ' + rec.get('firstname'));
-          }
-        },
-        {
-          iconCls: 'x-fa fa-cog',
-          tooltip: 'Delete',
-          handler: function(grid, rowIndex, colIndex) {
-            var rec = grid.getStore().getAt(rowIndex);
-            console.log('查看');
-
-            // alert('Terminate ' + rec.get('firstname'));
-          }
-        }
       ]
     }
   ],
@@ -115,7 +116,7 @@ Ext.define('SimpleCMS.view.cardata.CarData', {
     //   width: 100,
     //   // bind: { store: '{users}' }
     // },
-    { xtype: 'label', text: '请输入关键词：' },
+    { xtype: 'label', text: '请输入关键字：' },
     { xtype: 'textfield', id: 'KeyWord' },
     {
       text: '搜索',
