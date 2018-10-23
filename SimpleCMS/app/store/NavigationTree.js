@@ -42,6 +42,12 @@ Ext.define('SimpleCMS.store.NavigationTree', {
         leaf: true,
         visible: true
       },
+      {
+        text: '例子',
+        viewType: 'cardatapage',
+        leaf: true,
+        visible: true
+      },
     ]
   }
 });

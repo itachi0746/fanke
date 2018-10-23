@@ -12,9 +12,10 @@ Ext.application({
     'Overrides.*',
     'SimpleCMS.locale.Locale',
     'SimpleCMS.locale.zh_CN',
-    'SimpleCMS.ux.*',
+    'SimpleCMS.util.Url',
 
-    'SimpleCMS.view.main.Main'
+    'SimpleCMS.ux.*',
+    'SimpleCMS.view.main.Main',
   ],
 
   // The name of the initial view to create. With the classic toolkit this class

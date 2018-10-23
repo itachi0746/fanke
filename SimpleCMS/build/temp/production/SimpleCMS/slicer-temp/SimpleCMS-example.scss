@@ -1,5 +1,5 @@
 $app-name:  dynamic( 'SimpleCMS' );
-$image-search-path: 'C:/web/SimpleCMS/build/development/SimpleCMS/resources';
+$image-search-path: 'C:/web/SimpleCMS/build/production/SimpleCMS/resources';
 $theme-name:  dynamic( 'theme-triton' );
 $include-cfg: dynamic(true);;
 $include-ext-abstractcomponent: dynamic(true);;
@@ -484,7 +484,6 @@ $include-ext-grid-rowcontext: dynamic(true);;
 $include-ext-grid-roweditor: dynamic(true);;
 $include-ext-grid-roweditorbuttons: dynamic(true);;
 $include-ext-grid-rownumberer: dynamic(true);;
-$include-ext-grid-scroller: dynamic(true);;
 $include-ext-grid-templatecolumn: dynamic(true);;
 $include-ext-grid-view: dynamic(true);;
 $include-ext-grid-viewdropzone: dynamic(true);;
@@ -920,7 +919,6 @@ $include-simplecms-store-tablestore: dynamic(true);;
 $include-simplecms-util-config: dynamic(true);;
 $include-simplecms-util-url: dynamic(true);;
 $include-simplecms-ux-container-fixedheightoffirstitem: dynamic(true);;
-$include-simplecms-ux-form-field-search: dynamic(true);;
 $include-simplecms-ux-form-field-vtypes: dynamic(true);;
 $include-simplecms-view-authentication-authenticationcontroller: dynamic(true);;
 $include-simplecms-view-authentication-authenticationmodel: dynamic(true);;
@@ -929,9 +927,8 @@ $include-simplecms-view-authentication-lockscreen: dynamic(true);;
 $include-simplecms-view-authentication-lockingwindow: dynamic(true);;
 $include-simplecms-view-authentication-login: dynamic(true);;
 $include-simplecms-view-authentication-passwordreset: dynamic(true);;
-$include-simplecms-view-cardata-cardata: dynamic(true);;
-$include-simplecms-view-cardata-cardatacontroller: dynamic(true);;
-$include-simplecms-view-cardata-cardatamodel: dynamic(true);;
+$include-simplecms-view-grid-tabel: dynamic(true);;
+$include-simplecms-view-grid-tablemodel: dynamic(true);;
 $include-simplecms-view-main-main: dynamic(true);;
 $include-simplecms-view-main-maincontainerwrap: dynamic(true);;
 $include-simplecms-view-main-maincontroller: dynamic(true);;
@@ -943,8 +940,8 @@ $include-simplecms-view-pages-errorbase: dynamic(true);;
 $include-simplecms-view-user-main: dynamic(true);;
 $include-simplecms-view-user-maincontroller: dynamic(true);;
 $include-simplecms-view-user-mainmodel: dynamic(true);;
-$include-uri: dynamic(true);;
-$output-paths: ("path": "../resources");
+$include-url: dynamic(true);;
+
 
 /* ======================== ETC ======================== */
 

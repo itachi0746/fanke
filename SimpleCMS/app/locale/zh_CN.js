@@ -27,6 +27,6 @@ Ext.define('SimpleCMS.locale.zh_CN', {
     Edit: '编辑',
     Delete: '删除',
     Refresh: '刷新',
-    Count: '数量'
+    Count: '共{count}条',
   }
 });

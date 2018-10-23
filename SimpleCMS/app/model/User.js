@@ -3,7 +3,7 @@ Ext.define('SimpleCMS.model.User', {
   fields: [
     { name: 'UserName', defaultValue: '' },
     { name: 'Roles', defaultValue: '编辑' },
-    { name: 'Created', type: 'datate', dateFormat: I18N.DefaultDatetimeFormat },
+    { name: 'Created', type: 'date', dateFormat: I18N.DefaultDatetimeFormat },
     {
       name: 'LastLogin',
       type: 'date',
