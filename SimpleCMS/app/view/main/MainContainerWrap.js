@@ -10,7 +10,7 @@ Ext.define('SimpleCMS.view.main.MainContainerWrap', {
 
     layout: {
         type: 'hbox',
-        align: 'stretchmax',
+        align: 'begin',
 
         // Tell the layout to animate the x/width of the child items.
         animate: true,

@@ -16,7 +16,6 @@ Ext.define('SimpleCMS.Application', {
   },
   requires: [
     'SimpleCMS.locale.Locale',
-    'SimpleCMS.locale.zh_CN',
   ],
   stores: [
     'NavigationTree'

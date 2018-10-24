@@ -22,7 +22,7 @@ Ext.define('SimpleCMS.store.NavigationTree', {
         text: '登录页',
         viewType: 'login',
         leaf: true,
-        visible: true
+        visible: false
       },
       {
         text: '500页面',
@@ -40,16 +40,16 @@ Ext.define('SimpleCMS.store.NavigationTree', {
         text: '用户管理',
         viewType: 'userView',
         leaf: true,
-        visible: true
+        visible: false
       },
       {
-        text: '例子',
+        text: '表格',
         viewType: 'cardatapage',
         leaf: true,
         visible: true
       },
       {
-        text: '例子',
+        text: '表单',
         viewType: 'form-main',
         leaf: true,
         visible: true

@@ -10,7 +10,12 @@ Ext.define('SimpleCMS.view.main.Main', {
     'SimpleCMS.view.main.MainModel',
 
     'SimpleCMS.view.pages.*',
-    'SimpleCMS.view.authentication.*'
+    'SimpleCMS.view.authentication.*',
+    // 新的视图加入
+    'SimpleCMS.view.user.Main',
+    'SimpleCMS.view.cardata.CarData',
+    'SimpleCMS.view.form.Main',
+
   ],
 
   controller: 'main',
@@ -40,7 +45,7 @@ Ext.define('SimpleCMS.view.main.Main', {
           reference: 'senchaLogo',
           cls: 'sencha-logo',
           html:
-            '<div class="main-logo"><img src="/resources/images/company-logo.png">后台管理系统</div>',
+            '<div class="main-logo"><img src="' + URI.getResource('logo') + '">后台管理系统</div>',
           width: 250
         },
         {
@@ -93,7 +98,8 @@ Ext.define('SimpleCMS.view.main.Main', {
         // 主要容器
         {
           xtype: 'container',
-          flex: 1,
+          // flex: 1,
+          padding: '0 0 0 20',
           reference: 'mainCardPanel',
           cls: 'sencha-dash-right-main-container',
           itemId: 'contentPanel',

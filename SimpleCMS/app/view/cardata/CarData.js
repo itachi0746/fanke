@@ -15,13 +15,17 @@ Ext.define('SimpleCMS.view.cardata.CarData', {
   xtype: 'cardatapage',
 
   requires: [
+    'Ext.layout.container.Card',
     'SimpleCMS.view.cardata.CarDataModel',
-    'SimpleCMS.view.cardata.CarDataController'
+    'SimpleCMS.view.cardata.CarDataController',
+    // 'SimpleCMS.view.cardata.Form',
+    
+
   ],
   model: 'cardata',
   controller: 'cardata',
-  // padding: 300,
   store: carStore,
+  frame: true,
   stripeRows: true,
   title: '表格示例', // Title for the grid
   //  renderTo: 'gridDiv', // Div id where the grid has to be rendered
@@ -35,13 +39,13 @@ Ext.define('SimpleCMS.view.cardata.CarData', {
     edit: {
       iconCls: 'x-fa fa-cog',
       tooltip: '编辑',
-      handler: 'onSellClick',
+      handler: 'onEditClick',
       flex: 1,
     },
     check: {
       iconCls: 'x-fa fa-cog',
       tooltip: '查看',
-      handler: 'onBuyClick',
+      handler: 'onCheckClick',
       flex: 1
     }
   },
@@ -86,7 +90,7 @@ Ext.define('SimpleCMS.view.cardata.CarData', {
       xtype: 'actioncolumn',
       items: [
         '@edit',
-        '@check'
+        // '@check'
 
       ]
     }
@@ -95,12 +99,8 @@ Ext.define('SimpleCMS.view.cardata.CarData', {
     {
       text: '新增',
       xtype: 'button',
-      // handler: 'onAddClick',
-      listeners: {
-        click: function() {
-          console.log(12313);
-        }
-      }
+      handler: 'onAddClick',
+
     },
     {
       text: '删除',

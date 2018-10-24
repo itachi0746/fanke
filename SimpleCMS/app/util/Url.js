@@ -49,7 +49,7 @@ Ext.define('SimpleCMS.util.Url', {
       return result;
   },
 
-  DEBUG: true,
+  DEBUG: false,
 
   resources: {
       logo: 'resources/images/company-logo.png'
@@ -57,7 +57,7 @@ Ext.define('SimpleCMS.util.Url', {
 
   getResource: function (res) {
       var me = this;
-      return ROOTPATH + (me.DEBUG ? '/sencha/' : '/') + me.resources[res];
+      return (me.DEBUG ? '/' : '/SimpleCMS/') + me.resources[res];
   }
 
 });

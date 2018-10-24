@@ -16,6 +16,7 @@ Ext.define('SimpleCMS.view.main.MainController', {
 
   lastView: null,
 
+
   setCurrentView: function(hashTag) {
     hashTag = (hashTag || '').toLowerCase();
 
@@ -83,6 +84,7 @@ Ext.define('SimpleCMS.view.main.MainController', {
 
     if (to) {
       this.redirectTo(to);
+    
     }
   },
 
@@ -141,7 +143,7 @@ Ext.define('SimpleCMS.view.main.MainController', {
 
   onMainViewRender: function() {
     if (!window.location.hash) {
-      this.redirectTo('dashboard');
+      this.redirectTo('pageblank');
     }
   },
 

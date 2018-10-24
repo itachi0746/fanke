@@ -3,11 +3,11 @@ Ext.define('SimpleCMS.view.form.Main', {
     extend: 'Ext.form.Panel',
     xtype: 'form-main',
 
-    title: '',
-    frame:false,
+    title: '表达标题',
+    frame:true,
     width: 320,
     bodyPadding: 10,
-    padding: 100,
+    // padding: 100,
     defaultType: 'textfield',
 
     items: [{
