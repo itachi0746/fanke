@@ -13,8 +13,9 @@ Ext.define('SimpleCMS.view.main.Main', {
     'SimpleCMS.view.authentication.*',
     // 新的视图加入
     'SimpleCMS.view.user.Main',
-    'SimpleCMS.view.cardata.CarData',
-    'SimpleCMS.view.form.Main',
+    'SimpleCMS.view.cardata.Main'
+    // 'SimpleCMS.view.cardata.CarData',
+    // 'SimpleCMS.view.form.Main',
 
   ],
 

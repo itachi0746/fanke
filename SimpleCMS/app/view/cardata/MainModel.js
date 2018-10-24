@@ -1,4 +1,4 @@
-Ext.define('SimpleCMS.view.cardata.CarDataModel', {
+Ext.define('SimpleCMS.view.cardata.MainModel', {
   extend: 'Ext.data.Model',
   alias: 'model.cardata',
 

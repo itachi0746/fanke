@@ -6,7 +6,7 @@ var myData = [
 ];
 // Creation of first grid store
 var carStore = Ext.create('Ext.data.Store', {
-  model: 'SimpleCMS.view.cardata.CarDataModel',
+  model: 'SimpleCMS.view.cardata.MainModel',
   data: myData
 });
 
@@ -15,15 +15,14 @@ Ext.define('SimpleCMS.view.cardata.CarData', {
   xtype: 'cardatapage',
 
   requires: [
-    'Ext.layout.container.Card',
-    'SimpleCMS.view.cardata.CarDataModel',
-    'SimpleCMS.view.cardata.CarDataController',
+    // 'SimpleCMS.view.cardata.CarDataModel',
+    // 'SimpleCMS.view.cardata.CarDataController',
     // 'SimpleCMS.view.cardata.Form',
     
 
   ],
-  model: 'cardata',
-  controller: 'cardata',
+  // model: 'cardata',
+  // controller: 'cardata',
   store: carStore,
   frame: true,
   stripeRows: true,
@@ -49,6 +48,7 @@ Ext.define('SimpleCMS.view.cardata.CarData', {
       flex: 1
     }
   },
+
   columns: [
     {
       header: '序号',

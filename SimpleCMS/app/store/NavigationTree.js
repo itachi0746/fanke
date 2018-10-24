@@ -44,7 +44,7 @@ Ext.define('SimpleCMS.store.NavigationTree', {
       },
       {
         text: '表格',
-        viewType: 'cardatapage',
+        viewType: 'cardataMain',
         leaf: true,
         visible: true
       },

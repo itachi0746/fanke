@@ -1,4 +1,4 @@
-Ext.define('SimpleCMS.view.cardata.CarDataController', {
+Ext.define('SimpleCMS.view.cardata.MainController', {
   extend: 'Ext.app.ViewController',
   alias: 'controller.cardata',
 
@@ -9,25 +9,24 @@ Ext.define('SimpleCMS.view.cardata.CarDataController', {
     console.log(2);
   },
   onAddClick: function() {
-    console.log(3);
-    // this.getController()
-    this.setCurrentView('carform', {});
+    console.log(this);
+    this.getActiveItem();
 
-    // var a = me.getController('main')
-    // console.log(a);
+    // this.setCurrentView('carform', {});
   },
 
   // 视图转换
   setCurrentView: function(view, params) {
     console.log(view);
-
+    // this.up('cardataMain').getController()
     var me = this,
       contentPanel = me.getView(),
-      layout = contentPanel.getLayout(),
-      currentItem = layout.getActiveItem(),
-      nextView = contentPanel.down(view);
+      layout = contentPanel.getLayout();
+    //   currentItem = layout.getActiveItem(),
+    //   nextView = contentPanel.down(view);
 
-console.log(currentItem);
+console.log(contentPanel);
+console.log(layout);
 
     // if (!contentPanel || view === '' || currentItem.xtype === view) {
     //   return false;
