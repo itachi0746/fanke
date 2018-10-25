@@ -2,7 +2,11 @@ Ext.define('SimpleCMS.view.cardata.CarData', {
   extend: 'Ext.grid.Panel',
   xtype: 'cardatapage',
 
-  requires: ['Ext.grid.column.Action', 'Ext.toolbar.Paging'],
+  requires: [
+    'Ext.grid.column.Action', 
+    'Ext.toolbar.Paging',
+    'SimpleCMS.store.CarStore'
+  ],
 
   store: {
     type: 'carStore'
