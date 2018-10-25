@@ -35,6 +35,13 @@ Ext.define('SimpleCMS.ux.form.field.VTypes', {
     return true;
   },
 
-  passwordText: I18N.PasswordText
+  passwordText: I18N.PasswordText,
+
+  // 验证输入的vtype
+  car: function (val, field) {
+    var reg = /^([1-5])/i;
+    return reg.test(val)
+  },
+  carText: '输入错误'
 
 });

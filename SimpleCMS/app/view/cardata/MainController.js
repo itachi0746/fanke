@@ -9,37 +9,38 @@ Ext.define('SimpleCMS.view.cardata.MainController', {
     console.log(2);
   },
   onAddClick: function() {
-    console.log(this);
-    this.getActiveItem();
-
-    // this.setCurrentView('carform', {});
+    this.setCurrentView('carform', {});
+  },
+  onSave: function () {
+    console.log('save');
+    this.setCurrentView('cardatapage', {});
+    
   },
 
   // 视图转换
   setCurrentView: function(view, params) {
-    console.log(view);
-    // this.up('cardataMain').getController()
     var me = this,
-      contentPanel = me.getView(),
-      layout = contentPanel.getLayout();
-    //   currentItem = layout.getActiveItem(),
-    //   nextView = contentPanel.down(view);
+    contentPanel = me.getView(),
+    layout = contentPanel.getLayout(),
+    currentItem = layout.getActiveItem();
 
-console.log(contentPanel);
-console.log(layout);
+    if (!contentPanel || view === '' || currentItem.xtype === view) {
+      // debugger
+      return false;
+    }
+    console.log(currentItem.xtype);
+    layout.setActiveItem(view)
 
-    // if (!contentPanel || view === '' || currentItem.xtype === view) {
-    //   return false;
-    // }
+
     // if (!nextView) {
     //   nextView = Ext.create({ xtype: view });
-      // if (view === 'categoryEdit') {
-      //   nextView.on('recordupdate', me.onCategoryRecordUpdate, me);
-      //   nextView.on('aftersaved', me.onCategoryAfterSaved, me);
-      // } else if (view === 'contentEdit') {
-      //   nextView.on('aftersaved', me.onContentAfterSaved, me);
-      // }
-      // contentPanel.add(nextView);
+    // if (view === 'categoryEdit') {
+    //   nextView.on('recordupdate', me.onCategoryRecordUpdate, me);
+    //   nextView.on('aftersaved', me.onCategoryAfterSaved, me);
+    // } else if (view === 'contentEdit') {
+    //   nextView.on('aftersaved', me.onContentAfterSaved, me);
+    // }
+    // contentPanel.add(nextView);
     // }
 
     // if (view === 'articleDetails') {

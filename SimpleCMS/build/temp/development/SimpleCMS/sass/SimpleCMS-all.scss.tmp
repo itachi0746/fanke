@@ -1,5 +1,5 @@
 $app-name:  dynamic( 'SimpleCMS' );
-$image-search-path: 'F:/web/SimpleCMS/build/development/SimpleCMS/resources';
+$image-search-path: 'C:/web/SimpleCMS/build/development/SimpleCMS/resources';
 $theme-name:  dynamic( 'theme-triton' );
 $include-cfg: dynamic(true);;
 $include-ext-abstractcomponent: dynamic(true);;
@@ -915,6 +915,7 @@ $include-simplecms-locale-locale: dynamic(true);;
 $include-simplecms-locale-zh_cn: dynamic(true);;
 $include-simplecms-model-base: dynamic(true);;
 $include-simplecms-model-user: dynamic(true);;
+$include-simplecms-store-carstore: dynamic(true);;
 $include-simplecms-store-navigationtree: dynamic(true);;
 $include-simplecms-store-tablestore: dynamic(true);;
 $include-simplecms-util-config: dynamic(true);;

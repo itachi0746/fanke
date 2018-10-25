@@ -13,12 +13,16 @@ Ext.define('SimpleCMS.view.cardata.Form', {
     items: [{
         allowBlank: false,
         fieldLabel: '车型',
-        name: 'user',
+        name: 'carType',
+        vtype: 'car'
         // emptyText: 'user id'
+        // regex: /^([1-9]|1[0-9]):([0-5][0-9])(\s[a|p]m)$/i,  // 验证输入的reg
+        // maskRe: /[\d\s:amp]/i,  // 限制键盘输入
+        // invalidText: 'Not a valid time.  Must be in the format "12:34 PM".'
     }, {
         allowBlank: false,
         fieldLabel: '车型代码',
-        name: 'pass',
+        name: 'carCode',
         // emptyText: 'password',
         // inputType: 'password'
     }, {
@@ -28,7 +32,7 @@ Ext.define('SimpleCMS.view.cardata.Form', {
     }],
 
     buttons: [
-        { text:'保存' },
+        { text:'保存',handler:'onSave' },
         { text:'取消' }
     ],
 

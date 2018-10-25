@@ -16,7 +16,12 @@ Ext.define('SimpleCMS.view.cardata.Main', {
   items: [
     {
       xtype: 'cardatapage',
+      itemId: 'cardatapage'
+    },
+    {
+      xtype: 'carform',
+      itemId: 'carform'
 
-    }
+    },
   ]
 });

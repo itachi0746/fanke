@@ -40,7 +40,7 @@ Ext.define('SimpleCMS.store.NavigationTree', {
         text: '用户管理',
         viewType: 'userView',
         leaf: true,
-        visible: false
+        visible: true
       },
       {
         text: '表格',
@@ -48,12 +48,12 @@ Ext.define('SimpleCMS.store.NavigationTree', {
         leaf: true,
         visible: true
       },
-      {
-        text: '表单',
-        viewType: 'form-main',
-        leaf: true,
-        visible: true
-      },
+      // {
+      //   text: '表单',
+      //   viewType: 'form-main',
+      //   leaf: true,
+      //   visible: false
+      // },
     ]
   }
 });
