@@ -5,7 +5,8 @@ Ext.define('SimpleCMS.view.cardata.CarData', {
   requires: [
     'Ext.grid.column.Action', 
     'Ext.toolbar.Paging',
-    'SimpleCMS.store.CarStore'
+    'SimpleCMS.store.CarStore',
+    
   ],
 
   store: {
@@ -102,21 +103,21 @@ Ext.define('SimpleCMS.view.cardata.CarData', {
       disabled: true
     },
     '->',
-    // {
-    //   xtype: 'searchfield',
-    //   fieldLabel: '输入关键字',
-    //   labelWidth: 20,
-    //   width: 100,
-    //   // bind: { store: '{users}' }
-    // },
-    { xtype: 'label', text: '请输入关键字：' },
-    { xtype: 'textfield', id: 'KeyWord' },
     {
-      text: '搜索',
-      handler: function() {
-        alert('搜索');
-      }
-    }
+      xtype: 'uxsearchfield',
+      fieldLabel: '输入关键字',
+      labelWidth: 80,
+      width: 260,
+      // bind: { store: 'carStore' }
+    },
+    // { xtype: 'label', text: '请输入关键字：' },
+    // { xtype: 'textfield', id: 'KeyWord' },
+    // {
+    //   text: '搜索',
+    //   handler: function() {
+    //     alert('搜索');
+    //   }
+    // }
   ],
   initComponent: function() {
     console.log('init');

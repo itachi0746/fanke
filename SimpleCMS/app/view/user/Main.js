@@ -6,7 +6,6 @@ Ext.define('SimpleCMS.view.user.Main', {
     'SimpleCMS.view.user.MainController'
   ],
 
-
   controller: 'user',
   viewModel: 'user',
   items: [
@@ -19,7 +18,7 @@ Ext.define('SimpleCMS.view.user.Main', {
       emptyText: I18N.EmptyText,
       selModel: 'checkboxmodel',
 
-        bind: {selection: '{selection}'},
+      bind: { selection: '{selection}' },
       columns: [
         { xtype: 'rownumberer' },
         { text: I18N.UserModel.UserName, dataIndex: 'UserName', width: 150 },
@@ -51,14 +50,14 @@ Ext.define('SimpleCMS.view.user.Main', {
           ui: 'soft-blue',
           tooltip: I18N.Edit,
           handler: 'onUserEdit',
-          bind: { disabled: '{!selection}'}
+          bind: { disabled: '{!selection}' }
         },
         {
           iconCls: 'x-fa fa-trash',
           ui: 'soft-red',
           tooltip: I18N.Delete,
           handler: 'onUserDelete',
-          bind: { disabled: '{!selection}'}
+          bind: { disabled: '{!selection}' }
         },
         {
           iconCls: 'x-fa fa-refresh',
@@ -66,17 +65,16 @@ Ext.define('SimpleCMS.view.user.Main', {
           tooltip: I18N.Refresh,
           handler: 'onRefresh'
         },
-              '-',
-      {
-        xtype: 'uxsearchfield',
-        fieldLabel: '输入关键字',
-        labelWidth: 80,
-        width: 260,
-        bind: { store: '{users}' }
-      },
+        '-',
+        {
+          xtype: 'uxsearchfield',
+          fieldLabel: '输入关键字',
+          labelWidth: 80,
+          width: 260,
+          bind: { store: '{users}' }
+        },
         '->',
-        { xtype: 'tbtext', bind: I18N.Count },
-
+        { xtype: 'tbtext', bind: I18N.Count }
       ]
     }
   ]

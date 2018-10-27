@@ -25,6 +25,7 @@ Ext.define('SimpleCMS.ux.form.field.Search', {
   paramName: 'query',
 
   initComponent: function() {
+    
     var me = this,
       store = me.store,
       proxy;

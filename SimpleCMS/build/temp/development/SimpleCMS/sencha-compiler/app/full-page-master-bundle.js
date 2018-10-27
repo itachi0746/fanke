@@ -1,2 +1,2 @@
 // @tag full-page
-// @require F:\web\SimpleCMS\app.js
+// @require C:\web\SimpleCMS\app.js

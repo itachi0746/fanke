@@ -11,7 +11,7 @@ Ext.define('SimpleCMS.view.cardata.Main', {
 
   ],
   controller: 'cardata',
-  viewModel: 'cardata',
+  // viewModel: 'cardata',
   layout: 'card',
   items: [
     {
