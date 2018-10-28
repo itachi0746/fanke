@@ -108,7 +108,7 @@ Ext.define('SimpleCMS.view.cardata.CarData', {
       fieldLabel: '输入关键字',
       labelWidth: 80,
       width: 260,
-      // bind: { store: 'carStore' }
+      bind: { store: 'carStore' }
     },
     // { xtype: 'label', text: '请输入关键字：' },
     // { xtype: 'textfield', id: 'KeyWord' },
