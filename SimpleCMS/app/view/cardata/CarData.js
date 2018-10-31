@@ -70,9 +70,8 @@ Ext.define('SimpleCMS.view.cardata.CarData', {
       flex: 1,
       align: 'center',
       sortable: false,
-      xtype: 'actioncolumn',
-      layout: 'vbox',
-      items: ['@edit', '@check']
+      // xtype: 'actioncolumn',
+//      items: ['@edit', '@check']
     }
   ],
   // Reusable actions
@@ -105,19 +104,12 @@ Ext.define('SimpleCMS.view.cardata.CarData', {
     '->',
     {
       xtype: 'uxsearchfield',
-      fieldLabel: '输入关键字',
-      labelWidth: 80,
+      fieldLabel: '搜索',
+      labelWidth: 40,
       width: 260,
       bind: { store: 'carStore' }
     },
-    // { xtype: 'label', text: '请输入关键字：' },
-    // { xtype: 'textfield', id: 'KeyWord' },
-    // {
-    //   text: '搜索',
-    //   handler: function() {
-    //     alert('搜索');
-    //   }
-    // }
+
   ],
   initComponent: function() {
     console.log('init');
