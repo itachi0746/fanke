@@ -6,7 +6,7 @@ Ext.define('SimpleCMS.view.cardata.CarData', {
     'Ext.grid.column.Action', 
     'Ext.toolbar.Paging',
     'SimpleCMS.store.CarStore',
-    
+    'SimpleCMS.view.cardata.MainModel'
   ],
 
   store: {
@@ -75,20 +75,20 @@ Ext.define('SimpleCMS.view.cardata.CarData', {
     }
   ],
   // Reusable actions
-  actions: {
-    edit: {
-      iconCls: 'x-fa fa-edit',
-      tooltip: '编辑',
-      handler: 'onEditClick'
-      // flex: 0.5
-    },
-    check: {
-      iconCls: 'x-fa fa-cog',
-      tooltip: '查看',
-      handler: 'onCheckClick'
-      // flex: 0.5
-    }
-  },
+  // actions: {
+  //   edit: {
+  //     iconCls: 'x-fa fa-edit',
+  //     tooltip: '编辑',
+  //     handler: 'onEditClick'
+  //     // flex: 0.5
+  //   },
+  //   check: {
+  //     iconCls: 'x-fa fa-cog',
+  //     tooltip: '查看',
+  //     handler: 'onCheckClick'
+  //     // flex: 0.5
+  //   }
+  // },
   tbar: [
     {
       text: '新增',
@@ -107,14 +107,12 @@ Ext.define('SimpleCMS.view.cardata.CarData', {
       fieldLabel: '搜索',
       labelWidth: 40,
       width: 260,
-      bind: { store: 'carStore' }
+      // bind: { store: 'carStore' }
     },
-
   ],
   initComponent: function() {
     console.log('init');
     console.log(this.getStore('carStore')==this.store);
-
     this.callParent();
   }
 });

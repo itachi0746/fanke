@@ -11,17 +11,17 @@ Ext.define('SimpleCMS.view.cardata.Main', {
 
   ],
   controller: 'cardata',
-  // viewModel: 'cardata',
+  viewModel: 'cardata',
   layout: 'card',
   items: [
     {
       xtype: 'cardatapage',
-      itemId: 'cardatapage'
+      itemId: 'cardatapage',
+      bind:  { store: '{carStore}'}
     },
     {
       xtype: 'carform',
       itemId: 'carform'
-
     },
   ]
 });

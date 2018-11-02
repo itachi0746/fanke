@@ -29,6 +29,8 @@ Ext.define('SimpleCMS.ux.form.field.Search', {
     var me = this,
       store = me.store,
       proxy;
+      console.log(store);
+      
 
     me.bindStore(me.store || 'ext-empty-store', true);
 
