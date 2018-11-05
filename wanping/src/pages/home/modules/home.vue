@@ -73,17 +73,17 @@
       }
     },
     created() {
-      const url = '/GetAds';
-      postData(url).then(res => {
+//      const url = '/GetAds';
+//      postData(url).then(res => {
+////        console.log(res)
+//        this.Ads = res.Data
+//      });
+//
+//      const url1 = '/GetRecommends';
+//      postData(url1).then(res => {
 //        console.log(res)
-        this.Ads = res.Data
-      });
-
-      const url1 = '/GetRecommends';
-      postData(url1).then(res => {
-        console.log(res)
-        this.Recommends = res.Data
-      });
+//        this.Recommends = res.Data
+//      });
 
     },
     computed: {

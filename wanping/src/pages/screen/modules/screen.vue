@@ -166,7 +166,7 @@
         this.findDay(data)
       },
       changeDate(data) {
-        console.log(data); //左右点击切换月份
+//        console.log(data); //左右点击切换月份
       },
       clickToday(data) {
         console.log(data); //跳到了本月

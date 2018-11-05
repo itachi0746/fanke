@@ -62,7 +62,9 @@
       getData() {
         this.loadMoreSwitch = false;
 
-        const url = '/GetProducts';
+//        const url = '/GetProducts';
+        const url = 'http://www.bai.com/screenListAll';
+
         const data = {
           pageindex: this.page
         };

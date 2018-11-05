@@ -6,15 +6,21 @@ let arr = {
   number: "0123456789",
   symbol: "!@#$%^&*()[]"
 };
-
+let a = {
+  PageCount: 1,
+  PageIndex: 1,
+  RecordCount: 7,
+  // Models: []
+}
 // ==============================================================================
 // 首页的产品列表 Id:id,  Name:显示屏名称, Price:价格, Flowrate:人流量
 const pFun = function () {
+
   let arr = [];
 
   // for (let i = 1; i <= n; i++) {
   let newItem = {
-    'Id|+1': 1, Name: '显示屏' + Random.string('number', 3), 'Price|+10': 100, Flowrate: '1000'
+    'Id|+1': 1, 'Desc': '显示屏' + Random.string('number', 3), 'Price|+10': 100, Flowrate: '1000'
   };
   arr.push(newItem)
   // }
@@ -22,16 +28,22 @@ const pFun = function () {
   return arr
 };
 
+const models = function () {
+  let arr2 = pFun();
+  a.Models = arr2;
+  return a;
+};
+
 let screenListAll = {
-  'Data|5': pFun(),
+  'Data|5': models(),
   Success: true,
   Code: null
 };
 
-Mock.mock('http://www.bai.com/screenListAll', {
-  'data': screenListAll,
-});
-
+// Mock.mock('http://www.bai.com/screenListAll', {
+//   'Data': screenListAll,
+// });
+Mock.mock('http://www.bai.com/screenListAll', screenListAll);
 // ==============================================================================
 // 首页的推荐列表 Id:id,  Name:显示屏名称, Price:价格, Img:产品图片
 let recommend = {
