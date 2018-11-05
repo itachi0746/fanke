@@ -10,16 +10,16 @@ export default {
   getMonthweek: function (date) {
     const year = date.getFullYear()
     const month = date.getMonth() + 1
-    const dateFirstOne = new Date(year + '-' + month + '-1')
+    const dateFirstOne = new Date(year + '/' + month + '/1')
     return this.sundayStart ?
       dateFirstOne.getDay() == 0 ? 7 : dateFirstOne.getDay() :
       dateFirstOne.getDay() == 0 ? 6 : dateFirstOne.getDay() - 1;
   },
   /**
    * 获取当前日期上个月或者下个月
-   */
+  */
   getOtherMonth: function (date, str = 'nextMonth') {
-    const timeArray = this.dateFormat(date).split('-')
+    const timeArray = this.dateFormat(date).split('/')
     const year = timeArray[0]
     const month = timeArray[1]
     const day = timeArray[2]
@@ -49,7 +49,7 @@ export default {
     if (day2 < 10) {
       day2 = '0' + day2
     }
-    const t2 = year2 + '-' + month2 + '-' + day2
+    const t2 = year2 + '/' + month2 + '/' + day2
     return new Date(t2)
   },
   //上个月末尾的一些日期
@@ -60,7 +60,7 @@ export default {
     const preDate = this.getOtherMonth(date, 'preMonth')
     //上个月多少开始
     for (let i = 0; i < leftNum; i++) {
-      const nowTime = preDate.getFullYear() + '-' + (preDate.getMonth() + 1) + '-' + (num + i)
+      const nowTime = preDate.getFullYear() + '/' + (preDate.getMonth() + 1) + '/' + (num + i)
       arr.push({
         id: num + i,
         date: nowTime,
@@ -68,6 +68,7 @@ export default {
         otherMonth: `preMonth`
       })
     }
+    // console.log(arr)
     return arr
   },
   //下个月末尾的一些日期
@@ -77,7 +78,7 @@ export default {
     const leftLength = this.getDaysInOneMonth(date) + this.getMonthweek(date);
     const _length = 7 - leftLength % 7;
     for (let i = 0; i < _length; i++) {
-      const nowTime = nextDate.getFullYear() + '-' + (nextDate.getMonth() + 1) + '-' + (i + 1);
+      const nowTime = nextDate.getFullYear() + '/' + (nextDate.getMonth() + 1) + '/' + (i + 1);
       arr.push({
         id: i + 1,
         date: nowTime,
@@ -90,36 +91,20 @@ export default {
   },
   //format日期
   dateFormat: function (date) {
-    date = typeof date === 'string' ? new Date(date.replace(/\-/g, '-')) : date;
-    let month = date.getMonth() + 1;
-    // console.log(typeof month)
-    month = month < 10 ? '0' + month : month;
-    // console.log(month)
-
-    let day = date.getDate();
-    // console.log(typeof day)
-
-    day = day < 10 ? '0' + day : day;
-
-    return date.getFullYear() + '-' + month + '-'
-      + day;
+    date = typeof date === 'string' ? new Date(date.replace(/\-/g, '/')) : date;
+    return date.getFullYear() + '/' + (date.getMonth() + 1) + '/'
+      + date.getDate();
   },
   //获取某月的列表不包括上月和下月
   getMonthListNoOther: function (date) {
     let arr = [];
     const num = this.getDaysInOneMonth(date);
-    // console.log(num, typeof num)
     const year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    month = month < 10 ? '0' + month : month;
-    // console.log(typeof month)
+    const month = date.getMonth() + 1;
     let toDay = this.dateFormat(new Date())
 
     for (let i = 0; i < num; i++) {
-      let day = i + 1;
-      day = day < 10 ? '0' + day : day;
-      const nowTime = year + '-' + month + '-' + day;
-      // console.log(nowTime,toDay)
+      const nowTime = year + '/' + month + '/' + (i + 1)
       arr.push({
         id: i + 1,
         date: nowTime,

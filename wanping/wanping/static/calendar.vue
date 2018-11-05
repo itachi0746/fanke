@@ -277,6 +277,7 @@ export default {
       const [markDate, markDateMore] = this.forMatArgs();
 //      console.log([markDate, markDateMore] )
       this.dateTop = `${date.getFullYear()}年${date.getMonth() + 1}月`;
+      console.log('datetop:',this.dateTop)
       let arr = timeUtil.getMonthList(this.myDate);
 //      console.log(arr[0]);
 

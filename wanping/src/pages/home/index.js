@@ -9,7 +9,7 @@ import '@/style/font/iconfont.css'
 import axiosPlugin from '@/server'
 
 // 引入mockjs
-require('../../plugins/mock');
+// require('../../plugins/mock');
 
 
 Vue.config.productionTip = false;

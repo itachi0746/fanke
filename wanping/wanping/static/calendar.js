@@ -85,6 +85,7 @@ export default {
         otherMonth: `nextMonth`
       });
     }
+    console.log('getRightArr:',arr)
     return arr;
   },
   //format日期

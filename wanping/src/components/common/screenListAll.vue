@@ -62,8 +62,8 @@
       getData() {
         this.loadMoreSwitch = false;
 
-//        const url = '/GetProducts';
-        const url = 'http://www.bai.com/screenListAll';
+        const url = '/GetProducts';
+//        const url = 'http://www.bai.com/screenListAll';
 
         const data = {
           pageindex: this.page
@@ -80,6 +80,7 @@
       },
       toScreen(event) {
         const targetId = event.currentTarget.getAttribute('data-pid');
+//        window.location.href = "screen.html?" + 'pid=1'
         GoToPage("screen", "screen.html", {'pid': targetId});
       },
       // 获取窗口滚动条高度
