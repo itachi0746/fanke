@@ -96,7 +96,7 @@
   import Header from '../../../components/header/header.vue'
   import Loading from '../../../components/common/loading.vue'
   import {postData} from '@/server'
-  import {getUrlParms,IOSConfig} from '@/config/utils'
+  import {getUrlParms, IOSConfig} from '@/config/utils'
 
 
   export default {
@@ -191,11 +191,27 @@
         return [yesterday, oneMonth];
       },
       findDay(data) {  // 遍历日期数组 找到点击的是哪一天
-        this.days.forEach((item, index) => {
-          if (item.Date === data) {
-            this.curDayObj = item;
+        let arr, d, str;
+        arr = data.split('/');
+        d = parseInt(arr[2]);
+        d = d < 10 ? '0' + d : d;
+        str = arr[0] + '-' + arr[1] + '-' + d;
+
+        console.log('findDay:', str);
+//        this.days.forEach((item, index) => {
+//          console.log(item)
+//          if (item.Date === str) {
+//            this.curDayObj = item;
+//          }
+//        })
+        for (let i = 0; i < this.days.length; i++) {
+          console.log(str, this.days[i].Date)
+          if (this.days[i].Date === str) {
+            this.curDayObj = this.days[i];
+//            console.log(this.days[i]);
+            break
           }
-        })
+        }
       },
       addSelected() {  // 选择广告位
         const repeated = this.isRepeated(this.curDayObj.Date);
@@ -236,15 +252,13 @@
       },
       delSelected(event) {  // 删除选中的时段
         const Tdate = event.target.getAttribute('data-date');
-
-        for(let i=0;i<this.selected.length;i++) {
+        for (let i = 0; i < this.selected.length; i++) {
           if (this.selected[i].Date === Tdate) {
 //            console.log(index, item.id);
             this.selected.splice(i, 1);
             break;
           }
         }
-
       },
 
       buy() {  // 购买 确认下单
@@ -255,7 +269,7 @@
           sumPrice: this.sumPrice,
           items: this.selected
         };
-        GoToPage('orderConfirm','orderConfirm.html',{})
+        GoToPage('orderConfirm', 'orderConfirm.html', {})
 
       },
       addToBasket() {  // 添加到购物车
@@ -270,7 +284,7 @@
           console.log('AddToBasket', res);
 //          console.log(this.selected);
           this.isLoading = false;
-          GoToPage('cart','cart.html',{})
+          GoToPage('cart', 'cart.html', {})
         });
       },
       /**
@@ -287,7 +301,7 @@
         postData(url, data).then((res) => {
           console.log(res);
           this.isLoading = false;
-          GoToPage('orderConfirm','orderConfirm.html',{'id':res.Data,'fromBasket': false})
+          GoToPage('orderConfirm', 'orderConfirm.html', {'id': res.Data, 'fromBasket': false})
         })
       },
       /**
@@ -334,7 +348,7 @@
       const data = {
         id: this.Id
       };
-      postData(url,data).then((res) => {
+      postData(url, data).then((res) => {
         console.log(res)
         this.resData = res.Data;
         this.days = res.Data.DayStates;  // 日期数组
@@ -541,6 +555,7 @@
   .el-icon-close {
     margin: .2rem .2rem 0 0;
   }
+
   .screen-detail {
     margin-bottom: 4.3rem;
   }

@@ -4,29 +4,42 @@
     <ul class="shoplist-container">
       <li class="shoplist-item" v-for="(item, index) in screenList" :key="item.Id" @click="toScreen($event)"
           :data-pid="item.Id">
-        <p class="shop-name">
-          {{ item.Name }}
-          <span class="right">
-          人流量: {{ item.Flowrate }}/h
-        </span>
-        </p>
-        <div class="oh">
-          <div class="left shop-price">
-            <span>¥</span>
-            <span>{{ item.Price }}</span>
-            <span>起</span>
-          </div>
+        <div class="img-box">
+          <img :src="item.Img" alt="">
         </div>
-        <div class="discount">
-          <div v-show="item.HasSales">
-            <span class="_cu">促</span>
-            <span>{{item.SalesDesc}}</span>
+        <div class="desc-box">
+          <p class="shop-name">
+            <span class="ellipsis">
+              {{ item.Name }}
+            </span>
+            <span class="right">
+              人流量: {{ item.Flowrate }}/h
+            </span>
+          </p>
+          <div class="oh">
+            <div class="left shop-price">
+              <span>¥</span>
+              <span>{{ item.Price }}</span>
+              <span></span>
+            </div>
+            <div class="right distance">
+              <span>km</span>
+            </div>
           </div>
-          <div v-show="item.HasDiscount">
-            <span class="_hui">惠</span>
-            <span>{{item.DiscountDesc}}</span>
-          </div>
+
+          <!--促销-->
+          <!--<div class="discount">-->
+            <!--<div v-show="item.HasSales">-->
+              <!--<span class="_cu">促</span>-->
+              <!--<span>{{item.SalesDesc}}</span>-->
+            <!--</div>-->
+            <!--<div v-show="item.HasDiscount">-->
+              <!--<span class="_hui">惠</span>-->
+              <!--<span>{{item.DiscountDesc}}</span>-->
+            <!--</div>-->
+          <!--</div>-->
         </div>
+
       </li>
       <!--<li class="empty_data">{{btmFont}}</li>-->
 
@@ -155,17 +168,27 @@
   }
 
   .shoplist-item {
+    display: flex;
     width: 100%;
-    border-top: 1px solid $bc;
+    border-top: 1px solid #f5f5f5;
     padding: .5rem;
   }
 
   .shop-name {
     font-size: .9rem;
+    width: 100%;
 
-    span {
-      /*font-size: .7rem;*/
+    span:nth-child(1) {
+      width: 70%;
+      @include sc(.8rem, #000);
+      display: inline-block;
+
+    }
+
+    span:nth-child(2) {
       @include sc(.7rem, #666);
+      display: inline-block;
+      width: 30%;
     }
   }
 
@@ -199,6 +222,25 @@
     line-height: 2rem;
     margin-bottom: 2.3rem;
     background-color: #fff;
+  }
+
+  .img-box {
+    display: flex;
+    align-items: center;
+    margin-right: .5rem;
+    img {
+      width: 5rem;
+      height: 5rem;
+    }
+  }
+
+  .desc-box {
+    flex: 1;
+  }
+
+  .distance {
+    @include sc(.7rem, #666);
+
   }
 
 </style>

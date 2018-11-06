@@ -2,11 +2,12 @@
   <div id="home">
     <Loading v-show="isLoading"></Loading>
     <!--选地区-->
-    <!--<aFilter ref="af"></aFilter>-->
+    <aFilter ref="af"></aFilter>
+    <div class="fill-div"></div>
     <!--轮播图 开始-->
     <swiper :options="swiperOption" ref="mySwiper" v-if="Ads.length">
       <swiper-slide v-for="(item,index) in Ads" :key="item.Index" @click="">
-        <img :src="item.ImageUrl" alt="Ads">
+        <img :src="item.ImageUrl" alt="广告轮播图">
       </swiper-slide>
       <div class="swiper-pagination"  slot="pagination"></div>
     </swiper>
@@ -47,7 +48,7 @@
   import screenListAll from 'components/common/screenListAll'
   import Loading from 'components/common/loading'
   import Footer from 'components/footer/footer'
-//  import aFilter from './filter'
+  import aFilter from './filter'
 //  import BScroll from 'better-scroll'
   import {postData} from '@/server'
   import { swiper, swiperSlide } from 'vue-awesome-swiper';
@@ -81,7 +82,7 @@
 
       const url1 = '/GetRecommends';
       postData(url1).then(res => {
-        console.log(res)
+//        console.log(res)
         this.Recommends = res.Data
       });
 
@@ -125,7 +126,7 @@
       }
     },
     components: {
-//      aFilter,
+      aFilter,
       screenListAll,
       Footer,
       swiper,
@@ -200,7 +201,7 @@
   .division {
     width: 100%;
     height: .5rem;
-    background-color: #e2e2e2;
+    background-color: #fff;
   }
 
 
@@ -232,4 +233,9 @@
     width: 100%;
     height: 3.5rem;
   }
+
+  .fill-div {
+    height: 1.65rem;
+  }
+
 </style>

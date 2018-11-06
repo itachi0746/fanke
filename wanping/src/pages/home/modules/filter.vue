@@ -3,70 +3,70 @@
   <div class="filter-box">
     <!--筛选条件-->
     <div class="sort-container">
-      <div class="sort-item" @click="toggleFilter">
-        <span>城市</span>
-        <i class="icon iconfont icon-xiajiantou"></i>
+      <div class="sort-item" @click="">
+        <span>人流量</span>
+        <!--<i class="icon iconfont icon-xiajiantou"></i>-->
       </div>
-      <div class="sort-item">
-        <span>地区</span>
-        <i class="icon iconfont icon-xiajiantou"></i>
+      <div class="sort-item" @click="">
+        <span>距离</span>
+        <!--<i class="icon iconfont icon-xiajiantou"></i>-->
 
       </div>
-      <div class="sort-item">
-        <span>特色</span>
-        <i class="icon iconfont icon-xiajiantou"></i>
+      <div class="sort-item" @click="">
+        <span>价格</span>
+        <!--<i class="icon iconfont icon-xiajiantou"></i>-->
 
       </div>
 
     </div>
 
-    <div class="filter-container" v-show="!isHide">
-      <div class="filter-head">
-        <div>
-          <span>地区</span>
-        </div>
-        <div>
-          <span>地点</span>
-        </div>
-      </div>
-      <div class="category-container">
-        <div class="wrapper category-left" ref="wrapper" id="category-left">
-          <ul class="content" id="C1">
+    <!--<div class="filter-container" v-show="!isHide">-->
+      <!--<div class="filter-head">-->
+        <!--<div>-->
+          <!--<span>地区</span>-->
+        <!--</div>-->
+        <!--<div>-->
+          <!--<span>地点</span>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="category-container">-->
+        <!--<div class="wrapper category-left" ref="wrapper" id="category-left">-->
+          <!--<ul class="content" id="C1">-->
 
-            <li :class="['category-left-li', {category_active:index===activeIndex}]"
-                v-for="(item,index) in spaceList" :key="item.Id" @click="toggleLi(index)">
-              <div>
-                <span>{{ item.Name }}</span>
-              </div>
-              <div>
-                <span class="category_count">{{ item.children.length }}</span>
-                <i class="icon iconfont icon-youjiantou1"></i>
-              </div>
-            </li>
+            <!--<li :class="['category-left-li', {category_active:index===activeIndex}]"-->
+                <!--v-for="(item,index) in spaceList" :key="item.Id" @click="toggleLi(index)">-->
+              <!--<div>-->
+                <!--<span>{{ item.Name }}</span>-->
+              <!--</div>-->
+              <!--<div>-->
+                <!--<span class="category_count">{{ item.children.length }}</span>-->
+                <!--<i class="icon iconfont icon-youjiantou1"></i>-->
+              <!--</div>-->
+            <!--</li>-->
 
-          </ul>
+          <!--</ul>-->
 
-        </div>
-        <div class="wrapper category-right" ref="wrapper" id="category-right">
+        <!--</div>-->
+        <!--<div class="wrapper category-right" ref="wrapper" id="category-right">-->
 
-          <ul class="content">
-            <li class="category-right-li" v-for="(item,index) in areaList"
-                @click="doSelectArea">
-              <div>
-                <span>{{ item.Name }}</span>
-              </div>
-              <div>
-                <span class="category_count">{{ item.Number }}</span>
-              </div>
-            </li>
-          </ul>
+          <!--<ul class="content">-->
+            <!--<li class="category-right-li" v-for="(item,index) in areaList"-->
+                <!--@click="doSelectArea">-->
+              <!--<div>-->
+                <!--<span>{{ item.Name }}</span>-->
+              <!--</div>-->
+              <!--<div>-->
+                <!--<span class="category_count">{{ item.Number }}</span>-->
+              <!--</div>-->
+            <!--</li>-->
+          <!--</ul>-->
 
-        </div>
+        <!--</div>-->
 
-      </div>
-    </div>
+      <!--</div>-->
+    <!--</div>-->
     <!--遮罩层-->
-    <div class="back-cover" @click="toggleFilter" v-show="!isHide"></div>
+    <!--<div class="back-cover" @click="toggleFilter" v-show="!isHide"></div>-->
 
   </div>
   <!--  结束-->
@@ -175,6 +175,7 @@
 
     span {
       padding-right: .7rem;
+      color: #000000;
     }
     span, i {
       position: relative;

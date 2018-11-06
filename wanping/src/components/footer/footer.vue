@@ -3,46 +3,46 @@
     <div class="foot-guide">
       <ul ref="foot" id="foot">
         <li class="foot-guide-li" @click="toIndex" v-if="this.page==='Home'">
-          <img src="../../assets/home2.png" alt="">
-          <span class="chosen">主页</span>
+          <i class="icon iconfont icon-home chosen"></i>
+          <span>主页</span>
         </li>
         <li class="foot-guide-li" @click="toIndex" v-else>
-          <img src="../../assets/home.png" alt="">
+          <i class="icon iconfont icon-home"></i>
           <span>主页</span>
         </li>
         <li class="foot-guide-li" @click="toCart" v-if="this.page==='Cart'">
-          <img src="../../assets/cart2.png" alt="">
-          <span class="chosen">购物车</span>
+          <i class="icon iconfont icon-gouwuche chosen"></i>
+          <span>购物车</span>
         </li>
         <li class="foot-guide-li" @click="toCart" v-else>
-          <img src="../../assets/cart.png" alt="">
+          <i class="icon iconfont icon-gouwuche"></i>
           <span>购物车</span>
         </li>
 
         <li class="foot-guide-li" @click="toSearch" v-if="this.page==='Search'">
-          <img src="../../assets/search2.png" alt="">
-          <span class="chosen">搜索</span>
+          <i class="icon iconfont icon-search chosen"></i>
+          <span>搜索</span>
         </li>
         <li class="foot-guide-li" @click="toSearch" v-else>
-          <img src="../../assets/search.png" alt="">
+          <i class="icon iconfont icon-search"></i>
           <span>搜索</span>
         </li>
 
         <li class="foot-guide-li" @click="toOrder" v-if="this.page==='Order'">
-          <img src="../../assets/ordered-list2.png" alt="">
-          <span class="chosen">订单</span>
+          <i class="icon iconfont icon-orderedlist chosen"></i>
+          <span>订单</span>
         </li>
         <li class="foot-guide-li" @click="toOrder" v-else>
-          <img src="../../assets/ordered-list.png" alt="">
+          <i class="icon iconfont icon-orderedlist"></i>
           <span>订单</span>
         </li>
 
         <li class="foot-guide-li" @click="toProfile" v-if="this.page==='Profile'">
-          <img src="../../assets/user2.png" alt="">
-          <span class="chosen">我的</span>
+          <i class="icon iconfont icon-user chosen"></i>
+          <span>我的</span>
         </li>
         <li class="foot-guide-li" @click="toProfile" v-else>
-          <img src="../../assets/user.png" alt="">
+          <i class="icon iconfont icon-user"></i>
           <span>我的</span>
         </li>
 
@@ -145,15 +145,17 @@ export default {
     flex-direction: column;
     align-items: center;
 
-    img {
+    i {
       width: 1.2rem;
+      height: 1.2rem;
       margin-top: .2rem;
+      font-size: 1.2rem;
     }
     span {
       @include sc(.6rem,#666);
     }
   }
   .chosen {
-    color: #3190e8!important;
+    color: $mainColor!important;
   }
 </style>
