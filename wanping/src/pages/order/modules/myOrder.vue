@@ -153,7 +153,7 @@
       toOrderDetail(event, i) {
         if (this.orderArr[i].OrderStatusVal !== 'BD0901') {
           const Tindex = event.currentTarget.id;
-          GoToPage("orderDetail", "orderDetail.html", {OrderId: Tindex});  // TODo 支付完成的 跳去订单详情
+          GoToPage("orderDetail", "orderDetail.html", {OrderId: Tindex});
 
         }
       },

@@ -57,7 +57,7 @@ export default {
   props: {
     page: {
       type: String,
-      default: 'Home',
+//      default: 'Home',
     },
     a: Boolean
 
@@ -152,7 +152,7 @@ export default {
       font-size: 1.2rem;
     }
     span {
-      @include sc(.6rem,#666);
+      @include sc(.6rem,#000);
     }
   }
   .chosen {

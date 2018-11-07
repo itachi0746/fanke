@@ -35,6 +35,7 @@ module.exports = {
     }
   },
   // 增加一个plugins
+
   plugins: [
     new webpack.ProvidePlugin({
       $: "jquery",

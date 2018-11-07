@@ -51,7 +51,7 @@ textarea { -webkit-appearance: none;}
 html,body{
   height: 100%;
   width: 100%;
-  //background-color: #F5F5F5;
+  background-color: #fbfbfb;
 }
 
 .oh {
@@ -126,4 +126,7 @@ html,body{
 
 .el-icon-close-tip {
   display: none !important;
+}
+.swiper-pagination-bullet-active {
+  background: #f9ce04;
 }

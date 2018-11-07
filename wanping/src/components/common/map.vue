@@ -1,0 +1,88 @@
+<template>
+  <!--  开始-->
+  <div class="my-map" id="my-map">
+    <baidu-map class="map" :center="center" :zoom="zoom" @ready="handler">
+      <bm-marker :position="center" :dragging="true" animation="">
+        <bm-label ref="label" :content="name" :labelStyle="{color: 'black', fontSize : '15px'}" :offset="{width: 0, height: 30}"/>
+      </bm-marker>
+    </baidu-map>
+  </div>
+  <!--  结束-->
+</template>
+
+<script>
+
+  export default {
+    data() {
+      return {
+        center: {lng: 0, lat: 0},
+        zoom: 3,
+        name: ''
+      }
+    },
+
+    props: {
+      coordinate: Object,
+    },
+    components: {
+    },
+
+    computed: {},
+
+    methods: {
+      handler ({BMap, map}) {
+        console.log(BMap, map);
+        this.center.lng = this.coordinate.Longitude;
+        this.center.lat = this.coordinate.Latitude;
+        this.name = this.coordinate.Name;
+        this.zoom = 17;
+
+
+        this.rePos();
+
+      },
+
+      rePos() {
+        let mylab;
+        console.log(this.$refs.label)
+        this.$nextTick(() => {
+//          console.log(this.$refs.label.$el.style.height)
+
+//          console.log(document.getElementsByClassName('BMapLabel'));
+          mylab = document.getElementsByClassName('BMapLabel');
+          console.log(mylab)
+          console.log(JSON.stringify(mylab))
+        })
+      }
+    },
+
+    created() {},
+
+    mounted() {
+      console.log('map:',this.coordinate);
+
+    },
+
+    beforeDestroy() {}
+  }
+</script>
+
+<style lang='scss' scoped>
+  .my-map {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    /*background-color: #0000ff;*/
+  }
+  .map {
+    width: 100%;
+    height: 100%;
+  }
+  /*隐藏百度左下的logo*/
+  /deep/ .anchorBL {
+    display: none;
+  }
+</style>

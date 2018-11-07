@@ -2,7 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './screen.vue'
-
+import BaiduMap from 'vue-baidu-map'
 import {Button} from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/config/rem'
@@ -14,7 +14,10 @@ import axiosPlugin from '@/server'
 Vue.config.productionTip = false;
 Vue.use(axiosPlugin);
 Vue.use(Button);
-
+Vue.use(BaiduMap, {
+  // ak 是在百度地图开发者平台申请的密钥 详见 http://lbsyun.baidu.com/apiconsole/key */
+  ak: '8jmD3Hhd9QLXWtBcS2GyYcGF4zxDPdTG'
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -12,31 +12,35 @@
             <span class="ellipsis">
               {{ item.Name }}
             </span>
-            <span class="right">
-              人流量: {{ item.Flowrate }}/h
-            </span>
+
           </p>
-          <div class="oh">
-            <div class="left shop-price">
+          <div class="shop-data">
+            <div class="shop-price">
               <span>¥</span>
               <span>{{ item.Price }}</span>
               <span></span>
             </div>
-            <div class="right distance">
+            <span class="flow">
+              人流量: 约{{ item.Flowrate }}/h
+            </span>
+
+          </div>
+          <div class="shop-data2">
+            <div class="distance">
               <span>km</span>
             </div>
           </div>
 
           <!--促销-->
           <!--<div class="discount">-->
-            <!--<div v-show="item.HasSales">-->
-              <!--<span class="_cu">促</span>-->
-              <!--<span>{{item.SalesDesc}}</span>-->
-            <!--</div>-->
-            <!--<div v-show="item.HasDiscount">-->
-              <!--<span class="_hui">惠</span>-->
-              <!--<span>{{item.DiscountDesc}}</span>-->
-            <!--</div>-->
+          <!--<div v-show="item.HasSales">-->
+          <!--<span class="_cu">促</span>-->
+          <!--<span>{{item.SalesDesc}}</span>-->
+          <!--</div>-->
+          <!--<div v-show="item.HasDiscount">-->
+          <!--<span class="_hui">惠</span>-->
+          <!--<span>{{item.DiscountDesc}}</span>-->
+          <!--</div>-->
           <!--</div>-->
         </div>
 
@@ -69,9 +73,25 @@
 
 //  components: {},
 
-//  computed: {},
+    computed: {
+
+    },
 
     methods: {
+      moneyChange (num, accuracy) {
+        const tranReg = new Map([
+          [9, 'b'],[6, 'm'],[3,'k']
+        ]);
+        let ac = accuracy || 0;
+        let length = typeof num === 'number' ? num.toString().length : num.length,
+          result = num;
+        tranReg.forEach((item,index) => {
+          result = length > (index >= 6 ? index - 1 : index) ?
+            (length = 0, (Math.round(num / 10 ** (index - ac)) / 10 ** ac) + item) : result;
+        });
+        return result;
+      },
+
       getData() {
         this.loadMoreSwitch = false;
 
@@ -87,9 +107,20 @@
           this.loadMoreSwitch = true;
           this.sum = res.Data.PageCount;  // 总页数
 //          console.log(this.sum)
-          this.$emit('loaded', true)
-        })
+          this.$emit('loaded', true);
 
+          // 数字转化
+          this.screenList.forEach((item) => {
+            let result = '', num;
+            if (item.Flowrate >= 10000) {
+              num = item.Flowrate.toString();
+              result = '.' + num.slice(-4)[0] + result;
+              num = num.slice(0, num.length - 4);
+              item.Flowrate = num + result + '万';
+
+            }
+          })
+        })
       },
       toScreen(event) {
         const targetId = event.currentTarget.getAttribute('data-pid');
@@ -172,24 +203,35 @@
     width: 100%;
     border-top: 1px solid #f5f5f5;
     padding: .5rem;
+    background-color: #fff;
   }
 
   .shop-name {
     font-size: .9rem;
     width: 100%;
+    display: flex;
 
     span:nth-child(1) {
-      width: 70%;
       @include sc(.8rem, #000);
-      display: inline-block;
-
+      width: 12rem;
     }
 
-    span:nth-child(2) {
+  }
+
+  .shop-data {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .flow {
       @include sc(.7rem, #666);
-      display: inline-block;
-      width: 30%;
+      text-align: right;
     }
+  }
+
+  .shop-data2 {
+    display: flex;
+    justify-content: flex-end;
   }
 
   .shop-price {
@@ -227,7 +269,7 @@
   .img-box {
     display: flex;
     align-items: center;
-    margin-right: .5rem;
+    /*margin-right: .5rem;*/
     img {
       width: 5rem;
       height: 5rem;
@@ -235,6 +277,7 @@
   }
 
   .desc-box {
+    padding-left: .5rem;
     flex: 1;
   }
 

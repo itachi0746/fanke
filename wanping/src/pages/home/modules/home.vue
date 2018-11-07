@@ -144,11 +144,9 @@
   @import "src/style/mixin";
 
   .swiper-container {
-    /*margin-top: 1.6rem;*/
     width: 100%;
     position: relative;
-    /*top: 1.6rem;*/
-    height: 7rem;
+    height: 10rem;
 
     img {
       width: 100%;
@@ -173,6 +171,7 @@
     /*padding-left: .8rem;*/
     /*padding-bottom: .3rem;*/
     padding: .3rem 0 .3rem .8rem;
+    background-color: $bc;
   }
 
   .recommend-item-wrap {
@@ -186,6 +185,9 @@
     float: left;
     img, div, p {
       width: 5rem;
+    }
+    div {
+      background-color: #ffffff;
     }
     img {
       height: 7rem;
@@ -201,7 +203,7 @@
   .division {
     width: 100%;
     height: .5rem;
-    background-color: #fff;
+    background-color: $bc;
   }
 
 
@@ -237,5 +239,6 @@
   .fill-div {
     height: 1.65rem;
   }
+
 
 </style>

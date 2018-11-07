@@ -93,7 +93,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: $blue;
+      background-color: #000000;
 
       .back {
         overflow: hidden;

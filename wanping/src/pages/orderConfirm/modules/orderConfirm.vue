@@ -214,12 +214,12 @@
 
     p:nth-child(1) {
       flex: 5;
-      background-color: #3c3c3c;
+      background-color: #000;
       padding-left: .8rem;
     }
     p:nth-child(2) {
       flex: 2;
-      background-color: #56d176;
+      background-color: $mainColor;
       text-align: center;
     }
   }

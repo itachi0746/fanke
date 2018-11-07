@@ -1,9 +1,36 @@
 <template>
   <div class="screen-detail" ref="screen">
     <Header :headName="headName"></Header>
+    <!--轮播图 开始-->
+    <swiper :options="swiperOption" ref="mySwiper">
+      <swiper-slide @click="">
+        <img src="../../../assets/lm.jpg" alt="轮播图">
+      </swiper-slide>
+      <div class="swiper-pagination" slot="pagination"></div>
+    </swiper>
+    <!--轮播图 结束-->
+
     <div class="screen-data">
       <h5>{{resData.Name}}</h5>
       <p class="screen-desc">{{resData.Desc}}</p>
+
+      <p class="screen-desc">Step1: 点击日期查看大屏的剩余广告位</p>
+      <p class="screen-desc">Step2: 选择广告位数量, 点击添加</p>
+      <p class="screen-desc">Step3: 点击下方的购买按钮</p>
+      <!--<p class="screen-desc">备注: </p>-->
+    </div>
+    <div class="action-bar">
+      <ul>
+        <li>
+
+        </li>
+        <li>
+
+        </li>
+        <li @click="locate">
+          <i class="el-icon-location"></i><span>大屏位置</span>
+        </li>
+      </ul>
     </div>
     <div class="calendar">
       <Calendar v-on:choseDay="clickDay"
@@ -62,6 +89,23 @@
           <p>暂无</p>
         </section>
       </div>
+      <!--<div class="prize-box">-->
+        <!--&lt;!&ndash;<section>&ndash;&gt;-->
+        <!--&lt;!&ndash;<span>已选择数量: </span>&ndash;&gt;-->
+        <!--&lt;!&ndash;<span class="sum-num"> {{ sumNum }}</span>&ndash;&gt;-->
+        <!--&lt;!&ndash;<span>个</span>&ndash;&gt;-->
+        <!--&lt;!&ndash;</section>&ndash;&gt;-->
+        <!--<section>-->
+          <!--<span>应付: </span>-->
+          <!--<span> ¥</span>-->
+          <!--<span class="sum-prize">{{ sumPrice }}</span>-->
+        <!--</section>-->
+      <!--</div>-->
+
+
+    </div>
+    <!--操作部分-->
+    <div class="actionBar">
       <div class="prize-box">
         <!--<section>-->
         <!--<span>已选择数量: </span>-->
@@ -74,11 +118,6 @@
           <span class="sum-prize">{{ sumPrice }}</span>
         </section>
       </div>
-
-
-    </div>
-    <!--操作部分-->
-    <div class="actionBar">
       <ul>
         <li class="shop-car" @click="addToBasket">加入购物车</li>
         <li class="buy-btn" @click="handleOrder">购买</li>
@@ -87,17 +126,26 @@
 
     <!--loading-->
     <Loading v-show="isLoading"></Loading>
-    <div class="iosBtm" v-if="isIOS"></div>
+    <!--地图-->
+    <Map :coordinate="{'Latitude':resData.Latitude,'Longitude':resData.Longitude,'Name':resData.Name}" v-if="showMap"></Map>
+    <!--<div class="iosBtm" v-if="isIOS"></div>-->
+    <div class="fillBtm"></div>
+
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
-  import Calendar from 'vue-calendar-component';
+  import Calendar from 'vue-calendar-component'
   import Header from '../../../components/header/header.vue'
+  import Footer from '../../../components/footer/footer.vue'
   import Loading from '../../../components/common/loading.vue'
+  import Map from '../../../components/common/map.vue'
   import {postData} from '@/server'
   import {getUrlParms, IOSConfig} from '@/config/utils'
 
+  import { swiper, swiperSlide } from 'vue-awesome-swiper';
+  import 'swiper/dist/css/swiper.css'
 
   export default {
     data() {
@@ -116,14 +164,28 @@
         curDayObj: null,  // 当前显示的某天的obj
         selected: [],  // 已选择的广告位
         itemId: 0,  // 所选择时段的id
-        isLoading: false
+        isLoading: false,
+        showMap: false,
+        swiperOption: {
+          pagination: {
+            el: '.swiper-pagination'
+          },
+          loop: true,
+          autoplay: {
+            disableOnInteraction: false,
+          },
+        },
       }
     },
 
     components: {
       Calendar,
       Header,
-      Loading
+      Loading,
+      Footer,
+      swiper,
+      swiperSlide,
+      Map
     },
 
     computed: {
@@ -155,7 +217,10 @@
           console.log('on iphone/mac')
           return true
         }
-      }
+      },
+      swiper() {
+        return this.$refs.mySwiper.swiper
+      },
 
     },
 
@@ -198,14 +263,9 @@
         str = arr[0] + '-' + arr[1] + '-' + d;
 
         console.log('findDay:', str);
-//        this.days.forEach((item, index) => {
-//          console.log(item)
-//          if (item.Date === str) {
-//            this.curDayObj = item;
-//          }
-//        })
+
         for (let i = 0; i < this.days.length; i++) {
-          console.log(str, this.days[i].Date)
+//          console.log(str, this.days[i].Date)
           if (this.days[i].Date === str) {
             this.curDayObj = this.days[i];
 //            console.log(this.days[i]);
@@ -275,11 +335,7 @@
       addToBasket() {  // 添加到购物车
         this.isLoading = true;
         const url = '/AddToBasket';
-//        const dataArr = [{
-//          psid: this.Id,
-//          date: this.curDayObj.Date,
-//          count: 2
-//        }];
+
         postData(url, this.selected).then((res) => {
           console.log('AddToBasket', res);
 //          console.log(this.selected);
@@ -317,7 +373,12 @@
           this.$refs.screen.style.marginBottom = parseInt(MB) + 30 + 'px';
           console.log(this.$refs.screen.style.marginBottom)
         }
-      }
+      },
+
+      locate() {
+        this.showMap = true;
+
+      },
       /**
        * @method 计算购物车中的项,把项的ItemId加入数组中并返回
        */
@@ -336,6 +397,8 @@
 //        });
 //        return arr
 //      }
+
+
     },
 
     created() {
@@ -363,7 +426,7 @@
     mounted() {
       this.timeStampStart = this.timest()[0];
       this.timeStampOver = this.timest()[1];
-      console.log('screen  mounted')
+      console.log('screen  mounted',)
 //      this.calIOSMargin();
     },
 
@@ -378,11 +441,42 @@
 
   .screen-data {
     padding: .5rem;
-    /*border-bottom: .5rem solid #7c7c7c;*/
+
+    h5 {
+      font-weight: bold;
+      color: #000;
+    }
+
+    .screen-desc:nth-child(3) {
+      margin-top: .5rem;
+    }
+  }
+
+  .action-bar {
+    padding: 0 1rem .5rem;
+
+    ul {
+      display: flex;
+
+      li {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        span {
+          @include sc(.75rem, #000);
+        }
+
+        .el-icon-location {
+          font-size: .9rem;
+        }
+      }
+    }
   }
 
   .screen-desc {
-    @include sc(.6rem, #666);
+    @include sc(.7rem, #666);
   }
 
   .data-container {
@@ -401,9 +495,9 @@
   }
 
   .prize-box {
-    position: fixed;
-    bottom: 2.3rem;
-    left: 0;
+    /*position: fixed;*/
+    /*bottom: 2.3rem;*/
+    /*left: 0;*/
     background-color: #fff;
     border-top: 1px solid #dddddd;
     width: 100%;
@@ -442,8 +536,7 @@
   }
 
   .calendar {
-    border-top: 1px solid $blue;
-    border-bottom: 1px solid $blue;
+    border-top: 1px solid #ededed;
   }
 
   .data-tag-font {
@@ -524,9 +617,9 @@
     z-index: 100;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 2.3rem;
     width: 100%;
-    height: 2.3rem;
+    height: 4.3rem;
     box-shadow: 0 -0.02667rem 0.05333rem rgba(0, 0, 0, 0.1);
 
     ul {
@@ -556,13 +649,26 @@
     margin: .2rem .2rem 0 0;
   }
 
-  .screen-detail {
-    margin-bottom: 4.3rem;
+
+  .fillBtm {
+    width: 100%;
+    height: 6.8rem;
   }
 
   .iosBtm {
     width: 100%;
     height: 4.5rem;
+  }
+
+  .swiper-container {
+    width: 100%;
+    position: relative;
+    height: 10rem;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 
 </style>
