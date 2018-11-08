@@ -61,7 +61,7 @@
 
       </ul>
     </section>
-
+    <div class="fillBtm"></div>
     <section class="confrim-order">
       <div class="ft-cb" @click="selAll">
         <i class="icon iconfont icon-unchecked" v-show="!checkAllFlag"></i>
@@ -89,14 +89,15 @@
       </div>
     </section>
     <Loading v-show="isLoading"></Loading>
-    <div class="iosBtm" v-if="isIOS"></div>
-
+    <!--<div class="iosBtm" v-if="isIOS"></div>-->
+    <Footer :page="page"></Footer>
   </div>
   <!--购物车 结束-->
 </template>
 
 <script>
   import Header from '../../../components/header/header.vue'
+  import Footer from '../../../components/footer/footer.vue'
   import Loading from '../../../components/common/loading.vue'
   import {postData} from '@/server'
   import {getUrlParms,IOSConfig} from '@/config/utils'
@@ -116,7 +117,8 @@
 
     components: {
       Header,
-      Loading
+      Loading,
+      Footer
     },
 
     computed: {
@@ -283,7 +285,7 @@
   @import "src/style/mixin";
 
   .items {
-    margin-bottom: 2.4rem;
+    /*margin-bottom: 2.4rem;*/
     height: 29rem;
     overflow-y: scroll;
     cursor: pointer;
@@ -454,7 +456,7 @@
   .confrim-order {
     display: flex;
     position: fixed;
-    bottom: 0;
+    bottom: 2.3rem;
     background-color: #fff;
     @include wh(100%, 2.4rem);
     box-shadow: 0 -0.02667rem 0.05333rem rgba(0, 0, 0, 0.1);
@@ -514,8 +516,10 @@
     text-align: center;
   }
 
-  .iosBtm {
+  .fillBtm {
     width: 100%;
-    height: 3.5rem;
+    height: 5.8rem;
   }
+
+
 </style>

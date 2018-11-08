@@ -32,16 +32,16 @@
                   <span>起</span>
                 </p>
               </section>
-              <section class="discount oh">
-                <div v-show="item.HasSales" class="left">
-                  <span class="_cu">促</span>
-                  <span>{{item.SalesDesc}}</span>
-                </div>
-                <div v-show="item.HasDiscount" class="left">
-                  <span class="_hui">惠</span>
-                  <span>{{item.DiscountDesc}}</span>
-                </div>
-              </section>
+              <!--<section class="discount oh">-->
+                <!--<div v-show="item.HasSales" class="left">-->
+                  <!--<span class="_cu">促</span>-->
+                  <!--<span>{{item.SalesDesc}}</span>-->
+                <!--</div>-->
+                <!--<div v-show="item.HasDiscount" class="left">-->
+                  <!--<span class="_hui">惠</span>-->
+                  <!--<span>{{item.DiscountDesc}}</span>-->
+                <!--</div>-->
+              <!--</section>-->
               <!--<p>距离</p>-->
             </div>
           </section>

@@ -18,7 +18,7 @@
 
       <ul class="food_list_ul">
         <li v-for="(item,index) in resData.Items" :key="item.PsId" class="food_list_ul_li">
-          <div class="li-div">
+          <div class="li-div" @click="toScreen(item.PDtlId)">
             <p class="food_name ellipsis">{{item.PsName}}</p>
             <div class="quantity_price">
               <span>X{{item.Total}}</span>
@@ -346,6 +346,10 @@
           type: "error"
         });
       },
+      toScreen(psid) {
+//        console.log(psid)
+        GoToPage("screen", "screen.html", {'pid': psid});
+      }
     },
     created() {
       const args = getUrlParms();

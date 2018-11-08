@@ -3,21 +3,19 @@
   <div class="filter-box">
     <!--筛选条件-->
     <div class="sort-container">
-      <div class="sort-item" @click="">
-        <span>人流量</span>
+
+      <div class="sort-item" @click="sort">
+        <span data-id="1" :class="[{span_active:'1'===activeIndex}]">距离</span>
         <!--<i class="icon iconfont icon-xiajiantou"></i>-->
       </div>
-      <div class="sort-item" @click="">
-        <span>距离</span>
+      <div class="sort-item" @click="sort">
+        <span data-id="2" :class="[{span_active:'2'===activeIndex}]">价格</span>
         <!--<i class="icon iconfont icon-xiajiantou"></i>-->
-
       </div>
-      <div class="sort-item" @click="">
-        <span>价格</span>
+      <div class="sort-item" @click="sort">
+        <span data-id="3" :class="[{span_active:'3'===activeIndex}]">人流量</span>
         <!--<i class="icon iconfont icon-xiajiantou"></i>-->
-
       </div>
-
     </div>
 
     <!--<div class="filter-container" v-show="!isHide">-->
@@ -74,15 +72,15 @@
 
 <script>
   import {postData, link} from '@/server'
-  import BScroll from 'better-scroll'
+//  import BScroll from 'better-scroll'
 
   export default {
     data() {
       return {
         isHide: true,
-        isActive: false,  // 当前是哪个
-        activeIndex: 0,  // 当前的下标
-        spaceList: [],  // 城市列表(包含地区)
+//        isActive: false,  // 当前是哪个
+        activeIndex: '1',  // 当前的下标
+//        spaceList: [],  // 城市列表(包含地区)
       }
     },
 
@@ -97,47 +95,60 @@
     },
 
     methods: {
-      init_scroll() {
-        if (!this.scroll) {
-          this.scroll = new BScroll('#category-left', {
-            //开启点击事件 默认为false
-            click: true
-          });
-          this.scroll2 = new BScroll('#category-right', {
-            //开启点击事件 默认为false
-            click: true
-          });
-        } else {
-          this.scroll.refresh();
-          this.scroll2.refresh();
-        }
-        console.log(this.scroll);
-      },
-
-      toggleLi(index) {
-        this.activeIndex = index
-      },
-      toggleFilter() {
-        this.isHide = !this.isHide;
-//        this.timer1 = setTimeout(() => {
+//      init_scroll() {
+//        if (!this.scroll) {
+//          this.scroll = new BScroll('#category-left', {
+//            //开启点击事件 默认为false
+//            click: true
+//          });
+//          this.scroll2 = new BScroll('#category-right', {
+//            //开启点击事件 默认为false
+//            click: true
+//          });
+//        } else {
+//          this.scroll.refresh();
+//          this.scroll2.refresh();
+//        }
+//        console.log(this.scroll);
+//      },
+//
+//      toggleLi(index) {
+//        this.activeIndex = index
+//      },
+//      toggleFilter() {
+//        this.isHide = !this.isHide;
+////        this.timer1 = setTimeout(() => {
+////          this.init_scroll();
+////        },1000)
+//        this.$nextTick(() => {
 //          this.init_scroll();
-//        },1000)
-        this.$nextTick(() => {
-          this.init_scroll();
-        });
-        console.log(this.scroll);
+//        });
+//        console.log(this.scroll);
+//
+//      },
+//      doSelectArea() {
+//        // TODO
+//      }
 
+      /**
+       * @method 按人流排序
+       */
+      sort(event) {
+//        console.log(event.target.getAttribute("data-id"));
+//        console.log(event.currentTarget)
+        const id = event.target.getAttribute("data-id");
+//        console.log(typeof id)
+        this.activeIndex = id;
+        this.$emit('sort',id)
       },
-      doSelectArea() {
-        // TODO
-      }
+
     },
 
     created() {
-      postData('/GetAreas').then((res) => {
-          this.spaceList = res.Data;
-        }
-      )
+//      postData('/GetAreas').then((res) => {
+//          this.spaceList = res.Data;
+//        }
+//      )
     },
     mounted() {
 
@@ -155,32 +166,39 @@
     background-color: #fff;
     border-bottom: 1px solid #ececec;
     position: relative;
-    top: 0rem;
+    top: 0;
     right: 0;
     width: 100%;
-    display: -ms-flexbox;
     display: flex;
     z-index: 13;
   }
 
   .sort-item {
-    margin: .2rem 0;
+    height: 1.65rem;
     font-size: .7rem;
     color: #666;
-    width: 33.3%;
-    height: 1.2rem;
-    line-height: 1.2rem;
-    text-align: center;
+    flex: 1;
+    display: flex;
+
     border-right: 1px solid #ececec;
 
     span {
-      padding-right: .7rem;
       color: #000000;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    span, i {
-      position: relative;
-      left: .5rem;
-    }
+    /*span, i {*/
+      /*position: relative;*/
+      /*left: .5rem;*/
+    /*}*/
+  }
+
+  .sort-item:nth-child(3) {
+    border: none;
   }
 
   /*地点筛选*/
@@ -296,6 +314,10 @@
     left: 0;
     z-index: 12;
     width: 100%;
+  }
+
+  .span_active {
+    color: $mainColor!important;
   }
 
   /*.content {*/

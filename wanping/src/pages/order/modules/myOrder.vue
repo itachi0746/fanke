@@ -26,7 +26,7 @@
             </section>
             <div class="order_again">
               <span class="order_sum">合计 ¥{{order.Amount}}</span>
-              <ComputeTime :timeData="order" v-show="order.OrderStatusVal==='BD0901'"></ComputeTime>
+              <ComputeTime :timeData="order"></ComputeTime>
             </div>
           </section>
         </li>
@@ -134,11 +134,7 @@
           console.log(res)
           this.orderArr = this.orderArr.concat(res.Data.Models);
           this.pageCount = res.Data.PageCount;  // 总页数
-//          if (this.pageNum > this.pageCount) {
-//            this.btmFont = '没有更多数据了';
-//          } else {
-//            this.btmFont = '加载更多';
-//          }
+
           this.btmFont = this.pageNum > this.pageCount ? '没有更多数据了' : '加载更多';
           this.$nextTick(() => {
             this.init_scroll();

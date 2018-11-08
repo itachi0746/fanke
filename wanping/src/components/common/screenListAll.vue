@@ -2,7 +2,7 @@
   <div id="shoplist">
     <!--商家列表-->
     <ul class="shoplist-container">
-      <li class="shoplist-item" v-for="(item, index) in screenList" :key="item.Id" @click="toScreen($event)"
+      <li class="shoplist-item" v-for="(item) in screenList" :key="item.Id" @click="toScreen($event)"
           :data-pid="item.Id">
         <div class="img-box">
           <img :src="item.Img" alt="">
@@ -23,7 +23,6 @@
             <span class="flow">
               人流量: 约{{ item.Flowrate }}/h
             </span>
-
           </div>
           <div class="shop-data2">
             <div class="distance">
@@ -45,7 +44,6 @@
         </div>
 
       </li>
-      <!--<li class="empty_data">{{btmFont}}</li>-->
 
     </ul>
     <p class="empty_data" v-if="!isEnd">加载更多</p>
@@ -55,7 +53,7 @@
 
 <script>
   import {postData, link} from '../../server'
-  import BScroll from 'better-scroll'
+  //  import BScroll from 'better-scroll'
 
   export default {
     data() {
@@ -65,31 +63,69 @@
         sum: 1,  // 最多可以有几页
         loadMoreSwitch: true,
         isEnd: false,
-//        btmFont: '加载更多',
-
+        latitude: 0,
+        longitude: 0
       }
     },
-//    props: ['loaded'],
+    props: {
+      sortId: String
+    },
 
 //  components: {},
 
-    computed: {
-
+    watch: {
+      sortId(newVaule, oldVaule) {
+        console.log(newVaule, oldVaule);
+        this.screenList = [];
+        this.getData();
+      }
     },
 
     methods: {
-      moneyChange (num, accuracy) {
+      moneyChange(num, accuracy) {
         const tranReg = new Map([
-          [9, 'b'],[6, 'm'],[3,'k']
+          [9, 'b'], [6, 'm'], [3, 'k']
         ]);
         let ac = accuracy || 0;
         let length = typeof num === 'number' ? num.toString().length : num.length,
           result = num;
-        tranReg.forEach((item,index) => {
+        tranReg.forEach((item, index) => {
           result = length > (index >= 6 ? index - 1 : index) ?
             (length = 0, (Math.round(num / 10 ** (index - ac)) / 10 ** ac) + item) : result;
         });
         return result;
+      },
+
+      getLocation() {
+        let ua = navigator.userAgent.toLowerCase();//获取判断用的对象
+        if (ua.match(/MicroMessenger/i) === "micromessenger") {
+          //在微信中打开
+          if (wx) {  // 判断wx
+            wx.ready(() => {
+              wx.getLocation({
+                type: 'wgs84',
+                success: (res) => {
+                  console.log('获取位置信息成功');
+                  this.latitude = res.latitude;
+                  this.longitude = res.longitude;
+                  this.getData();
+                },
+                fail: (res) => {
+                  console.log('获取位置信息失败');
+
+                }
+              })
+            })
+          }
+
+        }
+
+
+        if (window.location.hostname === 'localhost') {
+          console.log('在localhost')
+          this.getData();
+        }
+
       },
 
       getData() {
@@ -99,7 +135,8 @@
 //        const url = 'http://www.bai.com/screenListAll';
 
         const data = {
-          pageindex: this.page
+          pageindex: this.page,
+          OrderBy: this.sortId
         };
         postData(url, data).then((res) => {
           console.log(res)
@@ -153,8 +190,7 @@
     },
 
     created() {
-
-      this.getData()
+      this.getLocation();
     },
     mounted() {
 
@@ -263,7 +299,7 @@
     text-align: center;
     line-height: 2rem;
     margin-bottom: 2.3rem;
-    background-color: #fff;
+    background-color: $bc;
   }
 
   .img-box {

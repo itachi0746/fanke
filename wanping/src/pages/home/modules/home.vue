@@ -2,7 +2,7 @@
   <div id="home">
     <Loading v-show="isLoading"></Loading>
     <!--选地区-->
-    <aFilter ref="af"></aFilter>
+    <aFilter ref="af" @sort="handleSort"></aFilter>
     <div class="fill-div"></div>
     <!--轮播图 开始-->
     <swiper :options="swiperOption" ref="mySwiper" v-if="Ads.length">
@@ -36,7 +36,7 @@
 
     <!--分割条-->
     <div class="division"></div>
-    <screenListAll @loaded="handleLoad"></screenListAll>
+    <screenListAll @loaded="handleLoad" :sort-id="sortId"></screenListAll>
     <Footer :page="page"></Footer>
     <!--<div class="iosBtm" v-if="isIOS"></div>-->
 
@@ -62,6 +62,7 @@
         page: 'Home',
         isLoading: true,
         Recommends: [],
+        sortId: '1',
         swiperOption: {
           pagination: {
             el: '.swiper-pagination'
@@ -101,8 +102,6 @@
     },
 
     mounted() {
-
-
 //      this.timer1 = setTimeout(() => {
 //        this.scroll = new BScroll('#category-left', {
 //          //开启点击事件 默认为false
@@ -123,6 +122,13 @@
       },
       handleLoad(loaded) {
         this.isLoading = !loaded
+      },
+      /**
+       * @method 排序
+       */
+      handleSort(id) {
+//        console.log(id);
+        this.sortId = id;
       }
     },
     components: {

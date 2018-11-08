@@ -3,8 +3,8 @@
     <Header :headName="headName"></Header>
     <!--轮播图 开始-->
     <swiper :options="swiperOption" ref="mySwiper">
-      <swiper-slide @click="">
-        <img src="../../../assets/lm.jpg" alt="轮播图">
+      <swiper-slide @click="" v-for="(item,index) in resData.Imgs" :key="index">
+        <img :src="item" alt="轮播图">
       </swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
     </swiper>
@@ -170,10 +170,10 @@
           pagination: {
             el: '.swiper-pagination'
           },
-          loop: true,
-          autoplay: {
-            disableOnInteraction: false,
-          },
+//          loop: true,
+//          autoplay: {
+//            disableOnInteraction: false,
+//          },
         },
       }
     },

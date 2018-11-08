@@ -35,10 +35,10 @@
         this.center.lng = this.coordinate.Longitude;
         this.center.lat = this.coordinate.Latitude;
         this.name = this.coordinate.Name;
-        this.zoom = 17;
+        this.zoom = 15;
 
 
-        this.rePos();
+//        this.rePos();
 
       },
 
