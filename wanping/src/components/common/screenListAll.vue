@@ -98,31 +98,36 @@
 
       getLocation() {
         let ua = navigator.userAgent.toLowerCase();//获取判断用的对象
-        if (ua.match(/MicroMessenger/i) === "micromessenger") {
-          //在微信中打开
-          if (wx) {  // 判断wx
-            wx.ready(() => {
-              wx.getLocation({
-                type: 'wgs84',
-                success: (res) => {
-                  console.log('获取位置信息成功');
-                  this.latitude = res.latitude;
-                  this.longitude = res.longitude;
-                  this.getData();
-                },
-                fail: (res) => {
-                  console.log('获取位置信息失败');
+        try {
+          if (ua.match(/MicroMessenger/i) === "micromessenger") {
+            //在微信中打开
+            if (wx) {  // 判断wx
+              wx.ready(() => {
+                wx.getLocation({
+                  type: 'wgs84',
+                  success: (res) => {
+                    console.log('获取位置信息成功');
+                    this.latitude = res.latitude;
+                    this.longitude = res.longitude;
+                    this.getData();
+                  },
+                  fail: (res) => {
+                    console.log('获取位置信息失败');
 
-                }
+                  }
+                })
               })
-            })
+            }
           }
-
+        }
+        catch(err) {
+          console.log('err:',err)
         }
 
 
+//
         if (window.location.hostname === 'localhost') {
-          console.log('在localhost')
+          console.log('在localhost');
           this.getData();
         }
 

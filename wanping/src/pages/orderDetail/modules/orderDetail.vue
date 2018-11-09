@@ -6,7 +6,7 @@
     <section class="food_list">
       <a href="#" class="food_list_header">
         <div class="shop_name">
-          <span>订单信息</span>
+          <span>订单信息:</span>
         </div>
       </a>
       <p class="data-head">
@@ -23,6 +23,7 @@
             <div class="quantity_price">
               <span>X{{item.Total}}</span>
               <span>¥{{item.Amount}}</span>
+              <i class="el-icon-arrow-right"></i>
             </div>
           </div>
           <!--上传功能 :http-request="uploadReq" 开始-->
@@ -433,15 +434,14 @@
           flex: 4;
         }
         .quantity_price {
-          flex: 1;
+          flex: 2;
           @include fj;
           align-items: center;
-          span:nth-of-type(1) {
-            @include sc(.6rem, #ccc);
-          }
-          span:nth-of-type(2) {
+          span {
             @include sc(.6rem, #666);
+
           }
+
         }
         .li-div {
           @include fj;
@@ -509,16 +509,4 @@
 
 
 </style>
-<style>
-  /*.el-message-box {*/
-    /*width: 90%;*/
-  /*}*/
 
-  /*.el-upload-list__item {*/
-    /*text-align: left;*/
-  /*}*/
-
-  /*.el-icon-close-tip {*/
-    /*display: none !important;*/
-  /*}*/
-</style>

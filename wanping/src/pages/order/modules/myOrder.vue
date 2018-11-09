@@ -32,6 +32,11 @@
         </li>
         <li class="empty_data">{{btmFont}}</li>
       </ul>
+      <ul v-else>
+        <li class="empty-states">
+          <span>这里是空的，快去逛逛吧</span>
+        </li>
+      </ul>
 
     </div>
     <Loading v-show="isLoading"></Loading>
@@ -320,4 +325,12 @@
     width: 100%;
     height: 3.5rem;
   }
+
+  .empty-states {
+    padding-top: 3rem;
+    font-size: .9rem;
+    color: #AEB0B7;
+    text-align: center;
+  }
+
 </style>

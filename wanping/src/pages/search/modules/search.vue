@@ -284,8 +284,13 @@
       color: #fff;
       border-radius: 0.125rem;
       background-color: #3190e8;
-      font-weight: bold;
+      /*font-weight: bold;*/
       padding: 0 0.25rem;
+    }
+
+    .search-submit:active {
+      background-color: #2e88db;
+      border-color: #2e88db;
     }
 
     input {
@@ -297,7 +302,7 @@
     font-size: 0.7rem;
     line-height: 2rem;
     text-indent: 0.5rem;
-    font-weight: bold;
+    /*font-weight: bold;*/
     color: #666;
   }
 
@@ -307,7 +312,7 @@
       background-color: #fff;
       color: #3190e8;
       font: 0.8rem/2rem "Microsoft YaHei";
-      font-weight: bold;
+      /*font-weight: bold;*/
       text-align: center;
     }
     .history-list {

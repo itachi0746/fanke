@@ -1,6 +1,18 @@
 <template>
   <!--  开始-->
   <div class="my-map" id="my-map">
+    <section class="head" ref="head" id="head">
+      <header>
+        <div class="back" @click="hideMap">
+          <i class="icon iconfont icon-zuojiantou"></i>
+        </div>
+        <div class="head-font">
+          <span>大屏位置</span>
+        </div>
+        <div class="edit">
+        </div>
+      </header>
+    </section>
     <baidu-map class="map" :center="center" :zoom="zoom" @ready="handler">
       <bm-marker :position="center" :dragging="true" animation="">
         <bm-label ref="label" :content="name" :labelStyle="{color: 'black', fontSize : '15px'}" :offset="{width: 0, height: 30}"/>
@@ -41,6 +53,9 @@
 //        this.rePos();
 
       },
+      hideMap() {
+        this.$emit('hide-map')
+      },
 
       rePos() {
         let mylab;
@@ -79,10 +94,50 @@
   }
   .map {
     width: 100%;
-    height: 100%;
+    height: 94%;
   }
   /*隐藏百度左下的logo*/
   /deep/ .anchorBL {
     display: none;
+  }
+
+  .head {
+    width: 100%;
+    height: 6%;
+    background-color: #000000;
+
+
+    header {
+      width: 100%;
+      padding: .3rem .5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #000000;
+
+      .back {
+        overflow: hidden;
+        flex: 1;
+      }
+      .head-font {
+        flex: 3;
+        color: #fff;
+        text-align: center;
+
+        span {
+          font-weight: bold;
+          color: #fff;
+        }
+      }
+      .edit {
+        flex: 1;
+
+      }
+    }
+
+    i {
+      font-size: 1rem;
+      color: #fff;
+    }
   }
 </style>

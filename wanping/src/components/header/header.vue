@@ -114,7 +114,7 @@
         font-size: .7rem;
         text-align: right;
         span {
-          color: #666666;
+          color: #d4d4d4;
         }
       }
     }

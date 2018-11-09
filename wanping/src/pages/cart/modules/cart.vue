@@ -89,7 +89,6 @@
       </div>
     </section>
     <Loading v-show="isLoading"></Loading>
-    <!--<div class="iosBtm" v-if="isIOS"></div>-->
     <Footer :page="page"></Footer>
   </div>
   <!--购物车 结束-->
@@ -510,8 +509,8 @@
   }
 
   .empty-states {
-    padding-top: 60px;
-    font-size: 18px;
+    padding-top: 3rem;
+    font-size: .9rem;
     color: #AEB0B7;
     text-align: center;
   }

@@ -27,7 +27,7 @@
         <li>
 
         </li>
-        <li @click="locate">
+        <li @click="handleMap">
           <i class="el-icon-location"></i><span>大屏位置</span>
         </li>
       </ul>
@@ -127,7 +127,7 @@
     <!--loading-->
     <Loading v-show="isLoading"></Loading>
     <!--地图-->
-    <Map :coordinate="{'Latitude':resData.Latitude,'Longitude':resData.Longitude,'Name':resData.Name}" v-if="showMap"></Map>
+    <Map @hide-map="handleMap" :coordinate="{'Latitude':resData.Latitude,'Longitude':resData.Longitude,'Name':resData.Name}" v-if="showMap"></Map>
     <!--<div class="iosBtm" v-if="isIOS"></div>-->
     <div class="fillBtm"></div>
 
@@ -375,9 +375,8 @@
         }
       },
 
-      locate() {
-        this.showMap = true;
-
+      handleMap() {
+        this.showMap = !this.showMap;
       },
       /**
        * @method 计算购物车中的项,把项的ItemId加入数组中并返回

@@ -5,8 +5,11 @@
     <div class="sort-container">
 
       <div class="sort-item" @click="sort">
-        <span data-id="1" :class="[{span_active:'1'===activeIndex}]">距离</span>
-        <!--<i class="icon iconfont icon-xiajiantou"></i>-->
+        <span data-id="1" :class="[{span_active:'1'===activeIndex}]">
+          距离
+          <i class="icon iconfont icon-xiajiantou"></i>
+        </span>
+
       </div>
       <div class="sort-item" @click="sort">
         <span data-id="2" :class="[{span_active:'2'===activeIndex}]">价格</span>
@@ -183,7 +186,7 @@
     border-right: 1px solid #ececec;
 
     span {
-      color: #000000;
+      color: #666;
       width: 100%;
       height: 100%;
       text-align: center;
@@ -317,10 +320,10 @@
   }
 
   .span_active {
-    color: $mainColor!important;
+    color: #000!important;
   }
 
-  /*.content {*/
-    /*height: 30rem;*/
-  /*}*/
+  .iconfont {
+    font-size: .7rem;
+  }
 </style>

@@ -4,10 +4,10 @@
               @click.stop="gotoPay" v-show="orderStateVal">
 	       {{remaining}}
         </span>
-        <span class="rem_time" style="color: orange;border-width: 1px;border-style: solid;border-color: orange;"
-              @click.stop="" v-show="!orderStateVal">
-	       已完成
-        </span>
+        <!--<span class="rem_time" style="color: orange;border-width: 1px;border-style: solid;border-color: orange;"-->
+              <!--@click.stop="" v-show="!orderStateVal">-->
+	       <!--已完成-->
+        <!--</span>-->
         <!--<span class="rem_time" style="color: red;border-width: 1px;border-style: solid;border-color: red;margin-left:.5rem;"-->
               <!--@click.stop="buyAgain" v-show="!orderStateVal">-->
 	       <!--再次购买-->
