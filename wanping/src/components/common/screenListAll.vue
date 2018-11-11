@@ -96,7 +96,8 @@
         return result;
       },
 
-      getLocation() {
+      getUserLocation() {
+        let that = this;
         let ua = navigator.userAgent.toLowerCase();//获取判断用的对象
         try {
           if (ua.match(/MicroMessenger/i) === "micromessenger") {
@@ -107,13 +108,12 @@
                   type: 'wgs84',
                   success: (res) => {
                     console.log('获取位置信息成功');
-                    this.latitude = res.latitude;
-                    this.longitude = res.longitude;
-                    this.getData();
+                    that.latitude = res.latitude;
+                    that.longitude = res.longitude;
+                    that.getData();
                   },
                   fail: (res) => {
                     console.log('获取位置信息失败');
-
                   }
                 })
               })
@@ -195,7 +195,7 @@
     },
 
     created() {
-      this.getLocation();
+      this.getUserLocation();
     },
     mounted() {
 
