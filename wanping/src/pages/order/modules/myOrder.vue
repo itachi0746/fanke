@@ -19,9 +19,22 @@
                   {{order.OrderStatus}}
                 </p>
               </header>
-              <section class="order_basket" v-for="(item,index) in order.Items">
-                <p class="order_name ellipsis">{{item.PsName}}</p>
-                <p class="order_amount">¥{{item.Amount}}</p>
+              <section class="order_basket" v-for="(item) in order.Items">
+                <div class="order_img_box">
+                  <img class="order_img" :src="item.Img" alt="商品图">
+                </div>
+                <div class="order_data">
+                  <div>
+                    <p class="order_name ellipsis">
+                      {{item.BusinessName}}
+                    </p>
+                    <p class="order_name2 ellipsis">{{item.PsName}}</p>
+                  </div>
+                  <div>
+                    <p class="order_amount">¥{{item.Price}}</p>
+                    <p class="order_total">×{{item.Total}}</p>
+                  </div>
+                </div>
               </section>
             </section>
             <div class="order_again">
@@ -217,7 +230,7 @@
     background-color: #f1f1f1;
     margin-bottom: 1.95rem;
     p, span, h4 {
-      font-family: Helvetica Neue, Tahoma, Arial;
+      /*font-family: Helvetica Neue, Tahoma, Arial;*/
     }
   }
 
@@ -262,20 +275,45 @@
             }
           }
           .order_status {
-            @include sc(.6rem, #333);
+            @include sc(.6rem, $payColor);
           }
         }
         .order_basket {
-          @include fj;
-          line-height: 2rem;
+          display: flex;
+          /*line-height: 2rem;*/
           border-bottom: 0.025rem solid #f5f5f5;
+          padding: .25rem 0;
+          .order_img_box {
+            @include wh(4rem, 4rem);
+            margin-right: .5rem;
+
+            img {
+              width: 100%;
+              height: 100%;
+            }
+          }
+          .order_data {
+            display: flex;
+            flex: 1;
+            justify-content:space-between;
+          }
           .order_name {
-            @include sc(.6rem, #666);
+            display: flex;
+            justify-content:space-between;
+            @include sc(.65rem, #333);
+            width: 10rem;
+          }
+          .order_name2 {
+            @include sc(.65rem, #333);
             width: 10rem;
           }
           .order_amount {
-            @include sc(.6rem, #f60);
+            @include sc(.65rem, $payColor);
             font-weight: bold;
+          }
+          .order_total {
+            @include sc(.65rem, #333);
+            text-align: right;
           }
         }
         .order_again {

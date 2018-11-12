@@ -668,6 +668,9 @@
       width: 100%;
       height: 100%;
     }
+    .swiper-pagination-bullet-active {
+      background: #f9ce04!important;
+    }
   }
 
 </style>

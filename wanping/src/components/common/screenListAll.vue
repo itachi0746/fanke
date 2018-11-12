@@ -26,7 +26,7 @@
           </div>
           <div class="shop-data2">
             <div class="distance">
-              <span>km</span>
+              <span>{{ item.Distance }}</span>
             </div>
           </div>
 
@@ -68,13 +68,20 @@
       }
     },
     props: {
-      sortId: String
+      sortObj: {
+        type: Object,
+        default: function() {
+          return {'id':'1','sortType':'0'}
+        }
+      },
+
     },
 
 //  components: {},
 
     watch: {
-      sortId(newVaule, oldVaule) {
+      sortObj(newVaule, oldVaule) {
+//        debugger
         console.log(newVaule, oldVaule);
         this.screenList = [];
         this.getData();
@@ -95,53 +102,77 @@
         });
         return result;
       },
+      /**
+       * @method 初始化
+       */
+      async initApp() {
+        try {
+          await this.getUserLocation();
+          await this.UpdateLocation();
+          await this.getData();
+        } catch (err) {
+          console.log('initApp:',err);
+        }
+      },
 
+      /**
+       * @method 获取用户位置,wx是后台注入的对象
+       */
       getUserLocation() {
+//        debugger
         let that = this;
         let ua = navigator.userAgent.toLowerCase();//获取判断用的对象
+        let inWX = (ua.match(/MicroMessenger/i) === 'micromessenger' && wx);
         try {
-          if (ua.match(/MicroMessenger/i) === "micromessenger") {
-            //在微信中打开
-            if (wx) {  // 判断wx
-              wx.ready(() => {
-                wx.getLocation({
-                  type: 'wgs84',
-                  success: (res) => {
-                    console.log('获取位置信息成功');
-                    that.latitude = res.latitude;
-                    that.longitude = res.longitude;
-                    that.getData();
-                  },
-                  fail: (res) => {
-                    console.log('获取位置信息失败');
-                  }
-                })
+          if (inWX) {  // 判断wx
+            wx.ready(() => {
+              wx.getLocation({
+                type: 'wgs84',
+                success: (res) => {
+                  console.log('获取位置信息成功');
+                  that.latitude = res.latitude;
+                  that.longitude = res.longitude;
+//                  that.getData();
+                },
+                fail: (res) => {
+                  console.log('获取位置信息失败');
+                }
               })
-            }
+            })
+          } else {
+            console.log('不在微信浏览器或没wx对象');
+
+            that.latitude = 23.1123809784;
+            that.longitude = 113.3309751406;
+//            that.getData();
           }
         }
-        catch(err) {
-          console.log('err:',err)
+        catch (err) {
+          console.log('err:', err);
+//          that.getData();
         }
 
-
-//
-        if (window.location.hostname === 'localhost') {
-          console.log('在localhost');
-          this.getData();
-        }
+//        if (window.location.hostname === 'localhost') {
+//          console.log('在localhost');
+//          this.getData();
+//        }
 
       },
 
+      /**
+       * @method 请求获取数据
+       */
       getData() {
+//        debugger
         this.loadMoreSwitch = false;
 
         const url = '/GetProducts';
 //        const url = 'http://www.bai.com/screenListAll';
-
+        console.log('this.sortObj',this.sortObj)
         const data = {
           pageindex: this.page,
-          OrderBy: this.sortId
+          OrderBy: this.sortObj.id,
+          OrderType: this.sortObj.sortType
         };
         postData(url, data).then((res) => {
           console.log(res)
@@ -151,25 +182,16 @@
 //          console.log(this.sum)
           this.$emit('loaded', true);
 
-          // 数字转化
-          this.screenList.forEach((item) => {
-            let result = '', num;
-            if (item.Flowrate >= 10000) {
-              num = item.Flowrate.toString();
-              result = '.' + num.slice(-4)[0] + result;
-              num = num.slice(0, num.length - 4);
-              item.Flowrate = num + result + '万';
-
-            }
-          })
+          this.dateFormatting();
         })
       },
       toScreen(event) {
         const targetId = event.currentTarget.getAttribute('data-pid');
-//        window.location.href = "screen.html?" + 'pid=1'
         GoToPage("screen", "screen.html", {'pid': targetId});
       },
-      // 获取窗口滚动条高度
+      /**
+       * @method 获取窗口滚动条高度
+       */
       getScrollTop() {
         let scrollTop = 0;
         if (document.documentElement && document.documentElement.scrollTop) {
@@ -177,10 +199,11 @@
         } else if (document.body) {
           scrollTop = document.body.scrollTop;
         }
-//        console.log(scrollTop)
         return scrollTop;
       },
-//获取窗口可视范围的高度
+      /**
+       * @method 获取窗口可视范围的高度
+       */
       getClientHeight() {
         let clientHeight = 0;
         if (document.body.clientHeight && document.documentElement.clientHeight) {
@@ -188,14 +211,49 @@
         } else {
           clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
         }
-//        console.log(clientHeight)
         return clientHeight;
       },
+      /**
+       * @method 格式化数据
+       */
+      dateFormatting() {
+        // 数字转化
+        this.screenList.forEach((item) => {
+          let result = '', num;
+          if (item.Flowrate >= 10000) {
+            num = item.Flowrate.toString();
+            result = '.' + num.slice(-4)[0] + result;
+            num = num.slice(0, num.length - 4);
+            item.Flowrate = num + result + '万';
+          }
 
+          let result2 = '', num2;
+          item.Distance = Math.round(item.Distance);
+//          console.log(item.Distance);
+          if(item.Distance >= 1000) {
+            num2 = item.Distance.toString();
+            result2 = '.' + num2.slice(-3)[0] + result2;
+            num2 = num2.slice(0, num2.length - 3);
+            item.Distance = num2 + result2 + 'km';
+          }
+        });
+
+      },
+      /**
+       * @method 向后台发送经纬度
+       */
+      UpdateLocation() {
+//        debugger
+        const url = '/UpdateLocation';
+        postData(url,{latitude:this.latitude,longitude:this.longitude}).then((res) => {
+          console.log('UpdateLocation:',res);
+        })
+      }
     },
 
     created() {
-      this.getUserLocation();
+//      this.getUserLocation();
+      this.initApp();
     },
     mounted() {
 
@@ -245,6 +303,7 @@
     border-top: 1px solid #f5f5f5;
     padding: .5rem;
     background-color: #fff;
+    /*margin-bottom: .25rem;*/
   }
 
   .shop-name {
@@ -277,7 +336,7 @@
 
   .shop-price {
     span {
-      @include sc(.7rem, $blue);
+      @include sc(.7rem, $payColor);
     }
     span:nth-child(2) {
       font-size: 1rem;
@@ -304,7 +363,6 @@
     text-align: center;
     line-height: 2rem;
     margin-bottom: 2.3rem;
-    background-color: $bc;
   }
 
   .img-box {

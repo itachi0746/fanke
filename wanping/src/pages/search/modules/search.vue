@@ -26,7 +26,7 @@
                 <p class="left">
                   人流量{{item.Flowrate}}
                 </p>
-                <p class="right" style="color: #3297f5;">
+                <p class="right price">
                   <span>¥</span>
                   <span>{{ item.Price }}</span>
                   <span>起</span>
@@ -231,6 +231,9 @@
         border-bottom: 0.025rem solid $bc;
         p {
           line-height: .9rem;
+        }
+        .price {
+          color: $payColor;
         }
         .pay_icon {
           margin-bottom: -0.08rem;

@@ -21,7 +21,7 @@
           <div class="li-div" @click="toScreen(item.PDtlId)">
             <p class="food_name ellipsis">{{item.PsName}}</p>
             <div class="quantity_price">
-              <span>X{{item.Total}}</span>
+              <span>合计</span>
               <span>¥{{item.Amount}}</span>
               <i class="el-icon-arrow-right"></i>
             </div>

@@ -4,67 +4,70 @@
     <!--筛选条件-->
     <div class="sort-container">
 
-      <div class="sort-item" @click="sort">
-        <span data-id="1" :class="[{span_active:'1'===activeIndex}]">
+      <div class="sort-item" @click="sort" data-id="1" data-sortType="0">
+        <span :class="[{span_active:'1'===activeIndex}]">
           距离
-          <i class="icon iconfont icon-xiajiantou"></i>
+          <i class="el-icon-caret-bottom"></i>
         </span>
 
       </div>
-      <div class="sort-item" @click="sort">
-        <span data-id="2" :class="[{span_active:'2'===activeIndex}]">价格</span>
-        <!--<i class="icon iconfont icon-xiajiantou"></i>-->
+      <div class="sort-item" @click="sort" data-id="2" data-sortType="0">
+        <span :class="[{span_active:'2'===activeIndex}]">
+          价格
+          <i class="el-icon-d-caret"></i>
+        </span>
+
       </div>
-      <div class="sort-item" @click="sort">
-        <span data-id="3" :class="[{span_active:'3'===activeIndex}]">人流量</span>
+      <div class="sort-item" @click="sort" data-id="3" data-sortType="0">
+        <span :class="[{span_active:'3'===activeIndex}]">人流量</span>
         <!--<i class="icon iconfont icon-xiajiantou"></i>-->
       </div>
     </div>
 
     <!--<div class="filter-container" v-show="!isHide">-->
-      <!--<div class="filter-head">-->
-        <!--<div>-->
-          <!--<span>地区</span>-->
-        <!--</div>-->
-        <!--<div>-->
-          <!--<span>地点</span>-->
-        <!--</div>-->
-      <!--</div>-->
-      <!--<div class="category-container">-->
-        <!--<div class="wrapper category-left" ref="wrapper" id="category-left">-->
-          <!--<ul class="content" id="C1">-->
+    <!--<div class="filter-head">-->
+    <!--<div>-->
+    <!--<span>地区</span>-->
+    <!--</div>-->
+    <!--<div>-->
+    <!--<span>地点</span>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="category-container">-->
+    <!--<div class="wrapper category-left" ref="wrapper" id="category-left">-->
+    <!--<ul class="content" id="C1">-->
 
-            <!--<li :class="['category-left-li', {category_active:index===activeIndex}]"-->
-                <!--v-for="(item,index) in spaceList" :key="item.Id" @click="toggleLi(index)">-->
-              <!--<div>-->
-                <!--<span>{{ item.Name }}</span>-->
-              <!--</div>-->
-              <!--<div>-->
-                <!--<span class="category_count">{{ item.children.length }}</span>-->
-                <!--<i class="icon iconfont icon-youjiantou1"></i>-->
-              <!--</div>-->
-            <!--</li>-->
+    <!--<li :class="['category-left-li', {category_active:index===activeIndex}]"-->
+    <!--v-for="(item,index) in spaceList" :key="item.Id" @click="toggleLi(index)">-->
+    <!--<div>-->
+    <!--<span>{{ item.Name }}</span>-->
+    <!--</div>-->
+    <!--<div>-->
+    <!--<span class="category_count">{{ item.children.length }}</span>-->
+    <!--<i class="icon iconfont icon-youjiantou1"></i>-->
+    <!--</div>-->
+    <!--</li>-->
 
-          <!--</ul>-->
+    <!--</ul>-->
 
-        <!--</div>-->
-        <!--<div class="wrapper category-right" ref="wrapper" id="category-right">-->
+    <!--</div>-->
+    <!--<div class="wrapper category-right" ref="wrapper" id="category-right">-->
 
-          <!--<ul class="content">-->
-            <!--<li class="category-right-li" v-for="(item,index) in areaList"-->
-                <!--@click="doSelectArea">-->
-              <!--<div>-->
-                <!--<span>{{ item.Name }}</span>-->
-              <!--</div>-->
-              <!--<div>-->
-                <!--<span class="category_count">{{ item.Number }}</span>-->
-              <!--</div>-->
-            <!--</li>-->
-          <!--</ul>-->
+    <!--<ul class="content">-->
+    <!--<li class="category-right-li" v-for="(item,index) in areaList"-->
+    <!--@click="doSelectArea">-->
+    <!--<div>-->
+    <!--<span>{{ item.Name }}</span>-->
+    <!--</div>-->
+    <!--<div>-->
+    <!--<span class="category_count">{{ item.Number }}</span>-->
+    <!--</div>-->
+    <!--</li>-->
+    <!--</ul>-->
 
-        <!--</div>-->
+    <!--</div>-->
 
-      <!--</div>-->
+    <!--</div>-->
     <!--</div>-->
     <!--遮罩层-->
     <!--<div class="back-cover" @click="toggleFilter" v-show="!isHide"></div>-->
@@ -75,7 +78,7 @@
 
 <script>
   import {postData, link} from '@/server'
-//  import BScroll from 'better-scroll'
+  //  import BScroll from 'better-scroll'
 
   export default {
     data() {
@@ -134,17 +137,21 @@
 //      }
 
       /**
-       * @method 按人流排序
+       * @method 排序
        */
       sort(event) {
 //        console.log(event.target.getAttribute("data-id"));
 //        console.log(event.currentTarget)
-        const id = event.target.getAttribute("data-id");
-//        console.log(typeof id)
-        this.activeIndex = id;
-        this.$emit('sort',id)
-      },
+//        let sortType = '0';
+        let id = event.currentTarget.getAttribute("data-id");
+        let sortType = event.currentTarget.getAttribute("data-sortType");
 
+        this.activeIndex = id;
+        this.$emit('sort', {'id': id, 'sortType': sortType});
+        sortType = sortType === '0' ? '1' : '0';
+        event.currentTarget.setAttribute("data-sortType",sortType)
+        console.log('sort')
+      },
     },
 
     created() {
@@ -195,8 +202,8 @@
       justify-content: center;
     }
     /*span, i {*/
-      /*position: relative;*/
-      /*left: .5rem;*/
+    /*position: relative;*/
+    /*left: .5rem;*/
     /*}*/
   }
 
@@ -320,7 +327,7 @@
   }
 
   .span_active {
-    color: #000!important;
+    color: #000 !important;
   }
 
   .iconfont {

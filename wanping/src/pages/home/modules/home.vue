@@ -20,7 +20,7 @@
       </div>
       <div class="recommend-item-container">
         <div class="recommend-item-wrap">
-          <div class="recommend-item" v-for="(item,index) in Recommends" :key="item.Id" @click="toScreen($event)" :data-pid="item.Id">
+          <div class="recommend-item" v-for="(item) in Recommends" :key="item.Id" @click="toScreen($event)" :data-pid="item.Id">
             <div>
               <img :src="item.Img" alt="">
             </div>
@@ -30,13 +30,12 @@
           </div>
         </div>
       </div>
-
     </div>
     <!--推荐列表 结束-->
 
     <!--分割条-->
     <div class="division"></div>
-    <screenListAll @loaded="handleLoad" :sort-id="sortId"></screenListAll>
+    <screenListAll @loaded="handleLoad" :sort-obj="sortObj"></screenListAll>
     <Footer :page="page"></Footer>
     <!--<div class="iosBtm" v-if="isIOS"></div>-->
 
@@ -62,7 +61,7 @@
         page: 'Home',
         isLoading: true,
         Recommends: [],
-        sortId: '1',
+        sortObj: {'id':'1','sortType':'0'},  // 排序对象
         swiperOption: {
           pagination: {
             el: '.swiper-pagination'
@@ -126,9 +125,9 @@
       /**
        * @method 排序
        */
-      handleSort(id) {
-//        console.log(id);
-        this.sortId = id;
+      handleSort(obj) {
+        this.sortObj = obj;
+//        debugger
       }
     },
     components: {
@@ -174,10 +173,8 @@
 
   .recommend-title {
     font-size: .75rem;
-    /*padding-left: .8rem;*/
-    /*padding-bottom: .3rem;*/
     padding: .3rem 0 .3rem .8rem;
-    background-color: $bc;
+
   }
 
   .recommend-item-wrap {
@@ -209,7 +206,6 @@
   .division {
     width: 100%;
     height: .5rem;
-    background-color: $bc;
   }
 
 
