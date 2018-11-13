@@ -4,7 +4,7 @@
     <Header :headName="headName"></Header>
 
     <section class="food_list">
-      <a href="#" class="food_list_header">
+      <a href="javascript:void(0)" class="food_list_header">
         <div class="shop_name">
           <span>订单信息:</span>
         </div>
@@ -13,57 +13,80 @@
         <span>订单编号: {{resData.OrderNo}}</span>
       </p>
       <p class="data-head">
-        <span>日期: {{resData.OrderDate}}</span>
+        <span>订单日期: {{resData.OrderDate}}</span>
       </p>
 
       <ul class="food_list_ul">
-        <li v-for="(item,index) in resData.Items" :key="item.PsId" class="food_list_ul_li">
-          <div class="li-div" @click="toScreen(item.PDtlId)">
-            <p class="food_name ellipsis">{{item.PsName}}</p>
-            <div class="quantity_price">
-              <span>合计</span>
-              <span>¥{{item.Amount}}</span>
-              <i class="el-icon-arrow-right"></i>
+        <li v-for="(item,index) in resData.Items" :key="item.OrderDate" class="food_list_ul_li">
+          <div class="li-div">
+            <div class="img-box">
+              <img :src="item.Img" alt="商品图">
             </div>
+            <div class="font-box">
+              <p class="food_name ellipsis" @click="toScreen(item.PDtlId)">
+                <span>
+                  {{item.PsName}}
+                </span>
+                <i class="el-icon-arrow-right"></i>
+              </p>
+              <div class="quantity_price">
+                <div>
+                  <span>广告播放日期: {{item.OrderDate}}</span>
+                </div>
+                <div>
+                  <span>合计</span>
+                  <span>¥{{item.Amount}}</span>
+                </div>
+              </div>
+              <div class="up-box">
+                <!--上传功能 :http-request="uploadReq" 开始-->
+                <!--data是要发送的数据-->
+                <el-upload
+                  ref="upload2"
+                  class="upload-demo"
+                  :show-file-list="false"
+                  :action="upUrl"
+                  :data="IDData"
+                  :before-upload="beforeUpload"
+                  :before-remove="handleRemove"
+                  :auto-upload="true"
+                  :on-error="handleError"
+                  :on-success="handleSuccess">
+                  <el-button slot="trigger" size="small" type="primary" @click.native="upload(index)" :loading="item.isLoading">
+                    上传广告素材
+                    <i class="el-icon-upload el-icon--right"></i>
+                  </el-button>
+
+                  <!--<el-button style="margin-left: 10px;" size="small" type="success" @click.native="submitUpload">上传到服务器</el-button>-->
+                  <!--<div slot="tip" class="el-upload__tip">上传图片(jpg/png)文件不超过2M,视频(mp4)文件不超过10M</div>-->
+
+                </el-upload>
+                <!--上传功能  结束-->
+                <el-button type="primary" size="small" @click="showFile($event,index)" :data-DtlId="item.DtlId" :loading="item.isLoading2">
+                  <label v-show="item.showFiles">隐藏已上传素材</label>
+                  <label v-show="!item.showFiles">查看已上传素材</label>
+                </el-button>
+              </div>
+            </div>
+
           </div>
-          <!--上传功能 :http-request="uploadReq" 开始-->
-          <!--data是要发送的数据-->
-          <el-upload
-            ref="upload2"
-            class="upload-demo"
-            :show-file-list="false"
-            :action="upUrl"
-            :data="IDData"
-            :before-upload="beforeUpload"
-            :before-remove="handleRemove"
-            :auto-upload="true"
-            :on-error="handleError"
-            :on-success="handleSuccess">
-            <el-button slot="trigger" size="small" type="primary" @click.native="upload(index)">上传素材</el-button>
-            <!--<el-button style="margin-left: 10px;" size="small" type="success" @click.native="submitUpload">上传到服务器</el-button>-->
-            <!--<div slot="tip" class="el-upload__tip">上传图片(jpg/png)文件不超过2M,视频(mp4)文件不超过10M</div>-->
-          </el-upload>
-          <!--上传功能  结束
+
 
           <!--已上传文件列表 开始-->
           <section class="file-list">
-            <el-button type="primary" size="small" @click="showFile($event,index)" :data-DtlId="item.DtlId">
-              <label v-show="item.showFiles">隐藏已上传素材</label>
-              <label v-show="!item.showFiles">查看已上传素材</label>
-            </el-button>
             <ul>
-              <li tabindex="0" v-show="item.showFiles" v-for="(i,index2) in fileList" :key="i.MediaId"
-                  class="el-upload-list__item is-success" style="text-align: left;">
+              <li tabindex="0" v-if="item.showFiles" v-for="(i,index2) in item.Medias" :key="i.MediaId" class="el-upload-list__item is-success" style="text-align: left;">
                 <a class="el-upload-list__item-name">
                   <i class="el-icon-document"></i>{{i.MediaName}}
                 </a>
-                <label class="el-upload-list__item-status-label"><i
-                  class="el-icon-upload-success el-icon-circle-check"></i></label>
-                <i class="el-icon-close" @click="handleRemove2($event,index2)" :data-Mid="i.MediaId"></i>
+                <label class="el-upload-list__item-status-label">
+                  <i class="el-icon-upload-success el-icon-circle-check"></i>
+                </label>
+                <i class="el-icon-close" @click="handleRemove2($event,index,index2)" :data-Mid="i.MediaId"></i>
                 <i class="el-icon-close-tip">按 delete 键可删除</i>
               </li>
             </ul>
-            <div slot="tip" class="el-upload__tip">图片(jpg/png)文件不超过2M,视频(mp4)文件不超过10M</div>
+            <div slot="tip" class="el-upload__tip">图片(jpg/png)文件不超过2M,视频(mp4/mov)文件不超过10M</div>
 
           </section>
           <!--已上传文件列表 结束-->
@@ -98,7 +121,9 @@
         DtlId: '',
         upUrl: '', // 上传url
         fileList: [],  // 已上传文件列表
-        file: null  // 文件对象
+        file: null,  // 文件对象
+        curItem: null, // 当前选中的对象
+
       }
     },
 
@@ -109,49 +134,20 @@
     computed: {},
 
     methods: {
-//      uploadReq(req) {
-//        console.log(req);
-//        let formData = new FormData();
-//        formData.append('file', req.file);
-//        formData.append('OrderId', this.OrderId);
-//        formData.append('DtlId', this.OrderId);
-//
-//        postData('/AddFile', formData).then((res) => {
-//          console.log(res)
-//          if (res.Success) {
-//            this.fid = res.Data;
-//            console.log(111122);
-//            Message({
-//              showClose: true,
-//              message: '上传成功!',
-//              type: "success"
-//            });
-//          }
-//        })
-//      },
+
       /**
        * @method 删除已上传文件
        * @param {Object} e 事件对象
-       * @param {String} index 下标
+       * @param {String} itemIndex 产品下标
+       * @param {String} MediaIndex 媒体文件下标
        */
-      handleRemove2(e, index) {
+      handleRemove2(e, itemIndex, MediaIndex) {
+
         let mid = e.currentTarget.getAttribute('data-Mid');
         let url = '/DeleteFile';
         let data = {
           FileId: mid
         };
-//        postData(url, data).then((res) => {
-//          console.log(res);
-//
-//          if (res.Success) {
-//            this.fileList.splice(index, 1);
-//
-//            Message({
-//              type: 'success',
-//              message: '删除成功!'
-//            });
-//          }
-//        });
 
         MessageBox.confirm('确定移除？', '提示', {
           confirmButtonText: '确定',
@@ -164,7 +160,7 @@
 //            debugger
             console.log(res);
 
-            this.fileList.splice(index, 1);
+            this.resData.Items[itemIndex].Medias.splice(MediaIndex, 1);
             Message({
               type: 'success',
               message: '删除成功!'
@@ -183,37 +179,12 @@
        */
       upload(i) {
         this.DtlId = this.resData.Items[i].DtlId;
+        this.curItem = this.resData.Items[i];
         this.IDData = {
           'OrderId': this.resData.OrderId,
           'DetailId': this.DtlId
         };
       },
-      /**
-       * @method 删除前的操作
-       */
-//      beforeRemove(file, filelist) {
-////        return MessageBox.confirm(`确定移除 ${ file.name }？`, '提示', {
-////          confirmButtonText: '确定',
-////          cancelButtonText: '取消',
-////          type: 'warning',
-////          center: true,
-////
-////        })
-//        return MessageBox.confirm(`确定移除 ${ file.name }？`, '提示', {
-//          confirmButtonText: '确定',
-//          cancelButtonText: '取消',
-//          type: 'warning',
-//          center: true
-//        }).then(() => {
-//          this.handleRemove(file);  // todo 传参
-//          console.log('删除成功');
-//        }).catch(() => {
-//          Message({
-//            type: 'info',
-//            message: '已取消删除'
-//          });
-//        });
-//      },
 
       /**
        * @method 删除文件
@@ -253,18 +224,22 @@
        * @param {Number} i 下标
        */
       showFile(e, i) {
+
         const dtlId = e.currentTarget.getAttribute('data-DtlId');
 //        console.log(dtlId);
         this.resData.Items[i].showFiles = !this.resData.Items[i].showFiles;
 //        this.showFiles = !this.showFiles;
         if (this.resData.Items[i].showFiles) {
+          this.curItem = this.resData.Items[i];
+          this.curItem.isLoading2 = true;
           const url = '/GetFiles';
           const data = {
             DetailId: dtlId
           };
           postData(url, data).then((res) => {
-            console.log(res)
-            this.fileList = res.Data
+            console.log(res);
+            this.resData.Items[i].Medias = res.Data;
+            this.curItem.isLoading2 = false;
           })
         }
 
@@ -277,6 +252,7 @@
        * @param {object} file 文件对象
        */
       beforeUpload(file) {
+        this.curItem.isLoading = true;
         console.log(file.type)
         const ft = file.type.toLowerCase();
         const isJPG = ft === 'image/jpeg';
@@ -295,6 +271,7 @@
             message: '视频或图片的格式错误',
             type: "error"
           });
+          this.curItem.isLoading = false;
           return false
         }
         if ((isJPG || isPNG) && !isLt2M) {
@@ -303,6 +280,7 @@
             message: '上传图片大小不能超过 2MB!',
             type: "error"
           });
+          this.curItem.isLoading = false;
           return false
 
         }
@@ -312,6 +290,7 @@
             message: '上传视频大小不能超过 10MB!',
             type: "error"
           });
+          this.curItem.isLoading = false;
           return false
         }
         return true
@@ -321,14 +300,14 @@
         if (res.Success) {
           console.log('上传成功',res);
           this.file = res.Data;
-          this.fileList.unshift(this.file);
+          this.curItem.Medias.unshift(this.file);
+
           Message({
             showClose: true,
             message: '上传成功!',
             type: "success"
           });
         } else {
-//          fileList.splice(0, 1);
           console.log('上传失败');
           Message({
             showClose: true,
@@ -336,7 +315,7 @@
             type: "error"
           });
         }
-
+        this.curItem.isLoading = false;
       },
       // 上传错误
       handleError(response, file, fileList) {
@@ -366,6 +345,8 @@
         this.resData = res.Data;
         this.resData.Items.forEach((item) => {
           this.$set(item, 'showFiles', false);
+          this.$set(item, 'isLoading', false);
+          this.$set(item, 'isLoading2', false);
         })
       });
     },
@@ -426,17 +407,18 @@
       .food_list_ul_li {
         @include fj;
         flex-direction: column;
-        padding: 0 .5rem;
-        line-height: 2rem;
+        padding: 0.5rem 0.5rem;
+        /*line-height: 2rem;*/
         border-bottom: 5px solid #f5f5f5;
         .food_name {
-          @include sc(.6rem, #666);
-          flex: 4;
+          @include sc(.8rem, #000);
+          /*display: flex;*/
+          /*align-items: flex-start;*/
         }
         .quantity_price {
-          flex: 2;
-          @include fj;
-          align-items: center;
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
           span {
             @include sc(.6rem, #666);
 
@@ -444,7 +426,25 @@
 
         }
         .li-div {
-          @include fj;
+          display: flex;
+
+        }
+
+        .img-box {
+          @include wh(4rem,4rem);
+          margin-right: .5rem;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .font-box {
+          flex: 1;
+        }
+        .up-box {
+          display: flex;
+          justify-content: space-between;
+          padding: .3rem;
         }
       }
     }
@@ -469,10 +469,16 @@
   }
 
   .upload-demo {
-    padding: .5rem;
-    text-align: right;
-    span {
-      color: #ffffff;
+    margin-right: .5rem;
+    /*padding: .5rem;*/
+    /*text-align: right;*/
+    /*span {*/
+      /*color: #ffffff;*/
+    /*}*/
+
+    .up-icon {
+      color: $mainColor;
+      font-size: .75rem;
     }
   }
 

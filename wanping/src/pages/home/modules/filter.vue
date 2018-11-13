@@ -7,7 +7,7 @@
       <div class="sort-item" @click="sort" data-id="1" data-sortType="0">
         <span :class="[{span_active:'1'===activeIndex}]">
           距离
-          <i class="el-icon-caret-bottom"></i>
+          <i class="el-icon-d-caret"></i>
         </span>
 
       </div>
@@ -19,8 +19,10 @@
 
       </div>
       <div class="sort-item" @click="sort" data-id="3" data-sortType="0">
-        <span :class="[{span_active:'3'===activeIndex}]">人流量</span>
-        <!--<i class="icon iconfont icon-xiajiantou"></i>-->
+        <span :class="[{span_active:'3'===activeIndex}]">
+          人流量
+          <i class="el-icon-d-caret"></i>
+        </span>
       </div>
     </div>
 
@@ -193,7 +195,7 @@
     border-right: 1px solid #ececec;
 
     span {
-      color: #666;
+      color: #797979;
       width: 100%;
       height: 100%;
       text-align: center;

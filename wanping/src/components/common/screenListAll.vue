@@ -89,27 +89,14 @@
     },
 
     methods: {
-      moneyChange(num, accuracy) {
-        const tranReg = new Map([
-          [9, 'b'], [6, 'm'], [3, 'k']
-        ]);
-        let ac = accuracy || 0;
-        let length = typeof num === 'number' ? num.toString().length : num.length,
-          result = num;
-        tranReg.forEach((item, index) => {
-          result = length > (index >= 6 ? index - 1 : index) ?
-            (length = 0, (Math.round(num / 10 ** (index - ac)) / 10 ** ac) + item) : result;
-        });
-        return result;
-      },
+
       /**
        * @method 初始化
        */
-      async initApp() {
+      initApp() {
         try {
-          await this.getUserLocation();
-          await this.UpdateLocation();
-          await this.getData();
+          this.getUserLocation();
+//          await this.UpdateLocation();
         } catch (err) {
           console.log('initApp:',err);
         }
@@ -121,10 +108,9 @@
       getUserLocation() {
 //        debugger
         let that = this;
-        let ua = navigator.userAgent.toLowerCase();//获取判断用的对象
-        let inWX = (ua.match(/MicroMessenger/i) === 'micromessenger' && wx);
         try {
-          if (inWX) {  // 判断wx
+          console.log('that:',that)
+          if (wx) {  // 判断wx
             wx.ready(() => {
               wx.getLocation({
                 type: 'wgs84',
@@ -132,7 +118,7 @@
                   console.log('获取位置信息成功');
                   that.latitude = res.latitude;
                   that.longitude = res.longitude;
-//                  that.getData();
+                  this.UpdateLocation();
                 },
                 fail: (res) => {
                   console.log('获取位置信息失败');
@@ -142,20 +128,11 @@
           } else {
             console.log('不在微信浏览器或没wx对象');
 
-            that.latitude = 23.1123809784;
-            that.longitude = 113.3309751406;
-//            that.getData();
           }
         }
         catch (err) {
           console.log('err:', err);
-//          that.getData();
         }
-
-//        if (window.location.hostname === 'localhost') {
-//          console.log('在localhost');
-//          this.getData();
-//        }
 
       },
 
@@ -245,8 +222,11 @@
       UpdateLocation() {
 //        debugger
         const url = '/UpdateLocation';
+        console.log('this.latitude,this.longitude:',this.latitude,this.longitude);
+
         postData(url,{latitude:this.latitude,longitude:this.longitude}).then((res) => {
           console.log('UpdateLocation:',res);
+          this.getData();
         })
       }
     },
