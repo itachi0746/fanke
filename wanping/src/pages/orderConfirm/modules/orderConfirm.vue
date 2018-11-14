@@ -7,7 +7,11 @@
       <header>
         订单信息
       </header>
-      <p class="screenName">{{item.PsName}}</p>
+      <div class="screenName">
+        <p>{{item.BusinessName}}</p>
+        <p>{{item.PsName}}</p>
+
+      </div>
 
       <ul>
         <li class="data-container">
@@ -45,7 +49,6 @@
   import Loading from '../../../components/common/loading.vue'
   import {postData} from '../../../server'
   import {getUrlParms,IOSConfig} from '@/config/utils'
-
 
   export default {
     data() {

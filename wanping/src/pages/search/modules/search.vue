@@ -10,7 +10,7 @@
     </form>
 
     <section v-if="businessList.length">
-      <h4 class="title">商家</h4>
+      <h4 class="title">搜索结果</h4>
       <ul class="list_container">
         <li class="list_li" v-for="(item,index) in businessList" :key="item.Id" @click="toScreen($event)"
             :data-pid="item.Id">
@@ -19,12 +19,17 @@
           </section>
           <section class="item_right">
             <div class="item_right_text">
-              <p>
-                <span>{{item.Name}}</span>
-              </p>
               <section class="oh">
                 <p class="left">
-                  人流量{{item.Flowrate}}
+                  {{item.BusinessName}}
+                </p>
+              </section>
+              <section>
+                <span>{{item.Name}}</span>
+              </section>
+              <section class="oh">
+                <p class="left">
+                  人流量:{{item.Flowrate}}/h
                 </p>
                 <p class="right price">
                   <span>¥</span>
@@ -32,17 +37,7 @@
                   <span>起</span>
                 </p>
               </section>
-              <!--<section class="discount oh">-->
-                <!--<div v-show="item.HasSales" class="left">-->
-                  <!--<span class="_cu">促</span>-->
-                  <!--<span>{{item.SalesDesc}}</span>-->
-                <!--</div>-->
-                <!--<div v-show="item.HasDiscount" class="left">-->
-                  <!--<span class="_hui">惠</span>-->
-                  <!--<span>{{item.DiscountDesc}}</span>-->
-                <!--</div>-->
-              <!--</section>-->
-              <!--<p>距离</p>-->
+
             </div>
           </section>
         </li>
@@ -74,9 +69,9 @@
   import Header from '../../../components/header/header.vue'
   import Loading from '../../../components/common/loading.vue'
   import {MessageBox} from 'element-ui'
-  //  import ScreenListAll from '../../../components/common/screenListAll.vue'
   import {getStore, setStore} from '../../../config/store'
   import {postData} from '../../../server/index'
+  import {getUrlParms} from '@/config/utils'
 
   export default {
     data() {
@@ -131,7 +126,6 @@
         //隐藏历史记录
         this.showHistory = false;
         //获取搜索结果
-//        this.restaurantList = await searchRestaurant(this.geohash, this.searchValue);
         const url = '/GetProducts';
         const data = {
           'KeyWords': this.searchValue
@@ -140,6 +134,7 @@
           this.isLoading = false;
           return res.Data.Models
         });
+        this.dateFormatting();
         console.log(this.businessList);
         this.emptyResult = !this.businessList.length;
 
@@ -182,12 +177,64 @@
       clearAllHistory() {
         this.searchHistory = [];
         setStore('searchHistory', this.searchHistory);
-      }
+      },
+      /**
+       * @method 格式化数据
+       */
+      dateFormatting() {
+        // 数字转化
+        this.businessList.forEach((item) => {
+          let result = '', num;
+          if (item.Flowrate >= 10000) {
+            num = item.Flowrate.toString();
+            result = '.' + num.slice(-4)[0] + result;
+            num = num.slice(0, num.length - 4);
+            item.Flowrate = num + result + '万';
+          }
+
+          let result2 = '', num2;
+          item.Distance = Math.round(item.Distance);
+//          console.log(item.Distance);
+          if (item.Distance >= 1000) {
+            num2 = item.Distance.toString();
+            result2 = '.' + num2.slice(-3)[0] + result2;
+            num2 = num2.slice(0, num2.length - 3);
+            item.Distance = num2 + result2 + 'km';
+          }
+        });
+
+      },
     },
 
     mounted() {
       if (getStore('searchHistory')) {
         this.searchHistory = JSON.parse(getStore('searchHistory'));
+      }
+    },
+    created() {
+      const args = getUrlParms();
+//      console.log(args)
+      if (args.bizid) {
+        console.log('有bizid');
+        this.isLoading = true;
+        //隐藏历史记录
+        this.showHistory = false;
+        const url = '/GetProducts';
+        const data = {
+          'bizid': args.bizid
+        };
+        postData(url, data).then((res) => {
+          this.isLoading = false;
+          this.businessList = res.Data.Models;
+          this.emptyResult = !this.businessList.length;
+          this.dateFormatting();
+          console.log(this.businessList);
+
+//          debugger
+        });
+
+      } else {
+        console.log('没有bizid')
       }
     },
 
@@ -203,7 +250,7 @@
     background-color: #fff;
   }
 
-  .search_none{
+  .search_none {
     margin: 0 auto;
     @include sc(0.65rem, #333);
     line-height: 1.75rem;

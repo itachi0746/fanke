@@ -53,6 +53,7 @@
 
 <script>
   import {postData, link} from '../../server'
+  import {Message, MessageBox} from 'element-ui'
   //  import BScroll from 'better-scroll'
 
   export default {
@@ -70,8 +71,8 @@
     props: {
       sortObj: {
         type: Object,
-        default: function() {
-          return {'id':'1','sortType':'0'}
+        default: function () {
+          return {'id': '1', 'sortType': '0'}
         }
       },
 
@@ -89,16 +90,37 @@
     },
 
     methods: {
-
       /**
        * @method 初始化
        */
       initApp() {
-        try {
+//        try {
+//          if (wx) {
+//            this.getUserLocation();
+//          }
+//        } catch (err) {
+//          // 测试环境的切换
+//          if (process.env.NODE_ENV === 'development') {
+//            console.log('切换到测试环境');
+//            this.latitude = 23.1064700000;
+//            this.longitude = 113.3244600000;
+//            sessionStorage.setItem('location', JSON.stringify({latitude: this.latitude, longitude: this.longitude}));
+//            this.getUserLocation();
+//          } else {
+//            console.log('没有wx对象:', err);
+//
+//          }
+//        }
+
+        if (process.env.NODE_ENV === 'development') {
+          console.log('切换到测试环境');
+          this.latitude = 23.1064700000;
+          this.longitude = 113.3244600000;
+          sessionStorage.setItem('location', JSON.stringify({latitude: this.latitude, longitude: this.longitude}));
           this.getUserLocation();
-//          await this.UpdateLocation();
-        } catch (err) {
-          console.log('initApp:',err);
+        } else {
+          console.log('正式环境:');
+          this.getUserLocation();
         }
       },
 
@@ -108,9 +130,10 @@
       getUserLocation() {
 //        debugger
         let that = this;
-        try {
-          console.log('that:',that)
-          if (wx) {  // 判断wx
+        let location = sessionStorage.getItem('location');
+
+        if (!location) {
+          try {
             wx.ready(() => {
               wx.getLocation({
                 type: 'wgs84',
@@ -118,21 +141,73 @@
                   console.log('获取位置信息成功');
                   that.latitude = res.latitude;
                   that.longitude = res.longitude;
+                  sessionStorage.setItem('location', JSON.stringify({
+                    latitude: res.latitude,
+                    longitude: res.longitude
+                  }));
                   this.UpdateLocation();
                 },
                 fail: (res) => {
                   console.log('获取位置信息失败');
+                  Message({
+                    type: 'error',
+                    message: '获取位置信息失败!'
+                  });
+                  this.UpdateLocation();
                 }
               })
             })
-          } else {
-            console.log('不在微信浏览器或没wx对象');
+          } catch (err) {
+            console.log('没有wx对象', err);
+            Message({
+              type: 'error',
+              message: '获取位置信息失败!请刷新重试'
+            });
+            this.UpdateLocation();
 
           }
+        } else {
+          console.log('用户已定位');
+          location = JSON.parse(location);
+          that.latitude = location.latitude;
+          that.longitude = location.longitude;
+//          console.log(this.latitude,this.longitude)
+//          debugger
+
+          this.UpdateLocation();
         }
-        catch (err) {
-          console.log('err:', err);
-        }
+
+//        if (!location) {  // 判断是否已定位
+//          console.log('用户未定位,开始定位');
+//          wx.ready(() => {
+//            wx.getLocation({
+//              type: 'wgs84',
+//              success: (res) => {
+//                console.log('获取位置信息成功');
+//                that.latitude = res.latitude;
+//                that.longitude = res.longitude;
+//                sessionStorage.setItem('location', JSON.stringify({latitude: res.latitude, longitude: res.longitude}));
+//                this.UpdateLocation();
+//              },
+//              fail: (res) => {
+//                console.log('获取位置信息失败');
+//                Message({
+//                  type: 'error',
+//                  message: '获取位置信息失败!'
+//                });
+//              }
+//            })
+//          })
+//        } else {
+//          console.log('用户已定位');
+//          location = JSON.parse(location);
+//          that.latitude = location.latitude;
+//          that.longitude = location.longitude;
+////          console.log(this.latitude,this.longitude)
+////          debugger
+//
+//          this.UpdateLocation();
+//        }
 
       },
 
@@ -145,7 +220,7 @@
 
         const url = '/GetProducts';
 //        const url = 'http://www.bai.com/screenListAll';
-        console.log('this.sortObj',this.sortObj)
+        console.log('this.sortObj', this.sortObj)
         const data = {
           pageindex: this.page,
           OrderBy: this.sortObj.id,
@@ -207,7 +282,7 @@
           let result2 = '', num2;
           item.Distance = Math.round(item.Distance);
 //          console.log(item.Distance);
-          if(item.Distance >= 1000) {
+          if (item.Distance >= 1000) {
             num2 = item.Distance.toString();
             result2 = '.' + num2.slice(-3)[0] + result2;
             num2 = num2.slice(0, num2.length - 3);
@@ -222,10 +297,10 @@
       UpdateLocation() {
 //        debugger
         const url = '/UpdateLocation';
-        console.log('this.latitude,this.longitude:',this.latitude,this.longitude);
+        console.log('this.latitude,this.longitude:', this.latitude, this.longitude);
 
-        postData(url,{latitude:this.latitude,longitude:this.longitude}).then((res) => {
-          console.log('UpdateLocation:',res);
+        postData(url, {latitude: this.latitude, longitude: this.longitude}).then((res) => {
+          console.log('UpdateLocation:', res);
           this.getData();
         })
       }
