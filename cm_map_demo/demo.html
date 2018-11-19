@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>demo</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+
+    }
+
+    .wh100 {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .dn {
+      display: none;
+    }
+
+    .homepage {
+      background: url("img/home.jpg") no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .gailan {
+      /*background: url("img/gailan.jpg") no-repeat;*/
+      /*background-size: 100% 100%;*/
+    }
+
+    .gonglu {
+      background: url("img/gonglu.jpg") no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .jiankong {
+      background: url("img/jiankong.jpg") no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .zhuanti {
+      background: url("img/zhuanti.jpg") no-repeat;
+      background-size: 100% 100%;
+    }
+
+    .homepage .to-gailan {
+      width: 39%;
+      height: 10%;
+      /*background-color: blue;*/
+      position: absolute;
+      top: 18%;
+      left: 30%;
+    }
+
+    .homepage .to-jiankong {
+      width: 23%;
+      height: 27%;
+      /*background-color: blue;*/
+      position: absolute;
+      top: 17%;
+      left: 74%;
+    }
+
+    .homepage .to-jiankong2 {
+      width: 5%;
+      height: 7%;
+      /*background-color: blue;*/
+      position: absolute;
+      top: 54%;
+      left: 47%;
+    }
+
+    .homepage .to-gonglu {
+      width: 7%;
+      height: 11%;
+      /*background-color: blue;*/
+      position: absolute;
+      top: 89%;
+      left: 22%;
+    }
+
+    .homepage .to-zhuanti {
+      width: 7%;
+      height: 11%;
+      /*background-color: blue;*/
+      position: absolute;
+      top: 83%;
+      left: 59%;
+    }
+
+    .gailan .to-jiankong {
+      width: 11%;
+      height: 9%;
+      /*background-color: blue;*/
+      position: absolute;
+      top: 2%;
+      left: 36%;
+      z-index: 99;
+    }
+
+    .gailan .to-gonglu {
+      width: 7%;
+      height: 9%;
+      /*background-color: blue;*/
+      position: absolute;
+      top: 2%;
+      left: 63%;
+      z-index: 99;
+
+    }
+
+    .gailan .to-zhuanti {
+      width: 9%;
+      height: 9%;
+      /*background-color: blue;*/
+      position: absolute;
+      top: 2%;
+      left: 87%;
+      z-index: 99;
+
+    }
+
+    .to-home {
+      width: 35%;
+      height: 9%;
+      /*background-color: blue;*/
+      position: absolute;
+      top: 2%;
+      left: 2%;
+      z-index: 99;
+
+    }
+
+    .gonglu .to-jiankong {
+      width: 9%;
+      height: 9%;
+      /*background-color: blue;*/
+      position: absolute;
+      top: 2%;
+      left: 36%;
+    }
+
+    .gonglu .to-gailan {
+      width: 7%;
+      height: 9%;
+      /*background-color: blue;*/
+      position: absolute;
+      top: 2%;
+      left: 45%;
+    }
+
+    .gonglu .to-zhuanti {
+      width: 9%;
+      height: 9%;
+      /*background-color: blue;*/
+      position: absolute;
+      top: 2%;
+      left: 87%;
+    }
+
+    .jiankong .to-gonglu {
+      width: 7%;
+      height: 9%;
+      /*background-color: blue;*/
+      position: absolute;
+      top: 2%;
+      left: 60%;
+    }
+
+    .jiankong .to-gailan {
+      width: 7%;
+      height: 9%;
+      /*background-color: blue;*/
+      position: absolute;
+      top: 2%;
+      left: 52%;
+    }
+
+    .jiankong .to-zhuanti {
+      width: 9%;
+      height: 9%;
+      /*background-color: blue;*/
+      position: absolute;
+      top: 2%;
+      left: 87%;
+    }
+
+    .zhuanti .to-gonglu {
+      width: 7%;
+      height: 9%;
+      /*background-color: blue;*/
+      position: absolute;
+      top: 2%;
+      left: 54%;
+    }
+
+    .zhuanti .to-gailan {
+      width: 7%;
+      height: 9%;
+      /*background-color: blue;*/
+      position: absolute;
+      top: 2%;
+      left: 47%;
+    }
+
+    .zhuanti .to-jiankong {
+      width: 9%;
+      height: 9%;
+      /*background-color: blue;*/
+      position: absolute;
+      top: 2%;
+      left: 37%;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit:fill
+    }
+  </style>
+</head>
+<body>
+<!--主页 开始-->
+<div class="wh100 homepage" id="homepage">
+  <div class="to-gailan" id="to-gailan"></div>
+  <div class="to-jiankong" id="to-jiankong"></div>
+  <div class="to-gonglu" id="to-gonglu"></div>
+  <div class="to-zhuanti" id="to-zhuanti"></div>
+  <div class="to-jiankong2" id="to-jiankong2"></div>
+</div>
+<!--主页 结束-->
+
+<!--概览-->
+<div class="wh100 dn gailan" id="gailan">
+  <div class="to-jiankong"></div>
+  <div class="to-gonglu"></div>
+  <div class="to-zhuanti"></div>
+  <div class="to-home"></div>
+
+  <video autoplay="autoplay"  loop="loop" muted>
+    <source src="img/video.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+<!--公路-->
+<div class="wh100 gonglu dn" id="gonglu">
+  <div class="to-jiankong"></div>
+  <div class="to-gailan"></div>
+  <div class="to-zhuanti"></div>
+  <div class="to-home"></div>
+
+</div>
+
+<!--监控中心-->
+<div class="wh100 jiankong dn" id="jiankong">
+  <div class="to-gailan"></div>
+  <div class="to-gonglu"></div>
+  <div class="to-zhuanti"></div>
+  <div class="to-home"></div>
+
+</div>
+
+<!--专题-->
+<div class="wh100 zhuanti dn" id="zhuanti">
+  <div class="to-jiankong"></div>
+  <div class="to-gailan"></div>
+  <div class="to-gonglu"></div>
+  <div class="to-home"></div>
+
+</div>
+
+<script>
+    var
+        toGaiLan = document.getElementById('to-gailan'),
+        toJianKong = document.getElementById('to-jiankong'),
+        toGongLu = document.getElementById('to-gonglu'),
+        toZhuanti = document.getElementById('to-zhuanti'),
+        toJianKong2 = document.getElementById('to-jiankong2'),
+
+        homepage = document.getElementById('homepage'),
+        gonglu = document.getElementById('gonglu'),
+        jiankong = document.getElementById('jiankong'),
+        zhuanti = document.getElementById('zhuanti'),
+        gailan = document.getElementById('gailan');
+
+    var
+        gailanToJiankong = gailan.querySelectorAll('div.to-jiankong')[0],
+        gailanToGonglu = gailan.querySelectorAll('div.to-gonglu')[0],
+        gailanToZhuanti = gailan.querySelectorAll('div.to-zhuanti')[0],
+
+        gongluToJiankong = gonglu.querySelectorAll('div.to-jiankong')[0],
+        gongluToGailan = gonglu.querySelectorAll('div.to-gailan')[0],
+        gongluToZhuanti = gonglu.querySelectorAll('div.to-zhuanti')[0],
+
+        jiankongToGonglu = jiankong.querySelectorAll('div.to-gonglu')[0],
+        jiankongToGailan = jiankong.querySelectorAll('div.to-gailan')[0],
+        jiankongToZhuanti = jiankong.querySelectorAll('div.to-zhuanti')[0],
+
+        zhuantiToGonglu = zhuanti.querySelectorAll('div.to-gonglu')[0],
+        zhuantiToGailan = zhuanti.querySelectorAll('div.to-gailan')[0],
+        zhuantiToJiankong = zhuanti.querySelectorAll('div.to-jiankong')[0];
+
+    var
+        toHome = document.getElementsByClassName('to-home');
+    console.log(toHome);
+
+    for (var i = 0; i < toHome.length; i++) {
+        toHome[i].onclick = function () {
+            gonglu.style.display = 'none';
+            jiankong.style.display = 'none';
+            zhuanti.style.display = 'none';
+            gailan.style.display = 'none';
+            homepage.style.display = 'block';
+        }
+
+    }
+
+    // 主页去概览
+    toGaiLan.onclick = function () {
+        homepage.style.display = 'none';
+        gailan.style.display = 'block';
+    };
+    // 主页去监控中心
+    toJianKong.onclick = function () {
+        homepage.style.display = 'none';
+        jiankong.style.display = 'block';
+    };
+    // 主页去监控中心
+    toJianKong2.onclick = function () {
+        homepage.style.display = 'none';
+        jiankong.style.display = 'block';
+    };
+    // 主页去公路模块
+    toGongLu.onclick = function () {
+        homepage.style.display = 'none';
+        gonglu.style.display = 'block';
+    };
+    // 主页去公路模块
+    toZhuanti.onclick = function () {
+        homepage.style.display = 'none';
+        zhuanti.style.display = 'block';
+    };
+
+
+    // 概览去监控
+    gailanToJiankong.onclick = function () {
+        gailan.style.display = 'none';
+        jiankong.style.display = 'block';
+    };
+    // 概览去公路
+    gailanToGonglu.onclick = function () {
+        gailan.style.display = 'none';
+        gonglu.style.display = 'block';
+    };
+    // 概览去专题
+    gailanToZhuanti.onclick = function () {
+        gailan.style.display = 'none';
+        zhuanti.style.display = 'block';
+    };
+
+
+    // 公路去监控
+    gongluToJiankong.onclick = function () {
+        gonglu.style.display = 'none';
+        jiankong.style.display = 'block';
+    };
+    // 公路去概览
+    gongluToGailan.onclick = function () {
+        gonglu.style.display = 'none';
+        gailan.style.display = 'block';
+    };
+    // 公路去专题
+    gongluToZhuanti.onclick = function () {
+        gonglu.style.display = 'none';
+        zhuanti.style.display = 'block';
+    };
+
+
+    // 监控去公路
+    jiankongToGonglu.onclick = function () {
+        jiankong.style.display = 'none';
+        gonglu.style.display = 'block';
+    };
+    // 监控去概览
+    jiankongToGailan.onclick = function () {
+        jiankong.style.display = 'none';
+        gailan.style.display = 'block';
+    };
+    // 监控去专题
+    jiankongToZhuanti.onclick = function () {
+        jiankong.style.display = 'none';
+        zhuanti.style.display = 'block';
+    };
+
+
+    // 专题去公路
+    zhuantiToGonglu.onclick = function () {
+        zhuanti.style.display = 'none';
+        gonglu.style.display = 'block';
+    };
+    // 专题去概览
+    zhuantiToGailan.onclick = function () {
+        zhuanti.style.display = 'none';
+        gailan.style.display = 'block';
+    };
+    // 专题去监控
+    zhuantiToJiankong.onclick = function () {
+        zhuanti.style.display = 'none';
+        jiankong.style.display = 'block';
+    }
+
+
+</script>
+</body>
+</html>
