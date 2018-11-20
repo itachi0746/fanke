@@ -1,187 +1,196 @@
 ﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>例子</title>
-    <style>
-        html,
-        body,
-        #container {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-        }
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>demoV2</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    html,
+    body {
+      width: 1920px;
+      height: 1080px;
 
+    }
+    #container {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .box-wh {
+      width: 440px;
+      height: 620px;
+    }
+    .box1 {
+      position: absolute;
+      top: 180px;
+      left: 54px;
+      z-index: 99;
+    }
+    .box2 {
+      position: absolute;
+      top: 180px;
+      right: 54px;
+      z-index: 99;
+    }
+    .bg1 {
+      width: 100%;
+      height: 100%;
+      background: url("img/bg2.png") no-repeat;
+      background-size: 100% 100%;
+      position: relative;
+      z-index: 99;
 
-    </style>
+    }
+    .box3 {
+      width: 1200px;
+      height: 280px;
+      position: absolute;
+      z-index: 99;
+      bottom: 0;
+      left: 50%;
+      margin-left: -600px;
+    }
+  </style>
 </head>
 <body>
-    <div id="container" class="container">
-        <div class="">
+<div id="container" class="container">
+  <div class="bg1">
 
-        </div>
-    </div>
+  </div>
+  <div class="box1 box-wh">
+    <img src="img/left_1.png" alt="">
+  </div>
+  <div class="box2 box-wh">
+    <img src="img/right_1.png" alt="">
+  </div>
+  <div class="box3">
+    <img src="img/down_1.png" alt="">
+  </div>
+</div>
 
-    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://webapi.amap.com/maps?v=1.4.8&key=b70cedb6efd4b9dac0bebb4c67230db6"></script>
-    <script type="text/javascript">
-        var satellite = new AMap.TileLayer.Satellite();
-        //var roadNet = new AMap.TileLayer.RoadNet();
-        var building = new AMap.Buildings({
-            zooms: [16, 18],
-            zIndex: 10,
-            heightFactor: 2//2倍于默认高度，3D下有效
-        });
-        var theMap = new AMap.Map('container', {
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://webapi.amap.com/maps?v=1.4.8&key=b70cedb6efd4b9dac0bebb4c67230db6"></script>
+<script type="text/javascript">
+    var satellite = new AMap.TileLayer.Satellite();
+    //var roadNet = new AMap.TileLayer.RoadNet();
+    var building = new AMap.Buildings({
+        zooms: [16, 18],
+        zIndex: 10,
+        heightFactor: 2//2倍于默认高度，3D下有效
+    });
+    var theMap = new AMap.Map('container', {
 
-            pitch: -90,
-            viewMode: '3D',// 地图模式
-            center: [113.275824, 22.994826],
-            features: ['bg', 'building'],
-            zoom: 7,
-            layers: [
-                    satellite,
-                    building
-                    //roadNet
-            ]
-        });
-        var theMaxZoom = 18;
-        var theCurrentZoom = 1;
-        /*var theTimer = window.setInterval(function () {
-                var  theZoomValue=theMap.getZoom();
-                if (theCurrentZoom >= theMaxZoom) {
-                    window.clearInterval(theTimer);
-                    return;
-                }
-            console.log(theZoomValue);
-                //map.zoomIn();
-                theMap.setZoom(theCurrentZoom++);
-            }, 500);*/
-
-
-        AMap.plugin('AMap.DistrictSearch', function () {
-            // 创建行政区查询对象
-            var district = new AMap.DistrictSearch({
-                // 返回行政区边界坐标等具体信息
-                extensions: 'all',
-                // 设置查询行政区级别为 区
-                level: 'province'
-            })
-
-            district.search('广东省', function (status, result) {
-                // 获取朝阳区的边界信息
-                var bounds = result.districtList[0].boundaries
-                if (!bounds) {
-                    console.log("未获取到数据!");
-                    return;
-                }
-
-                var theBigBounds = null;
-                window.theMap = theMap;
-                for (var i = 0, l = bounds.length; i < l; i++) {
-
-                    var theBound = bounds[i];
-                    var polygon = {};
-                    //var polygon = new AMap.Polygon({
-                    //    map: window.theMap,
-                    //    strokeWeight: 1,
-                    //    borderWeight: 200, // 线条宽度，默认为 1
-                    //    path: theBound,
-                    //    strokeOpacity: 1,
-                    //    zIndex: 1,
-                    //    fillOpacity: 0.5,
-                    //    fillColor: '#0f0c21',
-                    //    strokeColor: 'blue'
-                    //});
-
-                    if (theBound.length >= 10000) {
-                        theBigBounds = theBound;
-                    }
-                    //  polygons.push(polygon);
-
-                }
-                showLine(theBigBounds);
-
-            })
-        });
-
-        var marker = new AMap.Marker({
-            position: new AMap.LngLat(113.275824, 22.994826),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-            title: '广州南站'
-        });
-
-        function showLine(thePaths) {
-            console.log("开始绘制线！");
-            if (!thePaths) {
-                console.log("未找到最大的轮廓");
+        pitch: -90,
+        viewMode: '3D',// 地图模式
+        center: [113.275824, 22.994826],
+        features: ['bg', 'building'],
+        zoom: 7,
+        layers: [
+            satellite,
+            building
+            //roadNet
+        ]
+    });
+    var theMaxZoom = 18;
+    var theCurrentZoom = 1;
+    /*var theTimer = window.setInterval(function () {
+            var  theZoomValue=theMap.getZoom();
+            if (theCurrentZoom >= theMaxZoom) {
+                window.clearInterval(theTimer);
                 return;
             }
-            var theIndex = 1;
-            var thePoints = [];
-            thePoints.push(thePaths[0]);
-            console.log("开始执行");
+        console.log(theZoomValue);
+            //map.zoomIn();
+            theMap.setZoom(theCurrentZoom++);
+        }, 500);*/
 
-            var theTimer = window.setInterval(function () {
-                console.log(theIndex);
-                thePoints.push(thePaths[theIndex]);
-                theIndex++;
-                for (var j = 0; j < 500; j++) {
-                    if (theIndex < thePaths.length) {
-                        thePoints.push(thePaths[theIndex]);
-                        theIndex++;
-                    }
-                    else {
-                        break;
-                    }
+
+    AMap.plugin('AMap.DistrictSearch', function () {
+        // 创建行政区查询对象
+        var district = new AMap.DistrictSearch({
+            // 返回行政区边界坐标等具体信息
+            extensions: 'all',
+            // 设置查询行政区级别为 区
+            level: 'province'
+        })
+
+        district.search('广东省', function (status, result) {
+            // 获取朝阳区的边界信息
+            var bounds = result.districtList[0].boundaries
+            if (!bounds) {
+                console.log("未获取到数据!");
+                return;
+            }
+
+            var theBigBounds = null;
+            window.theMap = theMap;
+            for (var i = 0, l = bounds.length; i < l; i++) {
+
+                var theBound = bounds[i];
+                var polygon = {};
+                //var polygon = new AMap.Polygon({
+                //    map: window.theMap,
+                //    strokeWeight: 1,
+                //    borderWeight: 200, // 线条宽度，默认为 1
+                //    path: theBound,
+                //    strokeOpacity: 1,
+                //    zIndex: 1,
+                //    fillOpacity: 0.5,
+                //    fillColor: '#0f0c21',
+                //    strokeColor: 'blue'
+                //});
+
+                if (theBound.length >= 10000) {
+                    theBigBounds = theBound;
                 }
+                //  polygons.push(polygon);
 
-                if (theIndex >= thePaths.length) {
-                    // debugger;
-                    window.clearInterval(theTimer);
-                    if (thePoints.length > 0) {
-                        var polyline = new AMap.Polyline({
-                            path: thePoints,
-                            map: window.theMap,
-                            borderWeight: 2, // 线条宽度，默认为 1
-                            strokeColor: 'white'//, // 线条颜色
-                            //lineJoin: 'round' // 折线拐点连接处样式
-                        });
-                        thePoints = [];
-                    }
-                    console.log("绘图结束！");
-                    //var polygon = new AMap.Polygon({
-                    //    map: window.theMap,
-                    //    strokeWeight: 1,
-                    //    borderWeight: 200, // 线条宽度，默认为 1
-                    //    path: thePaths,
-                    //    strokeOpacity: 1,
-                    //    zIndex: 1,
-                    //    fillOpacity: 0.5,
-                    //    fillColor: '#0f0c21',
-                    //    strokeColor: 'blue'
-                    //});
-                    showMark();
-                    var theValue = 1;
-                    var thePitchTimer = window.setInterval(function () {
-                        console.log("角度:"+theValue);
-                        if (theValue > 45) {
-                            window.clearInterval(thePitchTimer);
-                            showCharts();
+            }
+            showLine(theBigBounds);
 
+        })
+    });
 
-                            return;
-                        }
-                        theMap.setPitch(theValue);
-                        theValue = theValue + 1;
-                    }, 10);
+    var marker = new AMap.Marker({
+        position: new AMap.LngLat(113.275824, 22.994826),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+        title: '广州南站'
+    });
 
-                    return;
+    function showLine(thePaths) {
+        console.log("开始绘制线！");
+        if (!thePaths) {
+            console.log("未找到最大的轮廓");
+            return;
+        }
+        var theIndex = 1;
+        var thePoints = [];
+        thePoints.push(thePaths[0]);
+        console.log("开始执行");
+
+        var theTimer = window.setInterval(function () {
+            console.log(theIndex);
+            thePoints.push(thePaths[theIndex]);
+            theIndex++;
+            for (var j = 0; j < 500; j++) {
+                if (theIndex < thePaths.length) {
+                    thePoints.push(thePaths[theIndex]);
+                    theIndex++;
                 }
-                if (thePoints.length > 10) {
-                    //debugger;
+                else {
+                    break;
+                }
+            }
+
+            if (theIndex >= thePaths.length) {
+                // debugger;
+                window.clearInterval(theTimer);
+                if (thePoints.length > 0) {
                     var polyline = new AMap.Polyline({
                         path: thePoints,
                         map: window.theMap,
@@ -189,83 +198,123 @@
                         strokeColor: 'white'//, // 线条颜色
                         //lineJoin: 'round' // 折线拐点连接处样式
                     });
-                    var theLastPoint = thePoints[thePoints.length - 1];
                     thePoints = [];
-                    thePoints.push(theLastPoint);
-
-                    console.log("开始绘制线！");
                 }
+                console.log("绘图结束！");
+                //var polygon = new AMap.Polygon({
+                //    map: window.theMap,
+                //    strokeWeight: 1,
+                //    borderWeight: 200, // 线条宽度，默认为 1
+                //    path: thePaths,
+                //    strokeOpacity: 1,
+                //    zIndex: 1,
+                //    fillOpacity: 0.5,
+                //    fillColor: '#0f0c21',
+                //    strokeColor: 'blue'
+                //});
+                showMark();
+                var theValue = 1;
+                var thePitchTimer = window.setInterval(function () {
+                    console.log("角度:" + theValue);
+                    if (theValue > 45) {
+                        window.clearInterval(thePitchTimer);
+                        showCharts();
 
-            }, 1);
 
+                        return;
+                    }
+                    theMap.setPitch(theValue);
+                    theValue = theValue + 1;
+                }, 10);
 
-
-        }
-
-        function showMark() {
-            var thePoints = {
-                "广州南站": { "latitude": 22.9874720000, "longitude": 113.2685860000 },
-                // "深圳火车站": { "latitude": 22.5319900000, "longitude": 114.1176800000 },
-                "深圳北站": { "latitude": 22.6097250000, "longitude": 114.0291130000 },
-                //"广州东站": { "latitude": 23.1505660000, "longitude": 113.3249000000 },
-                //"广州火车站": { "latitude": 23.1494150000, "longitude": 113.2572910000 },
-                //"广州北站": { "latitude": 23.3774050000, "longitude": 113.2037940000 },
-                //"深圳西站": { "latitude": 22.5275730000, "longitude": 113.9073060000 },
-                //"深圳东站": { "latitude": 22.6019860000, "longitude": 114.1199340000 },
-                "珠海站": { "latitude": 22.2153960000, "longitude": 113.5496410000 },
-                "白云国际机场": { "latitude": 23.3896270000, "longitude": 113.3076480000 },
-                "宝安国际机场": { "latitude": 22.6333600000, "longitude": 113.8145490000 },
-                //"珠海金湾国际机场": { "latitude": 22.0057560000, "longitude": 113.3819450000 },
-                //"揭阳潮汕国际机场": { "latitude": 23.5463610000, "longitude": 116.5092740000 }
-            };
-
-            for (var name in thePoints) {
-                var theItem = thePoints[name];
-                var marker = new AMap.Marker({
-
-                    position: new AMap.LngLat(theItem.longitude, theItem.latitude),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-                    title: name
-                });
-
-                theMap.add(marker);
-                  marker.on('click',function () {
-    //                alert(123)
-
-                  })
+                return;
             }
+            if (thePoints.length > 10) {
+                //debugger;
+                var polyline = new AMap.Polyline({
+                    path: thePoints,
+                    map: window.theMap,
+                    borderWeight: 2, // 线条宽度，默认为 1
+                    strokeColor: 'white'//, // 线条颜色
+                    //lineJoin: 'round' // 折线拐点连接处样式
+                });
+                var theLastPoint = thePoints[thePoints.length - 1];
+                thePoints = [];
+                thePoints.push(theLastPoint);
+
+                console.log("开始绘制线！");
+            }
+
+        }, 1);
+
+
+    }
+
+    function showMark() {
+        var thePoints = {
+            "广州南站": {"latitude": 22.9874720000, "longitude": 113.2685860000},
+            // "深圳火车站": { "latitude": 22.5319900000, "longitude": 114.1176800000 },
+            "深圳北站": {"latitude": 22.6097250000, "longitude": 114.0291130000},
+            //"广州东站": { "latitude": 23.1505660000, "longitude": 113.3249000000 },
+            //"广州火车站": { "latitude": 23.1494150000, "longitude": 113.2572910000 },
+            //"广州北站": { "latitude": 23.3774050000, "longitude": 113.2037940000 },
+            //"深圳西站": { "latitude": 22.5275730000, "longitude": 113.9073060000 },
+            //"深圳东站": { "latitude": 22.6019860000, "longitude": 114.1199340000 },
+            "珠海站": {"latitude": 22.2153960000, "longitude": 113.5496410000},
+            "白云国际机场": {"latitude": 23.3896270000, "longitude": 113.3076480000},
+            "宝安国际机场": {"latitude": 22.6333600000, "longitude": 113.8145490000},
+            //"珠海金湾国际机场": { "latitude": 22.0057560000, "longitude": 113.3819450000 },
+            //"揭阳潮汕国际机场": { "latitude": 23.5463610000, "longitude": 116.5092740000 }
+        };
+
+        for (var name in thePoints) {
+            var theItem = thePoints[name];
+            var marker = new AMap.Marker({
+
+                position: new AMap.LngLat(theItem.longitude, theItem.latitude),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                title: name
+            });
+
+            theMap.add(marker);
+            marker.on('click', function () {
+                //                alert(123)
+
+            })
         }
-        // 显示表格
-        function showCharts() {
+    }
+
+    // 显示表格
+    function showCharts() {
 
 
-        }
+    }
 
-        // 将创建的点标记添加到已有的地图实例：
-
-
-        //加载图层展示
-        //AMapUI.loadUI(['overlay/SimpleMarker'], function (SimpleMarker) {
-        //    //启动页面
-        //    initPage(SimpleMarker);
-        //});
-
-        //function initPage(SimpleMarker) {
-
-        //    //创建SimpleMarker实例
-        //    new SimpleMarker({
-        //        //前景文字
-        //        iconLabel: '广州南站',
-        //        //图标主题
-        //        iconTheme: 'default',
-        //        //背景图标样式
-        //        iconStyle: 'red',
-        //        //...其他Marker选项...，不包括content
-        //        map: theMap,
-        //        position: [113.275824, 22.994826]
-        //    });
+    // 将创建的点标记添加到已有的地图实例：
 
 
-        //}
-    </script>
+    //加载图层展示
+    //AMapUI.loadUI(['overlay/SimpleMarker'], function (SimpleMarker) {
+    //    //启动页面
+    //    initPage(SimpleMarker);
+    //});
+
+    //function initPage(SimpleMarker) {
+
+    //    //创建SimpleMarker实例
+    //    new SimpleMarker({
+    //        //前景文字
+    //        iconLabel: '广州南站',
+    //        //图标主题
+    //        iconTheme: 'default',
+    //        //背景图标样式
+    //        iconStyle: 'red',
+    //        //...其他Marker选项...，不包括content
+    //        map: theMap,
+    //        position: [113.275824, 22.994826]
+    //    });
+
+
+    //}
+</script>
 </body>
 </html>
