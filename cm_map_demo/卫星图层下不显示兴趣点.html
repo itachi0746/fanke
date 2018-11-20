@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>卫星图层下不显示兴趣点</title>
+    <style>
+        html,
+        body,
+        #container {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="container" class="container">
+</div>
+
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://webapi.amap.com/maps?v=1.4.8&key=b70cedb6efd4b9dac0bebb4c67230db6"></script>
+<script type="text/javascript">
+  var satellite = new AMap.TileLayer.Satellite();
+  var roadNet = new AMap.TileLayer.RoadNet();
+
+  var theMap = new AMap.Map('container', {
+    mapStyle: 'amap://styles/3c654fe0a9a3c324fe22a23ea8d62fde',
+    pitch: 60,
+    viewMode: '3D',// 地图模式
+    center: [113.275824, 22.994826],  
+
+    // features: ['bg', 'road', 'building',],
+    zoom: 11,
+    layers: [
+      satellite,
+      // roadNet
+    ]
+  });
+
+  // var object3Dlayer = new AMap.Object3DLayer({ zIndex: 1 });
+  // theMap.add(object3Dlayer);
+  //   var opts = {
+  //       subdistrict: 0,
+  //       extensions: 'all',
+  //       level: 'province'
+  //   };
+  //   //利用行政区查询获取路径
+  //   var district = new AMap.DistrictSearch(opts);
+  //   district.search('广东省', function (status, result) {
+
+  //       var bounds = result.districtList[0].boundaries;
+  //       // rgba
+  //       var color = '#0055ff';
+  //       for (var i = 0; i < bounds.length; i += 1) {
+  //           var line = new AMap.Object3D.ThinLine({
+  //               path: bounds[i],
+  //               color: color
+  //           });
+  //           object3Dlayer.add(line)
+  //       }
+  //   })
+
+
+  // var theMaxZoom = 18;
+  // var theCurrentZoom = 1;
+  //	 var theTimer = window.setInterval(function () {
+  //        var  theZoomValue=theMap.getZoom();
+  //        if (theCurrentZoom >= theMaxZoom) {
+  //            window.clearInterval(theTimer);
+  //            return;
+  //        }
+  //	console.log(theZoomValue);
+  //        //map.zoomIn();
+  //        theMap.setZoom(theCurrentZoom++);
+  //    }, 500);
+</script>
+</body>
+</html>
