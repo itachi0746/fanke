@@ -1,0 +1,167 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+@keyframes clipMe {
+  0%,
+  100% {
+    clip: rect(0px, 220px, 2px, 0px);
+  }
+
+  25% {
+    clip: rect(0px, 2px, 220px, 0px);
+  }
+
+  50% {
+    clip: rect(218px, 220px, 220px, 0px);
+  }
+
+  75% {
+    clip: rect(0px, 220px, 220px, 218px);
+  }
+}
+.dn {
+  display: none;
+}
+html,
+body {
+  width: 1920px;
+  height: 1080px;
+  position: relative;
+}
+#container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+.box-wh {
+  width: 440px;
+  height: 620px;
+}
+.box1-1 {
+  width: 440px;
+  height: 620px;
+  position: absolute;
+  top: 180px;
+  left: 54px;
+  z-index: 999;
+  box-shadow: inset 0 0 0 3px rgba(105, 202, 98, 0.5);
+  color: #3bc331;
+}
+.box1-1::before,
+.box1-1::after {
+  content: "";
+  z-index: 998;
+  /* margin: -5%; */
+  box-shadow: inset 0 0 0 2px;
+  animation: clipMe 8s linear infinite;
+}
+.box1 {
+  position: absolute;
+  top: 180px;
+  left: 54px;
+  z-index: 999;
+}
+.box2 {
+  position: absolute;
+  top: 180px;
+  right: 54px;
+  z-index: 999;
+}
+.bg1 {
+  width: 100%;
+  height: 100%;
+  background: url("../img/bg1.png") no-repeat;
+  background-size: 100% 100%;
+  position: relative;
+  z-index: 99;
+  pointer-events: none;
+}
+.bg2 {
+  width: 100%;
+  height: 100%;
+  background: url("../img/bg2.png") no-repeat;
+  background-size: 100% 100%;
+  position: relative;
+  z-index: 99;
+}
+.box3 {
+  width: 1200px;
+  height: 280px;
+  position: absolute;
+  z-index: 999;
+  bottom: 0;
+  left: 50%;
+  margin-left: -600px;
+}
+.gaosu {
+  width: 100px;
+  height: 100px;
+  /* background-color: blue; */
+  position: absolute;
+  top: 111px;
+  left: 171px;
+  transform: rotate(61deg);
+}
+.tielu {
+  width: 100px;
+  height: 100px;
+  /* background-color: blue; */
+  position: absolute;
+  top: 70px;
+  left: 279px;
+  transform: rotate(80deg);
+}
+.l-icon {
+  width: 340px;
+  height: 280px;
+  position: absolute;
+  bottom: 0;
+  left: 54px;
+  z-index: 99;
+}
+.r-icon {
+  width: 340px;
+  height: 280px;
+  position: absolute;
+  bottom: 0;
+  right: 54px;
+  z-index: 99;
+}
+.r-icon img {
+  transform: rotate(30deg);
+}
+video {
+  width: 100%;
+  height: 100%;
+  object-fit:fill
+}
+.box2-s {
+  width: 440px;
+  height: 310px;
+
+}
+input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99;
+}
+
+.amap-indoormap-floorbar-control {
+  position: absolute;
+  margin: auto 0;
+  bottom: 165px;
+  right: 12px;
+  width: 70px;
+  text-align: center;
+  line-height: 1.3em;
+  overflow: hidden;
+  padding: 0 2px;
+}
