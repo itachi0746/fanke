@@ -1,5 +1,4 @@
-$percent:3.4%;
-$perPos:-270px;
+
 
 
 * {
@@ -169,103 +168,19 @@ input {
   overflow: hidden;
   padding: 0 2px;
 }
-
-@keyframes run {
+@keyframes run2 {
   0% {
     background-position: 0 0;
   }
-  3.44% {
-    background-position: 0 $perPos;
-  }
-  6.88% {
-    background-position: 0 $perPos*2;
-  }
-  10.32% {
-    background-position: 0 $perPos*3;
-  }
-  13.76% {
-    background-position: 0 $perPos*4;
-  }
-  17.2% {
-    background-position: 0 $perPos*5;
-  }
-  20.64% {
-    background-position: 0 $perPos*6;
-  }
-  24.08% {
-    background-position: 0 $perPos*7;
-  }
-  27.52% {
-    background-position: 0 $perPos*8;
-  }
-  30.96% {
-    background-position: 0 $perPos*9;
-  }
-  34.4% {
-    background-position: 0 $perPos*10;
-  }
-  37.839999999999996% {
-    background-position: 0 $perPos*11;
-  }
-  41.28% {
-    background-position: 0 $perPos*12;
-  }
-  44.72% {
-    background-position: 0 $perPos*13;
-  }
-  48.16% {
-    background-position: 0 $perPos*14;
-  }
-  51.6% {
-    background-position: 0 $perPos*15;
-  }
-  55.04% {
-    background-position: 0 $perPos*16;
-  }
-  58.48% {
-    background-position: 0 $perPos*17;
-  }
-  61.92% {
-    background-position: 0 $perPos*18;
-  }
-  65.36% {
-    background-position: 0 $perPos*19;
-  }
-  68.8%{
-    background-position: 0 $perPos*20;
-  }
-  72.24% {
-    background-position: 0 $perPos*21;
-  }
-  75.67999999999999% {
-    background-position: 0 $perPos*22;
-  }
-  79.12% {
-    background-position: 0 $perPos*23;
-  }
-  82.56% {
-    background-position: 0 $perPos*24;
-  }
-  86% {
-    background-position: 0 $perPos*25;
-  }
-  89.44% {
-    background-position: 0 $perPos*26;
-  }
-  92.88% {
-    background-position: 0 $perPos*27;
-  }
-  96.32% {
-    background-position: 0 $perPos*28;
-  }
   100% {
-    background-position: 0 0;
+    background-position: 0 -7830px;  // 图片总长
+
   }
 }
 .l-icon{
   background: url(../img/car.png) ;
   /* background-size: 100% 100%; */
-  animation:run 2s steps(1, start) infinite;
+  animation:run2  2s  steps(29, end) infinite;  // step(帧数(就是几张图的意思))
   // -webkit-animation:run 2s steps(1, start) infinite;
 }
 .l-icon img {

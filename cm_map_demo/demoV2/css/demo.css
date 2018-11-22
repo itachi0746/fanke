@@ -177,135 +177,23 @@ input {
   overflow: hidden;
   padding: 0 2px; }
 
-@-webkit-keyframes run {
+@-webkit-keyframes run2 {
   0% {
     background-position: 0 0; }
-  3.44% {
-    background-position: 0 -270px; }
-  6.88% {
-    background-position: 0 -540px; }
-  10.32% {
-    background-position: 0 -810px; }
-  13.76% {
-    background-position: 0 -1080px; }
-  17.2% {
-    background-position: 0 -1350px; }
-  20.64% {
-    background-position: 0 -1620px; }
-  24.08% {
-    background-position: 0 -1890px; }
-  27.52% {
-    background-position: 0 -2160px; }
-  30.96% {
-    background-position: 0 -2430px; }
-  34.4% {
-    background-position: 0 -2700px; }
-  37.839999999999996% {
-    background-position: 0 -2970px; }
-  41.28% {
-    background-position: 0 -3240px; }
-  44.72% {
-    background-position: 0 -3510px; }
-  48.16% {
-    background-position: 0 -3780px; }
-  51.6% {
-    background-position: 0 -4050px; }
-  55.04% {
-    background-position: 0 -4320px; }
-  58.48% {
-    background-position: 0 -4590px; }
-  61.92% {
-    background-position: 0 -4860px; }
-  65.36% {
-    background-position: 0 -5130px; }
-  68.8% {
-    background-position: 0 -5400px; }
-  72.24% {
-    background-position: 0 -5670px; }
-  75.67999999999999% {
-    background-position: 0 -5940px; }
-  79.12% {
-    background-position: 0 -6210px; }
-  82.56% {
-    background-position: 0 -6480px; }
-  86% {
-    background-position: 0 -6750px; }
-  89.44% {
-    background-position: 0 -7020px; }
-  92.88% {
-    background-position: 0 -7290px; }
-  96.32% {
-    background-position: 0 -7560px; }
   100% {
-    background-position: 0 0; } }
+    background-position: 0 -7830px; } }
 
-@keyframes run {
+@keyframes run2 {
   0% {
     background-position: 0 0; }
-  3.44% {
-    background-position: 0 -270px; }
-  6.88% {
-    background-position: 0 -540px; }
-  10.32% {
-    background-position: 0 -810px; }
-  13.76% {
-    background-position: 0 -1080px; }
-  17.2% {
-    background-position: 0 -1350px; }
-  20.64% {
-    background-position: 0 -1620px; }
-  24.08% {
-    background-position: 0 -1890px; }
-  27.52% {
-    background-position: 0 -2160px; }
-  30.96% {
-    background-position: 0 -2430px; }
-  34.4% {
-    background-position: 0 -2700px; }
-  37.839999999999996% {
-    background-position: 0 -2970px; }
-  41.28% {
-    background-position: 0 -3240px; }
-  44.72% {
-    background-position: 0 -3510px; }
-  48.16% {
-    background-position: 0 -3780px; }
-  51.6% {
-    background-position: 0 -4050px; }
-  55.04% {
-    background-position: 0 -4320px; }
-  58.48% {
-    background-position: 0 -4590px; }
-  61.92% {
-    background-position: 0 -4860px; }
-  65.36% {
-    background-position: 0 -5130px; }
-  68.8% {
-    background-position: 0 -5400px; }
-  72.24% {
-    background-position: 0 -5670px; }
-  75.67999999999999% {
-    background-position: 0 -5940px; }
-  79.12% {
-    background-position: 0 -6210px; }
-  82.56% {
-    background-position: 0 -6480px; }
-  86% {
-    background-position: 0 -6750px; }
-  89.44% {
-    background-position: 0 -7020px; }
-  92.88% {
-    background-position: 0 -7290px; }
-  96.32% {
-    background-position: 0 -7560px; }
   100% {
-    background-position: 0 0; } }
+    background-position: 0 -7830px; } }
 
 .l-icon {
   background: url(../img/car.png);
   /* background-size: 100% 100%; */
-  -webkit-animation: run 2s steps(1, start) infinite;
-          animation: run 2s steps(1, start) infinite; }
+  -webkit-animation: run2 2s steps(29, end) infinite;
+          animation: run2 2s steps(29, end) infinite; }
 
 .l-icon img {
   width: 340px;
