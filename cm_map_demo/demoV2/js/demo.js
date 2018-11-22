@@ -7,14 +7,16 @@ var right2 = document.getElementById("right2");
 var down1 = document.getElementById("down1");
 var down2 = document.getElementById("down2");
 
-var lIcon1 = document.getElementById("l-icon1");
-var lIcon2 = document.getElementById("l-icon2");
-var rIcon1 = document.getElementById("r-icon1");
-var rIcon2 = document.getElementById("r-icon2");
+var lIcon1 = document.getElementById("l-icon");
+var rIcon1 = document.getElementById("r-icon");
 
 var input = document.getElementById('input');
+var lImg = document.getElementById('l-img');
+var lImgTop = 0;
 
 $(document).keydown(function(event) {
+
+
 
   // input.focus();
   if (event.keyCode == 37) {
@@ -47,32 +49,28 @@ tielu.onclick = function() {
 };
 
 
+// console.log(lIcon1);
 
 function clickGaosu() {
-  // left2.style.display = "none";
-  // left1.style.display = "block";
-  // right2.style.display = "none";
-  // right1.style.display = "block";
+console.log(lIcon1);
+
   down2.style.display = "none";
   down1.style.display = "block";
 
-  lIcon2.style.display = "none";
-  lIcon1.style.display = "block";
-  rIcon2.style.display = "none";
-  rIcon1.style.display = "block";
+  // lIcon1.style.background = "../img/car.png";
+  lIcon1.style.background = 'url("img/car.png")';
+
+  // rIcon1.style.display = "block";
 }
 function clickTielu() {
-  // left1.style.display = "none";
-  // left2.style.display = "block";
-  // right1.style.display = "none";
-  // right2.style.display = "block";
+
   down1.style.display = "none";
   down2.style.display = "block";
 
-  lIcon1.style.display = "none";
-  lIcon2.style.display = "block";
-  rIcon1.style.display = "none";
-  rIcon2.style.display = "block";
+  // lIcon1.style.background = "../img/train2.png";
+  lIcon1.style.background = 'url("img/train2.png")';
+
+  // rIcon1.style.display = "none";
 }
 
 var mySwiper1 = new Swiper("#swiper-container1", {
@@ -87,3 +85,18 @@ var mySwiper2 = new Swiper("#swiper-container2", {
 var mySwiper3 = new Swiper("#swiper-container3", {
 
 });
+var left_down_showicon = document.getElementById("left_down_showicon");
+// setInterval(function() {
+
+//   if(lImgTop>=-7830) {
+//     lImgTop-=270;
+//   } else {
+//     lImgTop = 0;
+//   }
+//   // left_down_showicon.style.backgroundPositionX=0+"px";
+//   // left_down_showicon.style.backgroundPositionY=lImgTop+"px";
+
+//   lImg.style.top = lImgTop + 'px';
+//   // debugger
+
+// }, 70);

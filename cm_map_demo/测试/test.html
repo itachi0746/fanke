@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,6 +82,7 @@
     var ctx2 = canvas.getContext('2d');
     var len = 0;
     var len2 = 0;
+    var speed = 7;
     function draw() {
 //      ctx.clearRect(0, 0, 300, 300); //清空所有的内容
 
@@ -92,15 +94,33 @@
           return
         }
 
-        ctx.beginPath();
-        ctx.strokeStyle = "blue";
-        ctx.moveTo(0, 300);
-        ctx.lineTo(len2+=2,300);
-        ctx.closePath();
-        ctx.stroke();
+        // ctx.beginPath();
+        // ctx.strokeStyle = "blue";
+        // ctx.lineWidth = 4;
+        // ctx.moveTo(0, 300);
+        // ctx.lineTo(len2+=speed,300);
+        // ctx.closePath();
+        // ctx.stroke();
+        var ctxStyle1 = {
+          color: 'blue',
+          width: 4
+        }
+        var ctxPosition1 = {
+          start: {
+            x: 0,
+            y: 300
+          },
+          end: {
+            x: len2+=speed,
+            y: 300
+          },
+        }
+        drawLine(ctx,ctxStyle1,ctxPosition1)
 
         ctx2.beginPath();
         ctx2.strokeStyle = "blue";
+        ctx2.lineWidth = 4;
+
         ctx2.moveTo(300, 0);
         ctx2.lineTo(300-len2,0);
         ctx2.closePath();
@@ -111,19 +131,39 @@
       } else {
         ctx.beginPath();
         ctx.strokeStyle = "blue";
+        ctx.lineWidth = 4;
+
         ctx.moveTo(0, 0);
-        ctx.lineTo(0,len+=2);
+        ctx.lineTo(0,len+=speed);
         ctx.closePath();
         ctx.stroke();
 
         ctx2.beginPath();
         ctx2.strokeStyle = "blue";
+        ctx2.lineWidth = 4;
+
         ctx2.moveTo(300, 300);
         ctx2.lineTo(300,300-len);
         ctx2.closePath();
         ctx2.stroke();
       }
       requestAnimationFrame(draw);
+    }
+
+    /**
+     * @msg: 划线
+     * @param {type} 
+     * @return: 
+     */
+    function drawLine(content,style,position) {  
+      content.beginPath();
+      content.strokeStyle = style.color;
+      content.lineWidth = style.width;
+
+      content.moveTo(position.start.x, position.start.y);
+      content.lineTo(position.end.x, position.end.y);
+      content.closePath();
+      content.stroke();
     }
     draw();
   </script>

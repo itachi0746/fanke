@@ -25,17 +25,24 @@
 <script type="text/javascript">
   var satellite = new AMap.TileLayer.Satellite();
   var roadNet = new AMap.TileLayer.RoadNet();
+  var building = new AMap.Buildings({
+    zooms: [16, 18],
+    zIndex: 10,
+    hideFloorBar: true,
+    heightFactor: 2//2倍于默认高度，3D下有效
+  });
 
   var theMap = new AMap.Map('container', {
-    mapStyle: 'amap://styles/3c654fe0a9a3c324fe22a23ea8d62fde',
+    mapStyle: 'amap://styles/eddc89e81e0074daa0c2a595c2670dbb',
     pitch: 60,
     viewMode: '3D',// 地图模式
     center: [113.275824, 22.994826],  
 
-    // features: ['bg', 'road', 'building',],
+    // features: ['bg', 'building','point'],
     zoom: 11,
     layers: [
-      satellite,
+    // building
+      //satellite,
       // roadNet
     ]
   });
