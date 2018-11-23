@@ -1,0 +1,497 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <style type="text/css">
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="map"></div>
+    <canvas id="canvas"></canvas>
+
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=uLPXwuWCTF8swYUkLmPclFi2MyuQIt6u"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>
+
+    <script type="text/javascript" src="https://mapv.baidu.com/build/mapv.js"></script>
+    <script src="china.js"></script>
+    <script type="text/javascript">
+
+        // 百度地图API功能
+        var map = new BMap.Map("map", {
+            enableMapClick: false
+        });    // 创建Map实例
+        map.centerAndZoom(new BMap.Point(113.271429, 23.135336), 8);  // 初始化地图,设置中心点坐标和地图级别
+        map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+
+        map.setMapStyle({
+            styleJson: [{
+                "featureType": "water",
+                "elementType": "all",
+                "stylers": {
+                    "color": "#031628"
+                }
+            }, {
+                "featureType": "land",
+                "elementType": "geometry",
+                "stylers": {
+                    "color": "#000102"
+                }
+            }, 
+            {
+                "featureType": "highway",
+                "elementType": "geometry.fill",
+                "stylers": {
+                    "color": "#000000"
+                }
+            },
+             {
+                "featureType": "highway",
+                "elementType": "geometry.stroke",
+                "stylers": {
+                    "color": "#147a92"
+                }
+            }, 
+            {
+                "featureType": "arterial",
+                "elementType": "geometry.fill",
+                "stylers": {
+                    "color": "#000000"
+                }
+            }, {
+                "featureType": "arterial",
+                "elementType": "geometry.stroke",
+                "stylers": {
+                    "color": "#0b3d51"
+                }
+            }, {
+                "featureType": "local",
+                "elementType": "geometry",
+                "stylers": {
+                    "color": "#000000"
+                }
+            }, {
+                "featureType": "railway",
+                "elementType": "geometry.fill",
+                "stylers": {
+                    "color": "#000000"
+                }
+            }, {
+                "featureType": "railway",
+                "elementType": "geometry.stroke",
+                "stylers": {
+                    "color": "#08304b"
+                }
+            }, {
+                "featureType": "subway",
+                "elementType": "geometry",
+                "stylers": {
+                    "lightness": -70
+                }
+            }, {
+                "featureType": "building",
+                "elementType": "geometry.fill",
+                "stylers": {
+                    "color": "#000000"
+                }
+            }, {
+                "featureType": "all",
+                "elementType": "labels.text.fill",
+                "stylers": {
+                    "color": "#857f7f"
+                }
+            }, {
+                "featureType": "all",
+                "elementType": "labels.text.stroke",
+                "stylers": {
+                    "color": "#000000"
+                }
+            }, {
+                "featureType": "building",
+                "elementType": "geometry",
+                "stylers": {
+                    "color": "#022338"
+                }
+            }, {
+                "featureType": "green",
+                "elementType": "geometry",
+                "stylers": {
+                    "color": "#062032"
+                }
+            }, {
+                "featureType": "boundary",
+                "elementType": "all",
+                "stylers": {
+                    "color": "#465b6c"
+                }
+            }, {
+                "featureType": "manmade",
+                "elementType": "all",
+                "stylers": {
+                    "color": "#022338"
+                }
+            }, {
+                "featureType": "label",
+                "elementType": "all",
+                "stylers": {
+                    "color": "#022338",
+                    "visibility": "off"
+                }
+            }]
+        });
+
+
+        (function (geojson) {
+            // test();
+
+            var geojsonOptions = {
+                gradient: {
+                    0: 'rgba(55, 50, 250, 0.4)',
+                    1: 'rgba(55, 50, 250, 1)'
+                },
+                max: 354551,
+                draw: 'intensity'
+            }
+
+            var geojsonDataSet = mapv.geojson.getDataSet(geojson);
+
+            var to = '广州';
+
+            var qianxi = new mapv.DataSet([
+                {
+                    from: '深圳',
+                    count: 354551,
+                    to: to,
+                },
+                {
+                    from: '珠海',
+                    count: 97323,
+                    to: to,
+                },
+                {
+                    from: '汕头',
+                    count: 28664,
+                    to: to,
+                },
+                {
+                    from: '湛江',
+                    count: 16650,
+                    to: to,
+                },
+                {
+                    from: '江门',
+                    count: 14379,
+                    to: to,
+                },
+                {
+                    from: "佛山",
+                    count: 16650,
+                    to: to
+                },
+                {
+                    from: "东莞",
+                    count: 76650,
+                    to: to
+                },
+            ]);
+
+            var qianxiData = qianxi.get();
+
+            var lineData = [];
+            var pointData = [];
+            var textData = [];
+            var timeData = [];
+
+            var citys = {}
+
+            for (var i = 0; i < qianxiData.length; i++) {
+                var fromCenter = mapv.utilCityCenter.getCenterByCityName(qianxiData[i].from);
+                var toCenter = mapv.utilCityCenter.getCenterByCityName(qianxiData[i].to);
+                if (!fromCenter || !toCenter) {
+                    continue;
+                }
+                citys[qianxiData[i].from] = qianxiData[i].count;
+                citys[qianxiData[i].to] = 100;
+                pointData.push(
+                {
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [fromCenter.lng, fromCenter.lat]
+                    }
+                }
+                );
+                pointData.push(
+                {
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [toCenter.lng, toCenter.lat]
+                    }
+                }
+                );
+                textData.push(
+                {
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [fromCenter.lng, fromCenter.lat]
+                    },
+                    text: qianxiData[i].from
+                }
+                );
+                textData.push(
+                {
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [toCenter.lng, toCenter.lat]
+                    },
+                    text: qianxiData[i].to
+                }
+                );
+
+                var curve = mapv.utilCurve.getPoints([fromCenter, toCenter]);
+
+                for (j = 0; j < curve.length; j++) {
+                    timeData.push({
+                        geometry: {
+                            type: 'Point',
+                            coordinates: curve[j]
+                        },
+                        count: 1,
+                        time: j
+                    });
+                }
+
+                lineData.push({
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: curve
+                        //coordinates: [[fromCenter.lng, fromCenter.lat], [toCenter.lng, toCenter.lat]]
+                    },
+                    count: 30 * Math.random()
+                });
+
+            }
+
+            var data = geojsonDataSet.get({
+                filter: function (item) {
+
+                    if (!citys[item.name]) {
+                        return false;
+                    }
+
+                    item.count = citys[item.name];
+                    return true;
+                }
+            });
+            geojsonDataSet = new mapv.DataSet(data);
+
+            var mapvLayer = new mapv.baiduMapLayer(map, geojsonDataSet, geojsonOptions);
+
+            var textDataSet = new mapv.DataSet(textData);
+
+            var textOptions = {
+                draw: 'text',
+                font: '14px Arial',
+                fillStyle: 'white',
+                shadowColor: 'yellow',
+                shadowBlue: 10,
+                zIndex: 11,
+                shadowBlur: 10
+            }
+
+            var textMapvLayer = new mapv.baiduMapLayer(map, textDataSet, textOptions);
+
+            var lineDataSet = new mapv.DataSet(lineData);
+
+            var lineOptions = {
+                strokeStyle: 'rgba(255, 250, 50, 0.8)',
+                shadowColor: 'rgba(255, 250, 50, 1)',
+                shadowBlur: 20,
+                lineWidth: 2,
+                zIndex: 100,
+                draw: 'simple'
+            }
+
+            var lineLayer = new mapv.baiduMapLayer(map, lineDataSet, lineOptions);
+
+            var pointOptions = {
+                fillStyle: 'rgba(254,175,3,0.7)',
+                shadowColor: 'rgba(55, 50, 250, 0.5)',
+                shadowBlur: 10,
+                size: 5,
+                zIndex: 10,
+                draw: 'simple'
+            }
+
+
+            var pointDataSet = new mapv.DataSet(pointData);
+
+            var pointLayer = new mapv.baiduMapLayer(map, pointDataSet, pointOptions);
+
+
+            var timeDataSet = new mapv.DataSet(timeData);
+
+            console.log(timeData);
+
+            var timeOptions = {
+                fillStyle: 'rgba(255, 250, 250, 0.5)',
+                zIndex: 200,
+                size: 2.5,
+                animation: {
+                    type: 'time',
+                    stepsRange: {
+                        start: 0,
+                        end: 50
+                    },
+                    trails: 10,
+                    duration: 2,
+                },
+                draw: 'simple'
+            }
+
+            var timeMapvLayer = new mapv.baiduMapLayer(map, timeDataSet, timeOptions);
+
+        })(theChina);
+
+
+function test() { 
+    var blist = [];
+var districtLoading = 0;
+
+function getBoundary() {   
+    addDistrict("广东省");
+    // addDistrict("朝阳区");
+    // addDistrict("顺义区");
+    // addDistrict("通州区");
+}
+
+/**
+ * 添加行政区划
+ * @param {} districtName 行政区划名
+ * @returns  无返回值
+ */
+function addDistrict(districtName) {
+    //使用计数器来控制加载过程
+    districtLoading++;
+    var bdary = new BMap.Boundary();
+    bdary.get(districtName, function (rs) {       //获取行政区域
+        var count = rs.boundaries.length; //行政区域的点有多少个
+        if (count === 0) {
+            alert('未能获取当前输入行政区域');
+            return;
+        }
+        for (var i = 0; i < count; i++) {
+            blist.push({ points: rs.boundaries[i], name: districtName });
+        };
+        //加载完成区域点后计数器-1
+        districtLoading--;
+        if (districtLoading == 0) {
+            //全加载完成后画端点
+            drawBoundary();
+        }
+    });
+}
+
+
+/**
+ * 各种鼠标事件绑定
+ */
+function click(evt) {
+    alert(evt.target.name);
+}
+
+function mouseover(evt) {
+    evt.target.label.setZIndex(99);
+    evt.target.label.setPosition(evt.point);
+    evt.target.label.show();
+}
+
+function mousemove(evt) {
+    evt.target.label.setPosition(evt.point);
+}
+
+function mouseout(evt) {
+    evt.target.label.hide();
+}
+
+function drawBoundary() {
+    //包含所有区域的点数组
+    var pointArray = [];
+
+    /*画遮蔽层的相关方法
+    *思路: 首先在中国地图最外画一圈，圈住理论上所有的中国领土，然后再将每个闭合区域合并进来，并全部连到西北角。
+    *      这样就做出了一个经过多次西北角的闭合多边形*/
+    //定义中国东南西北端点，作为第一层
+    var pNW = { lat: 59.0, lng: 73.0 }
+    var pNE = { lat: 59.0, lng: 136.0 }
+    var pSE = { lat: 3.0, lng: 136.0 }
+    var pSW = { lat: 3.0, lng: 73.0 }
+    //向数组中添加一次闭合多边形，并将西北角再加一次作为之后画闭合区域的起点
+    var pArray = [];
+    pArray.push(pNW);
+    pArray.push(pSW);
+    pArray.push(pSE);
+    pArray.push(pNE);
+    pArray.push(pNW);
+    //循环添加各闭合区域
+    for (var i = 0; i < blist.length; i++) {
+        //添加显示用标签层
+        var label = new BMap.Label(blist[i].name, { offset: new BMap.Size(20, -10) });
+        label.hide();
+        map.addOverlay(label);
+
+        //添加多边形层并显示
+        var ply = new BMap.Polygon(blist[i].points, { strokeWeight: 5, strokeColor: "#FF0000", fillOpacity: 0.01, fillColor: " #FFFFFF" }); //建立多边形覆盖物
+        ply.name = blist[i].name;
+        ply.label = label;
+        ply.addEventListener("click", click);
+        ply.addEventListener("mouseover", mouseover);
+        ply.addEventListener("mouseout", mouseout);
+        ply.addEventListener("mousemove", mousemove);
+        map.addOverlay(ply);
+
+        //添加名称标签层
+        var centerlabel = new BMap.Label(blist[i].name, { offset: new BMap.Size(0, 0) });
+        centerlabel.setPosition(ply.getBounds().getCenter());
+        map.addOverlay(centerlabel);
+
+        //将点增加到视野范围内
+        var path = ply.getPath();
+        pointArray = pointArray.concat(path);
+        //将闭合区域加到遮蔽层上，每次添加完后要再加一次西北角作为下次添加的起点和最后一次的终点
+        pArray = pArray.concat(path);
+        pArray.push(pArray[0]);
+    }
+
+    //限定显示区域，需要引用api库
+    var boundply = new BMap.Polygon(pointArray);
+    BMapLib.AreaRestriction.setBounds(map, boundply.getBounds());
+    map.setViewport(pointArray);    //调整视野 
+
+    //添加遮蔽层
+    var plyall = new BMap.Polygon(pArray, { strokeOpacity: 0.0000001, strokeColor: "#000000", strokeWeight: 0.00001, fillColor: "#000000", fillOpacity: 0.4 }); //建立多边形覆盖物
+    map.addOverlay(plyall);
+}
+
+    getBoundary();
+
+ }
+
+    </script>
+
+</body>
+</html>
