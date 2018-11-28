@@ -23,8 +23,8 @@ textarea {
   -webkit-appearance: none; }
 
 html, body {
-  height: 100%;
-  width: 100%; }
+  height: 1080px;
+  width: 1920px; }
 
 .oh {
   overflow: hidden; }
@@ -89,7 +89,234 @@ html, body {
   -webkit-animation: backOpacity 2s ease-in-out infinite;
           animation: backOpacity 2s ease-in-out infinite; }
 
-a {
-  color: #000; }
+html, body {
+  height: 1080px;
+  width: 1920px;
+  position: relative; }
+
+@font-face {
+  font-family: SketchRockwell; }
+
+.title {
+  width: 700px;
+  height: 160px;
+  background: url("../img/tittle.png") no-repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10; }
+  .title span {
+    color: #b5cafe; }
+
+.top3 {
+  height: 97px;
+  position: absolute;
+  top: 20px;
+  right: 65px;
+  z-index: 9; }
+  .top3 .yongji {
+    float: left;
+    width: 430px;
+    height: 97px;
+    background-color: rgba(234, 72, 130, 0.5);
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    overflow: hidden;
+    padding: 0 20px 0 55px;
+    color: #ffffff;
+    margin-right: 2px; }
+    .top3 .yongji .head {
+      font-size: 18px;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: justify;
+          -ms-flex-pack: justify;
+              justify-content: space-between;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      margin-bottom: 5px; }
+      .top3 .yongji .head .head-p {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center; }
+        .top3 .yongji .head .head-p img {
+          margin-right: 10px; }
+        .top3 .yongji .head .head-p span {
+          font-weight: bold; }
+    .top3 .yongji .list li {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      margin-bottom: 5px; }
+      .top3 .yongji .list li p {
+        font-weight: bold;
+        font-size: 22px; }
+      .top3 .yongji .list li span {
+        font-weight: normal; }
+      .top3 .yongji .list li .num {
+        font-weight: bold; }
+  .top3 .yongji:hover {
+    height: 200px; }
+  .top3 .shizhong:hover {
+    height: 200px; }
+  .top3 .shushi:hover {
+    height: 200px; }
+  .top3 .shizhong {
+    margin-right: 2px; }
+  .top3 .shizhong, .top3 .shushi {
+    width: 394px;
+    height: 97px;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    overflow: hidden;
+    color: #ffffff;
+    padding: 0 20px;
+    float: left; }
+    .top3 .shizhong .head, .top3 .shushi .head {
+      font-size: 18px;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: justify;
+          -ms-flex-pack: justify;
+              justify-content: space-between;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      margin-bottom: 5px; }
+      .top3 .shizhong .head .head-p, .top3 .shushi .head .head-p {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center; }
+        .top3 .shizhong .head .head-p img, .top3 .shushi .head .head-p img {
+          margin-right: 10px; }
+        .top3 .shizhong .head .head-p span, .top3 .shushi .head .head-p span {
+          font-weight: bold; }
+    .top3 .shizhong .list li, .top3 .shushi .list li {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      margin-bottom: 5px; }
+      .top3 .shizhong .list li p, .top3 .shushi .list li p {
+        font-weight: bold;
+        font-size: 22px; }
+      .top3 .shizhong .list li span, .top3 .shushi .list li span {
+        font-weight: normal; }
+      .top3 .shizhong .list li .num, .top3 .shushi .list li .num {
+        font-weight: bold; }
+  .top3 .shizhong {
+    background-color: rgba(250, 129, 64, 0.5); }
+  .top3 .shushi {
+    background-color: rgba(39, 214, 211, 0.5); }
+
+.tab {
+  position: absolute;
+  z-index: 10;
+  top: 260px;
+  left: 20px; }
+
+.tab-box {
+  width: 225px;
+  height: 102px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+  .tab-box span {
+    color: #ffffff;
+    font-size: 24px; }
+
+.tab-box-active {
+  background: url("../img/icon_left_on.png") no-repeat; }
+
+.tab-box-noactive {
+  background: url("../img/icon_left_nor.png") no-repeat; }
+
+.top3-icon1 {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: #ea4882;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 12px;
+  color: #ffffff;
+  margin-right: 10px; }
+
+.top3-icon2 {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: #fa8140;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 12px;
+  color: #ffffff;
+  margin-right: 10px; }
+
+.top3-icon3 {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: #27d6d3;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 12px;
+  color: #ffffff;
+  margin-right: 10px; }
+
+#container2 {
+  position: absolute;
+  right: 54px;
+  bottom: 35px;
+  z-index: 99; }
+
+.yingyan {
+  z-index: 99;
+  border: 1px solid red;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0; }
 
 /*# sourceMappingURL=homepage.css.map */
