@@ -40,6 +40,8 @@ var theMap = new AMap.Map('container', {
     //roadNet
   ]
 });
+
+// 模拟鹰眼
 var theMap2 = new AMap.Map('container2', {
   //pitch: 0,
   //viewMode: '3D',// 地图模式
@@ -65,12 +67,32 @@ var theMap2 = new AMap.Map('container2', {
 
 $(function () {
   var theLastpoint;
+  var yingYan = $('#yingyan');
   theMap2.on("mousedown", function (arg) {
     //theMap2.off('moveend');
     // theMap2.setCenter(theMap.getCenter())
     // ;
     theLastpoint={x:arg.pixel.x,y:arg.pixel.y};
 
+    theMap2.on('mousemove', function (arg) {
+
+      if(theLastpoint) {
+        var theCurrentpoint = {x: arg.pixel.x, y: arg.pixel.y};
+
+        var theX = theCurrentpoint.x - theLastpoint.x;
+        var theY = theCurrentpoint.y - theLastpoint.y;
+        // console.log(theX,theY)
+        if (theX == 0 && theY == 0) {
+          return;
+        }
+
+        yingYan[0].style.top = yingYan.position().top + theY + 'px';
+        yingYan[0].style.left = yingYan.position().left + theX + 'px';
+
+        theLastpoint = theCurrentpoint;
+      }
+
+    });
   });
   theMap2.on("mouseup", function (arg) {
     //theMap2.off('moveend');
@@ -80,32 +102,11 @@ $(function () {
     theMap.setCenter(lnglat);
     theMap2.setCenter(lnglat);
     theLastpoint=null;
-    $('#yingyan')[0].style.top = '100px';
-    $('#yingyan')[0].style.left = '100px';
-
-
+    yingYan[0].style.top = '100px';
+    yingYan[0].style.left = '100px';
 
   });
 
-  theMap2.on('mousemove', function (arg) {
-
-    if(theLastpoint) {
-      var theCurrentpoint = {x: arg.pixel.x, y: arg.pixel.y};
-
-      var theX = theCurrentpoint.x - theLastpoint.x;
-      var theY = theCurrentpoint.y - theLastpoint.y;
-      console.log(theX,theY)
-      if (theX == 0 && theY == 0) {
-        return;
-      }
-
-      $('#yingyan')[0].style.top = $('#yingyan').position().top + theY + 'px';
-      $('#yingyan')[0].style.left = $('#yingyan').position().left + theX + 'px';
-
-      theLastpoint = theCurrentpoint;
-    }
-
-  });
 
 })
 theMap.on("moveend", function () {

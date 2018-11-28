@@ -10,6 +10,10 @@ $(function () {
 
     $(box).on('click',clickTab)
   }
+
+
+  pointControl.showPoints('客运站,铁路,机场,港口');
+
 });
 
 // tab点击事件
@@ -28,6 +32,3 @@ function clickTab() {
 }
 
 
-function showTgt() {
-
-}

@@ -97,6 +97,10 @@ html, body {
 @font-face {
   font-family: SketchRockwell; }
 
+.container2 {
+  -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2), 5px -5px 5px rgba(0, 0, 0, 0.2), -5px 5px 5px rgba(0, 0, 0, 0.2), -5px -5px 5px rgba(0, 0, 0, 0.2);
+          box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2), 5px -5px 5px rgba(0, 0, 0, 0.2), -5px 5px 5px rgba(0, 0, 0, 0.2), -5px -5px 5px rgba(0, 0, 0, 0.2); }
+
 .title {
   width: 700px;
   height: 160px;
@@ -309,14 +313,16 @@ html, body {
   position: absolute;
   right: 54px;
   bottom: 35px;
-  z-index: 99; }
+  z-index: 99;
+  -webkit-transition: all .1s;
+  transition: all .1s; }
 
 .yingyan {
   z-index: 99;
   border: 1px solid red;
   pointer-events: none;
   position: absolute;
-  top: 0;
-  left: 0; }
+  top: 100px;
+  left: 100px; }
 
 /*# sourceMappingURL=homepage.css.map */
