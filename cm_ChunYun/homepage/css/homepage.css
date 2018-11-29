@@ -325,4 +325,58 @@ html, body {
   top: 100px;
   left: 100px; }
 
+.point1 {
+  width: 80px;
+  height: 80px;
+  background: url(../img/redPoint.png);
+  /* background-size: 100% 100%; */
+  -webkit-animation: run2 1s steps(15, end) infinite;
+          animation: run2 1s steps(15, end) infinite;
+  color: #ea4882;
+  font-size: 14px; }
+  .point1 i {
+    position: absolute;
+    top: 30px;
+    left: 70%;
+    width: 250px; }
+
+.point2 {
+  width: 22px;
+  height: 22px;
+  background: url(../img/point2.png) no-repeat;
+  background-position: center;
+  color: #fa8140;
+  font-size: 14px;
+  position: relative; }
+  .point2 i {
+    position: absolute;
+    top: 0;
+    left: 110%;
+    width: 250px; }
+
+.point3 {
+  width: 22px;
+  height: 22px;
+  background: url(../img/point3.png) no-repeat;
+  background-position: center;
+  color: #27d6d3;
+  font-size: 14px; }
+  .point3 i {
+    position: absolute;
+    top: 0;
+    left: 110%;
+    width: 250px; }
+
+@-webkit-keyframes run2 {
+  0% {
+    background-position: 0 0; }
+  100% {
+    background-position: -1200px 0; } }
+
+@keyframes run2 {
+  0% {
+    background-position: 0 0; }
+  100% {
+    background-position: -1200px 0; } }
+
 /*# sourceMappingURL=homepage.css.map */

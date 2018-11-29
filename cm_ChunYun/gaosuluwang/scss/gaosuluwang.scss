@@ -1,0 +1,94 @@
+@import "../../style/common";
+@import "../../style/mixin";
+
+html,body{
+  height: 1080px;
+  width: 1920px;
+  position: relative;
+  background: #011a33;
+}
+
+.main {
+  padding: 20px 40px;
+
+  header {
+    margin-top: 14px;
+    //position: relative;
+    border-bottom: 2px #319ee4 solid;
+    padding-bottom: 9px;
+    display: flex;
+    justify-content: space-between;
+
+    .title {
+      font-size: 20px;
+      color: #06c;
+      font-weight:bold;
+    }
+
+    .notice {
+      font-size: 12px;
+      color: #ccc;
+
+      i {
+        display: inline-block;
+        width: 50px;
+        text-align: center;
+        margin: 0 1px;
+      }
+
+      i:nth-child(1) {
+        border-top: 5px #34b000 solid;
+      }
+      i:nth-child(2) {
+        border-top: 5px #fecb00 solid;
+      }
+      i:nth-child(3) {
+        border-top: 5px #df0100 solid;
+      }
+      i:nth-child(4) {
+        border-top: 5px #8e0e0b solid;
+      }
+
+
+    }
+  }
+
+
+  .body {
+    width: 100%;
+
+
+    .font{
+      height: 50px;
+    }
+    .data {
+      display: flex;
+    }
+    .left-box {
+      flex: 1;
+      height: 500px;
+      background-color: red;
+
+
+    }
+    .right-box {
+      flex: 1;
+      //width: 370px;
+      height: 500px;
+      padding-left: 20px;
+    }
+
+    .map {
+      height: 300px;
+      width: 100%;
+      background-color: #fff;
+    }
+    .chart {
+      height: 200px;
+      width: 100%;
+      background-color: blue;
+    }
+
+
+  }
+}

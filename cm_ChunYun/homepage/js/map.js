@@ -174,6 +174,12 @@ theMap.on('complete', function () {
 //监听放大缩小事件
 theMap.on('zoom', function (arg) {
   var theZoom = theMap.getZoom();
+  if(theZoom>=17) {
+    $('#container2').hide()
+  } else {
+    $('#container2').show()
+
+  }
   if (theZoom >= 12) {
     console.log("显示点");
     theMap.setFeatures(['bg', 'building', 'point']);
@@ -621,24 +627,24 @@ function TestMove() {
   theMap.panTo(thePoint);
 
 }
-AMapUI.loadUI(['control/BasicControl'], function (BasicControl) {
-
-  //添加一个缩放控件
-  /* map.addControl(new BasicControl.Zoom({
-       position: 'lt'
-   }));
-
-   //缩放控件，显示Zoom值
-   map.addControl(new BasicControl.Zoom({
-       position: 'lb',
-       showZoomNum: true
-   }));*/
-
-  //图层切换控件
-  theMap.addControl(new BasicControl.LayerSwitcher({
-    position: 'rt'
-  }));
-});
+// AMapUI.loadUI(['control/BasicControl'], function (BasicControl) {
+//
+//   //添加一个缩放控件
+//   /* map.addControl(new BasicControl.Zoom({
+//        position: 'lt'
+//    }));
+//
+//    //缩放控件，显示Zoom值
+//    map.addControl(new BasicControl.Zoom({
+//        position: 'lb',
+//        showZoomNum: true
+//    }));*/
+//
+//   //图层切换控件
+//   theMap.addControl(new BasicControl.LayerSwitcher({
+//     position: 'rt'
+//   }));
+// });
 
 function CreateHeartLayer() {
   if (!theHeartLayer) {

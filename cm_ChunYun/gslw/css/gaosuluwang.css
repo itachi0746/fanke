@@ -1,0 +1,199 @@
+@charset "UTF-8";
+body, div, span, header, footer, nav, section, aside, article, ul, dl, dt, dd, li, a, p, h1, h2, h3, h4, h5, h6, i, b, textarea, button, input, select, figure, figcaption {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-style: normal;
+  text-decoration: none;
+  border: none;
+  font-weight: normal;
+  font-family: "Microsoft Yahei", Arial, sans-serif;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased; }
+  body:hover, div:hover, span:hover, header:hover, footer:hover, nav:hover, section:hover, aside:hover, article:hover, ul:hover, dl:hover, dt:hover, dd:hover, li:hover, a:hover, p:hover, h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover, i:hover, b:hover, textarea:hover, button:hover, input:hover, select:hover, figure:hover, figcaption:hover {
+    outline: none; }
+
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+input[type="button"], input[type="submit"], input[type="search"], input[type="reset"] {
+  -webkit-appearance: none; }
+
+textarea {
+  -webkit-appearance: none; }
+
+html, body {
+  height: 1080px;
+  width: 1920px; }
+
+.oh {
+  overflow: hidden; }
+
+.clear:after {
+  content: '';
+  display: block;
+  clear: both; }
+
+.clear {
+  zoom: 1; }
+
+.back_img {
+  background-repeat: no-repeat;
+  background-size: 100% 100%; }
+
+.margin {
+  margin: 0 auto; }
+
+.left {
+  float: left; }
+
+.right {
+  float: right; }
+
+.hide {
+  display: none; }
+
+.show {
+  display: block; }
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+
+@-webkit-keyframes backOpacity {
+  0% {
+    opacity: 1; }
+  25% {
+    opacity: .5; }
+  50% {
+    opacity: 1; }
+  75% {
+    opacity: .5; }
+  100% {
+    opacity: 1; } }
+
+@keyframes backOpacity {
+  0% {
+    opacity: 1; }
+  25% {
+    opacity: .5; }
+  50% {
+    opacity: 1; }
+  75% {
+    opacity: .5; }
+  100% {
+    opacity: 1; } }
+
+.animation_opactiy {
+  -webkit-animation: backOpacity 2s ease-in-out infinite;
+          animation: backOpacity 2s ease-in-out infinite; }
+
+html, body {
+  height: 1080px;
+  width: 1920px;
+  position: relative;
+  background: #011a33; }
+
+.main {
+  padding: 20px 40px; }
+  .main header {
+    margin-top: 14px;
+    border-bottom: 2px #319ee4 solid;
+    padding-bottom: 9px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+    .main header .title {
+      font-size: 20px;
+      color: #06c;
+      font-weight: bold; }
+    .main header .notice {
+      font-size: 12px;
+      color: #ccc; }
+      .main header .notice i {
+        display: inline-block;
+        width: 50px;
+        text-align: center;
+        margin: 0 1px; }
+      .main header .notice i:nth-child(1) {
+        border-top: 5px #34b000 solid; }
+      .main header .notice i:nth-child(2) {
+        border-top: 5px #fecb00 solid; }
+      .main header .notice i:nth-child(3) {
+        border-top: 5px #df0100 solid; }
+      .main header .notice i:nth-child(4) {
+        border-top: 5px #8e0e0b solid; }
+  .main .body {
+    width: 100%; }
+    .main .body .font {
+      height: 50px; }
+      .main .body .font .font-box {
+        font-size: 12px;
+        color: #ccc;
+        line-height: 26px;
+        padding-top: 5px;
+        padding-left: 20px;
+        padding-bottom: 5px;
+        position: relative;
+        width: 910px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+                justify-content: space-between; }
+        .main .body .font .font-box p {
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-align: center;
+              -ms-flex-align: center;
+                  align-items: center; }
+          .main .body .font .font-box p * {
+            margin-right: 5px; }
+    .main .body .data {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex; }
+    .main .body .left-box {
+      -webkit-box-flex: 1;
+          -ms-flex: 1;
+              flex: 1;
+      height: 500px; }
+    .main .body .right-box {
+      -webkit-box-flex: 1;
+          -ms-flex: 1;
+              flex: 1;
+      height: 500px;
+      padding-left: 20px; }
+    .main .body .map {
+      height: 300px;
+      width: 100%; }
+    .main .body .chart {
+      height: 200px;
+      width: 100%; }
+
+.table {
+  width: 100%;
+  margin-top: 0;
+  font-size: 14px;
+  color: white;
+  text-align: center; }
+  .table thead {
+    background: #1f486e; }
+  .table tbody tr {
+    height: 41px;
+    line-height: 30px;
+    border-bottom: 1px #013968 solid;
+    border-left: 1px #013968 solid;
+    border-right: 1px #013968 solid; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+/*# sourceMappingURL=gaosuluwang.css.map */
