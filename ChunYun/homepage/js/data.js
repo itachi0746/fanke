@@ -106,6 +106,8 @@ function PlacePointView(theMap) {
             continue;
         }
         var theItem = theItems.split('|');
+        // debugger
+      // console.log(theItem)
         if (theItem.length < 4) {
             console.error("数据不对:" + theItem);
         }
@@ -123,6 +125,8 @@ function PlacePointView(theMap) {
         var theGpsData = theItem['地址'];
         var theGpsArray = [];
         var theMatchGroup = theRegexName.exec(theGpsData);
+        console.log(theGpsData)
+        console.log(theMatchGroup)
         while (theMatchGroup != null) {
             theGpsArray.push({
                 "name": theMatchGroup[1],
