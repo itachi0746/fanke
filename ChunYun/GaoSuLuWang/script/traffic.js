@@ -15,8 +15,8 @@ function TrafficView(map) {
     //    "拥堵": "",
     //    "严重拥堵": ""
     //};
-    this.StartPointCss = "";
-    this.EndPointCss = "";
+    this.StartPointCss = "marker-route marker-marker-drive-from";
+    this.EndPointCss = "marker-route marker-marker-drive-to";
     this.TheMap = map;
     this.MarkPoints = [];
     this.RoadPath = null;
@@ -103,7 +103,7 @@ TrafficView.prototype.drawStart = function (point) {
         this.StartPoint = new AMap.Marker({
             position: point,   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
             title: '',
-            content: '<div class="' + this.StartPointCss + '">起始点</div>',
+            content: '<div class="' + this.StartPointCss + '"></div>',
             extData: point//加入对象信息
         });
         this.TheMap.add(this.StartPoint);
@@ -116,7 +116,7 @@ TrafficView.prototype.drawEnd = function (point) {
         this.EndPoint = new AMap.Marker({
             position: point,   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
             title: '',
-            content: '<div class="' + this.EndPointCss + '">终点</div>',
+            content: '<div class="' + this.EndPointCss + '"></div>',
             extData: point//加入对象信息
         });
         this.TheMap.add(this.EndPoint);
@@ -222,7 +222,7 @@ TrafficView.prototype.refreshTable = function (theJsonObj) {
         var theTempaltes =
             '<tr data-linecode="' + theTable.id + '">' +
             '<td>' + theTable.number + '</td>' +
-            '<td>' + theTable.name + '<br>' + theTable.dir + '</td>' +
+            '<td><span class="tableName">' + theTable.name + '</span><br>' + theTable.dir + '</td>' +
             '<td class="' + getPoint(theTable) + '">' +
             '<span>' + theTable.index + '</span></td>' +
             '<td>' + theTable.speed + '</td>' +

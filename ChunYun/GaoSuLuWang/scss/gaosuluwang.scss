@@ -103,7 +103,7 @@ html,body{
     }
 
     .map {
-      height: 300px;
+      //height: 300px;
       width: 100%;
       //background-color: #fff;
     }
@@ -134,6 +134,49 @@ html,body{
     border-bottom: 1px #013968 solid;
     border-left: 1px #013968 solid;
     border-right: 1px #013968 solid;
+    cursor: pointer;
+  }
+
+  tr td:nth-child(3) {
+    width: 153px;
+    text-align: left;
+    //position: relative;
+    //left: 39px;
+  }
+
+  td {
+    color: #999;
+  }
+
+  .tableName {
+    color: #06c;
+  }
+
+  .black_point span {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    background: url(../images/congestion-icon.png) 10px -13px no-repeat;
+    padding-left: 30px;
+    position: relative;
+    left: 39px;
+  }
+
+  .red_point span {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    background: url("../images/congestion-icon.png") 10px -63px no-repeat;
+    padding-left: 30px;
+    position: relative;
+    left: 39px;
+  }
+
+  .yellow_point span {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    background: url("../images/congestion-icon.png") 10px -113px no-repeat;
+    padding-left: 30px;
+    position: relative;
+    left: 39px;
   }
 }
 

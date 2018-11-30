@@ -30,9 +30,9 @@ var theMap = new AMap.Map('container', {
   //mapStyle: 'amap://styles/c6b6ea6de59432d8973e27caa9b04355',
   //mapStyle: 'amap://styles/grey',//'amap://styles/blue',
   viewMode: '3D',// 地图模式
-  center: [113.275824, 22.994826],
+  center: [113.268586,22.987472],
   features:['bg', 'building','point'],//['all'],// ['bg', 'building','point'],
-  zoom: 8,
+  zoom: 20,
   keyboardEnable: false,
   layers: [
     //satellite,
@@ -41,78 +41,11 @@ var theMap = new AMap.Map('container', {
   ]
 });
 
-// 模拟鹰眼
-var theMap2 = new AMap.Map('container2', {
-  //pitch: 0,
-  //viewMode: '3D',// 地图模式
-  //mapStyle: "amap://styles/033a2c064eac784909f99e30e532cb52",
-  mapStyle: 'amap://styles/9f47a75c5a80f716945988ccbc61aeb7',
-  center: [113.275824, 22.994826],
-  //features: ['bg', 'building'],
-  zoom: 5,
-  dragEnable: false,
-  zoomEnable: true,
-  doubleClickZoom: false,
-  keyboardEnable:false,
-  layers: [
-    //disCountry,
-    //indoorMap,
-    //innerRoom
-    // satellite,
-    // building
-    // object3Dlayer
-    //roadNet
-  ]
-});
 
-$(function () {
-  var theLastpoint;
-  var yingYan = $('#yingyan');
-  theMap2.on("mousedown", function (arg) {
-    //theMap2.off('moveend');
-    // theMap2.setCenter(theMap.getCenter())
-    // ;
-    theLastpoint={x:arg.pixel.x,y:arg.pixel.y};
-
-    theMap2.on('mousemove', function (arg) {
-
-      if(theLastpoint) {
-        var theCurrentpoint = {x: arg.pixel.x, y: arg.pixel.y};
-
-        var theX = theCurrentpoint.x - theLastpoint.x;
-        var theY = theCurrentpoint.y - theLastpoint.y;
-        // console.log(theX,theY)
-        if (theX == 0 && theY == 0) {
-          return;
-        }
-
-        yingYan[0].style.top = yingYan.position().top + theY + 'px';
-        yingYan[0].style.left = yingYan.position().left + theX + 'px';
-
-        theLastpoint = theCurrentpoint;
-      }
-
-    });
-  });
-  theMap2.on("mouseup", function (arg) {
-    //theMap2.off('moveend');
-    // theMap2.setCenter(theMap.getCenter())
-    // ;
-    var lnglat = arg.lnglat;
-    theMap.setCenter(lnglat);
-    theMap2.setCenter(lnglat);
-    theLastpoint=null;
-    yingYan[0].style.top = '100px';
-    yingYan[0].style.left = '100px';
-
-  });
-
-
-})
-theMap.on("moveend", function () {
+// theMap.on("moveend", function () {
   //theMap2.off('moveend');
-  theMap2.setCenter(theMap.getCenter());
-});
+  // theMap2.setCenter(theMap.getCenter());
+// });
 
 theMap.on('zoomend', function () {
   var theZoom = theMap.getZoom();
@@ -121,20 +54,9 @@ theMap.on('zoomend', function () {
   if (theCurrentZoom < theMinZoom) {
     theCurrentZoom = theMinZoom;
   }
-  //debugger;
-  theMap2.setZoom(theCurrentZoom);
 });
 
 
-
-
-// theMap2.on('mousemove', function (arg) {
-//   // var lnglat = arg.lnglat;
-//   // theMap.setCenter(lnglat);
-//   console.log(arg)
-//   // debugger
-//
-// });
 
 // 同时引入工具条插件，比例尺插件和鹰眼插件
 // AMap.plugin([
@@ -475,19 +397,19 @@ function ShowMark(theType) {
   //先清除标点
   theMap.remove(theMarks);
   var thePoints = {
-    // "广州南站": { "latitude": 22.9874720000, "longitude": 113.2685860000, "type": "铁路", 'icon': 'tielu3.png' },
+    "广州南站": { "latitude": 22.9874720000, "longitude": 113.2685860000, "type": "铁路", 'icon': 'tielu3.png' },
     // "深圳火车站": { "latitude": 22.5319900000, "longitude": 114.1176800000 },
-    // "深圳北站": { "latitude": 22.6097250000, "longitude": 114.0291130000, "type": "铁路", 'icon': 'tielu3.png' },
+    "深圳北站": { "latitude": 22.6097250000, "longitude": 114.0291130000, "type": "铁路", 'icon': 'tielu3.png' },
     //"广州东站": { "latitude": 23.1505660000, "longitude": 113.3249000000 },
     //"广州火车站": { "latitude": 23.1494150000, "longitude": 113.2572910000 },
     //"广州北站": { "latitude": 23.3774050000, "longitude": 113.2037940000 },
     //"深圳西站": { "latitude": 22.5275730000, "longitude": 113.9073060000 },
     //"深圳东站": { "latitude": 22.6019860000, "longitude": 114.1199340000 },
-    // "珠海站": { "latitude": 22.2153960000, "longitude": 113.5496410000, "type": "铁路", 'icon': 'tielu3.png' },
+    "珠海站": { "latitude": 22.2153960000, "longitude": 113.5496410000, "type": "铁路", 'icon': 'tielu3.png' },
     //"白云国际机场": { "latitude": 23.3896270000, "longitude": 113.3076480000 },
-    // "白云国际机场": { "latitude": 23.396544, "longitude": 113.306199, "type": "民航", 'maxLevel': 17, 'icon': 'feiji3.png' },
+    "白云国际机场": { "latitude": 23.396544, "longitude": 113.306199, "type": "民航", 'maxLevel': 17, 'icon': 'feiji3.png' },
     //"宝安国际机场": { "latitude": 22.6333600000, "longitude": 113.8145490000 },
-    // "宝安国际机场": { "latitude": 22.62506, "longitude": 113.812809, "type": "民航", 'icon': 'feiji3.png' },
+    "宝安国际机场": { "latitude": 22.62506, "longitude": 113.812809, "type": "民航", 'icon': 'feiji3.png' },
     //"珠海金湾国际机场": { "latitude": 22.0057560000, "longitude": 113.3819450000 },
     //"揭阳潮汕国际机场": { "latitude": 23.5463610000, "longitude": 116.5092740000 }
   };

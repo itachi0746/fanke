@@ -29,7 +29,7 @@ function clickTab() {
   var t = $(this).data('name');
   // debugger
   if(t=='高速路网'){  // 显示高速路网图层
-    window.location.href = '/cm_ChunYun/gslw/index.html';
+    window.location.href = '/ChunYun/gslw/index.html';
     return
   }
   pointControl.ReturnDefualt();

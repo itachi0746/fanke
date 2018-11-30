@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>交通枢纽</title>
+  <link rel="stylesheet" href="css/jiaotongshuniu.css">
+</head>
+<body>
+<div id="container" class="container">
+  <div class="title"></div>
+  <!--预警top3-->
+  <div class="top3">
+    <!--拥挤预警-->
+    <div class="yongji">
+      <div class="head">
+        <p class="head-p">
+          <img src="img/icon_1.png" alt="">
+          <span>拥挤预警</span>
+        </p>
+        <p>
+          <span>10处</span>
+        </p>
+      </div>
+
+      <ul class="list">
+        <li>
+          <i class="top3-icon1">1</i>
+          <p>广州南站 <span>当前客流 <i class="num">22</i>万人</span></p>
+        </li>
+        <li>
+          <i class="top3-icon1">1</i>
+          <p>广州南站 <span>当前客流 <i class="num">22</i>万人</span></p>
+        </li>
+
+      </ul>
+
+    </div>
+
+    <!--适中-->
+    <div class="shizhong">
+      <div class="head">
+        <p class="head-p">
+          <img src="img/icon_2.png" alt="">
+          <span>适中状态</span>
+        </p>
+        <p>
+          <span>10处</span>
+        </p>
+      </div>
+
+      <ul class="list">
+        <li>
+          <i class="top3-icon2">1</i>
+          <p>广州南站 <span>当前客流 <i class="num">22</i>万人</span></p>
+        </li>
+        <li>
+          <i class="top3-icon2">1</i>
+          <p>广州南站 <span>当前客流 <i class="num">22</i>万人</span></p>
+        </li>
+
+      </ul>
+
+    </div>
+
+    <!--舒适-->
+    <div class="shushi">
+      <div class="head">
+        <p class="head-p">
+          <img src="img/icon_3.png" alt="">
+          <span>舒适状态</span>
+        </p>
+        <p>
+          <span>10处</span>
+        </p>
+      </div>
+
+      <ul class="list">
+        <li>
+          <i class="top3-icon3">1</i>
+          <p>广州南站 <span>当前客流 <i class="num">22</i>万人</span></p>
+        </li>
+        <li>
+          <i class="top3-icon3">1</i>
+          <p>广州南站 <span>当前客流 <i class="num">22</i>万人</span></p>
+        </li>
+
+      </ul>
+
+    </div>
+
+  </div>
+
+  <!--当前位置-->
+  <div class="tab">
+    <div class="tab-box tab-box-active" data-name="客运站,铁路,机场,港口">
+      <span>交通枢纽</span>
+    </div>
+    <!--当前位置-->
+    <div class="tab-box-cur">
+      <div class="bg-div">
+        <img src="img/menu/icon_lower_left.png" alt="">
+        <div id="center-img" class="center-img">
+          <img src="img/menu/icon_lower_center.png" alt="">
+          <img src="img/menu/icon_lower_center.png" alt="">
+          <!--<img src="img/menu/icon_lower_center.png" alt="">-->
+        </div>
+        <img src="img/menu/icon_lower_right_on.png" alt="">
+        <img class="dn" src="img/menu/icon_lower_right_nor.png" alt="">
+      </div>
+
+      <div class="tab-name">广州南站</div>
+    </div>
+  </div>
+  <!--数据-->
+  <div class="cur-pos-data-box">
+    <!--重点枢纽-->
+    <div class="key-pos">
+      <div class="name">重点枢纽：</div>
+      <ul>
+        <li>2222</li>
+        <li>2222</li>
+      </ul>
+
+    </div>
+    <!--搜索框-->
+    <div class="search">
+      <input type="search" placeholder="搜索">
+      <i class="icon"></i>
+    </div>
+
+    <!--场站-->
+    <div class="station-box">
+      <div class="station-box-1">
+        <header>
+          火车站
+        </header>
+        <ul>
+          <li>广州南</li>
+          <li>广州南</li>
+          <li>广州南</li>
+        </ul>
+      </div>
+      <div class="station-box-2">
+        <header>
+          客运站
+        </header>
+      </div>
+      <div class="station-box-3">
+        <header>
+          机场、港口
+        </header>
+      </div>
+    </div>
+  </div>
+
+  <!--下方tab-->
+  <ul class="tab-box2">
+    <li class="tab-box2-li1"></li>
+    <li class="tab-box2-li2"></li>
+    <li class="tab-box2-li3"></li>
+    <li class="tab-box2-li4"></li>
+  </ul>
+
+  <!--楼层-->
+  <ul class="floor" id="floor">
+    <li>3A</li>
+    <li>3A</li>
+    <li>3A</li>
+  </ul>
+</div>
+
+
+
+<script src="js/jquery-1.8.2.min.js"></script>
+<script src='https://webapi.amap.com/maps?v=1.4.11&key=e78eb14a0b3399d1733b27fb6835e460'></script>
+<script src="https://webapi.amap.com/loca?v=1.2.0&key=e78eb14a0b3399d1733b27fb6835e460"></script>
+<!--<script src="https://a.amap.com/jsapi_demos/static/citys.js"></script>-->
+<!-- UI组件库 1.0 -->
+<script src="https://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+<!--热力图-->
+<!--<script src="guangdong.js"></script>-->
+<!--<script src="https://a.amap.com/Loca/static/mock/heatmapData.js"></script>-->
+<script
+  src="https://webapi.amap.com/ui/1.0/ui/geo/DistrictExplorer.js?v=1.0.11&mt=ui&key=e78eb14a0b3399d1733b27fb6835e460"></script>
+<script src="js/map.js"></script>
+<script src="js/jiaotongshuniu.js"></script>
+</body>
+</html>
