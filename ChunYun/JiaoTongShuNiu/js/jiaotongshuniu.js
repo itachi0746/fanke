@@ -3,29 +3,18 @@
 
 
 $(function () {
-// tab点击事件
-  function clickTab() {
+// tab2点击事件
+  function clickTab2() {
     for (var j = 0; j < tabBoxes.length; j++) {
       var obj = tabBoxes[j];
       $(obj).removeClass('active');
     }
     $(this).addClass('active');
-
-    // var t = $(this).data('name');
-
-    // pointControl.ReturnDefualt();
-
-    // pointControl.showPoints(t);
-
   }
-
-  var tabBoxes = $('.tab-box2 li');
-  // console.log(tabBoxes)
-
-  for (var i = 0; i < tabBoxes.length; i++) {
-    var box = tabBoxes[i];
-
-    $(box).on('click',clickTab)
+  var tabBoxes2 = $('.tab-box2 li');
+  for (var i = 0; i < tabBoxes2.length; i++) {
+    var box = tabBoxes2[i];
+    $(box).on('click',clickTab2)
   }
 
 

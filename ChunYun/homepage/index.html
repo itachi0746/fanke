@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>地图</title>
+  <title>预警中心</title>
   <style>
     html,
     body,
@@ -28,8 +28,7 @@
 </head>
 <body>
 <div id="container" class="container">
-  <div class="title">
-  </div>
+  <div class="title"></div>
   <!--预警top3-->
   <div class="top3">
     <!--拥挤预警-->
@@ -119,26 +118,96 @@
     </div>
     <div class="tab-box tab-box-noactive" data-name="服务区">
       <span>服务区</span>
-
     </div>
     <div class="tab-box tab-box-noactive" data-name="收费站">
       <span>收费站</span>
-
     </div>
     <div class="tab-box tab-box-noactive" data-name="高速">
       <span>高速路段</span>
-
     </div>
     <div class="tab-box tab-box-noactive" data-name="高速路网">
       <span>高速路网</span>
-
     </div>
 
+    <!--当前位置-->
+    <div class="tab-box-cur dn">
+      <div class="bg-div">
+        <img src="img/menu/icon_lower_left.png" alt="">
+        <div id="center-img" class="center-img">
+          <img src="img/menu/icon_lower_center.png" alt="">
+          <img src="img/menu/icon_lower_center.png" alt="">
+          <!--<img src="img/menu/icon_lower_center.png" alt="">-->
+        </div>
+        <img src="img/menu/icon_lower_right_on.png" alt="">
+        <img class="dn" src="img/menu/icon_lower_right_nor.png" alt="">
+      </div>
+      <div class="tab-name">广州南站</div>
+    </div>
   </div>
 
+  <!--数据-->
+  <div class="cur-pos-data-box dn">
+    <!--重点枢纽-->
+    <div class="key-pos">
+      <div class="name">重点枢纽：</div>
+      <ul>
+        <li>2222</li>
+        <li>2222</li>
+      </ul>
+
+    </div>
+    <!--搜索框-->
+    <div class="search">
+      <input type="search" placeholder="搜索">
+      <i class="icon"></i>
+    </div>
+
+    <!--场站-->
+    <div class="station-box">
+      <div class="station-box-1">
+        <header>
+          火车站
+        </header>
+        <ul>
+          <li>广州南</li>
+          <li>广州南</li>
+          <li>广州南</li>
+        </ul>
+      </div>
+      <div class="station-box-2">
+        <header>
+          客运站
+        </header>
+      </div>
+      <div class="station-box-3">
+        <header>
+          机场、港口
+        </header>
+      </div>
+    </div>
+  </div>
+
+  <!--下方tab-->
+  <ul class="tab-box2 dn">
+    <li class="tab-box2-li1"></li>
+    <li class="tab-box2-li2"></li>
+    <li class="tab-box2-li3"></li>
+    <li class="tab-box2-li4"></li>
+  </ul>
+
+  <!--楼层-->
+  <ul class="floor dn" id="floor">
+    <li>3A</li>
+    <li>3A</li>
+    <li>3A</li>
+  </ul>
+
+  <!--鹰眼-->
   <div id="container2" class="container container2" style="width: 400px;height: 300px;">
       <div style="width: 200px;height: 100px;" class="yingyan" id="yingyan"></div>
   </div>
+
+
 </div>
 
 
@@ -161,6 +230,7 @@
 <script src="js/map.js"></script>
 
 <script type="text/javascript">
+//  标注城市
   var theCitys = {
     "广州市": "113.264385,23.129112",
     "深圳市": "114.085947,22.547",
