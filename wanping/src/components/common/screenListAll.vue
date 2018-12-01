@@ -48,12 +48,16 @@
     </ul>
     <p class="empty_data" v-if="!isEnd">加载更多</p>
     <p class="empty_data" v-else>没有更多了</p>
+    <Loading v-show="isLoading"></Loading>
+
   </div>
 </template>
 
 <script>
   import {postData, link} from '../../server'
   import {Message, MessageBox} from 'element-ui'
+  import Loading from 'components/common/loading'
+
   //  import BScroll from 'better-scroll'
 
   export default {
@@ -65,7 +69,9 @@
         loadMoreSwitch: true,
         isEnd: false,
         latitude: 0,
-        longitude: 0
+        longitude: 0,
+        isLoading: false
+
       }
     },
     props: {
@@ -75,15 +81,29 @@
           return {'id': '1', 'sortType': '0'}
         }
       },
+      fenleiObj: {
+        type: Object,
+        default: function () {
+          return {'ClsId': ''}
+        }
+      },
 
     },
 
-//  components: {},
+  components: {
+    Loading
+  },
 
     watch: {
       sortObj(newVaule, oldVaule) {
 //        debugger
         console.log(newVaule, oldVaule);
+        this.screenList = [];
+        this.getData();
+      },
+      fenleiObj(n, o) {
+//        console.log(fenlei)
+        console.log(n, o);
         this.screenList = [];
         this.getData();
       }
@@ -215,16 +235,20 @@
        * @method 请求获取数据
        */
       getData() {
+
+        this.isLoading = true;
 //        debugger
         this.loadMoreSwitch = false;
 
         const url = '/GetProducts';
 //        const url = 'http://www.bai.com/screenListAll';
-        console.log('this.sortObj', this.sortObj)
+//        console.log('this.sortObj', this.sortObj)
         const data = {
           pageindex: this.page,
           OrderBy: this.sortObj.id,
-          OrderType: this.sortObj.sortType
+          OrderType: this.sortObj.sortType,
+          ClsId: this.fenleiObj.ClsId,
+          AreaName: ''
         };
         postData(url, data).then((res) => {
           console.log(res)
@@ -232,7 +256,8 @@
           this.loadMoreSwitch = true;
           this.sum = res.Data.PageCount;  // 总页数
 //          console.log(this.sum)
-          this.$emit('loaded', true);
+//          this.$emit('loaded', true);
+          this.isLoading = false;
 
           this.dateFormatting();
         })

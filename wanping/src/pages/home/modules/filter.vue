@@ -1,94 +1,107 @@
 <template>
   <!--  开始-->
   <div class="filter-box">
+    <!--<city v-show="showCity"></city>-->
     <!--筛选条件-->
+    <!--<div class="sort-container">-->
+
+      <!--<div class="sort-item" @click="sort" data-id="1" data-sortType="0">-->
+        <!--<span :class="[{span_active:'1'===activeIndex}]">-->
+          <!--距离-->
+          <!--<i class="el-icon-d-caret"></i>-->
+        <!--</span>-->
+
+      <!--</div>-->
+      <!--<div class="sort-item" @click="sort" data-id="2" data-sortType="0">-->
+        <!--<span :class="[{span_active:'2'===activeIndex}]">-->
+          <!--价格-->
+          <!--<i class="el-icon-d-caret"></i>-->
+        <!--</span>-->
+
+      <!--</div>-->
+      <!--<div class="sort-item" @click="sort" data-id="3" data-sortType="0">-->
+        <!--<span :class="[{span_active:'3'===activeIndex}]">-->
+          <!--人流量-->
+          <!--<i class="el-icon-d-caret"></i>-->
+        <!--</span>-->
+      <!--</div>-->
+    <!--</div>-->
+
     <div class="sort-container">
 
-      <div class="sort-item" @click="sort" data-id="1" data-sortType="0">
-        <span :class="[{span_active:'1'===activeIndex}]">
-          距离
-          <i class="el-icon-d-caret"></i>
+      <div class="sort-item" @click="fenlei">
+        <span :class="[{span_active:'0'===activeIndex2}]">
+          分类
+          <i class="el-icon-caret-bottom" v-show="!isShow"></i>
+          <i class="el-icon-caret-top" v-show="isShow"></i>
         </span>
-
       </div>
-      <div class="sort-item" @click="sort" data-id="2" data-sortType="0">
-        <span :class="[{span_active:'2'===activeIndex}]">
-          价格
-          <i class="el-icon-d-caret"></i>
+      <div class="sort-item" @click="shaixuan">
+        <span :class="[{span_active:'1'===activeIndex2}]">
+          筛选
+          <i class="el-icon-caret-bottom" v-show="!showShaixuan"></i>
+          <i class="el-icon-caret-top" v-show="showShaixuan"></i>
         </span>
-
       </div>
-      <div class="sort-item" @click="sort" data-id="3" data-sortType="0">
-        <span :class="[{span_active:'3'===activeIndex}]">
-          人流量
-          <i class="el-icon-d-caret"></i>
+      <div class="sort-item" @click="changeCity">
+        <span :class="[{span_active:'2'===activeIndex2}]">
+          切换城市
+          <i class="el-icon-caret-bottom" v-show="!showShaixuan"></i>
+          <i class="el-icon-caret-top" v-show="showShaixuan"></i>
         </span>
       </div>
     </div>
 
-    <!--<div class="filter-container" v-show="!isHide">-->
-    <!--<div class="filter-head">-->
-    <!--<div>-->
-    <!--<span>地区</span>-->
-    <!--</div>-->
-    <!--<div>-->
-    <!--<span>地点</span>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="category-container">-->
-    <!--<div class="wrapper category-left" ref="wrapper" id="category-left">-->
-    <!--<ul class="content" id="C1">-->
-
-    <!--<li :class="['category-left-li', {category_active:index===activeIndex}]"-->
-    <!--v-for="(item,index) in spaceList" :key="item.Id" @click="toggleLi(index)">-->
-    <!--<div>-->
-    <!--<span>{{ item.Name }}</span>-->
-    <!--</div>-->
-    <!--<div>-->
-    <!--<span class="category_count">{{ item.children.length }}</span>-->
-    <!--<i class="icon iconfont icon-youjiantou1"></i>-->
-    <!--</div>-->
-    <!--</li>-->
-
-    <!--</ul>-->
-
-    <!--</div>-->
-    <!--<div class="wrapper category-right" ref="wrapper" id="category-right">-->
-
-    <!--<ul class="content">-->
-    <!--<li class="category-right-li" v-for="(item,index) in areaList"-->
-    <!--@click="doSelectArea">-->
-    <!--<div>-->
-    <!--<span>{{ item.Name }}</span>-->
-    <!--</div>-->
-    <!--<div>-->
-    <!--<span class="category_count">{{ item.Number }}</span>-->
-    <!--</div>-->
-    <!--</li>-->
-    <!--</ul>-->
-
-    <!--</div>-->
-
-    <!--</div>-->
-    <!--</div>-->
     <!--遮罩层-->
-    <!--<div class="back-cover" @click="toggleFilter" v-show="!isHide"></div>-->
+    <div class="back-cover" ref="cover" @click="toggleFilter" v-show="isShow || showShaixuan"></div>
 
+    <!--室内外分类-->
+    <div class="item_options" ref="item_options" v-show="isShow">
+      <ul>
+        <li v-for="(item) in clsArr" :data-id="item.Data.ClsId" @click="fenlei2" :class="{selected:item.Data.ClsId===activeClsId}">
+          {{item.Data.ClsName}}
+          <i class="el-icon-check" v-show="item.Data.ClsId===activeClsId"></i>
+        </li>
+      </ul>
+    </div>
+    <!--屏分类-->
+    <div class="item_options2" v-show="showShaixuan">
+      <ul>
+        <li v-for="(item) in shaiXuanArr" @click="sort" :data-id="item.id" :class="{selected:item.id===activeIndex}">
+          {{item.name}}
+          <i class="el-icon-check" v-show="item.id===activeIndex"></i>
+
+        </li>
+
+      </ul>
+    </div>
   </div>
   <!--  结束-->
 </template>
 
 <script>
   import {postData, link} from '@/server'
+//  import city from '../../../components/common/chooseCity.vue'
   //  import BScroll from 'better-scroll'
 
   export default {
     data() {
       return {
-        isHide: true,
-//        isActive: false,  // 当前是哪个
+        isShow: false,
+        showShaixuan: false,
+//        showCity: false,
         activeIndex: '1',  // 当前的下标
+        activeClsId: '',
+        activeIndex2: '',
 //        spaceList: [],  // 城市列表(包含地区)
+        clsArr: [],
+        selectClsId: '',  // 选中的类别id
+        shaiXuanArr: [
+          {name:'距离优先',id:'1'},
+          {name:'价格优先',id:'2'},
+          {name:'人流优先',id:'3'},
+          {name:'尺寸优先',id:'4'},
+        ]
       }
     },
 
@@ -124,7 +137,7 @@
 //        this.activeIndex = index
 //      },
 //      toggleFilter() {
-//        this.isHide = !this.isHide;
+//        this.isShow = !this.isShow;
 ////        this.timer1 = setTimeout(() => {
 ////          this.init_scroll();
 ////        },1000)
@@ -142,18 +155,55 @@
        * @method 排序
        */
       sort(event) {
-//        console.log(event.target.getAttribute("data-id"));
-//        console.log(event.currentTarget)
-//        let sortType = '0';
+
         let id = event.currentTarget.getAttribute("data-id");
         let sortType = event.currentTarget.getAttribute("data-sortType");
 
         this.activeIndex = id;
         this.$emit('sort', {'id': id, 'sortType': sortType});
         sortType = sortType === '0' ? '1' : '0';
-        event.currentTarget.setAttribute("data-sortType",sortType)
+        event.currentTarget.setAttribute("data-sortType",sortType);
+        this.isShow = false;
+        this.showShaixuan = false;
+
         console.log('sort')
       },
+      toggleFilter() {
+        this.isShow = false;
+        this.showShaixuan = false;
+      },
+      /**
+       * @method 显示屏分类
+       */
+      fenlei() {
+        this.isShow = !this.isShow;
+        this.showShaixuan = false
+        this.activeIndex2 = '0';
+      },
+      /**
+       * @method 显示排序筛选
+       */
+      shaixuan() {
+        this.showShaixuan = !this.showShaixuan;
+        this.isShow = false;
+        this.activeIndex2 = '1';
+
+      },
+      /**
+       * @method 点击排序
+       */
+      fenlei2() {
+        let id = event.currentTarget.getAttribute("data-id");
+        this.activeClsId = id;
+        this.$emit('fenlei2', {'ClsId': id});
+        this.isShow = false;
+        this.showShaixuan = false;
+      },
+      changeCity() {
+        console.log(11111)
+        this.$emit('change-city')
+      }
+
     },
 
     created() {
@@ -163,7 +213,12 @@
 //      )
     },
     mounted() {
-
+      const url = '/GetCls';
+      postData(url, {}).then((res) => {
+        console.log('GetCls:', res);
+        this.clsArr = res.Data;
+        console.log(this.clsArr)
+      })
     },
 
     beforeDestroy() {
@@ -182,7 +237,7 @@
     right: 0;
     width: 100%;
     display: flex;
-    z-index: 13;
+    z-index: 130;
   }
 
   .sort-item {
@@ -314,7 +369,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 10;
+    z-index: 110;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.3);
@@ -324,15 +379,70 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 12;
+    z-index: 99;
     width: 100%;
   }
 
   .span_active {
-    color: #000 !important;
+    color: #000!important;
   }
 
   .iconfont {
     font-size: .7rem;
   }
+
+  /*.selected-state {*/
+    /*width: 100%;*/
+    /*position: relative;*/
+    /*z-index: 120;*/
+    /*background-color: #fff;*/
+    /*display: flex;*/
+
+    /*section {*/
+      /*width: 4rem;*/
+    /*}*/
+
+    /*ul {*/
+      /*display: flex;*/
+      /*flex: 1;*/
+      /*padding: 0 35px 0 10px;*/
+
+      /*li {*/
+        /*display: flex;*/
+        /*align-items: center;*/
+        /*justify-content: center;*/
+        /*color: #e93b3d;*/
+        /*padding: 0 .5rem;*/
+        /*font-size: .7rem;*/
+        /*height: 2.25rem;*/
+
+      /*}*/
+    /*}*/
+
+  /*}*/
+
+  .item_options,.item_options2 {
+    width: 100%;
+    position: relative;
+    z-index: 120;
+
+    ul {
+
+      li {
+        height: 2.25rem;
+        background-color: #fff;
+        border-bottom: 1px solid #ececec;
+        padding: 0 35px 0 10px;
+        color: #333;
+        font-size: .7rem;
+        display: flex;
+        justify-content:space-between;
+        align-items: center;
+      }
+      li.selected {
+        color: #e93b3d;
+      }
+    }
+  }
+
 </style>

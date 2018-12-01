@@ -1,8 +1,9 @@
 <template>
   <div id="home">
+    <city v-if="showCity" @hide-city="handleHideCity"></city>
     <Loading v-show="isLoading"></Loading>
     <!--选地区-->
-    <aFilter ref="af" @sort="handleSort"></aFilter>
+    <aFilter ref="af" @sort="handleSort" @fenlei2="handleFenLei" @change-city="handleChangeCity"></aFilter>
     <div class="fill-div"></div>
     <!--轮播图 开始-->
     <swiper :options="swiperOption" ref="mySwiper" v-if="Ads.length">
@@ -35,7 +36,7 @@
 
     <!--分割条-->
     <div class="division"></div>
-    <screenListAll @loaded="handleLoad" :sort-obj="sortObj"></screenListAll>
+    <screenListAll @loaded="handleLoad" :sort-obj="sortObj" :fenlei-obj="fenleiObj"></screenListAll>
     <Footer :page="page"></Footer>
     <!--<div class="iosBtm" v-if="isIOS"></div>-->
 
@@ -48,7 +49,9 @@
   import Loading from 'components/common/loading'
   import Footer from 'components/footer/footer'
   import aFilter from './filter'
-//  import BScroll from 'better-scroll'
+  import city from '../../../components/common/wlist.vue'
+
+  //  import BScroll from 'better-scroll'
   import {postData} from '@/server'
   import { swiper, swiperSlide } from 'vue-awesome-swiper';
   import 'swiper/dist/css/swiper.css'
@@ -59,9 +62,11 @@
       return {
         Ads: [],
         page: 'Home',
-        isLoading: true,
+        isLoading: false,
         Recommends: [],
         sortObj: {'id':'1','sortType':'0'},  // 排序对象
+        fenleiObj: {'ClsId': ''},
+        showCity: false,
         swiperOption: {
           pagination: {
             el: '.swiper-pagination'
@@ -128,6 +133,19 @@
       handleSort(obj) {
         this.sortObj = obj;
 //        debugger
+      },
+      handleFenLei(obj) {
+        this.fenleiObj = obj;
+        console.log('this.fenleiObj:',this.fenleiObj)
+//        debugger
+      },
+      handleChangeCity() {
+        console.log('changecity');
+        this.showCity = !this.showCity;
+      },
+      handleHideCity() {
+        this.showCity = false;
+
       }
     },
     components: {
@@ -136,7 +154,8 @@
       Footer,
       swiper,
       swiperSlide,
-      Loading
+      Loading,
+      city
     },
 
     beforeDestroy: function () {
