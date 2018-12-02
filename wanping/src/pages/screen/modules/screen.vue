@@ -622,7 +622,7 @@
     box-shadow: 0 -0.02667rem 0.05333rem rgba(0, 0, 0, 0.1);
 
     ul {
-      @include wh(100%, 100%);
+      width: 100%;
       @include fj;
 
     }

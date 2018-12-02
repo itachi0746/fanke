@@ -57,7 +57,7 @@
   import {postData, link} from '../../server'
   import {Message, MessageBox} from 'element-ui'
   import Loading from 'components/common/loading'
-
+//  import mock from '../../plugins/mock'
   //  import BScroll from 'better-scroll'
 
   export default {
@@ -87,6 +87,12 @@
           return {'ClsId': ''}
         }
       },
+      cityName: {
+        type: String,
+        default: function () {
+          return ''
+        }
+      }
 
     },
 
@@ -103,6 +109,11 @@
       },
       fenleiObj(n, o) {
 //        console.log(fenlei)
+        console.log(n, o);
+        this.screenList = [];
+        this.getData();
+      },
+      cityName(n,o) {
         console.log(n, o);
         this.screenList = [];
         this.getData();
@@ -248,7 +259,7 @@
           OrderBy: this.sortObj.id,
           OrderType: this.sortObj.sortType,
           ClsId: this.fenleiObj.ClsId,
-          AreaName: ''
+          AreaName: this.cityName
         };
         postData(url, data).then((res) => {
           console.log(res)

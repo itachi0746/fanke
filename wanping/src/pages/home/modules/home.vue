@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <city v-if="showCity" @hide-city="handleHideCity"></city>
+    <city v-if="showCity" @choose-city="handleChooseCity"></city>
     <Loading v-show="isLoading"></Loading>
     <!--选地区-->
     <aFilter ref="af" @sort="handleSort" @fenlei2="handleFenLei" @change-city="handleChangeCity"></aFilter>
@@ -36,7 +36,7 @@
 
     <!--分割条-->
     <div class="division"></div>
-    <screenListAll @loaded="handleLoad" :sort-obj="sortObj" :fenlei-obj="fenleiObj"></screenListAll>
+    <screenListAll @loaded="handleLoad" :sort-obj="sortObj" :fenlei-obj="fenleiObj" :city-name="cityName"></screenListAll>
     <Footer :page="page"></Footer>
     <!--<div class="iosBtm" v-if="isIOS"></div>-->
 
@@ -67,6 +67,7 @@
         sortObj: {'id':'1','sortType':'0'},  // 排序对象
         fenleiObj: {'ClsId': ''},
         showCity: false,
+        cityName: '',
         swiperOption: {
           pagination: {
             el: '.swiper-pagination'
@@ -136,16 +137,16 @@
       },
       handleFenLei(obj) {
         this.fenleiObj = obj;
-        console.log('this.fenleiObj:',this.fenleiObj)
+//        console.log('this.fenleiObj:',this.fenleiObj)
 //        debugger
       },
       handleChangeCity() {
         console.log('changecity');
         this.showCity = !this.showCity;
       },
-      handleHideCity() {
+      handleChooseCity(obj) {
         this.showCity = false;
-
+        this.cityName = obj;
       }
     },
     components: {

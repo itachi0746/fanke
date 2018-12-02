@@ -55,7 +55,7 @@
     <!--遮罩层-->
     <div class="back-cover" ref="cover" @click="toggleFilter" v-show="isShow || showShaixuan"></div>
 
-    <!--室内外分类-->
+    <!--屏分类-->
     <div class="item_options" ref="item_options" v-show="isShow">
       <ul>
         <li v-for="(item) in clsArr" :data-id="item.Data.ClsId" @click="fenlei2" :class="{selected:item.Data.ClsId===activeClsId}">
@@ -64,7 +64,7 @@
         </li>
       </ul>
     </div>
-    <!--屏分类-->
+    <!--排序-->
     <div class="item_options2" v-show="showShaixuan">
       <ul>
         <li v-for="(item) in shaiXuanArr" @click="sort" :data-id="item.id" :class="{selected:item.id===activeIndex}">

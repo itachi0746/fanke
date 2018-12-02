@@ -9,13 +9,14 @@
                     <ul>
                         <!--<li v-for="item in i[children]" class="item city-click" :data-name="item[label]" :data-id="item[relkey]" @touchend="touchUp(item)"  @touchstart="chooseCity()"><span class="border-1px name">{{item[label]}}</span>-->
                         <!--</li>-->
-                      <li v-for="(city) in i.cities" class="item city-click" :data-name="city.tags" :data-id="city.cityid"><span class="border-1px name">{{city.name}}</span>
+                      <li v-for="(city) in i.cities" class="item city-click" :data-name="city.tags" @click="handleClick" :data-id="city.cityid">
+                        <span class="border-1px name" >{{city.name}}</span>
                       </li>
                     </ul>
                 </div>
               </div>
             </div>
-            <div class="shortcut shortcut-hook" style="right: 50px;top:100px !important;" @touchstart="">
+            <div class="shortcut shortcut-hook" style="right: 50px;top:100px !important;" @touchstart="touchIndex">
                 <ul style="width: 100px;text-align: left;padding: 20px 0">
                     <li v-for="i in value" :data-anchor="i.name" class="item">{{i.name.substr(0, 1)}}</li>
                   <!--<li class="item">a</li>-->
@@ -34,7 +35,15 @@
   export default {
     data() {
       return {
-        value:listData
+        value:listData,
+        cityWrapper: document.querySelector('.city-wrapper-hook'),
+        cityScroller: document.querySelector('.scroller-hook'),
+        cities: document.querySelector('.cities-hook'),
+        shortcut: document.querySelector('.shortcut-hook'),
+        shortcutList: [],
+        scroll: null,
+        anchorMap: {},
+        touch: {},
       }
     },
 
@@ -49,8 +58,9 @@
         var titleHeight = 28
         var itemHeight = 44
         v.value.forEach(function(e){
-          let label = e[v.label].substr(0, 1)
-          let len = e[v.children].length
+          let label = e.name.substr(0, 1)
+          let len = e.cities.length
+//          console.log('1',label,len)
           v.anchorMap[label] = y
           y -= titleHeight + len * itemHeight
         })
@@ -58,10 +68,41 @@
         v.cityWrapper = document.querySelector('.city-wrapper-hook')
         v.shortcut.style.top = (v.cityWrapper.clientHeight - v.shortcut.clientHeight) / 2 + 'px';
         v.scroll = new BScroll(v.cityWrapper, {
-          probeType: 3
+          probeType: 3,
+          click: true //better-scroll，默认它会阻止touch事件。所以在配置中需要加上click: true
         })
         v.scroll.scrollTo(0, 0);
       },
+      scrollTo: function (anchor) {
+        let v = this
+        v.cityScroller = document.querySelector('.scroller-hook')
+        var maxScrollY = v.cityWrapper.clientHeight - v.cityScroller.clientHeight
+        var y = Math.min(0, Math.max(maxScrollY, v.anchorMap[anchor]))
+        if (typeof y !== 'undefined') {
+          v.scroll.scrollTo(0, y);
+        }
+      },
+      touchIndex: function (e) {
+        console.log(e, 'e')
+        let v = this
+        let anchor = e.target.getAttribute('data-anchor')
+        console.log(anchor ,'anchor')
+        let firstTouch = e.touches[0]
+        console.log(firstTouch, 'firstTouch')
+        console.log(v.touch, 'v.touch')
+        v.touch.y1 = firstTouch.pageY
+        v.touch.anchor = anchor
+        v.scrollTo(anchor.substr(0,1))
+      },
+      /**
+      * @method 点击城市
+      */
+      handleClick: function (e) {
+//        console.log(1313)
+        const targetName = e.currentTarget.getAttribute('data-name').split(',')[1];
+        console.log(targetName)
+        this.$emit('choose-city',targetName)
+      }
     },
 
     created() {},
