@@ -451,7 +451,7 @@ html, body {
 
 .SSKL {
   width: 578px;
-  height: 168px; }
+  height: 100%; }
 
 .KLHX-box {
   width: 100%;
@@ -494,7 +494,6 @@ html, body {
   .tab-box2 .tab-box2-li {
     width: 180px;
     height: 150px;
-    cursor: pointer;
     position: relative; }
     .tab-box2 .tab-box2-li .li-tab-box {
       position: absolute;
@@ -503,7 +502,7 @@ html, body {
       background-color: #0a214b;
       border: 1px solid #28eefb;
       width: 600px;
-      display: none; }
+      visibility: hidden; }
       .tab-box2 .tab-box2-li .li-tab-box .emp-box {
         padding: 20px 35px 20px 20px;
         display: -webkit-box;
@@ -528,6 +527,9 @@ html, body {
           width: 76px;
           height: 46px;
           background: url("../img/mov_icon_tell.png") no-repeat; }
+
+.tab-box2-li, .tab-box2-li1 {
+  cursor: pointer; }
 
 .tab-box2-li1 {
   background: url("../img/4icon_left_1_nor.png") no-repeat; }
@@ -620,7 +622,7 @@ html, body {
     top: -180px; }
     .tab-box2-li2 .li-tab-box header {
       width: 100%;
-      padding: 40px 100px; }
+      padding: 30px 100px 25px; }
       .tab-box2-li2 .li-tab-box header label {
         font-size: 26px;
         color: #ddf3ff;
@@ -633,7 +635,7 @@ html, body {
     .tab-box2-li2 .li-tab-box .chart-box {
       padding-left: 20px;
       width: 100%;
-      height: 200px; }
+      height: 250px; }
       .tab-box2-li2 .li-tab-box .chart-box .header {
         display: -webkit-box;
         display: -ms-flexbox;

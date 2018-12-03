@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    .div {
+      width: 700px;
+      height: 500px;
+      display: none;
+    }
+    .btn {
+      width: 50px;
+      height: 50px;
+      background-color: blue;
+    }
+  </style>
+</head>
+<body>
+<div id="div" class="div"></div>
+<div class="btn" id="btn"></div>
+
+<script src="js/echarts.js"></script>
+
+<script>
+  var dom = document.getElementById('div');
+  var btn = document.getElementById('btn');
+  btn.onclick = function () {
+    console.log(111)
+    dom.style.display = 'block';
+  }
+  var myChart = echarts.init(dom);
+  var app = {};
+  var option = null;
+
+  option = {
+    xAxis: {
+      type: 'category',
+      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: [{
+      data: [820, 932, 901, 934, 1290, 1330, 1320],
+      type: 'line',
+      smooth: true
+    }]
+  };
+
+  if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+  }
+</script>
+</body>
+</html>
