@@ -162,6 +162,18 @@ PlacePointView.prototype.removePoints = function () {
   this.theMap.remove(this.markes);
   this.markes = [];
 }
+PlacePointView.prototype.hideMarkers = function () {
+  for (var i = 0; i < this.markes.length; i++) {
+    var obj = this.markes[i];
+    obj.hide();
+  }
+}
+PlacePointView.prototype.showMarkers = function () {
+  for (var i = 0; i < this.markes.length; i++) {
+    var obj = this.markes[i];
+    obj.show();
+  }
+}
 
 PlacePointView.prototype.MoveToPoint = function (lntlat, maxZoom) {
   console.log("开始导航到指定点!");
