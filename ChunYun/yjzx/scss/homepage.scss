@@ -16,7 +16,10 @@ html,body{
 }
 
 .vh {
-  visibility: hidden;
+  visibility: hidden!important;
+}
+.db {
+  display: block!important;
 }
 .container2 {
   box-shadow: 5px 5px 5px rgba(0,0,0,0.2),5px -5px 5px rgba(0,0,0,0.2),-5px 5px 5px rgba(0,0,0,0.2),-5px -5px 5px rgba(0,0,0,0.2);
@@ -393,15 +396,40 @@ html,body{
   width: 578px;
   height: 100%;
 }
+
 .KLHX-box {
   width: 100%;
   height: 100%;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   .KLHX {
     width: 100%;
     height: 100%;
+  }
+
+  .hm {
+    width: 80px;
+    height: 160px;
+    @include center;
+
+    span {
+      position: absolute;
+      top: 80%;
+      left:20px;
+      font-size: 26px;
+      color: rgb(104,228,255);
+    }
+  }
+  .man {
+    background: url("../img/icon_man.png") no-repeat;
+    left: 43%;
+  }
+  .woman {
+    background: url("../img/icon_woman.png") no-repeat;
+    left: 57%;
+
   }
 }
 
@@ -427,7 +455,7 @@ html,body{
   position: absolute;
   left: 0;
   top: 300px;
-  z-index: 10;
+  z-index: 11;
   //display: none;
   .tab-box2-li {
     width: 180px;
@@ -439,7 +467,7 @@ html,body{
       left: 177px;
       z-index: 10;
       //top: 180px;
-      background-color: #0a214b;
+      background-color: rgba(10,33,75,.9);
       border:1px solid rgb(40,238,251);
       width: 600px;
       //display: none;
@@ -564,6 +592,7 @@ html,body{
       background-color: #0a214b;
       border:1px solid rgb(40,238,251);
       margin-top: -1px;
+      display: none;
 
       .close-icon {
         position: absolute;
@@ -676,6 +705,7 @@ html,body{
       padding-left: 20px;
       width: 100%;
       height: 250px;
+      position: relative;
       //background-color: red;
 
       .header {
@@ -685,6 +715,38 @@ html,body{
           font-size: 18px;
           color: rgb(221,243,255);
         }
+      }
+      .SSKL-cld-box {
+        width: 130px;
+        height: 30px;
+        background-color: rgb(18,80,143);
+        position: absolute;
+        top: 0;
+        right: 44px;
+        z-index: 10;
+        text-align: left;
+      }
+      .tab-li2-cld {
+        width: 100px;
+        height: 100%;
+        background-color: rgb(18,80,143);
+        font-size: 16px;
+        color: rgb(221,243,255);
+        //display: none;
+      }
+      .arrow {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 30px;
+        height: 30px;
+        background: url("../img/icon_date_arrows_nor.png") no-repeat;
+        background-position: center;
+      }
+      .arrow.active {
+        background: url("../img/icon_date_arrows_on.png") no-repeat;
+        background-position: center;
+
       }
     }
     .chart-box2 {
@@ -706,16 +768,30 @@ html,body{
   background: url("../img/4icon_left_2_on.png") no-repeat;
 }
 .tab-box2-li3 {
-  background: url("../img/4icon_left_3_nor.png") no-repeat;
+  background: url("../img/4icon_left_4_nor.png") no-repeat;
+  .KLQS {
+    height: 580px;
+    width: 100%;
+  }
+  .LKQS {
+    height: 580px;
+    width: 100%;
+  }
+  .tab-li3-cld {
+    width: 100%;
+    height: 100%;
+
+  }
   .li-tab-box {
     height: 580px;
+    width: 100%;
     top: $tab2Top*2;
 
     .calendar-box {
       display: flex;
       padding: 20px 30px;
       justify-content: center;
-      background-color: red;
+      //background-color: red;
     }
     .calendar {
       width: 380px;
@@ -745,11 +821,25 @@ html,body{
   }
 }
 .tab-box2-li3.active {
-  background: url("../img/4icon_left_3_on.png") no-repeat;
+  background: url("../img/4icon_left_4_on.png") no-repeat;
 }
 .tab-box2-li4 {
 
-  background: url("../img/4icon_left_4_nor.png") no-repeat;
+  .ZLSC {
+    width: 100%;
+    height: 100%;
+  }
+
+  .laiyuan {
+    width: 298px;
+    height: 250px;
+  }
+  .quxiang {
+    width: 298px;
+    height: 250px;
+  }
+
+  background: url("../img/4icon_left_3_nor.png") no-repeat;
   .li-tab-box {
     height: 870px;
     top: $tab2Top*3;
@@ -760,7 +850,23 @@ html,body{
       display: flex;
       padding: 20px 20px;
       justify-content: center;
-      background-color: red;
+      position: relative;
+      //background-color: red;
+    }
+
+    .cld-icon {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 45px;
+      height: 40px;
+      background: url("../img/icon_date.png") no-repeat;
+    }
+
+    .tab-li4-cld {
+      width: 235px;
+      height: 40px;
+      background-color: #114d8a;
     }
 
     header {
@@ -787,24 +893,24 @@ html,body{
     }
 
     .chart-box1 {
-      width: 500px;
+      width: 600px;
       height: 160px;
       margin-top: 30px;
-      margin-left: 50px;
-      background-color: blue;
+      padding-left: 20px;
+      //background-color: blue;
     }
     .chart-box2 {
       width: 596px;
-      height: 200px;
-      background-color: #fff;
+      //height: 200px;
+      //background-color: #fff;
       margin-left: 2px;
       display: flex;
       justify-content: space-between;
 
       .chart1,.chart2 {
         flex: 1;
-        height: 200px;
-        background-color: black;
+        //height: 200px;
+        //background-color: black;
       }
     }
     .data-box {
@@ -823,11 +929,19 @@ html,body{
             flex: 1;
             height: 35px;
             border: 1px solid rgb(59,103,148);
+            font-size: 20px;
+            color: rgb(181,226,254);
+            text-align: center;
+            line-height: 35px;
+          }
 
-          }
-          div:hover{
+          .active {
             border-color: rgb(5,207,250);
+            color: rgb(221,243,255);
           }
+          //div:hover{
+          //  border-color: rgb(5,207,250);
+          //}
         }
 
       }
@@ -883,7 +997,7 @@ html,body{
   }
 }
 .tab-box2-li4.active {
-  background: url("../img/4icon_left_4_on.png") no-repeat;
+  background: url("../img/4icon_left_3_on.png") no-repeat;
 }
 @mixin num-icon-v2($color) {
   width: 22px;
@@ -1024,18 +1138,18 @@ html,body{
   color: rgb(50,91,145);
 }
 
-.floor {
-  position: absolute;
-  top: 360px;
-  right: 30px;
-  z-index: 10;
+#DivButton {
+  position: absolute!important;
+  top: 360px!important;
+  right: 30px!important;
+  z-index: 10!important;
   cursor: pointer;
   //width: 10px;
   //height: 10px;
   //background-color: #fff;
 
 
-  li {
+  div {
     width: 100px;
     height: 60px;
     font-size: 36px;
@@ -1045,8 +1159,11 @@ html,body{
     justify-content: center;
   }
 
-  li.active {
+  div.active {
     background: url("../img/layer_choose.png") no-repeat;
 
   }
+}
+#DivButton {
+
 }

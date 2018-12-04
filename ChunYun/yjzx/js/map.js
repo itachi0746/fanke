@@ -260,7 +260,7 @@ theInnerLayer&& theInnerLayer.on('complete', function (arg) {
       for (var i = 0; i < theFloors.length; i++) {
         var theName = theFloors[i];
         var theIndex = theFloorIndex[i];
-        $('<button data-index=' + theIndex + '>' + theName + '</button>').click(function () {
+        $('<div data-index=' + theIndex + '>' + theName + '</div>').click(function () {
           var theCurrentIndex = $(this).data('index');
           theInnerLayer.showFloor(theCurrentIndex);
           var theCurrentBuild = theInnerLayer.getSelectedBuilding();
@@ -273,6 +273,7 @@ theInnerLayer&& theInnerLayer.on('complete', function (arg) {
         //开始显示楼层
         //theBuilding.showFloor();
       };
+      floorBindClick();
     }
   }, 500);
 });
@@ -1167,3 +1168,17 @@ function showProvince() {
 }
 
 //ShowProvinceArea();
+function floorBindClick() {
+  var floors = $('#DivButton div');
+  for (var i = 0; i < floors.length; i++) {
+    var f = floors[i];
+    $(f).on('click',function () {
+      for (var j = 0; j < floors.length; j++) {
+        var f = floors[j];
+        $(f).removeClass('active');
+      }
+
+      $(this).addClass('active')
+    })
+  }
+}

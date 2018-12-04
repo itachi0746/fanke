@@ -98,7 +98,10 @@ html, body {
   font-family: SketchRockwell; }
 
 .vh {
-  visibility: hidden; }
+  visibility: hidden !important; }
+
+.db {
+  display: block !important; }
 
 .container2 {
   -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2), 5px -5px 5px rgba(0, 0, 0, 0.2), -5px 5px 5px rgba(0, 0, 0, 0.2), -5px -5px 5px rgba(0, 0, 0, 0.2);
@@ -456,6 +459,7 @@ html, body {
 .KLHX-box {
   width: 100%;
   height: 100%;
+  position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -468,6 +472,26 @@ html, body {
   .KLHX-box .KLHX {
     width: 100%;
     height: 100%; }
+  .KLHX-box .hm {
+    width: 80px;
+    height: 160px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); }
+    .KLHX-box .hm span {
+      position: absolute;
+      top: 80%;
+      left: 20px;
+      font-size: 26px;
+      color: #68e4ff; }
+  .KLHX-box .man {
+    background: url("../img/icon_man.png") no-repeat;
+    left: 43%; }
+  .KLHX-box .woman {
+    background: url("../img/icon_woman.png") no-repeat;
+    left: 57%; }
 
 .line-box {
   padding: 0 20px; }
@@ -490,7 +514,7 @@ html, body {
   position: absolute;
   left: 0;
   top: 300px;
-  z-index: 10; }
+  z-index: 11; }
   .tab-box2 .tab-box2-li {
     width: 180px;
     height: 150px;
@@ -499,7 +523,7 @@ html, body {
       position: absolute;
       left: 177px;
       z-index: 10;
-      background-color: #0a214b;
+      background-color: rgba(10, 33, 75, 0.9);
       border: 1px solid #28eefb;
       width: 600px;
       visibility: hidden; }
@@ -564,7 +588,8 @@ html, body {
       left: 100%;
       background-color: #0a214b;
       border: 1px solid #28eefb;
-      margin-top: -1px; }
+      margin-top: -1px;
+      display: none; }
       .tab-box2-li1 .li-tab-box .video-play-box2 .close-icon {
         position: absolute;
         top: 0;
@@ -635,7 +660,8 @@ html, body {
     .tab-box2-li2 .li-tab-box .chart-box {
       padding-left: 20px;
       width: 100%;
-      height: 250px; }
+      height: 250px;
+      position: relative; }
       .tab-box2-li2 .li-tab-box .chart-box .header {
         display: -webkit-box;
         display: -ms-flexbox;
@@ -646,6 +672,32 @@ html, body {
         .tab-box2-li2 .li-tab-box .chart-box .header label {
           font-size: 18px;
           color: #ddf3ff; }
+      .tab-box2-li2 .li-tab-box .chart-box .SSKL-cld-box {
+        width: 130px;
+        height: 30px;
+        background-color: #12508f;
+        position: absolute;
+        top: 0;
+        right: 44px;
+        z-index: 10;
+        text-align: left; }
+      .tab-box2-li2 .li-tab-box .chart-box .tab-li2-cld {
+        width: 100px;
+        height: 100%;
+        background-color: #12508f;
+        font-size: 16px;
+        color: #ddf3ff; }
+      .tab-box2-li2 .li-tab-box .chart-box .arrow {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 30px;
+        height: 30px;
+        background: url("../img/icon_date_arrows_nor.png") no-repeat;
+        background-position: center; }
+      .tab-box2-li2 .li-tab-box .chart-box .arrow.active {
+        background: url("../img/icon_date_arrows_on.png") no-repeat;
+        background-position: center; }
     .tab-box2-li2 .li-tab-box .chart-box2 {
       height: 400px;
       padding: 0 20px; }
@@ -657,9 +709,19 @@ html, body {
   background: url("../img/4icon_left_2_on.png") no-repeat; }
 
 .tab-box2-li3 {
-  background: url("../img/4icon_left_3_nor.png") no-repeat; }
+  background: url("../img/4icon_left_4_nor.png") no-repeat; }
+  .tab-box2-li3 .KLQS {
+    height: 580px;
+    width: 100%; }
+  .tab-box2-li3 .LKQS {
+    height: 580px;
+    width: 100%; }
+  .tab-box2-li3 .tab-li3-cld {
+    width: 100%;
+    height: 100%; }
   .tab-box2-li3 .li-tab-box {
     height: 580px;
+    width: 100%;
     top: -300px; }
     .tab-box2-li3 .li-tab-box .calendar-box {
       display: -webkit-box;
@@ -668,8 +730,7 @@ html, body {
       padding: 20px 30px;
       -webkit-box-pack: center;
           -ms-flex-pack: center;
-              justify-content: center;
-      background-color: red; }
+              justify-content: center; }
     .tab-box2-li3 .li-tab-box .calendar {
       width: 380px;
       height: 40px;
@@ -692,10 +753,19 @@ html, body {
       background-color: darkgreen; }
 
 .tab-box2-li3.active {
-  background: url("../img/4icon_left_3_on.png") no-repeat; }
+  background: url("../img/4icon_left_4_on.png") no-repeat; }
 
 .tab-box2-li4 {
-  background: url("../img/4icon_left_4_nor.png") no-repeat; }
+  background: url("../img/4icon_left_3_nor.png") no-repeat; }
+  .tab-box2-li4 .ZLSC {
+    width: 100%;
+    height: 100%; }
+  .tab-box2-li4 .laiyuan {
+    width: 298px;
+    height: 250px; }
+  .tab-box2-li4 .quxiang {
+    width: 298px;
+    height: 250px; }
   .tab-box2-li4 .li-tab-box {
     height: 870px;
     top: -450px; }
@@ -707,7 +777,18 @@ html, body {
       -webkit-box-pack: center;
           -ms-flex-pack: center;
               justify-content: center;
-      background-color: red; }
+      position: relative; }
+    .tab-box2-li4 .li-tab-box .cld-icon {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 45px;
+      height: 40px;
+      background: url("../img/icon_date.png") no-repeat; }
+    .tab-box2-li4 .li-tab-box .tab-li4-cld {
+      width: 235px;
+      height: 40px;
+      background-color: #114d8a; }
     .tab-box2-li4 .li-tab-box header {
       display: -webkit-box;
       display: -ms-flexbox;
@@ -728,15 +809,12 @@ html, body {
           font-size: 34px;
           color: #ddf3ff; }
     .tab-box2-li4 .li-tab-box .chart-box1 {
-      width: 500px;
+      width: 600px;
       height: 160px;
       margin-top: 30px;
-      margin-left: 50px;
-      background-color: blue; }
+      padding-left: 20px; }
     .tab-box2-li4 .li-tab-box .chart-box2 {
       width: 596px;
-      height: 200px;
-      background-color: #fff;
       margin-left: 2px;
       display: -webkit-box;
       display: -ms-flexbox;
@@ -747,9 +825,7 @@ html, body {
       .tab-box2-li4 .li-tab-box .chart-box2 .chart1, .tab-box2-li4 .li-tab-box .chart-box2 .chart2 {
         -webkit-box-flex: 1;
             -ms-flex: 1;
-                flex: 1;
-        height: 200px;
-        background-color: black; }
+                flex: 1; }
     .tab-box2-li4 .li-tab-box .data-box {
       padding: 20px; }
       .tab-box2-li4 .li-tab-box .data-box .header {
@@ -767,9 +843,14 @@ html, body {
                 -ms-flex: 1;
                     flex: 1;
             height: 35px;
-            border: 1px solid #3b6794; }
-          .tab-box2-li4 .li-tab-box .data-box .header .container div:hover {
-            border-color: #05cffa; }
+            border: 1px solid #3b6794;
+            font-size: 20px;
+            color: #b5e2fe;
+            text-align: center;
+            line-height: 35px; }
+          .tab-box2-li4 .li-tab-box .data-box .header .container .active {
+            border-color: #05cffa;
+            color: #ddf3ff; }
       .tab-box2-li4 .li-tab-box .data-box .container2-1 {
         display: -webkit-box;
         display: -ms-flexbox;
@@ -839,7 +920,7 @@ html, body {
               background-color: #b5e2fe; }
 
 .tab-box2-li4.active {
-  background: url("../img/4icon_left_4_on.png") no-repeat; }
+  background: url("../img/4icon_left_3_on.png") no-repeat; }
 
 .cur-pos-data-box {
   position: absolute;
@@ -943,13 +1024,13 @@ html, body {
   /* Internet Explorer 10-11 */
   color: #325b91; }
 
-.floor {
-  position: absolute;
-  top: 360px;
-  right: 30px;
-  z-index: 10;
+#DivButton {
+  position: absolute !important;
+  top: 360px !important;
+  right: 30px !important;
+  z-index: 10 !important;
   cursor: pointer; }
-  .floor li {
+  #DivButton div {
     width: 100px;
     height: 60px;
     font-size: 36px;
@@ -963,7 +1044,7 @@ html, body {
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center; }
-  .floor li.active {
+  #DivButton div.active {
     background: url("../img/layer_choose.png") no-repeat; }
 
 /*# sourceMappingURL=homepage.css.map */
