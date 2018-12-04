@@ -417,7 +417,7 @@ html,body{
     span {
       position: absolute;
       top: 80%;
-      left:20px;
+      left:18px;
       font-size: 26px;
       color: rgb(104,228,255);
     }
@@ -428,7 +428,7 @@ html,body{
   }
   .woman {
     background: url("../img/icon_woman.png") no-repeat;
-    left: 57%;
+    left: 55%;
 
   }
 }
@@ -457,6 +457,8 @@ html,body{
   top: 300px;
   z-index: 11;
   //display: none;
+
+
   .tab-box2-li {
     width: 180px;
     height: 150px;
@@ -646,12 +648,17 @@ html,body{
   }
 }
 .video-list {
-  padding: 10px 20px;
+  padding: 10px 0px;
+  margin: 0 20px;
+  overflow: hidden;
+
   ul {
-    display: flex;
+    //display: flex;
     position: relative;
     left: 0;
     top: 0;
+    width: 1000px;
+
 
     li {
       //flex: 1;
@@ -660,6 +667,7 @@ html,body{
       position: relative;
       margin-right: 20px;
       background-color: red;
+      float: left;
 
       .footer {
         position: absolute;
@@ -778,10 +786,32 @@ html,body{
     width: 100%;
   }
   .tab-li3-cld {
-    width: 100%;
+    width: 295px;
     height: 100%;
-
+    position: absolute;
+    left: 45px;
+    top: 0;
+    background-color: rgb(18,80,143);
   }
+  .arrow {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    background: url(../img/icon_date_arrows_nor.png) no-repeat;
+    background-position: center;
+  }
+
+  .cld-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 45px;
+    height: 40px;
+    background: url("../img/icon_date.png") no-repeat;
+  }
+
   .li-tab-box {
     height: 580px;
     width: 100%;
@@ -796,7 +826,8 @@ html,body{
     .calendar {
       width: 380px;
       height: 40px;
-      background-color: #fff;
+      background-color: rgb(18,80,143);
+      position: relative;
     }
     .chart-box {
       height: 250px;
@@ -854,6 +885,16 @@ html,body{
       //background-color: red;
     }
 
+    .arrow {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 40px;
+      height: 40px;
+      background: url(../img/icon_date_arrows_nor.png) no-repeat;
+      background-position: center;
+    }
+
     .cld-icon {
       position: absolute;
       left: 0;
@@ -864,9 +905,15 @@ html,body{
     }
 
     .tab-li4-cld {
-      width: 235px;
+      width: 195px;
       height: 40px;
       background-color: #114d8a;
+      position: absolute;
+      right: 30px;
+      top: 0;
+      font-size: 16px;
+      color: #ddf3ff;
+      text-align: center;
     }
 
     header {
@@ -1136,6 +1183,9 @@ html,body{
 }
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
   color: rgb(50,91,145);
+}
+input:focus {
+  outline: none;
 }
 
 #DivButton {

@@ -50,7 +50,7 @@ $(function () {
     initCalendar();
 
     // 调试
-    hideTabs()
+    // hideTabs()
   }
 
   function initCalendar() {
@@ -134,11 +134,22 @@ $(function () {
     // myChart.resize();
   }
 
+  function getmaxLen() {
+    var videoList = $('#video-list');
+    var listLis = videoList.find('li');
+    var liLen = parseInt($(listLis[0]).css('width'));
+    var listLisLen = liLen * listLis.length;
+    // debugger
+    var maxLen = listLisLen - parseInt(videoList.css('width'));
+
+    console.log('maxLen:',maxLen);
+    return maxLen
+  }
+
   function jiankongEvent() {
     var addBox = $('.add-box');
     var videoPlayBox2 = $('.video-play-box2');
     var closeIcon = $('.close-icon');
-    var tuodong = $('.tuodong');
     addBox.on('click',function () {
       videoPlayBox2.addClass('db');
 
@@ -146,34 +157,77 @@ $(function () {
     closeIcon.on('click',function () {
       videoPlayBox2.removeClass('db');
 
-    })
-
-    tuodong[0].onmousedown = function (e) {
-      var x = e.offsetX;
-      console.log('down');
-      document.onmousemove = function(e) {
-        console.log('move');
-
+    });
+    
+    var dis;
+    var maxLen = getmaxLen();
+    //可拖拽的进度条
+    var theScale = function (btn, bar) {
+      this.btn = document.getElementById(btn);
+      this.bar = document.getElementById(bar);
+      this.init();
+    };
+    theScale.prototype = {
+      init: function () {
+        var f = this, g = document, b = window, m = Math;
+        f.btn.onmousedown = function (e) {
+          var x = (e || b.event).clientX;
+          var l = this.offsetLeft;
+          var max = f.bar.offsetWidth - this.offsetWidth;
+          g.onmousemove = function (e) {
+            var thisX = (e || b.event).clientX;
+            var to = m.min(max, m.max(-2, l + (thisX - x)));
+            f.btn.style.left = to + 'px';
+            // f.ondrag(m.round(m.max(0, to / max) * 100), to);
+            f.ondrag((to / max), to);
+            b.getSelection ? b.getSelection().removeAllRanges() : g.selection.empty();
+          };
+          g.onmouseup = new Function('this.onmousemove=null');
+        };
+      },
+      ondrag: function (percent, x) {  // 百分比,位移距离
+        var ul = $('#video-list').find('ul');
+        // console.log(percent)
+        ul.css('left',(-1*percent*maxLen)+'px')
       }
-    }
+    };
+    var tuodong = new theScale('tuodong', 'line');
+    console.log('dis:',tuodong.dis)
 
-    document.onmouseup = function() {
-      console.log('up');
 
-      document.onmousemove = null;
+    // var lineLen = 560;  // 线总长
+    // var tuodongLen = 50;  // 拖动div长度
+    // var dis;  // 拖动的距离
 
-    }
-    // tuodong.on('mousedown',function (e) {
-    //   console.log('down')
-    //   $(document).on('mousemove',function (e) {
-    //     console.log('move')
-    //     console.log(e)
-    //   })
-    // })
-    // $(document).on('mouseup',function (e) {
-    //   console.log('down')
-    //   $(document).on('mousemove',null)
-    // })
+
+    // tuodong[0].onmousedown = function (e) {
+    //
+    //   var x1 = e.clientX;
+    //   console.log('down');
+    //   document.onmousemove = function(e) {
+    //     console.log('move');
+    //     var x2 = e.clientX;
+    //     dis = x2 - x1;
+    //     if(dis>=0) {
+    //       if(dis>=(lineLen-tuodongLen)) {
+    //         tuodong.css('left',lineLen-tuodongLen+'px');
+    //       } else {
+    //         tuodong.css('left',dis+'px');
+    //       }
+    //     } else {
+    //       tuodong.css('left','0px');
+    //
+    //     }
+    //   }
+    // }
+    //
+    // document.onmouseup = function() {
+    //   console.log('up');
+    //
+    //   document.onmousemove = null;
+    //
+    // }
+
   }
 
 
@@ -882,7 +936,10 @@ $(function () {
         }
       },
       legend: {
-        data: ['出发旅客量', '到达旅客量']
+        data: ['出发旅客量', '到达旅客量'],
+        textStyle: {
+          color: 'rgb(221,243,255)'
+        }
       },
       grid: {
         left: '3%',

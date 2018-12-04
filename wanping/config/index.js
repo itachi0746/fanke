@@ -12,8 +12,9 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost:16789/MallService',  // 通过本地服务器将你的请求转发到这个地址
-        // target: 'http://wap2.jierutek.com/MallService',  // 通过本地服务器将你的请求转发到这个地址
+        // target: 'http://localhost:16789/MallService',  // 通过本地服务器将你的请求转发到这个地址
+
+        target: 'http://ty.jierutek.com/Mall?EntId=10123&OrgId=32be4f0867944607aa3cb6fade42e7c2&IsWeiXin=True&Product=3&AppId=wx7ad549978066a6ee',  // 通过本地服务器将你的请求转发到这个地址
         changeOrigin: true,  // 设置这个参数可以避免跨域
         pathRewrite: {
           '^/api': ''

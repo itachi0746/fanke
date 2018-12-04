@@ -483,7 +483,7 @@ html, body {
     .KLHX-box .hm span {
       position: absolute;
       top: 80%;
-      left: 20px;
+      left: 18px;
       font-size: 26px;
       color: #68e4ff; }
   .KLHX-box .man {
@@ -491,7 +491,7 @@ html, body {
     left: 43%; }
   .KLHX-box .woman {
     background: url("../img/icon_woman.png") no-repeat;
-    left: 57%; }
+    left: 55%; }
 
 .line-box {
   padding: 0 20px; }
@@ -615,20 +615,21 @@ html, body {
           color: #0696d8; }
 
 .video-list {
-  padding: 10px 20px; }
+  padding: 10px 0px;
+  margin: 0 20px;
+  overflow: hidden; }
   .video-list ul {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
     position: relative;
     left: 0;
-    top: 0; }
+    top: 0;
+    width: 1000px; }
     .video-list ul li {
       width: 100px;
       height: 75px;
       position: relative;
       margin-right: 20px;
-      background-color: red; }
+      background-color: red;
+      float: left; }
       .video-list ul li .footer {
         position: absolute;
         bottom: 0;
@@ -717,8 +718,27 @@ html, body {
     height: 580px;
     width: 100%; }
   .tab-box2-li3 .tab-li3-cld {
-    width: 100%;
-    height: 100%; }
+    width: 295px;
+    height: 100%;
+    position: absolute;
+    left: 45px;
+    top: 0;
+    background-color: #12508f; }
+  .tab-box2-li3 .arrow {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    background: url(../img/icon_date_arrows_nor.png) no-repeat;
+    background-position: center; }
+  .tab-box2-li3 .cld-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 45px;
+    height: 40px;
+    background: url("../img/icon_date.png") no-repeat; }
   .tab-box2-li3 .li-tab-box {
     height: 580px;
     width: 100%;
@@ -734,7 +754,8 @@ html, body {
     .tab-box2-li3 .li-tab-box .calendar {
       width: 380px;
       height: 40px;
-      background-color: #fff; }
+      background-color: #12508f;
+      position: relative; }
     .tab-box2-li3 .li-tab-box .chart-box {
       height: 250px;
       padding-left: 20px; }
@@ -778,6 +799,14 @@ html, body {
           -ms-flex-pack: center;
               justify-content: center;
       position: relative; }
+    .tab-box2-li4 .li-tab-box .arrow {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 40px;
+      height: 40px;
+      background: url(../img/icon_date_arrows_nor.png) no-repeat;
+      background-position: center; }
     .tab-box2-li4 .li-tab-box .cld-icon {
       position: absolute;
       left: 0;
@@ -786,9 +815,15 @@ html, body {
       height: 40px;
       background: url("../img/icon_date.png") no-repeat; }
     .tab-box2-li4 .li-tab-box .tab-li4-cld {
-      width: 235px;
+      width: 195px;
       height: 40px;
-      background-color: #114d8a; }
+      background-color: #114d8a;
+      position: absolute;
+      right: 30px;
+      top: 0;
+      font-size: 16px;
+      color: #ddf3ff;
+      text-align: center; }
     .tab-box2-li4 .li-tab-box header {
       display: -webkit-box;
       display: -ms-flexbox;
@@ -1023,6 +1058,9 @@ html, body {
 :-ms-input-placeholder {
   /* Internet Explorer 10-11 */
   color: #325b91; }
+
+input:focus {
+  outline: none; }
 
 #DivButton {
   position: absolute !important;
