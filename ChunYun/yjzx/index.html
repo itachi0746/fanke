@@ -196,9 +196,9 @@
     </div>
   </div>
 
-  <!--下方tab-->
+  <!--交通枢纽tab-->
   <ul id="tab2" class="tab-box2 vh">
-    <li class="tab-box2-li1 tab-box2-li">
+    <li data-name="实时监控" class="tab-box2-li1 tab-box2-li">
       <div class="li-tab-box">
         <div class="video-play-box">
           <div class="add-box"></div>
@@ -274,7 +274,7 @@
         </div>
       </div>
     </li>
-    <li class="tab-box2-li2 tab-box2-li">
+    <li data-name="实时客流" class="tab-box2-li2 tab-box2-li">
       <div class="li-tab-box">
         <header>
           <label for="">实时客流量</label>
@@ -311,7 +311,7 @@
         </div>
       </div>
     </li>
-    <li class="tab-box2-li4 tab-box2-li">
+    <li data-name="旅客洞察" class="tab-box2-li4 tab-box2-li">
       <div class="li-tab-box">
         <div class="calendar-box">
           <div class="calendar">
@@ -399,8 +399,7 @@
         </div>
       </div>
     </li>
-
-    <li class="tab-box2-li3 tab-box2-li">
+    <li data-name="旅客趋势" class="tab-box2-li3 tab-box2-li">
       <div class="li-tab-box">
         <div class="calendar-box">
           <div class="calendar">
@@ -424,22 +423,180 @@
       </div>
     </li>
   </ul>
+  <!--服务区tab-->
+  <ul id="tab3" class="tab-box3 vh">
+    <li data-name="实时监控" class="tab-box2-li1 tab-box2-li">
+      <div class="li-tab-box">
+        <div class="video-play-box">
+          <div class="add-box"></div>
+          <div class="full-screen"></div>
+        </div>
+        <div class="video-list" id="video-list2">
+          <ul>
+            <li>
+              <div class="footer"></div>
+            </li>
+            <li>
+              <div class="footer"></div>
+            </li>
+            <li>
+              <div class="footer"></div>
+            </li>
+            <li>
+              <div class="footer"></div>
+            </li>
+            <li>
+              <div class="footer"></div>
+            </li>
+            <li>
+              <div class="footer"></div>
+            </li>
+            <li>
+              <div class="footer"></div>
+            </li>
+          </ul>
+        </div>
+        <div class="line-box">
+          <div class="line" id="line2">
+            <div class="tuodong" id="tuodong2"></div>
+          </div>
+        </div>
+        <div class="emp-box">
+          <div class="touxiang">
 
-  <!--楼层-->
-  <!--<ul class="floor dn" id="floor">-->
-    <!--<li>3A</li>-->
-    <!--<li>3A</li>-->
-    <!--<li class="active">3A</li>-->
-  <!--</ul>-->
+          </div>
+          <div class="emp-data-box">
+            <p>
+              <label for="">值班人:</label>
+              <span></span>
+            </p>
+            <p>
+              <label for="">预警电话:</label>
+              <span></span>
+            </p>
+          </div>
+          <div class="icon"></div>
+        </div>
+
+        <div class="video-play-box2">
+          <div class="box2-main">
+            <span>请选择摄像头</span>
+          </div>
+          <div class="video-list">
+            <ul>
+              <li>
+                <div class="footer"></div>
+              </li>
+              <li>
+                <div class="footer"></div>
+              </li>
+            </ul>
+          </div>
+          <div class="line-box">
+            <div class="line">
+              <div class="tuodong"></div>
+            </div>
+          </div>
+          <div class="close-icon"></div>
+        </div>
+      </div>
+
+    </li>
+    <li data-name="实时客流" class="tab-box2-li2 tab-box2-li">
+      <div class="li-tab-box">
+        <header>
+          <div>
+            <label for="">实时客流量</label>
+            <p>
+              <i>20.3</i>万
+            </p>
+
+          </div>
+          <div>
+            <label for="">实时进入车辆</label>
+            <p>
+              <i>20.3</i>万
+            </p>
+          </div>
+          <div>
+            <label for="">实时离开车辆</label>
+            <p>
+              <i>20.3</i>万
+            </p>
+          </div>
+
+        </header>
+        <div class="chart1" id="">
+
+        </div>
+        <div class="chart2">
+
+        </div>
+        <div class="chart3">
+
+        </div>
+      </div>
+    </li>
+    <li data-name="旅客洞察" class="tab-box2-li4 tab-box2-li">
+      <div class="li-tab-box">
+        <div class="calendar-box">
+          <div class="calendar">
+            <div style="width: 280px;height: 40px;background-color: #114d8a;position: relative;">
+              <div class="cld-icon"></div>
+              <input type="text" class="tab-li4-cld" id="tab-li4-cld2">
+              <div class="arrow"></div>
+            </div>
+          </div>
+        </div>
+        <header>
+          <div>
+            <label for="">实时客流量</label>
+            <p>
+              <i>20.3</i>万
+            </p>
+
+          </div>
+          <div>
+            <label for="">实时进入车辆</label>
+            <p>
+              <i>20.3</i>万
+            </p>
+          </div>
+          <div>
+            <label for="">实时离开车辆</label>
+            <p>
+              <i>20.3</i>万
+            </p>
+          </div>
+
+        </header>
+        <div class="chart1">
+
+        </div>
+        <div class="chart2"></div>
+      </div>
+    </li>
+    <li data-name="旅客趋势" class="tab-box2-li3 tab-box2-li">
+      <div class="li-tab-box">
+        <div class="calendar-box">
+          <div class="calendar">
+            <div class="cld-icon"></div>
+            <input type="text" id="tab-li3-cld2" class="tab-li3-cld">
+            <div class="arrow"></div>
+          </div>
+        </div>
+        <div class="chart1"></div>
+        <div class="chart2"></div>
+      </div>
+    </li>
+  </ul>
 
   <!--鹰眼-->
   <div id="container2" class="container container2" style="width: 400px;height: 300px;">
       <div style="width: 200px;height: 100px;" class="yingyan" id="yingyan"></div>
   </div>
 
-
 </div>
-
 
 <div id="DivButton" style="position:fixed;top:0px;right:0px;">
 

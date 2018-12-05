@@ -1,8 +1,15 @@
 
 var pointControl
 $(function () {
+  // var nowTab = '客运站,铁路,机场,港口';
+  var nowTab = '服务区';
+  // var nowTab = '收费站';
+  // var nowTab = '高速';
+  // var nowTab = '高速路网';
+
   var tabBoxes = $('.tab-box');
   var tabBoxes2 = $('.tab-box2 li');
+  var tabBoxes3 = $('.tab-box3 li');
 
 
   // console.log(gonglu)
@@ -12,7 +19,7 @@ $(function () {
   init();
 
   function init() {
-    // 点击左上标题
+    // 点击标题
     title.on('click',function () {
       pointControl.ReturnDefualt();  // 默认视角
       pointControl.showMarkers();  // 显示点标记
@@ -29,7 +36,16 @@ $(function () {
     }
     for (var j = 0; j < tabBoxes2.length; j++) {
       var box2 = tabBoxes2[j];
-      $(box2).on('click',clickTab2)
+      var box3 = tabBoxes3[j];
+      // $(box2).on('click',clickTab2)
+      // 交通枢纽绑定
+      $(box2).on('click',function () {
+        clickTab2(tabBoxes2,this)
+      })
+      // 服务站绑定
+      $(box3).on('click',function () {
+        clickTab2(tabBoxes3,this)
+      })
     }
     arrowBindClick();
     dongchaTabBindClick();
@@ -53,7 +69,7 @@ $(function () {
     addStation();
 
     // 调试
-    // hideTabs()
+    hideTabs()
   }
 
   // 添加交通枢纽
@@ -144,8 +160,15 @@ $(function () {
       ,trigger:'click'//默认为click，即点击后出现日历框
     })
 
+    // $('#tab-li2-cld').val(laydate.now(0, 'YYYY-MM-DD'));
+
     laydate.render({
       elem:'#tab-li3-cld'
+      ,type:'date'//默认为date
+      ,trigger:'click'//默认为click，即点击后出现日历框
+    })
+    laydate.render({
+      elem:'#tab-li3-cld2'
       ,type:'date'//默认为date
       ,trigger:'click'//默认为click，即点击后出现日历框
     })
@@ -155,24 +178,46 @@ $(function () {
       ,type:'date'//默认为date
       ,trigger:'click'//默认为click，即点击后出现日历框
     })
-
+    laydate.render({
+      elem:'#tab-li4-cld2'
+      ,type:'date'//默认为date
+      ,trigger:'click'//默认为click，即点击后出现日历框
+    })
   }
+
+  // 隐藏tab2
   function hideTab2() {
-    var tab2 = $('#tab2');
-    // tab2.hide(300);
-    tab2.addClass('vh');
-    for (var j = 0; j < tabBoxes2.length; j++) {
-      var obj = tabBoxes2[j];
+    var temp;
+    if(nowTab==='客运站,铁路,机场,港口') {
+      temp = $('#tab2');
+    }
+    if(nowTab==='服务区') {
+      temp = $('#tab3');
+    }
+    if(nowTab==='收费站') {
+      // temp = $('#tab3');
+    }
+    if(nowTab==='高速') {
+      // temp = $('#tab3');
+    }
+    if(nowTab==='高速路网') {
+      // temp = $('#tab3');
+    }
+
+    temp.addClass('vh');
+    var tabs = temp.find('.tab-box2-li');
+    for (var j = 0; j < tabs.length; j++) {
+      var obj = tabs[j];
       $(obj).removeClass('active');
     }
-    var liTabBox = tab2.find('.li-tab-box');
+    var liTabBox = temp.find('.li-tab-box');
     for (var i = 0; i < liTabBox.length; i++) {
       var obj1 = liTabBox[i];
       $(obj1).css('visibility','hidden');
     }
   }
 
-  // tab点击事件
+  // 主tab点击事件
   function clickTab() {
     for (var j = 0; j < tabBoxes.length; j++) {
       var obj = tabBoxes[j];
@@ -181,44 +226,52 @@ $(function () {
     $(this).addClass('tab-box-active');
 
     var t = $(this).data('name');
+    nowTab = t;
     // debugger
     if(t=='高速路网'){  // 显示高速路网图层
       window.location.href = '/ChunYun/GaoSuLuWang/index.html';
       return
     }
+
     pointControl.ReturnDefualt();
     pointControl.showPoints(t);  // 放大点
     markerBindClick();
   }
 
-  // tab2点击事件
-  function clickTab2() {
+  // tab2点击事件 目标,this
+  function clickTab2(target,me) {
     // 隐藏
     $('.arrow.up').addClass('dn');
     $('.arrow.down').removeClass('dn');
     // 组织冒泡
-    $(this).find('.li-tab-box').on('click',function (e) {
+    $(me).find('.li-tab-box').on('click',function (e) {
       e.stopPropagation()
     });
+    // console.log(me.dataset.name)
+    if(me.dataset.name==='实时监控') {
+      jiankongEvent(me)
+    }
 
 
-    if($(this).hasClass('active')) {  // 如果点击的是已经active的tab
-      $(this).removeClass('active');
-      $(this).find('.li-tab-box').css('visibility','hidden')
+    if($(me).hasClass('active')) {  // 如果点击的是已经active的tab
+      $(me).removeClass('active');
+      $(me).find('.li-tab-box').css('visibility','hidden')
       return
     }
-    for (var j = 0; j < tabBoxes2.length; j++) {
-      var obj = tabBoxes2[j];
+    for (var j = 0; j < target.length; j++) {
+      var obj = target[j];
       $(obj).removeClass('active');
       $(obj).find('.li-tab-box').css('visibility','hidden')
     }
-    $(this).addClass('active');
-    $(this).find('.li-tab-box').css('visibility','visible')
+    $(me).addClass('active');
+    $(me).find('.li-tab-box').css('visibility','visible')
     // myChart.resize();
   }
 
-  function getmaxLen() {
-    var videoList = $('#video-list');
+  function getmaxLen(tgt) {
+    // var videoList = $(id);
+    var videoList = tgt;
+
     var listLis = videoList.find('li');
     var liLen = parseInt($(listLis[0]).css('width'));
     var listLisLen = liLen * listLis.length;
@@ -229,10 +282,16 @@ $(function () {
     return maxLen
   }
 
-  function jiankongEvent() {
-    var addBox = $('.add-box');
-    var videoPlayBox2 = $('.video-play-box2');
-    var closeIcon = $('.close-icon');
+  function jiankongEvent(whichLi) {
+    var tgt = $(whichLi);
+    // var addBox = $('.add-box');
+    // var videoPlayBox2 = $('.video-play-box2');
+    // var closeIcon = $('.close-icon');
+
+    var addBox = tgt.find('.add-box');
+    var videoPlayBox2 = tgt.find('.video-play-box2');
+    var closeIcon = tgt.find('.close-icon');
+
     addBox.on('click',function () {
       videoPlayBox2.addClass('db');
 
@@ -241,9 +300,6 @@ $(function () {
       videoPlayBox2.removeClass('db');
 
     });
-    
-    var dis;
-    var maxLen = getmaxLen();
     //可拖拽的进度条
     var theScale = function (btn, bar) {
       this.btn = document.getElementById(btn);
@@ -262,54 +318,26 @@ $(function () {
             var to = m.min(max, m.max(-2, l + (thisX - x)));
             f.btn.style.left = to + 'px';
             // f.ondrag(m.round(m.max(0, to / max) * 100), to);
-            f.ondrag((to / max), to);
+            f.ondrag((to / max), to,tgt);
             b.getSelection ? b.getSelection().removeAllRanges() : g.selection.empty();
           };
           g.onmouseup = new Function('this.onmousemove=null');
         };
       },
-      ondrag: function (percent, x) {  // 百分比,位移距离
-        var ul = $('#video-list').find('ul');
+      ondrag: function (percent, x, target) {  // 百分比,位移距离
+
+        var ul = target.find('.video-list').find('ul');
+        var maxLen = getmaxLen(target.find('.video-list'));
+
         // console.log(percent)
         ul.css('left',(-1*percent*maxLen)+'px')
       }
     };
-    var tuodong = new theScale('tuodong', 'line');
-    console.log('dis:',tuodong.dis)
 
+    new theScale('tuodong', 'line');
+    new theScale('tuodong2', 'line2');
+    // console.log('dis:',tuodong.dis)
 
-    // var lineLen = 560;  // 线总长
-    // var tuodongLen = 50;  // 拖动div长度
-    // var dis;  // 拖动的距离
-
-
-    // tuodong[0].onmousedown = function (e) {
-    //
-    //   var x1 = e.clientX;
-    //   console.log('down');
-    //   document.onmousemove = function(e) {
-    //     console.log('move');
-    //     var x2 = e.clientX;
-    //     dis = x2 - x1;
-    //     if(dis>=0) {
-    //       if(dis>=(lineLen-tuodongLen)) {
-    //         tuodong.css('left',lineLen-tuodongLen+'px');
-    //       } else {
-    //         tuodong.css('left',dis+'px');
-    //       }
-    //     } else {
-    //       tuodong.css('left','0px');
-    //
-    //     }
-    //   }
-    // }
-    //
-    // document.onmouseup = function() {
-    //   console.log('up');
-    //
-    //   document.onmousemove = null;
-    //
-    // }
 
   }
 
@@ -352,11 +380,7 @@ $(function () {
       // debugger
       pointControl.MoveToPoint(arg,this.dataset.zoom)
     })
-    // console.log('moniData',moniData)
-    // for (var i = 0; i < top3Li.length; i++) {
-    //   var li = top3Li[i];
-    //   li.attr('data-name',moniData.)
-    // }
+
   }
 
   // 隐藏tab,显示tab2
@@ -382,11 +406,32 @@ $(function () {
     showCurLocaction();
 
     var tabBoxCur = $('#tab-box-cur');
-    var tab2 = $('#tab2');
+    // var tab2 = $('#tab2');
     tabBoxCur.find('.up').removeClass('dn');
     tabBoxCur.find('.down').addClass('dn');
-    tab2.removeClass('vh');
+    // tab2.removeClass('vh');
     $('#floor').removeClass('dn');
+
+    showWhichTab()
+  }
+
+  function showWhichTab() {
+    if(nowTab==='客运站,铁路,机场,港口') {
+      $('#tab2').removeClass('vh');
+    }
+    if(nowTab==='服务区') {
+      $('#tab3').removeClass('vh');
+    }
+    if(nowTab==='收费站') {
+      // $('#tab2').removeClass('vh');
+    }
+    if(nowTab==='高速') {
+      // $('#tab2').removeClass('vh');
+    }
+    if(nowTab==='高速路网') {
+      // $('#tab2').removeClass('vh');
+    }
+
   }
 
   // 显示tab

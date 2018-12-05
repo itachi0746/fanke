@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script src="../lib/jquery-1.8.2.min.js"></script>
+<script>
+  var url = '//restapi.amap.com/v3/traffic/status/rectangle?key=9fea49e84c21ed8c815151d9b858ea10&rectangle=116.351147,39.966309;116.357134,39.968727'
+  var url2 = 'https://restapi.amap.com/v3/traffic/status/road?name=华南快速&adcode=440106&key=9fea49e84c21ed8c815151d9b858ea10'
+//  莞佛高速虎门大桥
+  var u3 = '//restapi.amap.com/v3/traffic/status/rectangle?key=9fea49e84c21ed8c815151d9b858ea10&rectangle=113.605895,22.784986;113.607895,22.786986'
+  //广佛高速沙贝立交
+  var u4 = '//restapi.amap.com/v3/traffic/status/rectangle?key=9fea49e84c21ed8c815151d9b858ea10&rectangle=113.197209,23.155074;113.195209,23.153074'
+
+  $.get(u4,function (res) {
+    console.log(res)
+  })
+</script>
+</body>
+</html>
