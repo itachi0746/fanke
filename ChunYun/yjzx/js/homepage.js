@@ -49,7 +49,9 @@ $(function () {
     }
     arrowBindClick();
     dongchaTabBindClick();
-    jiankongEvent();
+    addStation();
+
+    // jiankongEvent();
     getTop3Data();
 
     clickTop3Li();
@@ -58,18 +60,18 @@ $(function () {
     pointControl.showPoints('客运站,铁路,机场,港口');
     // console.log('theDataObject:',pointControl.markes)
     markerBindClick();
-    tab2InitEchart();
-    tab2InitEchart2();
-    tab4InitEchart();
-    tab4InitEchart2();
-    tab3InitEchart();
-    tab3InitEchart2();
-    tab3InitEchart3();
-    initCalendar();
-    addStation();
+    // tab2InitEchart();
+    // tab2InitEchart2();
+    // tab4InitEchart();
+    // tab4InitEchart2();
+    // tab3InitEchart();
+    // tab3InitEchart2();
+    // tab3InitEchart3();
+    // initCalendar();
+    // addStation();
 
     // 调试
-    hideTabs()
+    // hideTabs()
   }
 
   // 添加交通枢纽
@@ -287,7 +289,7 @@ $(function () {
     // var addBox = $('.add-box');
     // var videoPlayBox2 = $('.video-play-box2');
     // var closeIcon = $('.close-icon');
-
+    console.log(tgt)
     var addBox = tgt.find('.add-box');
     var videoPlayBox2 = tgt.find('.video-play-box2');
     var closeIcon = tgt.find('.close-icon');
@@ -327,6 +329,7 @@ $(function () {
       ondrag: function (percent, x, target) {  // 百分比,位移距离
 
         var ul = target.find('.video-list').find('ul');
+        console.log(ul)
         var maxLen = getmaxLen(target.find('.video-list'));
 
         // console.log(percent)
@@ -418,9 +421,22 @@ $(function () {
   function showWhichTab() {
     if(nowTab==='客运站,铁路,机场,港口') {
       $('#tab2').removeClass('vh');
+      tab2Li2InitEchart();
+      tab2Li2InitEchart2();
+      tab2Li4InitEchart();
+      tab2Li4InitEchart2();
+      tab2Li3InitEchart();
+      tab2Li3InitEchart2();
+      tab2Li3InitEchart3();
+      initCalendar();
     }
     if(nowTab==='服务区') {
       $('#tab3').removeClass('vh');
+      tab3Li2InitEchart();
+      tab3Li2InitEchart3();
+      tab3Li3InitEchart();
+      tab3Li4InitEchart();
+      tab3Li4InitEchart2();
     }
     if(nowTab==='收费站') {
       // $('#tab2').removeClass('vh');
@@ -529,8 +545,9 @@ $(function () {
       m.on('click',hideTabs)
     }
   }
-  // var myChart;
-  function tab2InitEchart() {
+
+  // 交通枢纽图表
+  function tab2Li2InitEchart() {
     var SSKL = $('#SSKL');
     var myChart = echarts.init(SSKL[0]);
     option = null;
@@ -706,7 +723,7 @@ $(function () {
     }
   }
 
-  function tab2InitEchart2() {
+  function tab2Li2InitEchart2() {
     var dom = document.getElementById("KLHX");
     var myChart = echarts.init(dom);
     console.log(echarts.version)
@@ -818,7 +835,7 @@ $(function () {
 
   }
 
-  function tab4InitEchart() {
+  function tab2Li4InitEchart() {
     var dom = $('#KLQS');
     var myChart = echarts.init(dom[0]);
     option = null;
@@ -1009,7 +1026,7 @@ $(function () {
     }
   }
 
-  function tab4InitEchart2() {
+  function tab2Li4InitEchart2() {
     var dom = $('#LKQS');
     var myChart = echarts.init(dom[0]);
     option = null;
@@ -1175,7 +1192,7 @@ $(function () {
     }
   }
 
-  function tab3InitEchart() {
+  function tab2Li3InitEchart() {
     var dom = $('#ZLSC');
     var myChart = echarts.init(dom[0]);
     option = null;
@@ -1327,7 +1344,7 @@ $(function () {
     }
   }
 
-  function tab3InitEchart2() {
+  function tab2Li3InitEchart2() {
     var dom = document.getElementById("laiyuan");
     var myChart = echarts.init(dom);
     var app = {};
@@ -1397,7 +1414,7 @@ $(function () {
 
   }
 
-  function tab3InitEchart3() {
+  function tab2Li3InitEchart3() {
     var dom = document.getElementById("quxiang");
     var myChart = echarts.init(dom);
     var app = {};
@@ -1468,6 +1485,540 @@ $(function () {
 
   }
 
+  // 服务区图表
+  function tab3Li2InitEchart() {
+    var dom = document.getElementById("tab3li2-chart1");
+    var myChart = echarts.init(dom);
+    option = null;
+    option = {
+      title: {
+        text: '实时驻留时长分析',
+        textStyle: {
+          color: 'rgb(221,243,255)',
+          fontSize: 18,
+          fontFamily: 'Microsoft YaHei'
+          // fontWeight:400
+        }
+      },
+      xAxis: {
+        type: 'category',
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        name: '小时',
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+      },
+      yAxis: {
+        type: 'value',
+        name: '占比',
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+        // 分割线
+        splitLine: {
+          show: false
+        }
+      },
+      series: [{
+        data: [120, 200, 150, 80, 70, 110, 130],
+        type: 'bar',
+        label: {
+          show: true,
+          position: 'top',
+          align: 'middle',
+          // verticalAlign: 'middle'
+
+        },
+        // 柱子颜色
+        itemStyle: {
+          color: 'rgb(70,158,228)'
+        },
+        barWidth: '50%',
+
+      }]
+    };
+    ;
+    if (option && typeof option === "object") {
+      myChart.setOption(option, true);
+    }
+  }
+
+  function tab3Li2InitEchart2() {
+
+  }
+
+  function tab3Li2InitEchart3() {
+    var dom = document.getElementById("tab3li2-chart3");
+    var myChart = echarts.init(dom);
+    // console.log(echarts.version)
+    var app = {};
+    option = null;
+    app.title = '环形图';
+
+    option = {
+      title: {
+        text: '客流画像',
+        textStyle: {
+          color: 'rgb(221,243,255)',
+          fontSize: 18,
+          fontFamily: 'Microsoft YaHei',
+          // fontWeight:400
+        }
+      },
+      // tooltip: {
+      //   trigger: 'item',
+      //   formatter: "{a} <br/>{b}: {c} ({d}%)"
+      // },
+      // legend: {
+      //   orient: 'vertical',
+      //   x: 'left',
+      //   data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+      // },
+      series: [
+        {
+          name: '访问来源',
+          type: 'pie',
+          radius: ['50%', '70%'],
+          avoidLabelOverlap: false,
+          animation: false,
+          itemStyle: {
+            color:'rgb(104,228,255)',
+            borderColor:'#0a214b',
+            borderWidth:10
+          },
+          label: {
+            // normal: {
+            //   show: true,
+            //   position: 'center'
+            // },
+            silent: true,
+            normal: {
+              // \n\n可让文字居于牵引线上方，很关键
+              //  {b}  代表显示的内容标题
+              // {c}代表数据
+              formatter: '{b}\n{c} ',
+              fontSize:  20,
+
+              // textAlign: 'left',//'left'、 'center'、 'right'，
+              // textVerticalAlign: 'bottom',//文字垂直对齐方式，可取值：'top'、 'middle'、 'bottom'，默认根据 textPosition 计算。
+              //rich: {
+              //    b: {
+              //        font: '16px Microsoft YaHei',
+              //        textFill: 'rgb(104,228,225)'
+              //    },
+              //    c: {
+              //        font: '24px Microsoft YaHei',
+              //        textFill: 'white'
+              //    }
+              //},
+              borderWidth: 20,
+              borderRadius: 4,
+              padding: [0, -10],
+              rich: {
+                // b: {
+                //   color: 'green',
+                //   fontSize: 12,
+                //   lineHeight: 20
+                // },
+                c: {
+                  fontSize: 26,
+                  lineHeight: 20,
+                  color: 'white'
+                }
+              }
+            },
+
+            emphasis: {
+              show: false,
+              textStyle: {
+                fontSize: '30',
+                fontWeight: 'bold'
+              }
+            }
+          },
+          labelLine: {
+            normal: {
+              show: false
+            }
+          },
+          data: [
+            {value: 335, name: '直接访问'},
+            {value: 310, name: '邮件营销'},
+            {value: 234, name: '联盟广告'},
+            {value: 135, name: '视频广告'},
+            {value: 1548, name: '搜索引擎'}
+          ]
+        }
+      ]
+    };
+    ;
+    if (option && typeof option === "object") {
+      myChart.setOption(option, true);
+    }
+
+
+  }
+
+  function tab3Li3InitEchart() {
+    var dom = document.getElementById("tab3li3-chart1");
+    var myChart = echarts.init(dom);
+    option = null;
+    option = {
+      title: {
+        text: '全天驻留时长分析',
+        textStyle: {
+          color: 'rgb(221,243,255)',
+          fontSize: 18,
+          fontFamily: 'Microsoft YaHei'
+          // fontWeight:400
+        }
+      },
+      xAxis: {
+        type: 'category',
+        data: ['0-1', '1-2', '3-4', '4-5', '5-6', '6-7', '7-8','8-24'],
+        name: '小时',
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+      },
+      yAxis: {
+        type: 'value',
+        name: '人数/万',
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+        // 分割线
+        splitLine: {
+          show: false
+        }
+      },
+      series: [{
+        data: [120, 200, 150, 80, 70, 110, 130,50],
+        type: 'bar',
+        // 数据显示位置
+        label: {
+          show: true,
+          position: 'top',
+          align: 'middle',
+          // verticalAlign: 'middle'
+
+        },
+        // 柱子颜色
+        itemStyle: {
+          color: 'rgb(70,158,228)'
+        },
+        barWidth: '50%',
+
+      }]
+    };
+    ;
+    if (option && typeof option === "object") {
+      myChart.setOption(option, true);
+    }
+  }
+
+  function tab3Li4InitEchart() {
+    var dom = $('#tab3li4-chart1');
+    var myChart = echarts.init(dom[0]);
+    option = null;
+    var date = ['12月1日','12月2日','12月3日','12月4日','12月5日','12月6日','12月7日'];
+
+    var myDate = new Date();//获取系统当前时间
+    var data = [Math.round(Math.random() * 150)];
+    // var data2 = [Math.random() * 160];
+
+
+    function addData() {
+//    now = [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/');
+      // date.push(hour);
+      if(data.length>=24) {
+        data = [Math.round(Math.random() * 150)];
+        // data2 = [Math.random() * 160];
+      }
+      data.push((Math.round(Math.random() - 0.3) * 10) + data[data.length - 1]);
+      // data2.push((Math.random() - 0.4) * 10 + data[data.length - 1]);
+      // hour >= 23? hour = 0: hour++;
+
+      // if (shift) {
+      //   // date.shift();
+      //   data.shift();
+      // }
+
+//    now = new Date(+new Date(now) + oneDay);
+    }
+    //
+    // for (var i = 0; i < 25; i++) {  // 时间(小时)
+    //   date.push(i);
+    //   // addData(false);
+    // }
+    for (var i = 0; i < 12; i++) {  // 模拟数据
+      // date.push(i);
+      addData();
+    }
+
+    option = {
+      title: {
+        text: '每日总客流趋势',
+        textStyle: {
+          color: 'rgb(221,243,255)',
+          fontSize: 18,
+          fontFamily: 'Microsoft YaHei',
+          // fontWeight:400
+        }
+      },
+      tooltip: {
+        trigger: 'axis',
+        // formatter: "{a} <br/>{b}: {c} ({d}%)"
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        name: '日期',
+        data: date,
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+        // 分割线
+        splitLine: {
+          show: false
+        },
+        axisLabel: {
+          interval: 0,
+          rotate: 45,
+          //倾斜度 -90 至 90 默认为0
+          margin: 10,
+          textStyle: {
+            // fontWeight: "bolder",
+            // color: "#000000"
+          }
+        },
+      },
+      yAxis: {
+        boundaryGap: [0, '50%'],
+        type: 'value',
+        name: '人数/万',
+        // 轴 样式
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+        // 分割线
+        splitLine: {
+          show: false
+        }
+      },
+      series: [
+        {
+          name: '客流量',
+          type: 'line',
+          smooth: true,
+          symbol: 'none',
+          stack: 'a',
+          label: {
+            normal: {
+              show: true
+            }
+          },
+          // 填充区域样式
+          areaStyle: {
+            normal: {
+              // color: 'rgb(62,139,230)',
+              // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: '#ad9955' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
+                }],
+                globalCoord: false // 缺省为 false
+              }
+            }
+          },
+          lineStyle: {
+            color: 'rgb(255,215,93)'
+          },
+          data: data,
+          // 在Y轴显示指标线(虚线)
+          // markLine: {
+          //         silent: true,
+          //         data: [{
+          //             yAxis: 50
+          //         }, {
+          //             yAxis: 100
+          //         }, {
+          //             yAxis: 150
+          //         }, {
+          //             yAxis: 200
+          //         }, {
+          //             yAxis: 300
+          //         }]
+          //     }
+        },
+        // {
+        //   name: '预测',
+        //   type: 'line',
+        //   smooth: true,
+        //   symbol: 'none',
+        //   stack: 'a',
+        //   // areaStyle: {
+        //   //   normal: {
+        //   //   }
+        //   // },
+        //   lineStyle: {
+        //     type: 'dotted'
+        //   },
+        //   data: data2
+        // }
+      ]
+    };
+
+    // setInterval(function () {
+    //   addData(true);
+    //   // console.log(data);
+    //
+    //   myChart.setOption({
+    //     xAxis: {
+    //       data: date
+    //     },
+    //     series: [
+    //       {
+    //         name: '实时',
+    //         data: data
+    //       },
+    //       {
+    //         name: '预测',
+    //         data: data2
+    //       },
+    //     ]
+    //   });
+    // }, 500);
+    ;
+    if (option && typeof option === "object") {
+      myChart.setOption(option, true);
+    }
+  }
+
+  function tab3Li4InitEchart2() {
+    var dom = document.getElementById("tab3li4-chart2");
+    var myChart = echarts.init(dom);
+    option = null;
+    var date = ['12月1日','12月2日','12月3日','12月4日','12月5日','12月6日','12月7日'];
+
+    option = {
+      title: {
+        text: '车辆趋势',
+        textStyle: {
+          color: 'rgb(221,243,255)',
+          fontSize: 18,
+          fontFamily: 'Microsoft YaHei',
+          // fontWeight:400
+        }
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+
+      legend: {
+        data: ['进入车辆', '离开车辆'],
+        textStyle: {
+          color: 'rgb(221,243,255)'
+        }
+      },
+      grid: {
+        left: '5%',
+        right: '10%',
+        bottom: '5%',
+        containLabel: true
+      },
+      yAxis: {
+        type: 'value',
+        boundaryGap: [0, 0.1],
+        // 轴 样式
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+        // 分割线
+        splitLine: {
+          show: false
+        }
+      },
+      xAxis: {
+        type: 'category',
+        data: date,
+        // 轴 样式
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+        axisLabel: {
+          interval: 0,
+          rotate: 45,
+          //倾斜度 -90 至 90 默认为0
+          margin: 10,
+          textStyle: {
+            // fontWeight: "bolder",
+            // color: "#000000"
+          }
+        },
+      },
+      series: [
+        {
+          name: '进入车辆',
+          type: 'bar',
+          barGap: 0,
+          // 柱子颜色
+          itemStyle: {
+            color: 'rgb(97,80,218)'
+          },
+          data: [18203, 23489, 29034, 104970, 131744, 630230,131744]
+        },
+        {
+          name: '离开车辆',
+          type: 'bar',
+          barGap: 0,
+          // 柱子颜色
+          itemStyle: {
+            color: 'rgb(254,158,79)'
+          },
+          data: [19325, 23438, 31000, 121594, 134141, 681807,151744]
+        }
+      ]
+    };
+
+    if (option && typeof option === "object") {
+      myChart.setOption(option, true);
+    }
+  }
 });
 
 
