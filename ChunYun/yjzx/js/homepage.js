@@ -5,6 +5,8 @@ $(function () {
   var tabBoxes2 = $('.tab-box2 li');
 
 
+  // console.log(gonglu)
+
   var title = $('.title');
   pointControl = new PlacePointView(theMap);
   init();
@@ -48,9 +50,90 @@ $(function () {
     tab3InitEchart2();
     tab3InitEchart3();
     initCalendar();
+    addStation();
 
     // 调试
     // hideTabs()
+  }
+
+  // 添加交通枢纽
+  function addStation() {
+    var gonglu = '福田汽车客运站CBG|\n' +
+      '龙岗长途汽车客运站|\n' +
+      '罗湖汽车站|\n' +
+      '深圳汽车站|\n' +
+      '广东省汽车客运站|\n' +
+      '广州芳村汽车客运站|\n' +
+      '广州市汽车客运站|\n' +
+      '广州市天河客运站|\n' +
+      '茂名市客运中心站|\n' +
+      '香洲长途站|\n' +
+      '佛山汽车站|\n' +
+      '河源汽车总站|\n' +
+      '中山汽车总站|\n' +
+      '中山小榄客运站|\n' +
+      '江门汽车客运站|\n' +
+      '惠州汽车总站|\n' +
+      '东莞汽车总站|\n' +
+      '东莞长安车站|\n' +
+      '潮州汽车客运站|\n' +
+      '清远汽车客运站|\n'
+
+    var tielu = '深圳北站|\n' +
+      '深圳西站|\n' +
+      '深圳站|\n' +
+      '广州北站|\n' +
+      '广州东站|\n' +
+      '广州南站|\n' +
+      '广州站|\n' +
+      '惠州站|\n' +
+      '东莞东|\n' +
+      '东莞站|\n' +
+      '虎门站|\n' +
+      '潮汕站|\n' +
+      '佛山西站|\n' +
+      '珠海站|'
+
+    var shuiluminhang = '湛江徐闻海安港|\n' +
+      '深圳宝安国际机场|\n' +
+      '白云国际机场二号航站楼|\n' +
+      '广州白云国际机场|\n' +
+      '湛江机场|\n' +
+      '揭阳机场|'
+
+    var tieluArr = tielu.trim().split('|');
+    var gongluArr = gonglu.trim().split('|');
+    var shuiluminhangArr = shuiluminhang.trim().split('|');
+
+    // console.log(tieluArr,shuiluminhangArr)
+    for (var i = 0; i < tieluArr.length; i++) {
+      var t = tieluArr[i];
+      if(!t) {
+        console.log(t);
+        continue
+      }
+      $('#station-box-1').find('ul').append($('<li>'+ t +'</li>'));
+    }
+    for (var j = 0; j < gongluArr.length; j++) {
+      // console.log(1111)
+      var g = gongluArr[j];
+      // debugger
+      if(!g) {
+        // console.log(t);
+        continue
+      }
+      // console.log('222')
+      $('#station-box-2').find('ul').append($('<li>'+ g +'</li>'));
+    }
+    for (var k = 0; k < shuiluminhangArr.length; k++) {
+      var s = shuiluminhangArr[k];
+      if(!s) {
+        // console.log(t);
+        continue
+      }
+      $('#station-box-3').find('ul').append($('<li>'+ s +'</li>'));
+
+    }
   }
 
   function initCalendar() {

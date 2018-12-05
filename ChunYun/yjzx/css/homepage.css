@@ -1020,6 +1020,12 @@ html, body {
     .cur-pos-data-box .station-box .station-box-2 {
       width: 340px;
       margin-right: 48px; }
+      .cur-pos-data-box .station-box .station-box-2 ul li {
+        width: 170px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        float: left; }
     .cur-pos-data-box .station-box .station-box-3 {
       width: 210px; }
     .cur-pos-data-box .station-box header {
@@ -1040,8 +1046,7 @@ html, body {
       .cur-pos-data-box .station-box ul li {
         font-size: 18px;
         color: #b5e2fe;
-        cursor: pointer;
-        height: 24px; }
+        cursor: pointer; }
 
 ::-webkit-input-placeholder {
   /* WebKit, Blink, Edge */

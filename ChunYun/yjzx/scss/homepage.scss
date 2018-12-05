@@ -1140,7 +1140,13 @@ html,body{
     .station-box-2 {
       width: 340px;
       margin-right: 48px;
-
+      ul li {
+        width: 170px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        float: left;
+      }
     }
     .station-box-3 {
       width: 210px;
@@ -1165,7 +1171,7 @@ html,body{
         font-size: 18px;
         color: rgb(181,226,254);
         cursor: pointer;
-        height: 24px;
+        //height: 24px;
       }
     }
   }
