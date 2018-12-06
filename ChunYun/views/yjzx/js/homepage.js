@@ -1,12 +1,6 @@
 
 var pointControl
 $(function () {
-  // var nowTab = '客运站,铁路,机场,港口';
-  var nowTab = '服务区';
-  // var nowTab = '收费站';
-  // var nowTab = '高速';
-  // var nowTab = '高速路网';
-
   var tabArr = ['客运站,铁路,机场,港口','服务区','收费站','高速','高速路网'];
   var tabDomNameArr = ['#tab2','#tab3','#tab4','#tab5','#tab6'];
   var newTabArr = tabArr.map(function (item,index) {
@@ -15,6 +9,7 @@ $(function () {
       class: tabDomNameArr[index]
     }
   });
+  var nowTab = tabArr[0];
 
   // console.log(newTabArr)
   var tabBoxes = $('.tab-box');
@@ -22,14 +17,15 @@ $(function () {
   var tabBoxes3 = $('.tab-box3 li');
 
 
-  // console.log(gonglu)
-
   var title = $('.title');
   pointControl = new PlacePointView(theMap);
   init();
-  console.log(pointControl.PlacePoints)
+  // console.log(pointControl.PlacePoints)
 
   function init() {
+    // $.axpost('www.baidu.com',function (data) {
+    //   console.log(data)
+    // })
     // 点击标题
     title.on('click',function () {
       pointControl.ReturnDefualt();  // 默认视角
@@ -84,7 +80,7 @@ $(function () {
     // 调试
     // hideTabs()
   }
-
+  var isHideStation = true;
   // 添加交通枢纽
   function addStation() {
     var gonglu = '福田汽车客运站CBG|\n' +
@@ -134,10 +130,9 @@ $(function () {
     var gongluArr = gonglu.trim().split('|');
     var shuiluminhangArr = shuiluminhang.trim().split('|');
 
-    console.log(tieluArr)
+    // console.log(tieluArr)
     for (var i = 0; i < tieluArr.length; i++) {
       var t = tieluArr[i].replace(/[\r\n]/g,"");
-      // t.replace(/[\r\n]/g,"");
       if(!t) {
         console.log(t);
         continue
@@ -146,7 +141,14 @@ $(function () {
       stationDom.on('click',function () {
         var name = $(this).text();
         var curPosDataBox = $('#cur-pos-data-box');
-        curPosDataBox.hide(300)
+        var tabBoxCur = $('#tab-box-cur');
+        var arrows = tabBoxCur.find('.arrow');
+        tabBoxCur.find('.up').addClass('dn');
+        tabBoxCur.find('.down').removeClass('dn');
+
+        curPosDataBox.hide(300);
+        isHideStation = true;
+
         goToPointByName(name)
       })
       $('#station-box-1').find('ul').append(stationDom);
@@ -162,8 +164,15 @@ $(function () {
       }
       var stationDom2 = $('<li>'+ g +'</li>');
       stationDom2.on('click',function () {
+        isHideStation = true;
         var name = $(this).text();
         var curPosDataBox = $('#cur-pos-data-box');
+
+        var tabBoxCur = $('#tab-box-cur');
+        var arrows = tabBoxCur.find('.arrow');
+        tabBoxCur.find('.up').addClass('dn');
+        tabBoxCur.find('.down').removeClass('dn');
+
         curPosDataBox.hide(300)
         goToPointByName(name)
       })
@@ -177,9 +186,13 @@ $(function () {
       }
       var stationDom3 = $('<li>'+ s +'</li>');
       stationDom3.on('click',function () {
+        isHideStation = true;
         var name = $(this).text();
         var curPosDataBox = $('#cur-pos-data-box');
-        clickArrow()
+        var tabBoxCur = $('#tab-box-cur');
+        var arrows = tabBoxCur.find('.arrow');
+        tabBoxCur.find('.up').addClass('dn');
+        tabBoxCur.find('.down').removeClass('dn');
         curPosDataBox.hide(300);
         goToPointByName(name)
       })
@@ -460,7 +473,7 @@ $(function () {
     imgBox.empty();
     for (var i = 0; i < 2; i++) {
       var newImage = new Image();
-      newImage.src = 'img/menu/icon_lower_center.png';
+      newImage.src = 'yjzx/img/menu/icon_lower_center.png';
       imgBox.append(newImage)
 
     }
@@ -518,7 +531,7 @@ $(function () {
   }
 
   function showWhichTab() {
-    if(nowTab==='客运站,铁路,机场,港口') {
+    if(nowTab===tabArr[0]) {
       $('#tab2').removeClass('vh');
       tab2Li2InitEchart();
       tab2Li2InitEchart2();
@@ -529,7 +542,7 @@ $(function () {
       tab2Li3InitEchart3();
       initCalendar();
     }
-    if(nowTab==='服务区') {
+    if(nowTab===tabArr[1]) {
       $('#tab3').removeClass('vh');
       tab3Li2InitEchart();
       tab3Li2InitEchart2();
@@ -541,13 +554,13 @@ $(function () {
       initCalendar();
 
     }
-    if(nowTab==='收费站') {
+    if(nowTab===tabArr[2]) {
       // $('#tab2').removeClass('vh');
     }
-    if(nowTab==='高速') {
+    if(nowTab===tabArr[3]) {
       // $('#tab2').removeClass('vh');
     }
-    if(nowTab==='高速路网') {
+    if(nowTab===tabArr[4]) {
       // $('#tab2').removeClass('vh');
     }
 
@@ -567,16 +580,25 @@ $(function () {
   }
 
   function clickArrow(tabName,arrows) {
+    if(isHideStation) {
+      isHideStation = false;
+      // debugger
+      $('#cur-pos-data-box').show(300)
+    } else {
+      $('#cur-pos-data-box').hide(300)
+      isHideStation = true;
+
+    }
     for (var j = 0; j < arrows.length; j++) {
       var a2 = arrows[j];
       $(a2).toggleClass('dn')
     }
-    // 左边tab去除active
     var n = newTabArr[tabName];
 
     var tabBox2LiArr = $(n).find('.tab-box2-li');
     // var tabBox2LiArr = $('.tab-box2 .tab-box2-li');
 
+    // 左边tab去除active
     for (var i = 0; i < tabBox2LiArr.length; i++) {
       var t = tabBox2LiArr[i];
       $(t).removeClass('active');
@@ -601,7 +623,7 @@ $(function () {
       //   var a2 = arrows[j];
       //   $(a2).toggleClass('dn')
       // }
-
+      // isHideStation = false;
       clickArrow(nowTab,arrows)
       // 左边tab去除active
       // if(nowTab==='客运站,铁路,机场,港口') {
@@ -648,7 +670,11 @@ $(function () {
     var curPosDataBox = $('#cur-pos-data-box');
     // tabBoxCur.show(300);
     tabBoxCur.removeClass('dn');
+    tabBoxCur.find('.arrow.up').removeClass('dn');
+    tabBoxCur.find('.arrow.down').addClass('dn');
+
     curPosDataBox.show(300)
+    isHideStation = false;
   }
 
   function hideCurLocaction() {
@@ -656,9 +682,10 @@ $(function () {
     var curPosDataBox = $('#cur-pos-data-box');
     // tabBoxCur.hide(300);
     tabBoxCur.addClass('dn');
-    tabBoxCur.find('.arrow.up').removeClass('dn');
-    tabBoxCur.find('.arrow.down').addClass('dn');
-    curPosDataBox.hide(300)
+    // tabBoxCur.find('.arrow.up').removeClass('dn');
+    // tabBoxCur.find('.arrow.down').addClass('dn');
+    curPosDataBox.hide(300);
+    isHideStation = true;
   }
 
   // 地图点绑定点击事件
