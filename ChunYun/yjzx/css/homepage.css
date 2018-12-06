@@ -166,6 +166,8 @@ html, body {
               align-items: center;
       margin-bottom: 5px;
       cursor: pointer; }
+      .top3 .yongji .list li * {
+        cursor: pointer; }
       .top3 .yongji .list li p {
         font-weight: bold;
         font-size: 22px;
@@ -273,6 +275,8 @@ html, body {
       position: relative;
       z-index: 11; }
     .tab .tab-box-cur .tab-name {
+      width: 70%;
+      white-space: nowrap;
       font-size: 24px;
       color: #68e4ff;
       position: absolute;
@@ -729,14 +733,40 @@ html, body {
         text-align: center; }
         .tab-box3 .tab-box2-li2 .li-tab-box header div i {
           font-size: 34px; }
-    .tab-box3 .tab-box2-li2 .li-tab-box .chart1, .tab-box3 .tab-box2-li2 .li-tab-box .chart2 {
+    .tab-box3 .tab-box2-li2 .li-tab-box .chart1 {
       width: 100%;
       height: 200px; }
+    .tab-box3 .tab-box2-li2 .li-tab-box .chart2 {
+      width: 100%;
+      height: 240px; }
     .tab-box3 .tab-box2-li2 .li-tab-box .chart3-box {
       position: relative; }
     .tab-box3 .tab-box2-li2 .li-tab-box .chart3 {
       width: 100%;
       height: 420px; }
+    .tab-box3 .tab-box2-li2 .li-tab-box .calendar-box {
+      width: 130px;
+      height: 30px;
+      background-color: #12508f;
+      position: absolute;
+      top: 0;
+      right: 44px;
+      z-index: 10;
+      text-align: left; }
+    .tab-box3 .tab-box2-li2 .li-tab-box .sskl-cld2 {
+      width: 100px;
+      height: 100%;
+      background-color: #12508f;
+      font-size: 16px;
+      color: #ddf3ff; }
+    .tab-box3 .tab-box2-li2 .li-tab-box .arrow {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 30px;
+      height: 30px;
+      background: url(../img/icon_date_arrows_nor.png) no-repeat;
+      background-position: center; }
 
 .tab-box2-li2.active {
   background: url("../img/4icon_left_2_on.png") no-repeat !important; }

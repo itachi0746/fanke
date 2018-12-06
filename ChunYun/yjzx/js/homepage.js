@@ -7,6 +7,16 @@ $(function () {
   // var nowTab = '高速';
   // var nowTab = '高速路网';
 
+  var tabArr = ['客运站,铁路,机场,港口','服务区','收费站','高速','高速路网'];
+  var tabDomNameArr = ['#tab2','#tab3','#tab4','#tab5','#tab6'];
+  var newTabArr = tabArr.map(function (item,index) {
+    return {
+      name: item,
+      class: tabDomNameArr[index]
+    }
+  });
+
+  // console.log(newTabArr)
   var tabBoxes = $('.tab-box');
   var tabBoxes2 = $('.tab-box2 li');
   var tabBoxes3 = $('.tab-box3 li');
@@ -17,6 +27,7 @@ $(function () {
   var title = $('.title');
   pointControl = new PlacePointView(theMap);
   init();
+  console.log(pointControl.PlacePoints)
 
   function init() {
     // 点击标题
@@ -123,34 +134,73 @@ $(function () {
     var gongluArr = gonglu.trim().split('|');
     var shuiluminhangArr = shuiluminhang.trim().split('|');
 
-    // console.log(tieluArr,shuiluminhangArr)
+    console.log(tieluArr)
     for (var i = 0; i < tieluArr.length; i++) {
-      var t = tieluArr[i];
+      var t = tieluArr[i].replace(/[\r\n]/g,"");
+      // t.replace(/[\r\n]/g,"");
       if(!t) {
         console.log(t);
         continue
       }
-      $('#station-box-1').find('ul').append($('<li>'+ t +'</li>'));
+      var stationDom = $('<li>'+ t +'</li>');
+      stationDom.on('click',function () {
+        var name = $(this).text();
+        var curPosDataBox = $('#cur-pos-data-box');
+        curPosDataBox.hide(300)
+        goToPointByName(name)
+      })
+      $('#station-box-1').find('ul').append(stationDom);
+      // $('#station-box-1').find('ul').append($('<li>'+ t +'</li>'));
     }
     for (var j = 0; j < gongluArr.length; j++) {
       // console.log(1111)
-      var g = gongluArr[j];
+      var g = gongluArr[j].replace(/[\r\n]/g,"");
       // debugger
       if(!g) {
         // console.log(t);
         continue
       }
-      // console.log('222')
-      $('#station-box-2').find('ul').append($('<li>'+ g +'</li>'));
+      var stationDom2 = $('<li>'+ g +'</li>');
+      stationDom2.on('click',function () {
+        var name = $(this).text();
+        var curPosDataBox = $('#cur-pos-data-box');
+        curPosDataBox.hide(300)
+        goToPointByName(name)
+      })
+      $('#station-box-2').find('ul').append(stationDom2);
     }
     for (var k = 0; k < shuiluminhangArr.length; k++) {
-      var s = shuiluminhangArr[k];
+      var s = shuiluminhangArr[k].replace(/[\r\n]/g,"");
       if(!s) {
         // console.log(t);
         continue
       }
-      $('#station-box-3').find('ul').append($('<li>'+ s +'</li>'));
+      var stationDom3 = $('<li>'+ s +'</li>');
+      stationDom3.on('click',function () {
+        var name = $(this).text();
+        var curPosDataBox = $('#cur-pos-data-box');
+        clickArrow()
+        curPosDataBox.hide(300);
+        goToPointByName(name)
+      })
+      $('#station-box-3').find('ul').append(stationDom3);
+    }
+  }
 
+  // 根据名字移动到地点  name 字符串
+  function goToPointByName(name) {
+    var clickTarget = pointControl.findPointByName(name);
+    if(clickTarget) {
+      var lng = clickTarget['地址'][0].lnglat.split(',')[0];
+      var lat = clickTarget['地址'][0].lnglat.split(',')[1];
+      var arg = {
+        P:lat,
+        R:lng,
+        lat: lat,
+        lng: lng
+      };
+      // console.log(clickTarget['地址'][0].lnglat)
+      pointControl.MoveToPoint(arg,18)
     }
   }
 
@@ -182,6 +232,11 @@ $(function () {
     })
     laydate.render({
       elem:'#tab-li4-cld2'
+      ,type:'date'//默认为date
+      ,trigger:'click'//默认为click，即点击后出现日历框
+    })
+    laydate.render({
+      elem:'#sskl-cld2'
       ,type:'date'//默认为date
       ,trigger:'click'//默认为click，即点击后出现日历框
     })
@@ -352,7 +407,7 @@ $(function () {
     var num = 1;
     for (var i = 0; i < data.length; i++) {
       var liData = data[i];
-      var liDom = '<li title="'+ liData.name +'">\n' +
+      var liDom = '<li class="top3-li" title="'+ liData.name +'">\n' +
         '<i class="top3-icon1"> '+ num +'</i>\n' +
         '<p><label class="p-name ellipsis">' + liData.name + '</label> <span>当前客流 <i class="num">22</i>万人</span></p>\n' +
         '</li>';
@@ -371,19 +426,44 @@ $(function () {
 
   }
 
-  function clickTop3Li() {
-    var top3Li = $('#yongji li');
-    top3Li.on('click',function () {
-      var arg = {
-        P:this.dataset.lat,
-        R:this.dataset.lng,
-        lat: this.dataset.lat,
-        lng: this.dataset.lng
-      };
-      // debugger
-      pointControl.MoveToPoint(arg,this.dataset.zoom)
-    })
+  function getTop3Data2() {
 
+  }
+
+  // 点击预警
+  function clickTop3Li() {
+    var yujingLiArr = $('.top3-li');
+    for (var i = 0; i < yujingLiArr.length; i++) {
+      var li = yujingLiArr[i];
+      $(li).on('click',function () {
+        var name = $(this).find('.p-name').text();
+        // console.log(name);
+        // for (var j = 0; j < pointControl.PlacePoints.length; j++) {
+        //   var p = pointControl.PlacePoints[j];
+        //   // console.log(p['枢纽名称'])
+        //   if(name===p['枢纽名称']) {
+        //     console.log(name)
+        //     return
+        //   }
+        // }
+        // console.log(pointControl.findPointByName(name))
+        goToPointByName(name)
+      })
+    }
+
+
+  }
+
+  // 清空位置图片
+  function initCenterBG() {
+    var imgBox = $('#center-img');
+    imgBox.empty();
+    for (var i = 0; i < 2; i++) {
+      var newImage = new Image();
+      newImage.src = 'img/menu/icon_lower_center.png';
+      imgBox.append(newImage)
+
+    }
   }
 
   // 隐藏tab,显示tab2
@@ -393,6 +473,25 @@ $(function () {
     var noActive;
     // console.log(tab)
     pointControl.hideMarkers();
+    var targetName = this.C.extData['枢纽名称'];
+
+    initCenterBG();
+    if(targetName.length>4) {
+      var imgBox = $('#center-img');
+      var temp = targetName.length - 4;
+      var img = imgBox.find('img')[0];
+
+      for (var j = 0; j < temp; j++) {
+        var newImage = new Image();
+        newImage.src = img.src;
+        // console.log('temp:',temp)
+        imgBox.append(newImage)
+      }
+    }
+    $('#tab-name').text(targetName);
+
+
+
     // tab移动
     for (var i = 0; i < tabBox.length; i++) {
       var tabLi = $(tabBox[i]);
@@ -433,10 +532,14 @@ $(function () {
     if(nowTab==='服务区') {
       $('#tab3').removeClass('vh');
       tab3Li2InitEchart();
+      tab3Li2InitEchart2();
       tab3Li2InitEchart3();
       tab3Li3InitEchart();
+      tab3Li3InitEchart2();
       tab3Li4InitEchart();
       tab3Li4InitEchart2();
+      initCalendar();
+
     }
     if(nowTab==='收费站') {
       // $('#tab2').removeClass('vh');
@@ -455,15 +558,29 @@ $(function () {
     var dis = 102;
     var tab = $('#tab');
     var tabBox = tab.find('.tab-box');
-    var noActive;
     for (var i = 0; i < tabBox.length; i++) {
       var tabLi = $(tabBox[i]);
-      // tabLi.css('z-index','auto')
-      // tabLi.show()
       tabLi.css('z-index','1')
       tabLi.removeClass('vh')
-
       tabLi.css('top',(dis*i)+'px')
+    }
+  }
+
+  function clickArrow(tabName,arrows) {
+    for (var j = 0; j < arrows.length; j++) {
+      var a2 = arrows[j];
+      $(a2).toggleClass('dn')
+    }
+    // 左边tab去除active
+    var n = newTabArr[tabName];
+
+    var tabBox2LiArr = $(n).find('.tab-box2-li');
+    // var tabBox2LiArr = $('.tab-box2 .tab-box2-li');
+
+    for (var i = 0; i < tabBox2LiArr.length; i++) {
+      var t = tabBox2LiArr[i];
+      $(t).removeClass('active');
+      $(t).find('.li-tab-box').css('visibility','hidden')
     }
   }
 
@@ -478,31 +595,38 @@ $(function () {
       // console.log('e',e);
       e.stopPropagation()
     });
-    // for (var i = 0; i < arrows.length; i++) {
-    //   var a = arrows[i];
-    //   $(a).on('click',function () {
-    //     for (var j = 0; j < arrows.length; j++) {
-    //       var a2 = arrows[j];
-    //       $(a2).toggleClass('dn')
-    //     }
-    //   })
-    //
-    // }
-    // var a = arrows[i];
+
     tabBoxCur.on('click',function () {
-      for (var j = 0; j < arrows.length; j++) {
-        var a2 = arrows[j];
-        $(a2).toggleClass('dn')
-      }
-      // 隐藏左边tab
-      for (var j = 0; j < tabBoxes2.length; j++) {
-        // debugger
-        var obj = tabBoxes2[j];
-        $(obj).removeClass('active');
-        $(obj).find('.li-tab-box').css('visibility','hidden')
-      }
+      // for (var j = 0; j < arrows.length; j++) {
+      //   var a2 = arrows[j];
+      //   $(a2).toggleClass('dn')
+      // }
+
+      clickArrow(nowTab,arrows)
+      // 左边tab去除active
+      // if(nowTab==='客运站,铁路,机场,港口') {
+      //   var tabBox2LiArr = $('.tab-box2 .tab-box2-li');
+      //   for (var i = 0; i < tabBox2LiArr.length; i++) {
+      //     var t = tabBox2LiArr[i];
+      //     $(t).removeClass('active');
+      //     $(t).find('.li-tab-box').css('visibility','hidden')
+      //
+      //   }
+      // }
+      // if(nowTab==='服务区') {
+      //   var tabBox2LiArr = $('.tab-box3 .tab-box2-li');
+      //   for (var i = 0; i < tabBox2LiArr.length; i++) {
+      //     var t = tabBox2LiArr[i];
+      //     $(t).removeClass('active');
+      //     $(t).find('.li-tab-box').css('visibility','hidden')
+      //
+      //   }
+      // }
+
     })
   }
+
+
 
   function dongchaTabBindClick() {
     var dongchaTabs = $('.dongcha-tab');
@@ -541,7 +665,9 @@ $(function () {
   function markerBindClick() {
     for (var k = 0; k < pointControl.markes.length; k++) {
       var m = pointControl.markes[k];
-      // console.log(m)
+      // console.log(m.C.position) 点的经纬度
+      // console.log(m.C.extData['枢纽名称'])
+      // debugger
       m.on('click',hideTabs)
     }
   }
@@ -1550,7 +1676,145 @@ $(function () {
   }
 
   function tab3Li2InitEchart2() {
+      var Chart4 = echarts.init(document.getElementById('tab3li2-chart2'));
+      var option = {
+        title: {
+          text: '实时客流趋势',
+          textStyle: {
+            color: 'rgb(221,243,255)',
+            fontSize: 18,
+            fontFamily: 'Microsoft YaHei',
+            // fontWeight:400
+          }
+        },
+        tooltip: {
+          trigger: 'axis',
+          //show:true,
+          axisPointer: {
+            type: 'line',
+            show: true,
+            label: {
+              show: true
+            }
+          },
+          backgroundColor: 'transparent',
+          formatter: function (params) {
+            return params[params.length - 1].data;
+          }
+        },
 
+        legend: {
+          show:false,
+          textStyle: {
+            color: '#557398',
+          },
+          data: ['搜索引擎']
+        },
+        /* visualMap:{
+             show:false,
+             seriesIndex:1,
+         },*/
+        /*legend: {
+            data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+        },*/
+        /* grid: {
+             left: '3%',
+             right: '4%',
+             bottom: '3%',
+             containLabel: true
+         },*/
+        grid: {
+          left: '5%',
+          right: '10%',
+          top: '15%',
+          bottom: '5%',
+          // width: 1194,
+          // height: 236,
+          containLabel: true
+        },
+        /*toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },*/
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          name: '(时点)',
+          axisLine: {
+            lineStyle: {
+              color: 'rgb(133,168,184)'
+            }
+          },
+          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        },
+        yAxis: {
+          type: 'value',
+          name: '(人数/万)',
+          splitLine: {show: false},
+          axisLine: {
+            lineStyle: {
+              color: 'rgb(133,168,184)'
+            }
+          },
+
+        },
+        series: [
+
+          {
+            name: '搜索引擎',
+            type: 'line',
+            z: 2,
+            //stack: '总量',
+            smooth: true,
+            data: [820, 932, 901, 934, 1290, 1330],
+            lineStyle: {
+              normal: {
+                color: 'rgb(70,158,228)'//rgba(55,255,75
+              }
+            },
+            areaStyle: {
+              normal: {
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [{
+                    offset: 0, color: 'rgba(70,158,228,0.3)'
+                  }, {
+                    offset: 0.5, color: 'rgba(70,158,228,0.15)'
+                  }, {
+                    offset: 1, color: 'rgba(70,158,228,0)'
+                  }]
+                }
+              }
+            },
+          },
+          {
+            name: '搜索引擎',
+            symbol: 'none',
+            z: 3,
+            type: 'line',
+            itemStyle: {
+              normal: {
+                lineStyle: {
+                  width: 2,
+                  color: 'rgb(70,158,228)',
+                  type: 'dotted'  //'dotted'虚线 'solid'实线
+                }
+              }
+            },
+            smooth: true,
+            //stack: '总量',
+            data: [820, 932, 901, 934, 1290, 1330, 1320]
+          },
+
+
+        ]
+      };
+      Chart4.setOption(option);
   }
 
   function tab3Li2InitEchart3() {
@@ -1679,6 +1943,12 @@ $(function () {
           // fontWeight:400
         }
       },
+      tooltip : {
+        trigger: 'axis',
+        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+          type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+      },
       xAxis: {
         type: 'category',
         data: ['0-1', '1-2', '3-4', '4-5', '5-6', '6-7', '7-8','8-24'],
@@ -1727,6 +1997,184 @@ $(function () {
     if (option && typeof option === "object") {
       myChart.setOption(option, true);
     }
+  }
+
+  function tab3Li3InitEchart2() {
+    var Chart4 = echarts.init(document.getElementById('tab3li3-chart2'));
+    var option = {
+      title: {
+        text: '实时驻留时长',
+        textStyle: {
+          color: 'rgb(221,243,255)',
+          fontSize: 18,
+          fontFamily: 'Microsoft YaHei',
+          // fontWeight:400
+        }
+      },
+      tooltip: {
+        trigger: 'axis',
+        show:true,
+        axisPointer: {
+          type: 'line',
+          show: true,
+          label: {
+            show: true
+          }
+        },
+        backgroundColor: 'transparent',
+        formatter: function (params) {
+          return params[params.length - 1].data;
+        }
+      },
+
+      legend: {
+        show:true,
+        textStyle: {
+          color: '#fff',
+        },
+        data: ['搜索引擎','搜索引擎2']
+      },
+
+      /* visualMap:{
+           show:false,
+           seriesIndex:1,
+       },*/
+      /*legend: {
+          data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+      },*/
+      /* grid: {
+           left: '3%',
+           right: '4%',
+           bottom: '3%',
+           containLabel: true
+       },*/
+      grid: {
+        left: '5%',
+        right: '10%',
+        top: '15%',
+        bottom: '5%',
+        // width: 1194,
+        // height: 236,
+        containLabel: true
+      },
+      /*toolbox: {
+          feature: {
+              saveAsImage: {}
+          }
+      },*/
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        name: '(小时)',
+        axisLine: {
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+      },
+      yAxis: {
+        type: 'value',
+        name: '(人数/万)',
+        splitLine: {show: false},
+        axisLine: {
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+
+      },
+      series: [
+
+        {
+          name: '搜索引擎',
+          type: 'line',
+          z: 1,
+          //stack: '总量',
+          smooth: true,
+          data: [820, 932, 901, 934, 1290, 1330],
+          lineStyle: {
+            normal: {
+              color: 'rgb(70,158,228)'//rgba(55,255,75
+            }
+          },
+          areaStyle: {
+            normal: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'rgba(70,158,228,0.3)'
+                }, {
+                  offset: 0.5, color: 'rgba(70,158,228,0.15)'
+                }, {
+                  offset: 1, color: 'rgba(70,158,228,0)'
+                }]
+              }
+            }
+          },
+        },
+        {
+          name: '搜索引擎',
+          symbol: 'none',
+          z: 2,
+          type: 'line',
+          itemStyle: {
+            normal: {
+              lineStyle: {
+                width: 2,
+                color: 'rgb(70,158,228)',
+                type: 'dotted'  //'dotted'虚线 'solid'实线
+              }
+            }
+          },
+          smooth: true,
+          //stack: '总量',
+          data: [820, 932, 901, 934, 1290, 1330, 1320]
+        },
+
+        {
+          name: '搜索引擎2',
+          z: 1,
+          type: 'line',
+          itemStyle: {
+            normal: {
+              lineStyle: {
+                color: 'rgb(170,158,228)',
+                type: 'solid'  //'dotted'虚线 'solid'实线
+              }
+            }
+          },
+          smooth: true,
+          //stack: '总量',
+          data: [520, 1032, 800, 900, 1290, 1400]
+        },
+        {
+          name: '搜索引擎2',
+          symbol: 'none',
+          z: 2,
+          type: 'line',
+          itemStyle: {
+            normal: {
+              lineStyle: {
+                width: 2,
+                color: 'rgb(170,158,228)',
+                type: 'dotted'  //'dotted'虚线 'solid'实线
+              }
+            }
+          },
+          smooth: true,
+          //stack: '总量',
+          data: [520, 1032, 800, 900, 1290, 1400, 1000]
+        },
+
+
+      ]
+    };
+    Chart4.setOption(option);
   }
 
   function tab3Li4InitEchart() {

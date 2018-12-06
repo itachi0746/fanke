@@ -146,9 +146,20 @@ function PlacePointView(theMap) {
     theItem['地址'] = theGpsArray;
   }
   this.PlacePoints = theDataObject;
+  var nameArr = {};
+  for (var i = 0; i < this.PlacePoints.length; i++) {
+    var obj = this.PlacePoints[i];
+    nameArr[obj['枢纽名称']] = obj;
+  }
   this.theMap = theMap;
   this.markes = [];
 
+  this.findPointByName = function (n) {
+    if(nameArr[n]) {
+      // console.log(nameArr[n]);
+      return nameArr[n]
+    }
+  }
 }
 
 PlacePointView.prototype.getPlacePoints = function (pointType) {

@@ -10,9 +10,74 @@ $(function () {
     //当前的区域名称
     var theAreaNmae = "";
 
+    var theXData = [];
+    for (var i = 1; i <= 24; i++) {
+        theXData.push(i);
+    }
+    /*一类图表基本设置*/
+    var option1 = {
+        /*title: {
+            text: '折线图堆叠'
+        },*/
+        tooltip: {
+            trigger: 'axis',
+            backgroundColor: 'transparent',
+            formatter: function (params) {
+                return params[params.length - 1].data;
+            }
+        },
+        grid: {
+            left: 0,
+            right: 5,
+            top: 30,
+            bottom: 5,
+            width: 510,
+            height: 75,
+            containLabel: true
+        },
+        /*toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },*/
+        xAxis: {
+            type: 'category',
+            name: '(时点)',
+            nameLocation: 'end',
+            splitNumber: 5,
+            axisLabel: {
+                formatter: function (value, idx) {
+                    if (value % 4 == 0) {
+                        return value;
+                    }
+                    else {
+                        return "";
+                    }
+                }
+            },
+            boundaryGap: false,
+            axisLine: {
+                lineStyle: {
+                    color: '#557398'
+                }
+            },
+            data: theXData
+        },
+        yAxis: {
+            type: 'value',
+            name: '(人数/万)',
+            nameLocation: 'end',
+            splitLine: {show: false},
+            axisLine: {
+                lineStyle: {
+                    color: '#557398'
+                }
+            }
+        }
+
+    };
     //显示第一行数据
-    var ShowNumber1 = function (city, value) {
-        $('#numpart1').find('.cityname').val(city);
+    var formateNum1 = function (value) {
         var theValueStr = value.toFixed(1);
         var theNumberStrArray = [];
         for (var i = 0; i < theValueStr.length; i++) {
@@ -29,7 +94,7 @@ $(function () {
             if (hasDone) {
                 for (var j = 0; j < 3; j++) {
                     var thePos = i + j;
-                    if (thePos > theNumberStrArray.length) {
+                    if (thePos >= theNumberStrArray.length) {
                         break;
                     }
                     else {
@@ -37,8 +102,8 @@ $(function () {
                         theFormateArray.push(theCurrentChar)
                     }
                 }
-                i = i + 3;
-                if (i + 1 < theNumberStrArray.length) {
+                i = i + 2;
+                if (i + 1 <= theNumberStrArray.length) {
                     theFormateArray.push(',');
                 }
             }
@@ -57,29 +122,23 @@ $(function () {
                 theTemplate += "<div>" + theCurrent + "</div>";
             }
         }
-        theTemplate = theTemplate + "<span class=\"last\">万</span>";
+        // theTemplate = theTemplate + "<span class=\"last\">万</span>";
         return theTemplate;
-    }
-    //显示第2行数据
-    var ShowNumber2 = function (city, value) {
-        $('#numpart2').find('.cityname').val(city);
-    }
-    //显示第3行数据
-    var ShowNumber3 = function (city, value) {
-        $('#numpart3').find('.cityname').val(city);
     }
 
     function PageViewModel() {
         this.initEvent();
         this.initCharts();
+        this.loadData();
         this.initChartMap();
         this.start();
     }
+
     PageViewModel.prototype = new PageViewBase();
     /**
      * 定时任务开始
      */
-    PageViewModel.prototype.onTimer=function(){
+    PageViewModel.prototype.onTimer = function () {
 
     }
     PageViewModel.prototype.initEvent = function () {
@@ -110,6 +169,11 @@ $(function () {
                 console.log('日期变化:' + value); //得到日期生成的值，如：2017-08-18
                 console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
                 console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+                if (theCurrentDate != date) {
+                    theCurrentDate = date;
+                    me.loadPredict();
+                }
+
             }
         });
         /*$('#date-input').change(function(){
@@ -118,9 +182,10 @@ $(function () {
         });*/
     }
     PageViewModel.prototype.initChartMap = function () {
-        echarts.registerMap('gd', theGdData);
-        this.ChartMap = echarts.init(document.getElementById(theMapId));
-
+        if (!this.ChartMap) {
+            echarts.registerMap('gd', theGdData);
+            this.ChartMap = echarts.init(document.getElementById(theMapId));
+        }
         option = null;
         var geoCoordMap = {
             '上海': [121.4648, 31.2891],
@@ -308,7 +373,8 @@ $(function () {
 // ['北京', BJData], ['上海', SHData],
         [['广州', GZData], ['深圳', SZData]].forEach(function (item, i) {
             // debugger
-            series.push({
+            series.push(
+                {
                     name: item[0] + ' Top10',
                     type: 'lines',  //静态线
                     zlevel: 1,
@@ -433,6 +499,7 @@ $(function () {
              type: 'geoSelect',
              name: '广州市'
          })*/
+        var me = this;
         option = {
             backgroundColor: '',
             title: {
@@ -464,6 +531,13 @@ $(function () {
                     min: 1,
                     max: 1
                 },
+                /*regions: [{
+                    name: '广州市',
+                    itemStyle: {
+                        areaColor: 'red',
+                        color: 'red'
+                    }
+                }],*/
                 //鼠标移入是否显示省份/城市
                 label: {
                     show: true,
@@ -476,7 +550,7 @@ $(function () {
                 roam: false,//鼠标不可移动
                 itemStyle: {
                     normal: {//选取前颜色
-                        areaColor: {
+                        /*areaColor: {
                             type: 'linear',
                             x: 0,
                             y: 0,
@@ -488,9 +562,8 @@ $(function () {
                                 offset: 1, color: '#2b7ecc' // 100% 处的颜色
                             }],
                             globalCoord: false // 缺省为 false
-                        }
-                        // '#2b7ecc'
-                        ,
+                        }*/
+                        areaColor: '#2b7ecc',
                         borderColor: '#49ffff'
                     },
                     emphasis: {//选取后颜色
@@ -505,36 +578,270 @@ $(function () {
             /*series: series,*/
 
         };
+        var me=this;
         if (option && typeof option === "object") {
             this.ChartMap.setOption(option, true);
             this.ChartMap.on('geoselectchanged', function (params) {
-                console.log(params);
+                //debugger;
+                if(params.batch.length>0){
+                    var theAreaSelected=params.batch[0];
+                    var theName = theAreaSelected.name;
+                    if (theAreaNmae != theName) {
+                        theAreaNmae = theName;
+                        console.log('选择区域变化，切换到区域'+theAreaNmae);
+                        me.loadData();
+
+                    }
+                }
+                else{
+                    console.log('选择区域变化，未找到值');
+                }
+                //console.log("111",params);
             });
             this.ChartMap.on('mapselectchanged', function (params) {
-                console.log(params);
+                var theName = params.name;
+                //debugger;
+                if (theAreaNmae != theName) {
+                    theAreaNmae = theName;
+                    me.loadData();
+                }
+                //console.log(params);
             });
 
             this.ChartMap.on('click', function (params) {
-                var theName = params.name;
-                console.log(params);
+               // var theName = params.name;
+               // console.log(params);
             })
         }
 
     }
 
-    PageViewModel.prototype.loadChart1 = function (data) {
-        this.Chart1 = echarts.init(document.getElementById('chart1'));
+    PageViewModel.prototype.loadChart1 = function (xData, data1, data2) {
+        if (!this.Chart1) {
+            this.Chart1 = echarts.init(document.getElementById('chart1'));
+        }
+        var theXData = [];
+        for (var i = 0; i <= 24; i++) {
+            theXData.push(i);
+        }
+        var theCurrentOption = {};
+        $.extend(theCurrentOption, option1);
+        theCurrentOption.series = [
+
+            {
+                //name: '搜索引擎',
+                type: 'line',
+                //stack: '总量',
+                smooth: true,
+                data: data1||[820, 932, 901, 934, 1290, 1330],
+                areaStyle: {
+                    normal: {
+                        color: {
+                            type: 'linear',
+                            x: 0,
+                            y: 0,
+                            x2: 0,
+                            y2: 1,
+                            colorStops: [{
+                                offset: 0, color: 'rgba(255,220,111,0.3)'
+                            }, {
+                                offset: 0.5, color: 'rgba(255,220,111,0.15)'
+                            }, {
+                                offset: 1, color: 'rgba(255,220,111,0)'
+                            }]
+                        }
+                    }
+                },
+                lineStyle: {
+                    normal: {
+                        color: '#ffdc6f'
+                    }
+                }
+            },
+            {
+                //name: '搜索引擎',
+                type: 'line',
+                itemStyle: {
+                    normal: {
+                        lineStyle: {
+                            width: 2,
+                            color: '#ffdc6f',
+                            type: 'dotted'  //'dotted'虚线 'solid'实线
+                        }
+                    }
+                },
+                smooth: true,
+                //stack: '总量',
+                data:data2|| [820, 932, 901, 934, 1290, 1330, 1320]
+            }
+        ]
+        this.Chart1.setOption(theCurrentOption);
+    }
+    PageViewModel.prototype.loadChart2 = function (xData, data1, data2) {
+        if (!this.Chart2) {
+            this.Chart2 = echarts.init(document.getElementById('chart2'));
+        }
+        var theCurrentOption = {};
+        $.extend(theCurrentOption, option1);
+        theCurrentOption.series = [
+
+            {
+                // name: '搜索引擎',
+                type: 'line',
+                //stack: '总量',
+                smooth: true,
+                data:data1|| [820, 932, 901, 934, 1290, 1330] ,
+                lineStyle: {
+                    normal: {
+                        color: '#4293f2' //rgba(66,147,242
+                    }
+                },
+                areaStyle: {
+                    normal: {
+                        color: {
+                            type: 'linear',
+                            x: 0,
+                            y: 0,
+                            x2: 0,
+                            y2: 1,
+                            colorStops: [{
+                                offset: 0, color: 'rgba(66,147,242,0.3)'
+                            }, {
+                                offset: 0.5, color: 'rgba(66,147,242,0.15)'
+                            }, {
+                                offset: 1, color: 'rgba(66,147,242,0)'
+                            }]
+                        }
+                    }
+                },
+            },
+            {
+                //  name: '搜索引擎',
+                type: 'line',
+                itemStyle: {
+                    normal: {
+                        lineStyle: {
+                            width: 2,
+                            color: '#4293f2',
+                            type: 'dotted'  //'dotted'虚线 'solid'实线
+                        }
+                    }
+                },
+                smooth: true,
+                //stack: '总量',
+                data: data2||[820, 932, 901, 934, 1290, 1330, 1320]
+            }
+        ];
+
+        this.Chart2.setOption(theCurrentOption);
+
+    }
+    PageViewModel.prototype.loadChart3 = function (xData, data1, data2) {
+        if (!this.Chart3) {
+            this.Chart3 = echarts.init(document.getElementById('chart3'));
+        }
+        var theCurrentOption = {};
+        $.extend(theCurrentOption, option1);
+        theCurrentOption.series = [
+            {
+                // name: '搜索引擎',
+                type: 'line',
+                //stack: '总量',
+                smooth: true,
+                data: data1||[820, 932, 901, 934, 1290, 1330] ,
+                lineStyle: {
+                    normal: {
+                        color: '#32ff4b'//rgba(50,255,75
+                    }
+                },
+
+                areaStyle: {
+                    normal: {
+                        color: {
+                            type: 'linear',
+                            x: 0,
+                            y: 0,
+                            x2: 0,
+                            y2: 1,
+                            colorStops: [{
+                                offset: 0, color: 'rgba(50,255,75,0.3)'
+                            }, {
+                                offset: 0.5, color: 'rgba(50,255,75,0.15)'
+                            }, {
+                                offset: 1, color: 'rgba(50,255,75,0)'
+                            }]
+                        }
+                    }
+                },
+            },
+            {
+                //name: '搜索引擎',
+                type: 'line',
+                itemStyle: {
+                    normal: {
+                        lineStyle: {
+                            width: 2,
+                            color: '#32ff4b',
+                            type: 'dotted'  //'dotted'虚线 'solid'实线
+                        }
+                    }
+                },
+                smooth: true,
+                //stack: '总量',
+                data: data2||[820, 932, 901, 934, 1290, 1330, 1320]
+            }
+        ];
+        this.Chart3.setOption(theCurrentOption);
+    }
+    PageViewModel.prototype.loadChart4 = function (theXData, dataPopulationGd1, dataMigIn1, dataMigOut1, dataPopulationGd2, dataMigIn2, dataMigOut2) {
+        if (!this.Chart4) {
+            this.Chart4 = echarts.init(document.getElementById('chart4'));
+        }
+
+        var theXData = [];
+        var theBeginDate = new Date('2018-12-5');
+        theXData.push(theBeginDate.getTime());
+        for (var i = 1; i < 40; i++) {
+            theBeginDate.setDate(theBeginDate.getDate() + 1);
+            theXData.push(theBeginDate.getTime());
+        }
         var option = {
             /*title: {
                 text: '折线图堆叠'
             },*/
             tooltip: {
                 trigger: 'axis',
+                //show:true,
+                axisPointer: {
+                    type: 'line',
+                    show: true,
+                    label: {
+                        show: true
+                    }
+                },
                 backgroundColor: 'transparent',
                 formatter: function (params) {
-                    return params[params.length - 1].data;
+                    var theIndex = 0;
+                    var theText = "";
+                    while (theIndex < params.length - 1) {
+
+                        theText += params[theIndex].data + "<br />";
+                        theIndex += 2;
+                    }
+                    return theText;
                 }
             },
+
+            legend: {
+                textStyle: {
+                    color: '#557398',
+                },
+                data: ['人口总量', '迁出', '迁入']
+            },
+            /* visualMap:{
+                 show:false,
+                 seriesIndex:1,
+             },*/
             /*legend: {
                 data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
             },*/
@@ -546,11 +853,11 @@ $(function () {
              },*/
             grid: {
                 left: 0,
-                right: 50,
-                top: 5,
+                right: 30,
+                top: 30,
                 bottom: 5,
-                width: 550,
-                height: 100,
+                width: 1124,
+                height: 216,
                 containLabel: true
             },
             /*toolbox: {
@@ -558,20 +865,54 @@ $(function () {
                     saveAsImage: {}
                 }
             },*/
+
             xAxis: {
                 type: 'category',
-                name: '(时点)',
-                //nameLocation: 'end',
                 boundaryGap: false,
+                name: '(时间/点)',
                 axisLine: {
                     lineStyle: {
                         color: '#557398'
                     }
                 },
-                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                axisPointer: {
+                    label: {
+
+                        color: '#05cffa',
+                        formatter: function (arg) {
+                            // debugger;
+                            var theDate = new Date();
+                            theDate.setTime(arg.value);
+                            return theDate.getMonth() + 1 + "月" + theDate.getDate() + "日";
+                        }
+                    },
+                    lineStyle: {
+                        color: '#05cffa',
+                        shadowBlur: {
+                            shadowColor: '#05cffa',
+                            shadowBlur: 10
+                        }
+                    }
+                },
+                axisLabel: {
+                    rotate: 30,
+                    formatter: function (value, idx) {
+                        var theDate = new Date();
+                        theDate.setTime(parseInt(value));
+                        console.log(theDate);
+                        if (idx % 4 == 0) {
+                            return theDate.getMonth() + 1 + '月' + theDate.getDate() + "日";
+                        }
+                        else {
+                            return "";
+                        }
+                    }
+                },
+                data: theXData
             },
             yAxis: {
                 type: 'value',
+                name: '(人数/万)',
                 splitLine: {show: false},
                 axisLine: {
                     lineStyle: {
@@ -582,11 +923,19 @@ $(function () {
             series: [
 
                 {
-                    name: '搜索引擎',
+                    name: '人口总量',
                     type: 'line',
                     //stack: '总量',
                     smooth: true,
-                    data: [820, 932, 901, 934, 1290, 1330],
+                    showSymbol: false,
+                    tooltip: {
+                        position: 'left',
+                        /*function (point, params, dom, rect, size) {
+                            // 固定在顶部
+                            return [point[0], '10%'];
+                        }*/
+                    },
+                    data: dataPopulationGd1||[820 - 100, 932 - 100, 901 - 100, 934 - 100, 1290 - 100, 1330 - 100] ,
                     areaStyle: {
                         normal: {
                             color: {
@@ -612,7 +961,7 @@ $(function () {
                     }
                 },
                 {
-                    name: '搜索引擎',
+                    name: '人口总量',
                     type: 'line',
                     itemStyle: {
                         normal: {
@@ -625,76 +974,16 @@ $(function () {
                     },
                     smooth: true,
                     //stack: '总量',
-                    data: [820, 932, 901, 934, 1290, 1330, 1320]
-                }
-            ]
-        };
-        this.Chart1.setOption(option);
-    }
-    PageViewModel.prototype.loadChart2 = function (data) {
-        this.Chart2 = echarts.init(document.getElementById('chart2'));
-        var option = {
-            /*title: {
-                text: '折线图堆叠'
-            },*/
-            tooltip: {
-                trigger: 'axis',
-                backgroundColor: 'transparent',
-                formatter: function (params) {
-                    return params[params.length - 1].data;
-                }
-            },
-            /*legend: {
-                data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
-            },*/
-            /* grid: {
-                 left: '3%',
-                 right: '4%',
-                 bottom: '3%',
-                 containLabel: true
-             },*/
-            grid: {
-                left: 0,
-                right: 5,
-                top: 5,
-                bottom: 5,
-                width: 600,
-                height: 100,
-                containLabel: true
-            },
-            /*toolbox: {
-                feature: {
-                    saveAsImage: {}
-                }
-            },*/
-            xAxis: {
-                type: 'category',
-                name: '(时点)',
-                boundaryGap: false,
-                axisLine: {
-                    lineStyle: {
-                        color: '#557398'
-                    }
+                    data:dataPopulationGd2|| [820 - 100, 932 - 100, 901 - 100, 934 - 100, 1290 - 100, 1330 - 100, 800]
                 },
-                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-            },
-            yAxis: {
-                type: 'value',
-                splitLine: {show: false},
-                axisLine: {
-                    lineStyle: {
-                        color: '#557398'
-                    }
-                }
-            },
-            series: [
+
 
                 {
-                    name: '搜索引擎',
+                    name: '迁入',
                     type: 'line',
                     //stack: '总量',
                     smooth: true,
-                    data: [820, 932, 901, 934, 1290, 1330],
+                    data: dataMigIn1||[820 - 200, 932 - 200, 901 - 200, 934 - 200, 1290 - 200, 1330 - 200] ,
                     lineStyle: {
                         normal: {
                             color: '#4293f2' //rgba(66,147,242
@@ -720,7 +1009,7 @@ $(function () {
                     },
                 },
                 {
-                    name: '搜索引擎',
+                    name: '迁入',
                     type: 'line',
                     itemStyle: {
                         normal: {
@@ -733,205 +1022,17 @@ $(function () {
                     },
                     smooth: true,
                     //stack: '总量',
-                    data: [820, 932, 901, 934, 1290, 1330, 1320]
-                }
-            ]
-        };
-        this.Chart2.setOption(option);
-    }
-    PageViewModel.prototype.loadChart3 = function (data) {
-        this.Chart3 = echarts.init(document.getElementById('chart3'));
-        var option = {
-            /*title: {
-                text: '折线图堆叠'
-            },*/
-            tooltip: {
-                trigger: 'axis',
-                backgroundColor: 'transparent',
-                formatter: function (params) {
-                    return params[params.length - 1].data;
-                }
-            },
-            /*legend: {
-                data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
-            },*/
-            /* grid: {
-                 left: '3%',
-                 right: '4%',
-                 bottom: '3%',
-                 containLabel: true
-             },*/
-            grid: {
-                left: 0,
-                right: 5,
-                top: 5,
-                bottom: 5,
-                width: 600,
-                height: 100,
-                containLabel: true
-            },
-            /*toolbox: {
-                feature: {
-                    saveAsImage: {}
-                }
-            },*/
-            xAxis: {
-                type: 'category',
-                name: '(时点)',
-                boundaryGap: false,
-                axisLine: {
-                    lineStyle: {
-                        color: '#557398'
-                    }
+                    data: dataMigIn2||[820 - 200, 932 - 200, 901 - 200, 934 - 200, 1290 - 200, 1330 - 200, 900] ,
                 },
-                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-            },
-            yAxis: {
-                type: 'value',
-                splitLine: {show: false},
-                axisLine: {
-                    lineStyle: {
-                        color: '#557398'
-                    }
-                }
-            },
-            series: [
+
 
                 {
-                    name: '搜索引擎',
-                    type: 'line',
-                    //stack: '总量',
-                    smooth: true,
-                    data: [820, 932, 901, 934, 1290, 1330],
-                    lineStyle: {
-                        normal: {
-                            color: '#32ff4b'//rgba(50,255,75
-                        }
-                    },
-
-                    areaStyle: {
-                        normal: {
-                            color: {
-                                type: 'linear',
-                                x: 0,
-                                y: 0,
-                                x2: 0,
-                                y2: 1,
-                                colorStops: [{
-                                    offset: 0, color: 'rgba(50,255,75,0.3)'
-                                }, {
-                                    offset: 0.5, color: 'rgba(50,255,75,0.15)'
-                                }, {
-                                    offset: 1, color: 'rgba(50,255,75,0)'
-                                }]
-                            }
-                        }
-                    },
-                },
-                {
-                    name: '搜索引擎',
-                    type: 'line',
-                    itemStyle: {
-                        normal: {
-                            lineStyle: {
-                                width: 2,
-                                color: '#32ff4b',
-                                type: 'dotted'  //'dotted'虚线 'solid'实线
-                            }
-                        }
-                    },
-                    smooth: true,
-                    //stack: '总量',
-                    data: [820, 932, 901, 934, 1290, 1330, 1320]
-                }
-            ]
-        };
-        this.Chart3.setOption(option);
-    }
-    PageViewModel.prototype.loadChart4 = function (data) {
-        this.Chart4 = echarts.init(document.getElementById('chart4'));
-        var option = {
-            /*title: {
-                text: '折线图堆叠'
-            },*/
-            tooltip: {
-                trigger: 'axis',
-                //show:true,
-                axisPointer: {
-                    type: 'line',
-                    show: true,
-                    label: {
-                        show: true
-                    }
-                },
-                backgroundColor: 'transparent',
-                formatter: function (params) {
-                    return params[params.length - 1].data;
-                }
-            },
-
-            legend: {
-                textStyle: {
-                    color: '#557398',
-                },
-                data: ['搜索引擎']
-            },
-            /* visualMap:{
-                 show:false,
-                 seriesIndex:1,
-             },*/
-            /*legend: {
-                data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
-            },*/
-            /* grid: {
-                 left: '3%',
-                 right: '4%',
-                 bottom: '3%',
-                 containLabel: true
-             },*/
-            grid: {
-                left: 0,
-                right: 5,
-                top: 5,
-                bottom: 5,
-                width: 1194,
-                height: 236,
-                containLabel: true
-            },
-            /*toolbox: {
-                feature: {
-                    saveAsImage: {}
-                }
-            },*/
-            xAxis: {
-                type: 'category',
-                boundaryGap: false,
-                name: '(时间/点)',
-                axisLine: {
-                    lineStyle: {
-                        color: '#557398'
-                    }
-                },
-                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-            },
-            yAxis: {
-                type: 'value',
-                splitLine: {show: false},
-                axisLine: {
-                    lineStyle: {
-                        color: '#557398'
-                    }
-                }
-            },
-            series: [
-
-                {
-                    name: '搜索引擎',
+                    name: '迁出',
                     type: 'line',
                     z: 1,
                     //stack: '总量',
                     smooth: true,
-                    data: [820, 932, 901, 934, 1290, 1330],
+                    data:dataMigOut1|| [820, 932, 901, 934, 1290, 1330] ,
                     lineStyle: {
                         normal: {
                             color: '#32ff4b'//rgba(55,255,75
@@ -957,7 +1058,7 @@ $(function () {
                     },
                 },
                 {
-                    name: '搜索引擎',
+                    name: '迁出',
                     symbol: 'none',
                     z: 2,
                     type: 'line',
@@ -972,10 +1073,8 @@ $(function () {
                     },
                     smooth: true,
                     //stack: '总量',
-                    data: [820, 932, 901, 934, 1290, 1330, 1320]
+                    data: dataMigOut2||[820, 932, 901, 934, 1290, 1330, 1320]
                 },
-
-
             ]
         };
         this.Chart4.setOption(option);
@@ -988,8 +1087,139 @@ $(function () {
 
     }
 
-    PageViewModel.prototype.Load = function () {
+    PageViewModel.prototype.loadData = function () {
+        //debugger;
+        this.loadCurrent();
+        this.loadHistoricalTrend();
+        this.loadPredict();
+    }
+    /***
+     * 迁徙实时人流接口
+     */
+    PageViewModel.prototype.loadCurrent = function () {
+        var theCallUrl = "migrant/current.do";
+        var theCallAreaName = theAreaNmae;
+        var theCallAreaId = this.getAreaCode(theCallAreaName);
+        var theCallArgument = {cityCode: theCallAreaId};
+        var me = this;
+        // debugger;
+        this.load(theCallUrl, theCallArgument, function (data) {
 
+            if (data && data.isSuccess) {
+                var theResultDatas = data.data;
+                var theViewData = {};
+                if (theResultDatas && theResultDatas.length > 0) {
+                    var theResultData = theResultDatas[0];
+                    $.extend(theViewData, theResultData);
+                    theViewData.populationGd = theViewData.populationGd / 10000;
+                    theViewData.populationIn = theViewData.populationIn / 10000;
+                    theViewData.populationOut = theViewData.populationOut / 10000;
+                    theViewData['populationGd'] = formateNum1(theViewData.populationGd);
+                }
+                me.bind('.numpart', theViewData);
+            }
+            else {
+                console.log("loadCurrent错误:" + data);
+            }
+        });
+    }
+    /**
+     * 历史趋势接口
+     */
+    PageViewModel.prototype.loadHistoricalTrend = function () {
+        var theCallUrl = "migrant/historicalTrend.do ";
+        var theCallAreaName = theAreaNmae;
+        var theCallAreaId = this.getAreaCode(theCallAreaName);
+        var theCallArgument = {
+            cityCode:theCallAreaId
+        };
+        var me = this;
+        this.load(theCallUrl, theCallArgument, function (data) {
+            if (data && data.isSuccess) {
+                var theResultDatas = data.data;//数据长度设置
+                var dataMigOut1 = [];
+                var dataMigIn1 = [];
+                var dataPopulationGd1 = [];
+                var dataMigOut2 = [];
+                var dataMigIn2 = [];
+                var dataPopulationGd2 = [];
+                var data4 = [];
+                var theXData = [];
+                for (var i = 0; i < theResultDatas.length; i++) {
+                    var theDataItem = theResultDatas[i];
+                    var tehDataDate = theDataItem['statDate'];
+                    var theDate = me.parserDate(tehDataDate);
+
+                    if (theDate.getTime() <= new Date().getTime()) {
+                        dataMigOut1.push(theDataItem.migOut);
+                        dataMigIn1.push(theDataItem.migIn);
+                        dataPopulationGd1.push(theDataItem.populationGd);
+                    }
+                    dataMigOut2.push(theDataItem.migOut);
+                    dataMigIn2.push(theDataItem.migIn);
+                    dataPopulationGd2.push(theDataItem.populationGd);
+                }
+                me.loadChart4(theXData, dataPopulationGd1, dataMigIn1, dataMigOut1,dataPopulationGd2, dataMigIn2, dataMigOut2);
+                //this.bind('.numpart', theViewData);
+            }
+            else {
+                console.log("loadCurrent错误:" + data);
+            }
+        });
+    }
+    /**
+     * 迁徙预测接口
+     */
+    PageViewModel.prototype.loadPredict = function () {
+        var theCallUrl = "migrant/predict.do ";
+        var theCallAreaName = theAreaNmae;
+        var theCallAreaId = this.getAreaCode(theCallAreaName);
+
+        var theCallArgument = {
+            cityCode:theCallAreaId,
+            date:''
+        };
+        if(theCurrentDate){
+            theCallArgument.date=theCurrentDate.year+'-'+theCurrentDate.month+'-'+theCurrentDate.date;//  'YYYY-mm-dd'
+        }
+
+        var me = this;
+        this.load(theCallUrl, theCallArgument, function (data) {
+            //debugger;
+            if (data && data.isSuccess) {
+                var theResultDatas = data.data;//数据长度
+                var dataMigOut1 = [];
+                var dataMigIn1 = [];
+                var dataPopulationGd1 = [];
+                var dataMigOut2 = [];
+                var dataMigIn2 = [];
+                var dataPopulationGd2 = [];
+                var theXData = [];
+                var data4 = [];
+                var theCurrentDate = new Date();
+                for (var i = 0; i < theResultDatas.length; i++) {
+                    var theDataItem = theResultDatas[i];
+                    var tehDataDate = theDataItem['statDate'];
+                    var theDate = me.parserDate(tehDataDate);
+
+                    if (theDate.getTime() <= theCurrentDate.getTime()) {
+                        dataMigOut1.push(theDataItem.outNum);
+                        dataMigIn1.push(theDataItem.inNum);
+                        dataPopulationGd1.push(theDataItem.countNum);
+                    }
+                    dataMigOut2.push(theDataItem.outNum);
+                    dataMigIn2.push(theDataItem.inNum);
+                    dataPopulationGd2.push(theDataItem.countNum);
+                }
+                //debugger;
+                me.loadChart1(theXData, dataPopulationGd1, dataPopulationGd2);
+                me.loadChart2(theXData, dataMigIn1, dataMigIn2);
+                me.loadChart3(theXData, dataMigOut1, dataMigOut2);
+            }
+            else {
+                console.log("loadCurrent错误:" + data);
+            }
+        });
     }
     window.PageView = new PageViewModel();
 })

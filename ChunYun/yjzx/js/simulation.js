@@ -8,7 +8,7 @@ var moniData = [
     zoom: 18
   },
   {
-    name:'清远市城北汽车客运站',
+    name:'清远汽车客运站',
     pos:{
       lat: 23.723292,
       lng: 113.003648
