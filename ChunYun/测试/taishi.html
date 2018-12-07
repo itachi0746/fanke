@@ -7,7 +7,7 @@
     div {
       height: 70px;
       width: 170px;
-      background: url("../yjzx/img/menu/icon_lower_center.png") no-repeat;
+      /*background: url("../yjzx/img/menu/icon_lower_center.png") no-repeat;*/
       /*background-size: 100% 100%;*/
       /*url('../yjzx/img/menu/icon_lower_center.png') 70px 0 no-repeat,*/
       /*url('../yjzx/img/menu/icon_lower_right_nor.png') 100px 0 no-repeat;*/
@@ -34,151 +34,11 @@
   var t = 'http://192.168.3.113:8080';
   var u5 = '/gdcnymot/terminal/getTerminalWarningList.do';
 
-  var url = t + u5;
+  var url = u5;
   $.post(url, function (res) {
-
     console.log(res)
   })
-  var data = {
-    "listTerminal_sz": [{
-      "id": 1,
-      "name": "广州南站",
-      "postionId": "001",
-      "postionType": 1,
-      "statDate": 20181206,
-      "statTime": "17:16",
-      "userCnt": 234545
-    }, {
-      "id": 2,
-      "name": "佛山汽车站",
-      "postionId": "002",
-      "postionType": 1,
-      "statDate": 20181206,
-      "statTime": "12:12",
-      "userCnt": 234545
-    }, {
-      "id": 3,
-      "name": "惠州站",
-      "postionId": "003",
-      "postionType": 1,
-      "statDate": 20181206,
-      "statTime": "13:13",
-      "userCnt": 233565
-    }, {
-      "id": 4,
-      "name": "广州天河客运",
-      "postionId": "004",
-      "postionType": 1,
-      "statDate": 20181206,
-      "statTime": "14:13",
-      "userCnt": 214545
-    }, {
-      "id": 5,
-      "name": "东莞车站",
-      "postionId": "005",
-      "postionType": 1,
-      "statDate": 20181206,
-      "statTime": "15:16",
-      "userCnt": 275445
-    }, {
-      "id": 6,
-      "name": "长安汽车站",
-      "postionId": "006",
-      "postionType": 1,
-      "statDate": 20181206,
-      "statTime": "16:12",
-      "userCnt": 234356
-    }],
-    "listTerminal_yj": [{
-      "id": 1,
-      "name": "广州南站",
-      "postionId": "001",
-      "postionType": 1,
-      "statDate": 20181206,
-      "statTime": "17:16",
-      "userCnt": 234545
-    }, {
-      "id": 2,
-      "name": "佛山汽车站",
-      "postionId": "002",
-      "postionType": 1,
-      "statDate": 20181206,
-      "statTime": "12:12",
-      "userCnt": 234545
-    }, {
-      "id": 3,
-      "name": "惠州站",
-      "postionId": "003",
-      "postionType": 1,
-      "statDate": 20181206,
-      "statTime": "13:13",
-      "userCnt": 233565
-    }, {
-      "id": 4,
-      "name": "广州天河客运",
-      "postionId": "004",
-      "postionType": 1,
-      "statDate": 20181206,
-      "statTime": "14:13",
-      "userCnt": 214545
-    }, {
-      "id": 5,
-      "name": "东莞车站",
-      "postionId": "005",
-      "postionType": 1,
-      "statDate": 20181206,
-      "statTime": "15:16",
-      "userCnt": 275445
-    }, {
-      "id": 6,
-      "name": "长安汽车站",
-      "postionId": "006",
-      "postionType": 1,
-      "statDate": 20181206,
-      "statTime": "16:12",
-      "userCnt": 234356
-    }],
-    "listTerminal_ss": [{
-      "id": 1,
-      "name": "广州南站",
-      "postionId": "001",
-      "postionType": 1,
-      "statDate": 20181206,
-      "statTime": "17:16",
-      "userCnt": 234545
-    }, {
-      "id": 2,
-      "name": "佛山汽车站",
-      "postionId": "002",
-      "postionType": 1,
-      "statDate": 20181206,
-      "statTime": "12:12",
-      "userCnt": 234545
-    }, {
-      "id": 3,
-      "name": "惠州站",
-      "postionId": "003",
-      "postionType": 1,
-      "statDate": 20181206,
-      "statTime": "13:13",
-      "userCnt": 233565
-    }, {
-      "id": 4,
-      "name": "广州天河客运",
-      "postionId": "004",
-      "postionType": 1,
-      "statDate": 20181206,
-      "statTime": "14:13",
-      "userCnt": 214545
-    }, {
-      "id": 5,
-      "name": "东莞车站",
-      "postionId": "005",
-      "postionType": 1,
-      "statDate": 20181206,
-      "statTime": "15:16",
-      "userCnt": 275445
-    }, {"id": 6, "name": "长安汽车站", "postionId": "006", "postionType": 1, "s
+
 </script>
 </body>
 </html>

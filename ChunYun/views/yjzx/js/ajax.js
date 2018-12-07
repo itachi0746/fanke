@@ -1,4 +1,6 @@
 $(function(){
+  var serviceBase = "http://localhost/gdcnymot/";  // 基地址
+
   /**
    * ajax封装
    * url 发送请求的地址
@@ -40,13 +42,20 @@ $(function(){
    * errorfn 失败回调函数
    */
   jQuery.axpost=function(url, data, successfn) {
+    if (!url) {
+      console.log("访问地址不能为空：");
+      return;
+    }
+    console.log('开始访问:',url);
     data = (data==null || data=="" || typeof(data)=="undefined")? {"date": new Date().getTime()} : data;
     $.ajax({
       type: "post",
       data: data,
-      url: url,
+      url: serviceBase + url,
       dataType: "json",
       success: function(d){
+        console.log('访问成功!')
+
         successfn(d);
       },
       error: function(e){

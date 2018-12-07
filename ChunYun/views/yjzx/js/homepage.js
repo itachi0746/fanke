@@ -1,6 +1,7 @@
 
 var pointControl
 $(function () {
+
   var tabArr = ['客运站,铁路,机场,港口','服务区','收费站','高速','高速路网'];
   var tabDomNameArr = ['#tab2','#tab3','#tab4','#tab5','#tab6'];
   var newTabArr = tabArr.map(function (item,index) {
@@ -22,10 +23,10 @@ $(function () {
   init();
   // console.log(pointControl.PlacePoints)
 
+
   function init() {
-    // $.axpost('www.baidu.com',function (data) {
-    //   console.log(data)
-    // })
+    console.log('切换到:',nowTab);
+
     // 点击标题
     title.on('click',function () {
       pointControl.ReturnDefualt();  // 默认视角
@@ -59,9 +60,9 @@ $(function () {
     addStation();
 
     // jiankongEvent();
-    getTop3Data();
+    getYJData();
 
-    clickTop3Li();
+    // clickTop3Li();
 
     // 先显示枢纽点
     pointControl.showPoints('客运站,铁路,机场,港口');
@@ -82,6 +83,7 @@ $(function () {
   }
   var isHideStation = true;
   // 添加交通枢纽
+
   function addStation() {
     var gonglu = '福田汽车客运站CBG|\n' +
       '龙岗长途汽车客运站|\n' +
@@ -297,9 +299,11 @@ $(function () {
 
     var t = $(this).data('name');
     nowTab = t;
+    console.log('切换到:',t);
+
     // debugger
     if(t=='高速路网'){  // 显示高速路网图层
-      window.location.href = '/ChunYun/GaoSuLuWang/index.html';
+      // window.location.href = '/ChunYun/GaoSuLuWang/index.html';
       return
     }
 
@@ -313,6 +317,7 @@ $(function () {
     // 隐藏
     $('.arrow.up').addClass('dn');
     $('.arrow.down').removeClass('dn');
+    isHideStation = true;
     // 组织冒泡
     $(me).find('.li-tab-box').on('click',function (e) {
       e.stopPropagation()
@@ -321,7 +326,6 @@ $(function () {
     if(me.dataset.name==='实时监控') {
       jiankongEvent(me)
     }
-
 
     if($(me).hasClass('active')) {  // 如果点击的是已经active的tab
       $(me).removeClass('active');
@@ -413,35 +417,103 @@ $(function () {
   }
 
 
-  // 模拟数据
-  function getTop3Data() {
-    var yongji = $('#yongji');
-    var data = moniData;
-    var num = 1;
-    for (var i = 0; i < data.length; i++) {
-      var liData = data[i];
-      var liDom = '<li class="top3-li" title="'+ liData.name +'">\n' +
-        '<i class="top3-icon1"> '+ num +'</i>\n' +
-        '<p><label class="p-name ellipsis">' + liData.name + '</label> <span>当前客流 <i class="num">22</i>万人</span></p>\n' +
-        '</li>';
-      num++;
-      yongji.append($(liDom))
+  // 后去预警数据
+  function getYJData() {
+    var url = 'terminal/getTerminalWarningList.do';
+    var data = {
+
+    };
+    $.axpost(url,data,function (data) {
+      console.log(data);
+
+      if(data && data.isSuccess) {
+        var yongji = $('#yongji');
+        var shizhong = $('#shizhong');
+        var shushi = $('#shushi');
+        var ss = {
+          name: '舒适',
+          dom: shushi,
+          icon: 'top3-icon3',
+          data: data.listTerminal_ss
+        };
+        var sz = {
+          name: '适中',
+          dom: shizhong,
+          icon: 'top3-icon2',
+          data: data.listTerminal_sz
+        };
+        var yj = {
+          name: '拥挤',
+          dom: yongji,
+          icon: 'top3-icon1',
+          data: data.listTerminal_yj
+        };
+
+        var dataArr = [ss,sz,yj];
+        for (var i = 0; i < dataArr.length; i++) {
+          var item = dataArr[i];
+
+          for (var j = 0; j < item.data.length; j++) {
+            var temp = item.data[j];
+            var num;
+            if(temp.userCnt>=10000) {
+              num = temp.userCnt.toString();
+              num = num.slice(0, num.length - 4);
+              temp.userCnt = parseInt(num);
+            }
+          }
+
+          addLiToUl(item)
+        }
+
+      }
+    });
+
+    function addLiToUl(item) {
+      var index = 0;
+      for (var i = 0; i < item.data.length; i++) {
+        var liData = item.data[i];
+        index++;
+        var liDom = '<li class="top3-li" title="'+ liData.name +'">\n' +
+          '<i class="'+ item.icon +'">'+ index +'</i>\n' +
+          '<p><label class="p-name ellipsis">' + liData.name + '</label> <span>当前客流 <i class="num">'+liData.userCnt +'</i>万人</span></p>\n' +
+          '</li>';
+        var temp = $(liDom);
+
+        temp.on('click',function () {
+          // debugger
+          var name = $(this).find('.p-name').text();
+          goToPointByName(name);
+          pointControl.hideMarkers();
+        })
+        item.dom.append(temp)
+      }
+    }
+
+    // var yongji = $('#yongji');
+    // var data = moniData;
+    // var num = 1;
+    // for (var i = 0; i < data.length; i++) {
+    //   var liData = data[i];
+    //   var liDom = '<li class="top3-li" title="'+ liData.name +'">\n' +
+    //     '<i class="top3-icon1"> '+ num +'</i>\n' +
+    //     '<p><label class="p-name ellipsis">' + liData.name + '</label> <span>当前客流 <i class="num">22</i>万人</span></p>\n' +
+    //     '</li>';
+    //   num++;
+    //   yongji.append($(liDom))
       // $(yongji.find('li')[i]).data('name','123')
 
       // console.log($(yongji.find('li')[0]).data('pos'))
-      var curLi = yongji.find('li')[i];
-      curLi.dataset.name = liData.name;
-      curLi.dataset.lng = liData.pos.lng;
-      curLi.dataset.lat = liData.pos.lat;
-      curLi.dataset.zoom = liData.zoom;
+      // var curLi = yongji.find('li')[i];
+      // curLi.dataset.name = liData.name;
+      // curLi.dataset.lng = liData.pos.lng;
+      // curLi.dataset.lat = liData.pos.lat;
+      // curLi.dataset.zoom = liData.zoom;
 
-    }
-
-  }
-
-  function getTop3Data2() {
+    // }
 
   }
+
 
   // 点击预警
   function clickTop3Li() {
@@ -450,16 +522,6 @@ $(function () {
       var li = yujingLiArr[i];
       $(li).on('click',function () {
         var name = $(this).find('.p-name').text();
-        // console.log(name);
-        // for (var j = 0; j < pointControl.PlacePoints.length; j++) {
-        //   var p = pointControl.PlacePoints[j];
-        //   // console.log(p['枢纽名称'])
-        //   if(name===p['枢纽名称']) {
-        //     console.log(name)
-        //     return
-        //   }
-        // }
-        // console.log(pointControl.findPointByName(name))
         goToPointByName(name)
       })
     }
@@ -537,6 +599,7 @@ $(function () {
       tab2Li2InitEchart2();
       tab2Li4InitEchart();
       tab2Li4InitEchart2();
+      tab2Li4InitEchart3();
       tab2Li3InitEchart();
       tab2Li3InitEchart2();
       tab2Li3InitEchart3();
@@ -546,16 +609,17 @@ $(function () {
       $('#tab3').removeClass('vh');
       tab3Li2InitEchart();
       tab3Li2InitEchart2();
-      tab3Li2InitEchart3();
+      tab3Li2InitKLHX2();
       tab3Li3InitEchart();
-      tab3Li3InitEchart2();
+      // tab3Li3InitEchart2();
       tab3Li4InitEchart();
-      tab3Li4InitEchart2();
+      // tab3Li4InitEchart2();
+      guishufenxiChart();
       initCalendar();
 
     }
     if(nowTab===tabArr[2]) {
-      // $('#tab2').removeClass('vh');
+      $('#tab4').removeClass('vh');
     }
     if(nowTab===tabArr[3]) {
       // $('#tab2').removeClass('vh');
@@ -876,7 +940,7 @@ $(function () {
     }
   }
 
-  function tab2Li2InitEchart2() {
+  function tab2Li4InitEchart3() {
     var dom = document.getElementById("KLHX");
     var myChart = echarts.init(dom);
     console.log(echarts.version)
@@ -987,6 +1051,158 @@ $(function () {
 
 
   }
+  function tab2Li2InitEchart2() {
+    var dom = $('#ZLSC1');
+    var myChart = echarts.init(dom[0]);
+    option = null;
+    var date = ['0-1','1-2','3-4','5-6','6-7','7-8','8-24'];
+
+    var myDate = new Date();//获取系统当前时间
+    var data = [Math.round(Math.random() * 150)];
+    // var data2 = [Math.random() * 160];
+
+
+    function addData() {
+//    now = [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/');
+      // date.push(hour);
+      if(data.length>=24) {
+        data = [Math.round(Math.random() * 150)];
+        // data2 = [Math.random() * 160];
+      }
+      data.push((Math.round(Math.random() - 0.3) * 10) + data[data.length - 1]);
+      // data2.push((Math.random() - 0.4) * 10 + data[data.length - 1]);
+      // hour >= 23? hour = 0: hour++;
+
+      // if (shift) {
+      //   // date.shift();
+      //   data.shift();
+      // }
+
+//    now = new Date(+new Date(now) + oneDay);
+    }
+    //
+    // for (var i = 0; i < 25; i++) {  // 时间(小时)
+    //   date.push(i);
+    //   // addData(false);
+    // }
+    for (var i = 0; i < 12; i++) {  // 模拟数据
+      // date.push(i);
+      addData();
+    }
+    option = {
+
+      title: {
+        text: '驻留时长分析',
+        textStyle: {
+          color: 'rgb(221,243,255)',
+          fontSize: 18,
+          fontFamily: 'Microsoft YaHei'
+          // fontWeight:400
+        }
+      },
+      tooltip : {
+        trigger: 'axis',
+        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+          type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+      },
+      // legend: {
+      //   data: ['小时', '人数']
+      // },
+      grid: {
+        left: '3%',
+        right: '10%',
+        bottom: '3%',
+        containLabel: true
+      },
+      yAxis:  {
+        type: 'value',
+        name: '人数',
+        // 分割线
+        splitLine: {
+          show: false
+        },
+        // 轴 样式
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+      },
+      xAxis: {
+        type: 'category',
+        data: date,
+        name: '小时',
+        nameGap: '5',
+        // padding: [10, 10, 0, 0],
+        // axisLabel: {
+        //   interval: 0,
+        //   rotate: 45,
+        //   //倾斜度 -90 至 90 默认为0
+        //   margin: 10,
+        //   textStyle: {
+        //     // fontWeight: "bolder",
+        //     // color: "#000000"
+        //   }
+        // },
+        // 轴 样式
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+      },
+      series: [
+        {
+          name: '人数',
+          type: 'bar',
+          stack: '总量',
+          barWidth: '50%',
+          // 柱子颜色
+          itemStyle: {
+            color: 'rgb(70,158,228)'
+          },
+          label: {
+            normal: {
+              show: false,
+              position: 'insideRight'
+            }
+          },
+          data: [320, 302, 301, 334, 390, 330, 320]
+        },
+
+
+      ]
+    };
+
+    // setInterval(function () {
+    //   addData(true);
+    //   // console.log(data);
+    //
+    //   myChart.setOption({
+    //     xAxis: {
+    //       data: date
+    //     },
+    //     series: [
+    //       {
+    //         name: '实时',
+    //         data: data
+    //       },
+    //       {
+    //         name: '预测',
+    //         data: data2
+    //       },
+    //     ]
+    //   });
+    // }, 500);
+    ;
+    if (option && typeof option === "object") {
+      myChart.setOption(option, true);
+    }
+  }
+
 
   function tab2Li4InitEchart() {
     var dom = $('#KLQS');
@@ -1844,8 +2060,8 @@ $(function () {
       Chart4.setOption(option);
   }
 
-  function tab3Li2InitEchart3() {
-    var dom = document.getElementById("tab3li2-chart3");
+  function tab3Li2InitKLHX2() {
+    var dom = document.getElementById("KLHX2");
     var myChart = echarts.init(dom);
     // console.log(echarts.version)
     var app = {};
@@ -2026,183 +2242,183 @@ $(function () {
     }
   }
 
-  function tab3Li3InitEchart2() {
-    var Chart4 = echarts.init(document.getElementById('tab3li3-chart2'));
-    var option = {
-      title: {
-        text: '实时驻留时长',
-        textStyle: {
-          color: 'rgb(221,243,255)',
-          fontSize: 18,
-          fontFamily: 'Microsoft YaHei',
-          // fontWeight:400
-        }
-      },
-      tooltip: {
-        trigger: 'axis',
-        show:true,
-        axisPointer: {
-          type: 'line',
-          show: true,
-          label: {
-            show: true
-          }
-        },
-        backgroundColor: 'transparent',
-        formatter: function (params) {
-          return params[params.length - 1].data;
-        }
-      },
-
-      legend: {
-        show:true,
-        textStyle: {
-          color: '#fff',
-        },
-        data: ['搜索引擎','搜索引擎2']
-      },
-
-      /* visualMap:{
-           show:false,
-           seriesIndex:1,
-       },*/
-      /*legend: {
-          data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
-      },*/
-      /* grid: {
-           left: '3%',
-           right: '4%',
-           bottom: '3%',
-           containLabel: true
-       },*/
-      grid: {
-        left: '5%',
-        right: '10%',
-        top: '15%',
-        bottom: '5%',
-        // width: 1194,
-        // height: 236,
-        containLabel: true
-      },
-      /*toolbox: {
-          feature: {
-              saveAsImage: {}
-          }
-      },*/
-      xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        name: '(小时)',
-        axisLine: {
-          lineStyle: {
-            color: 'rgb(133,168,184)'
-          }
-        },
-        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-      },
-      yAxis: {
-        type: 'value',
-        name: '(人数/万)',
-        splitLine: {show: false},
-        axisLine: {
-          lineStyle: {
-            color: 'rgb(133,168,184)'
-          }
-        },
-
-      },
-      series: [
-
-        {
-          name: '搜索引擎',
-          type: 'line',
-          z: 1,
-          //stack: '总量',
-          smooth: true,
-          data: [820, 932, 901, 934, 1290, 1330],
-          lineStyle: {
-            normal: {
-              color: 'rgb(70,158,228)'//rgba(55,255,75
-            }
-          },
-          areaStyle: {
-            normal: {
-              color: {
-                type: 'linear',
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [{
-                  offset: 0, color: 'rgba(70,158,228,0.3)'
-                }, {
-                  offset: 0.5, color: 'rgba(70,158,228,0.15)'
-                }, {
-                  offset: 1, color: 'rgba(70,158,228,0)'
-                }]
-              }
-            }
-          },
-        },
-        {
-          name: '搜索引擎',
-          symbol: 'none',
-          z: 2,
-          type: 'line',
-          itemStyle: {
-            normal: {
-              lineStyle: {
-                width: 2,
-                color: 'rgb(70,158,228)',
-                type: 'dotted'  //'dotted'虚线 'solid'实线
-              }
-            }
-          },
-          smooth: true,
-          //stack: '总量',
-          data: [820, 932, 901, 934, 1290, 1330, 1320]
-        },
-
-        {
-          name: '搜索引擎2',
-          z: 1,
-          type: 'line',
-          itemStyle: {
-            normal: {
-              lineStyle: {
-                color: 'rgb(170,158,228)',
-                type: 'solid'  //'dotted'虚线 'solid'实线
-              }
-            }
-          },
-          smooth: true,
-          //stack: '总量',
-          data: [520, 1032, 800, 900, 1290, 1400]
-        },
-        {
-          name: '搜索引擎2',
-          symbol: 'none',
-          z: 2,
-          type: 'line',
-          itemStyle: {
-            normal: {
-              lineStyle: {
-                width: 2,
-                color: 'rgb(170,158,228)',
-                type: 'dotted'  //'dotted'虚线 'solid'实线
-              }
-            }
-          },
-          smooth: true,
-          //stack: '总量',
-          data: [520, 1032, 800, 900, 1290, 1400, 1000]
-        },
-
-
-      ]
-    };
-    Chart4.setOption(option);
-  }
+  // function tab3Li3InitEchart2() {
+  //   var Chart4 = echarts.init(document.getElementById('tab3li3-chart2'));
+  //   var option = {
+  //     title: {
+  //       text: '实时驻留时长',
+  //       textStyle: {
+  //         color: 'rgb(221,243,255)',
+  //         fontSize: 18,
+  //         fontFamily: 'Microsoft YaHei',
+  //         // fontWeight:400
+  //       }
+  //     },
+  //     tooltip: {
+  //       trigger: 'axis',
+  //       show:true,
+  //       axisPointer: {
+  //         type: 'line',
+  //         show: true,
+  //         label: {
+  //           show: true
+  //         }
+  //       },
+  //       backgroundColor: 'transparent',
+  //       formatter: function (params) {
+  //         return params[params.length - 1].data;
+  //       }
+  //     },
+  //
+  //     legend: {
+  //       show:true,
+  //       textStyle: {
+  //         color: '#fff',
+  //       },
+  //       data: ['搜索引擎','搜索引擎2']
+  //     },
+  //
+  //     /* visualMap:{
+  //          show:false,
+  //          seriesIndex:1,
+  //      },*/
+  //     /*legend: {
+  //         data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+  //     },*/
+  //     /* grid: {
+  //          left: '3%',
+  //          right: '4%',
+  //          bottom: '3%',
+  //          containLabel: true
+  //      },*/
+  //     grid: {
+  //       left: '5%',
+  //       right: '10%',
+  //       top: '15%',
+  //       bottom: '5%',
+  //       // width: 1194,
+  //       // height: 236,
+  //       containLabel: true
+  //     },
+  //     /*toolbox: {
+  //         feature: {
+  //             saveAsImage: {}
+  //         }
+  //     },*/
+  //     xAxis: {
+  //       type: 'category',
+  //       boundaryGap: false,
+  //       name: '(小时)',
+  //       axisLine: {
+  //         lineStyle: {
+  //           color: 'rgb(133,168,184)'
+  //         }
+  //       },
+  //       data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+  //     },
+  //     yAxis: {
+  //       type: 'value',
+  //       name: '(人数/万)',
+  //       splitLine: {show: false},
+  //       axisLine: {
+  //         lineStyle: {
+  //           color: 'rgb(133,168,184)'
+  //         }
+  //       },
+  //
+  //     },
+  //     series: [
+  //
+  //       {
+  //         name: '搜索引擎',
+  //         type: 'line',
+  //         z: 1,
+  //         //stack: '总量',
+  //         smooth: true,
+  //         data: [820, 932, 901, 934, 1290, 1330],
+  //         lineStyle: {
+  //           normal: {
+  //             color: 'rgb(70,158,228)'//rgba(55,255,75
+  //           }
+  //         },
+  //         areaStyle: {
+  //           normal: {
+  //             color: {
+  //               type: 'linear',
+  //               x: 0,
+  //               y: 0,
+  //               x2: 0,
+  //               y2: 1,
+  //               colorStops: [{
+  //                 offset: 0, color: 'rgba(70,158,228,0.3)'
+  //               }, {
+  //                 offset: 0.5, color: 'rgba(70,158,228,0.15)'
+  //               }, {
+  //                 offset: 1, color: 'rgba(70,158,228,0)'
+  //               }]
+  //             }
+  //           }
+  //         },
+  //       },
+  //       {
+  //         name: '搜索引擎',
+  //         symbol: 'none',
+  //         z: 2,
+  //         type: 'line',
+  //         itemStyle: {
+  //           normal: {
+  //             lineStyle: {
+  //               width: 2,
+  //               color: 'rgb(70,158,228)',
+  //               type: 'dotted'  //'dotted'虚线 'solid'实线
+  //             }
+  //           }
+  //         },
+  //         smooth: true,
+  //         //stack: '总量',
+  //         data: [820, 932, 901, 934, 1290, 1330, 1320]
+  //       },
+  //
+  //       {
+  //         name: '搜索引擎2',
+  //         z: 1,
+  //         type: 'line',
+  //         itemStyle: {
+  //           normal: {
+  //             lineStyle: {
+  //               color: 'rgb(170,158,228)',
+  //               type: 'solid'  //'dotted'虚线 'solid'实线
+  //             }
+  //           }
+  //         },
+  //         smooth: true,
+  //         //stack: '总量',
+  //         data: [520, 1032, 800, 900, 1290, 1400]
+  //       },
+  //       {
+  //         name: '搜索引擎2',
+  //         symbol: 'none',
+  //         z: 2,
+  //         type: 'line',
+  //         itemStyle: {
+  //           normal: {
+  //             lineStyle: {
+  //               width: 2,
+  //               color: 'rgb(170,158,228)',
+  //               type: 'dotted'  //'dotted'虚线 'solid'实线
+  //             }
+  //           }
+  //         },
+  //         smooth: true,
+  //         //stack: '总量',
+  //         data: [520, 1032, 800, 900, 1290, 1400, 1000]
+  //       },
+  //
+  //
+  //     ]
+  //   };
+  //   Chart4.setOption(option);
+  // }
 
   function tab3Li4InitEchart() {
     var dom = $('#tab3li4-chart1');
@@ -2493,6 +2709,76 @@ $(function () {
     if (option && typeof option === "object") {
       myChart.setOption(option, true);
     }
+  }
+
+  function guishufenxiChart() {
+    var dom = document.getElementById("guishufenxi");
+    var myChart = echarts.init(dom);
+    var app = {};
+    option = null;
+    app.title = '环形图';
+    var colors = ['rgb(252,162,34)','rgb(152,113,253)','rgb(38,229,225)'];
+
+    option = {
+      title: {
+        text: '归属分析--类别占比',
+        textStyle: {
+          color: 'rgb(221,243,255)',
+          fontSize: 18,
+          fontFamily: 'Microsoft YaHei'
+          // fontWeight:400
+        }
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: "{a} <br/>{b}: {c} ({d}%)"
+      },
+      legend: {
+        orient: 'horizontal',
+        // x: 'top',
+        top: '90%',
+        data: ['境外', '省内', '省外'],
+        textStyle: {
+          color: '#fff'
+        }
+      },
+      series: [
+        {
+          name: '来源洞察',
+          type: 'pie',
+          radius: ['50%', '70%'],
+          avoidLabelOverlap: false,
+          label: {
+            normal: {
+              show: false,
+              position: 'center'
+            },
+            emphasis: {
+              show: true,
+              textStyle: {
+                fontSize: '30',
+                fontWeight: 'bold'
+              }
+            }
+          },
+          labelLine: {
+            normal: {
+              show: false
+            }
+          },
+          data: [
+            {value: 335, name: '境外',itemStyle: {color:colors[0]}},
+            {value: 310, name: '省内',itemStyle: {color:colors[1]}},
+            {value: 234, name: '省外',itemStyle: {color:colors[2]}}
+          ]
+        }
+      ]
+    };
+
+    if (option && typeof option === "object") {
+      myChart.setOption(option, true);
+    }
+
   }
 });
 

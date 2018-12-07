@@ -123,6 +123,33 @@ html, body {
   top: 20px;
   right: 65px;
   z-index: 9; }
+  .top3 .p-name {
+    width: 132px; }
+  .top3 .list li {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    margin-bottom: 5px;
+    cursor: pointer; }
+    .top3 .list li * {
+      cursor: pointer; }
+    .top3 .list li p {
+      font-weight: bold;
+      font-size: 22px;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex; }
+    .top3 .list li span {
+      font-weight: normal;
+      width: 179px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
+    .top3 .list li .num {
+      font-weight: bold; }
   .top3 .yongji {
     float: left;
     width: 430px;
@@ -157,29 +184,6 @@ html, body {
           margin-right: 10px; }
         .top3 .yongji .head .head-p span {
           font-weight: bold; }
-    .top3 .yongji .list li {
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-align: center;
-          -ms-flex-align: center;
-              align-items: center;
-      margin-bottom: 5px;
-      cursor: pointer; }
-      .top3 .yongji .list li * {
-        cursor: pointer; }
-      .top3 .yongji .list li p {
-        font-weight: bold;
-        font-size: 22px;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex; }
-      .top3 .yongji .list li span {
-        font-weight: normal; }
-      .top3 .yongji .list li .num {
-        font-weight: bold; }
-      .top3 .yongji .list li .p-name {
-        width: 132px; }
   .top3 .yongji:hover {
     height: 200px; }
   .top3 .shizhong:hover {
@@ -220,21 +224,6 @@ html, body {
           margin-right: 10px; }
         .top3 .shizhong .head .head-p span, .top3 .shushi .head .head-p span {
           font-weight: bold; }
-    .top3 .shizhong .list li, .top3 .shushi .list li {
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-align: center;
-          -ms-flex-align: center;
-              align-items: center;
-      margin-bottom: 5px; }
-      .top3 .shizhong .list li p, .top3 .shushi .list li p {
-        font-weight: bold;
-        font-size: 22px; }
-      .top3 .shizhong .list li span, .top3 .shushi .list li span {
-        font-weight: normal; }
-      .top3 .shizhong .list li .num, .top3 .shushi .list li .num {
-        font-weight: bold; }
   .top3 .shizhong {
     background-color: rgba(232, 175, 53, 0.8); }
   .top3 .shushi {
@@ -460,9 +449,13 @@ html, body {
   width: 578px;
   height: 100%; }
 
+.ZLSC1 {
+  width: 100%;
+  height: 100%; }
+
 .KLHX-box {
   width: 100%;
-  height: 100%;
+  height: 400px;
   position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -517,16 +510,16 @@ html, body {
     left: 0;
     top: -2.5px; }
 
-.tab-box2, .tab-box3 {
+.tab-box2, .tab-box3, .tab-box4 {
   position: absolute;
   left: 0;
   top: 300px;
   z-index: 11; }
-  .tab-box2 .tab-box2-li, .tab-box3 .tab-box2-li {
+  .tab-box2 .tab-box2-li, .tab-box3 .tab-box2-li, .tab-box4 .tab-box2-li {
     width: 180px;
     height: 150px;
     position: relative; }
-    .tab-box2 .tab-box2-li .li-tab-box, .tab-box3 .tab-box2-li .li-tab-box {
+    .tab-box2 .tab-box2-li .li-tab-box, .tab-box3 .tab-box2-li .li-tab-box, .tab-box4 .tab-box2-li .li-tab-box {
       position: absolute;
       left: 177px;
       z-index: 10;
@@ -534,7 +527,7 @@ html, body {
       border: 1px solid #28eefb;
       width: 600px;
       visibility: hidden; }
-      .tab-box2 .tab-box2-li .li-tab-box .emp-box, .tab-box3 .tab-box2-li .li-tab-box .emp-box {
+      .tab-box2 .tab-box2-li .li-tab-box .emp-box, .tab-box3 .tab-box2-li .li-tab-box .emp-box, .tab-box4 .tab-box2-li .li-tab-box .emp-box {
         padding: 20px 35px 20px 20px;
         display: -webkit-box;
         display: -ms-flexbox;
@@ -542,19 +535,19 @@ html, body {
         -webkit-box-align: center;
             -ms-flex-align: center;
                 align-items: center; }
-        .tab-box2 .tab-box2-li .li-tab-box .emp-box .touxiang, .tab-box3 .tab-box2-li .li-tab-box .emp-box .touxiang {
+        .tab-box2 .tab-box2-li .li-tab-box .emp-box .touxiang, .tab-box3 .tab-box2-li .li-tab-box .emp-box .touxiang, .tab-box4 .tab-box2-li .li-tab-box .emp-box .touxiang {
           width: 66px;
           height: 66px;
           border-radius: 50%;
           background-color: greenyellow; }
-        .tab-box2 .tab-box2-li .li-tab-box .emp-box .emp-data-box, .tab-box3 .tab-box2-li .li-tab-box .emp-box .emp-data-box {
+        .tab-box2 .tab-box2-li .li-tab-box .emp-box .emp-data-box, .tab-box3 .tab-box2-li .li-tab-box .emp-box .emp-data-box, .tab-box4 .tab-box2-li .li-tab-box .emp-box .emp-data-box {
           -webkit-box-flex: 1;
               -ms-flex: 1;
                   flex: 1;
           padding-left: 24px;
           font-size: 18px;
           color: #d9f1ff; }
-        .tab-box2 .tab-box2-li .li-tab-box .emp-box .icon, .tab-box3 .tab-box2-li .li-tab-box .emp-box .icon {
+        .tab-box2 .tab-box2-li .li-tab-box .emp-box .icon, .tab-box3 .tab-box2-li .li-tab-box .emp-box .icon, .tab-box4 .tab-box2-li .li-tab-box .emp-box .icon {
           width: 76px;
           height: 46px;
           background: url("../img/mov_icon_tell.png") no-repeat; }
@@ -650,9 +643,29 @@ html, body {
 
 .tab-box2 .tab-box2-li2 {
   background: url("../img/4icon_left_2_nor.png") no-repeat; }
+  .tab-box2 .tab-box2-li2 .header2 {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    padding-bottom: 20px; }
+    .tab-box2 .tab-box2-li2 .header2 div {
+      width: 200px;
+      text-align: center; }
+      .tab-box2 .tab-box2-li2 .header2 div .title-name {
+        font-size: 16px;
+        color: #ddf3ff; }
+      .tab-box2 .tab-box2-li2 .header2 div p {
+        font-size: 16px;
+        color: #ddf3ff; }
+      .tab-box2 .tab-box2-li2 .header2 div label {
+        font-size: 34px;
+        color: #ddf3ff; }
   .tab-box2 .tab-box2-li2 .li-tab-box {
-    height: 790px;
-    top: -180px; }
+    height: 800px;
+    top: -225px; }
     .tab-box2 .tab-box2-li2 .li-tab-box header {
       width: 100%;
       padding: 30px 100px 25px; }
@@ -707,7 +720,7 @@ html, body {
         background: url("../img/icon_date_arrows_on.png") no-repeat;
         background-position: center; }
     .tab-box2 .tab-box2-li2 .li-tab-box .chart-box2 {
-      height: 400px;
+      height: 300px;
       padding: 0 20px; }
       .tab-box2 .tab-box2-li2 .li-tab-box .chart-box2 .header label {
         font-size: 18px;
@@ -715,8 +728,20 @@ html, body {
 
 .tab-box3 .tab-box2-li2 {
   background: url("../img/4icon_left_2_nor.png") no-repeat; }
+  .tab-box3 .tab-box2-li2 .header1 {
+    width: 100%;
+    padding: 30px 100px 25px; }
+    .tab-box3 .tab-box2-li2 .header1 label {
+      font-size: 26px;
+      color: #ddf3ff;
+      margin-right: 20px; }
+    .tab-box3 .tab-box2-li2 .header1 span {
+      font-size: 50px;
+      color: #68e5ff; }
+      .tab-box3 .tab-box2-li2 .header1 span i {
+        font-size: 24px; }
   .tab-box3 .tab-box2-li2 .li-tab-box {
-    height: 950px;
+    height: 690px;
     top: -340px; }
     .tab-box3 .tab-box2-li2 .li-tab-box header {
       padding: 20px 30px;
@@ -739,11 +764,6 @@ html, body {
     .tab-box3 .tab-box2-li2 .li-tab-box .chart2 {
       width: 100%;
       height: 240px; }
-    .tab-box3 .tab-box2-li2 .li-tab-box .chart3-box {
-      position: relative; }
-    .tab-box3 .tab-box2-li2 .li-tab-box .chart3 {
-      width: 100%;
-      height: 420px; }
     .tab-box3 .tab-box2-li2 .li-tab-box .calendar-box {
       width: 130px;
       height: 30px;
@@ -767,6 +787,24 @@ html, body {
       height: 30px;
       background: url(../img/icon_date_arrows_nor.png) no-repeat;
       background-position: center; }
+
+.tab-box4 .tab-box2-li2 {
+  background: url("../img/4icon_left_2_nor.png") no-repeat; }
+  .tab-box4 .tab-box2-li2 .header1 {
+    width: 100%;
+    padding: 30px 100px 25px; }
+    .tab-box4 .tab-box2-li2 .header1 label {
+      font-size: 26px;
+      color: #ddf3ff;
+      margin-right: 20px; }
+    .tab-box4 .tab-box2-li2 .header1 span {
+      font-size: 50px;
+      color: #68e5ff; }
+      .tab-box4 .tab-box2-li2 .header1 span i {
+        font-size: 24px; }
+  .tab-box4 .tab-box2-li2 .li-tab-box {
+    width: 600px;
+    height: 800px; }
 
 .tab-box2-li2.active {
   background: url("../img/4icon_left_2_on.png") no-repeat !important; }
@@ -863,9 +901,9 @@ html, body {
     height: 40px;
     background: url("../img/icon_date.png") no-repeat; }
   .tab-box3 .tab-box2-li3 .li-tab-box {
-    height: 580px;
+    height: 398px;
     width: 600px;
-    top: -300px; }
+    top: -118px; }
     .tab-box3 .tab-box2-li3 .li-tab-box .calendar-box {
       display: -webkit-box;
       display: -ms-flexbox;
@@ -886,17 +924,38 @@ html, body {
     width: 100%;
     height: 250px; }
 
+.tab-box4 .tab-box2-li3 {
+  background: url("../img/4icon_left_4_nor.png") no-repeat; }
+
+.ZLSC {
+  width: 100%;
+  height: 100%; }
+
+.laiyuan {
+  width: 298px;
+  height: 250px; }
+
+.quxiang {
+  width: 298px;
+  height: 250px; }
+
+.scroll-box {
+  height: 790px;
+  width: 100%;
+  overflow-y: auto; }
+
+.scroll-box::-webkit-scrollbar {
+  display: none; }
+
+.guishufenxi {
+  width: 100%;
+  height: 250px; }
+
+.tab-box4 .tab-box2-li4 {
+  background: url("../img/4icon_left_3_nor.png") no-repeat; }
+
 .tab-box2 .tab-box2-li4 {
   background: url("../img/4icon_left_3_nor.png") no-repeat; }
-  .tab-box2 .tab-box2-li4 .ZLSC {
-    width: 100%;
-    height: 100%; }
-  .tab-box2 .tab-box2-li4 .laiyuan {
-    width: 298px;
-    height: 250px; }
-  .tab-box2 .tab-box2-li4 .quxiang {
-    width: 298px;
-    height: 250px; }
   .tab-box2 .tab-box2-li4 .li-tab-box {
     height: 870px;
     top: -450px; }
@@ -971,98 +1030,108 @@ html, body {
         -webkit-box-flex: 1;
             -ms-flex: 1;
                 flex: 1; }
-    .tab-box2 .tab-box2-li4 .li-tab-box .data-box {
-      padding: 20px; }
-      .tab-box2 .tab-box2-li4 .li-tab-box .data-box .header {
-        width: 100%; }
-        .tab-box2 .tab-box2-li4 .li-tab-box .data-box .header .container {
-          background-color: #0d3162;
+
+.data-box {
+  padding: 20px; }
+  .data-box .header {
+    width: 100%; }
+    .data-box .header .container {
+      background-color: #0d3162;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: justify;
+          -ms-flex-pack: justify;
+              justify-content: space-between; }
+      .data-box .header .container div {
+        -webkit-box-flex: 1;
+            -ms-flex: 1;
+                flex: 1;
+        height: 35px;
+        border: 1px solid #3b6794;
+        font-size: 20px;
+        color: #b5e2fe;
+        text-align: center;
+        line-height: 35px; }
+      .data-box .header .container .active {
+        border-color: #05cffa;
+        color: #ddf3ff; }
+  .data-box .container2-1 {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    margin-top: 10px; }
+    .data-box .container2-1 .from-chart, .data-box .container2-1 .to-chart {
+      -webkit-box-flex: 1;
+          -ms-flex: 1;
+              flex: 1;
+      font-size: 18px;
+      color: #ddf3ff; }
+      .data-box .container2-1 .from-chart .header, .data-box .container2-1 .to-chart .header {
+        font-size: 18px;
+        color: #ddf3ff; }
+      .data-box .container2-1 .from-chart .body, .data-box .container2-1 .to-chart .body {
+        padding-right: 10px; }
+        .data-box .container2-1 .from-chart .body li, .data-box .container2-1 .to-chart .body li {
           display: -webkit-box;
           display: -ms-flexbox;
           display: flex;
           -webkit-box-pack: justify;
               -ms-flex-pack: justify;
-                  justify-content: space-between; }
-          .tab-box2 .tab-box2-li4 .li-tab-box .data-box .header .container div {
-            -webkit-box-flex: 1;
-                -ms-flex: 1;
-                    flex: 1;
-            height: 35px;
-            border: 1px solid #3b6794;
-            font-size: 20px;
-            color: #b5e2fe;
-            text-align: center;
-            line-height: 35px; }
-          .tab-box2 .tab-box2-li4 .li-tab-box .data-box .header .container .active {
-            border-color: #05cffa;
-            color: #ddf3ff; }
-      .tab-box2 .tab-box2-li4 .li-tab-box .data-box .container2-1 {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-pack: justify;
-            -ms-flex-pack: justify;
-                justify-content: space-between; }
-        .tab-box2 .tab-box2-li4 .li-tab-box .data-box .container2-1 .from-chart, .tab-box2 .tab-box2-li4 .li-tab-box .data-box .container2-1 .to-chart {
+                  justify-content: space-between;
+          -webkit-box-align: center;
+              -ms-flex-align: center;
+                  align-items: center; }
+        .data-box .container2-1 .from-chart .body .index, .data-box .container2-1 .to-chart .body .index {
+          width: 22px;
+          height: 22px;
+          border-radius: 50%;
+          background-color: #26e5e1;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-pack: center;
+              -ms-flex-pack: center;
+                  justify-content: center;
+          -webkit-box-align: center;
+              -ms-flex-align: center;
+                  align-items: center;
+          font-size: 12px;
+          color: #ffffff;
+          margin-right: 10px;
+          margin-left: 20px; }
+        .data-box .container2-1 .from-chart .body label, .data-box .container2-1 .to-chart .body label {
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-pack: justify;
+              -ms-flex-pack: justify;
+                  justify-content: space-between;
           -webkit-box-flex: 1;
               -ms-flex: 1;
                   flex: 1;
-          font-size: 18px;
-          color: #ddf3ff; }
-          .tab-box2 .tab-box2-li4 .li-tab-box .data-box .container2-1 .from-chart .header, .tab-box2 .tab-box2-li4 .li-tab-box .data-box .container2-1 .to-chart .header {
-            font-size: 18px;
-            color: #ddf3ff; }
-          .tab-box2 .tab-box2-li4 .li-tab-box .data-box .container2-1 .from-chart .body, .tab-box2 .tab-box2-li4 .li-tab-box .data-box .container2-1 .to-chart .body {
-            padding-right: 10px; }
-            .tab-box2 .tab-box2-li4 .li-tab-box .data-box .container2-1 .from-chart .body li, .tab-box2 .tab-box2-li4 .li-tab-box .data-box .container2-1 .to-chart .body li {
-              display: -webkit-box;
-              display: -ms-flexbox;
-              display: flex;
-              -webkit-box-pack: justify;
-                  -ms-flex-pack: justify;
-                      justify-content: space-between;
-              -webkit-box-align: center;
-                  -ms-flex-align: center;
-                      align-items: center; }
-            .tab-box2 .tab-box2-li4 .li-tab-box .data-box .container2-1 .from-chart .body .index, .tab-box2 .tab-box2-li4 .li-tab-box .data-box .container2-1 .to-chart .body .index {
-              width: 22px;
-              height: 22px;
-              border-radius: 50%;
-              background-color: #26e5e1;
-              display: -webkit-box;
-              display: -ms-flexbox;
-              display: flex;
-              -webkit-box-pack: center;
-                  -ms-flex-pack: center;
-                      justify-content: center;
-              -webkit-box-align: center;
-                  -ms-flex-align: center;
-                      align-items: center;
-              font-size: 12px;
-              color: #ffffff;
-              margin-right: 10px;
-              margin-left: 20px; }
-            .tab-box2 .tab-box2-li4 .li-tab-box .data-box .container2-1 .from-chart .body label, .tab-box2 .tab-box2-li4 .li-tab-box .data-box .container2-1 .to-chart .body label {
-              display: -webkit-box;
-              display: -ms-flexbox;
-              display: flex;
-              -webkit-box-pack: justify;
-                  -ms-flex-pack: justify;
-                      justify-content: space-between;
-              -webkit-box-flex: 1;
-                  -ms-flex: 1;
-                      flex: 1;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap; }
-            .tab-box2 .tab-box2-li4 .li-tab-box .data-box .container2-1 .from-chart .body .line, .tab-box2 .tab-box2-li4 .li-tab-box .data-box .container2-1 .to-chart .body .line {
-              display: -webkit-box;
-              display: -ms-flexbox;
-              display: flex;
-              width: 50px;
-              height: 2px;
-              margin-right: 15px;
-              background-color: #b5e2fe; }
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap; }
+        .data-box .container2-1 .from-chart .body .line, .data-box .container2-1 .to-chart .body .line {
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          width: 50px;
+          height: 2px;
+          margin-right: 15px;
+          background-color: #b5e2fe; }
+        .data-box .container2-1 .from-chart .body .line2, .data-box .container2-1 .to-chart .body .line2 {
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          width: 380px;
+          height: 2px;
+          margin-right: 15px;
+          background-color: #b5e2fe; }
 
 .tab-box2-li4.active {
   background: url("../img/4icon_left_3_on.png") no-repeat !important; }
@@ -1085,8 +1154,8 @@ html, body {
       .tab-box3 .tab-box2-li4 header div i {
         font-size: 34px; }
   .tab-box3 .tab-box2-li4 .li-tab-box {
-    height: 680px;
-    top: -235px; }
+    height: 870px;
+    top: -450px; }
     .tab-box3 .tab-box2-li4 .li-tab-box .calendar {
       display: -webkit-box;
       display: -ms-flexbox;

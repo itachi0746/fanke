@@ -43,6 +43,41 @@ html,body{
   right: 65px;
   z-index: 9;
   //background: url("../img/top_3.png") no-repeat;
+  .p-name {
+    width: 132px;
+    //display: inline-block;
+  }
+  .list {
+    li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+      cursor: pointer;
+      //height: 22px;
+      * {
+        cursor: pointer;
+      }
+
+      p {
+        font-weight:bold;
+        font-size: 22px;
+        display: flex;
+      }
+      span {
+        font-weight:normal;
+        width: 179px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+      }
+      .num {
+        font-weight:bold;
+
+      }
+
+    }
+  }
 
   .yongji {
     float: left;
@@ -77,35 +112,32 @@ html,body{
       }
     }
 
-    .list {
-      li {
-        display: flex;
-        align-items: center;
-        margin-bottom: 5px;
-        cursor: pointer;
-        //height: 22px;
-        * {
-          cursor: pointer;
-        }
-
-        p {
-          font-weight:bold;
-          font-size: 22px;
-          display: flex;
-        }
-        span {
-          font-weight:normal;
-        }
-        .num {
-          font-weight:bold;
-
-        }
-        .p-name {
-          width: 132px;
-          //display: inline-block;
-        }
-      }
-    }
+    //.list {
+    //  li {
+    //    display: flex;
+    //    align-items: center;
+    //    margin-bottom: 5px;
+    //    cursor: pointer;
+    //    //height: 22px;
+    //    * {
+    //      cursor: pointer;
+    //    }
+    //
+    //    p {
+    //      font-weight:bold;
+    //      font-size: 22px;
+    //      display: flex;
+    //    }
+    //    span {
+    //      font-weight:normal;
+    //    }
+    //    .num {
+    //      font-weight:bold;
+    //
+    //    }
+    //
+    //  }
+    //}
 
   }
   .yongji:hover {
@@ -152,26 +184,6 @@ html,body{
       }
     }
 
-    .list {
-      li {
-        display: flex;
-        align-items: center;
-        margin-bottom: 5px;
-        //height: 22px;
-
-        p {
-          font-weight:bold;
-          font-size: 22px;
-        }
-        span {
-          font-weight:normal;
-        }
-        .num {
-          font-weight:bold;
-
-        }
-      }
-    }
   }
   .shizhong {
     background-color: rgba(232,175,53,.8);
@@ -402,10 +414,14 @@ html,body{
   width: 578px;
   height: 100%;
 }
+.ZLSC1 {
+  width: 100%;
+  height: 100%;
+}
 
 .KLHX-box {
   width: 100%;
-  height: 100%;
+  height: 400px;
   position: relative;
   display: flex;
   justify-content: center;
@@ -416,6 +432,13 @@ html,body{
   }
 
 }
+//.chart3-box {
+//  position: relative;
+//}
+//.chart3 {
+//  width: 100%;
+//  height: 420px;
+//}
 .hm {
   width: 80px;
   height: 160px;
@@ -457,7 +480,7 @@ html,body{
     top: -2.5px;
   }
 }
-.tab-box2,.tab-box3 {
+.tab-box2,.tab-box3,.tab-box4 {
   position: absolute;
   left: 0;
   top: 300px;
@@ -620,10 +643,36 @@ html,body{
 }
 
 .tab-box2 .tab-box2-li2 {
+
   background: url("../img/4icon_left_2_nor.png") no-repeat;
+
+  .header2 {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 20px;
+
+    div {
+      //flex: 1;
+      width: 200px;
+      text-align: center;
+      .title-name {
+        font-size: 16px;
+        color: rgb(221,243,255);
+      }
+      p {
+        font-size: 16px;
+        color: rgb(221,243,255);
+      }
+      label {
+        font-size: 34px;
+        color: rgb(221,243,255);
+      }
+    }
+
+  }
   .li-tab-box {
-    height: 790px;
-    top: $tab2Top*1.2;
+    height: 800px;
+    top: $tab2Top*1.5;
 
     header {
       width: 100%;
@@ -692,7 +741,7 @@ html,body{
       }
     }
     .chart-box2 {
-      height: 400px;
+      height: 300px;
       padding: 0 20px;
       .header {
         label {
@@ -706,8 +755,27 @@ html,body{
 
 .tab-box3 .tab-box2-li2 {
   background: url("../img/4icon_left_2_nor.png") no-repeat;
+
+  .header1 {
+    width: 100%;
+    padding: 30px 100px 25px;
+
+    label {
+      font-size: 26px;
+      color: rgb(221,243,255);
+      margin-right: 20px;
+    }
+    span {
+      font-size: 50px;
+      color: rgb(104,229,255);
+
+      i {
+        font-size: 24px;
+      }
+    }
+  }
   .li-tab-box {
-    height: 950px;
+    height: 690px;
     //top: $tab2Top*1.2;
     top: -340px;
 
@@ -734,13 +802,7 @@ html,body{
       width: 100%;
       height: 240px;
     }
-    .chart3-box {
-      position: relative;
-    }
-    .chart3 {
-      width: 100%;
-      height: 420px;
-    }
+
     .calendar-box {
       width: 130px;
       height: 30px;
@@ -767,6 +829,33 @@ html,body{
       background: url(../img/icon_date_arrows_nor.png) no-repeat;
       background-position: center;
     }
+  }
+}
+
+.tab-box4 .tab-box2-li2 {
+  background: url("../img/4icon_left_2_nor.png") no-repeat;
+  .header1 {
+    width: 100%;
+    padding: 30px 100px 25px;
+
+    label {
+      font-size: 26px;
+      color: rgb(221,243,255);
+      margin-right: 20px;
+    }
+    span {
+      font-size: 50px;
+      color: rgb(104,229,255);
+
+      i {
+        font-size: 24px;
+      }
+    }
+  }
+
+  .li-tab-box {
+    width: 600px;
+    height: 800px;
   }
 }
 .tab-box2-li2.active {
@@ -883,9 +972,9 @@ html,body{
   }
 
   .li-tab-box {
-    height: 580px;
+    height: 398px;
     width: 600px;
-    top: $tab2Top*2;
+    top: -118px;
 
     .calendar-box {
       display: flex;
@@ -912,28 +1001,50 @@ html,body{
   }
 }
 
+.tab-box4 .tab-box2-li3 {
+  background: url("../img/4icon_left_4_nor.png") no-repeat;
+}
+
+.ZLSC {
+  width: 100%;
+  height: 100%;
+}
+
+.laiyuan {
+  width: 298px;
+  height: 250px;
+}
+.quxiang {
+  width: 298px;
+  height: 250px;
+}
+.scroll-box {
+  height: 790px;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.scroll-box::-webkit-scrollbar {
+  display: none;
+}
+
+.guishufenxi {
+  width: 100%;
+  height: 250px;
+
+}
+.tab-box4 .tab-box2-li4 {
+  background: url("../img/4icon_left_3_nor.png") no-repeat;
+
+}
 .tab-box2 .tab-box2-li4 {
 
-  .ZLSC {
-    width: 100%;
-    height: 100%;
-  }
-
-  .laiyuan {
-    width: 298px;
-    height: 250px;
-  }
-  .quxiang {
-    width: 298px;
-    height: 250px;
-  }
-
   background: url("../img/4icon_left_3_nor.png") no-repeat;
+
+
   .li-tab-box {
     height: 870px;
     top: $tab2Top*3;
-    //display: flex;
-    //justify-content: center;
 
     .calendar {
       display: flex;
@@ -1018,84 +1129,173 @@ html,body{
         //background-color: black;
       }
     }
-    .data-box {
-      padding: 20px;
+    //.data-box {
+    //  padding: 20px;
+    //
+    //  .header {
+    //    width: 100%;
+    //
+    //    .container {
+    //      //border: 1px solid rgb(59,103,148);
+    //      background-color: rgb(13,49,98);
+    //      display: flex;
+    //      justify-content: space-between;
+    //
+    //      div {
+    //        flex: 1;
+    //        height: 35px;
+    //        border: 1px solid rgb(59,103,148);
+    //        font-size: 20px;
+    //        color: rgb(181,226,254);
+    //        text-align: center;
+    //        line-height: 35px;
+    //      }
+    //
+    //      .active {
+    //        border-color: rgb(5,207,250);
+    //        color: rgb(221,243,255);
+    //      }
+    //      //div:hover{
+    //      //  border-color: rgb(5,207,250);
+    //      //}
+    //    }
+    //
+    //  }
+    //
+    //  .container2-1 {
+    //    display: flex;
+    //    justify-content: space-between;
+    //
+    //    .from-chart,.to-chart {
+    //      flex: 1;
+    //      font-size: 18px;
+    //      color: rgb(221,243,255);
+    //
+    //
+    //      .header {
+    //        font-size: 18px;
+    //        color: rgb(221,243,255);
+    //
+    //      }
+    //      .body {
+    //        padding-right: 10px;
+    //        li {
+    //          display: flex;
+    //          justify-content: space-between;
+    //          align-items: center;
+    //        }
+    //        .index {
+    //          @include num-icon(rgb(38,229,225));
+    //          margin-left: 20px;
+    //
+    //        }
+    //        label {
+    //          display: flex;
+    //          justify-content: space-between;
+    //          flex: 1;
+    //          //width: 50px;
+    //          overflow: hidden;
+    //          text-overflow: ellipsis;
+    //          white-space: nowrap;
+    //
+    //        }
+    //        .line {
+    //          display: flex;
+    //          width: 50px;
+    //          height: 2px;
+    //          margin-right: 15px;
+    //          background-color: rgb(181,226,254);
+    //        }
+    //      }
+    //    }
+    //  }
+    //}
+  }
+}
+.data-box {
+  padding: 20px;
 
-      .header {
-        width: 100%;
+  .header {
+    width: 100%;
 
-        .container {
-          //border: 1px solid rgb(59,103,148);
-          background-color: rgb(13,49,98);
-          display: flex;
-          justify-content: space-between;
+    .container {
+      //border: 1px solid rgb(59,103,148);
+      background-color: rgb(13,49,98);
+      display: flex;
+      justify-content: space-between;
 
-          div {
-            flex: 1;
-            height: 35px;
-            border: 1px solid rgb(59,103,148);
-            font-size: 20px;
-            color: rgb(181,226,254);
-            text-align: center;
-            line-height: 35px;
-          }
-
-          .active {
-            border-color: rgb(5,207,250);
-            color: rgb(221,243,255);
-          }
-          //div:hover{
-          //  border-color: rgb(5,207,250);
-          //}
-        }
-
+      div {
+        flex: 1;
+        height: 35px;
+        border: 1px solid rgb(59,103,148);
+        font-size: 20px;
+        color: rgb(181,226,254);
+        text-align: center;
+        line-height: 35px;
       }
 
-      .container2-1 {
-        display: flex;
-        justify-content: space-between;
+      .active {
+        border-color: rgb(5,207,250);
+        color: rgb(221,243,255);
+      }
+      //div:hover{
+      //  border-color: rgb(5,207,250);
+      //}
+    }
 
-        .from-chart,.to-chart {
+  }
+
+  .container2-1 {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+
+    .from-chart,.to-chart {
+      flex: 1;
+      font-size: 18px;
+      color: rgb(221,243,255);
+
+
+      .header {
+        font-size: 18px;
+        color: rgb(221,243,255);
+
+      }
+      .body {
+        padding-right: 10px;
+        li {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .index {
+          @include num-icon(rgb(38,229,225));
+          margin-left: 20px;
+
+        }
+        label {
+          display: flex;
+          justify-content: space-between;
           flex: 1;
-          font-size: 18px;
-          color: rgb(221,243,255);
+          //width: 50px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
 
-
-          .header {
-            font-size: 18px;
-            color: rgb(221,243,255);
-
-          }
-          .body {
-            padding-right: 10px;
-            li {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-            }
-            .index {
-              @include num-icon(rgb(38,229,225));
-              margin-left: 20px;
-
-            }
-            label {
-              display: flex;
-              justify-content: space-between;
-              flex: 1;
-              //width: 50px;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-
-            }
-            .line {
-              display: flex;
-              width: 50px;
-              height: 2px;
-              margin-right: 15px;
-              background-color: rgb(181,226,254);
-            }
-          }
+        }
+        .line {
+          display: flex;
+          width: 50px;
+          height: 2px;
+          margin-right: 15px;
+          background-color: rgb(181,226,254);
+        }
+        .line2 {
+          display: flex;
+          width: 380px;
+          height: 2px;
+          margin-right: 15px;
+          background-color: rgb(181,226,254);
         }
       }
     }
@@ -1125,8 +1325,8 @@ html,body{
   }
 
   .li-tab-box {
-    height: 680px;
-    top: -235px;
+    height: 870px;
+    top: -450px;
 
     .calendar {
       display: flex;
