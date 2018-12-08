@@ -1,6 +1,9 @@
 <template>
-  <div id="home">
-    <city v-if="showCity" @choose-city="handleChooseCity"></city>
+  <div id="home" ref="homepage">
+    <!--<city v-if="showCity" @choose-city="handleChooseCity"></city>-->
+    <div class="city-wrapper" v-if="showCity">
+      <v-distpicker type="mobile" @selected="onSelected" @city="onCity" @province="onProvince" :province="curPoisition.province.value" :city="curPoisition.city.value" :area="curPoisition.area.value"></v-distpicker>
+    </div>
     <Loading v-show="isLoading"></Loading>
     <!--选地区-->
     <aFilter ref="af" @sort="handleSort" @fenlei2="handleFenLei" @change-city="handleChangeCity"></aFilter>
@@ -49,7 +52,9 @@
   import Loading from 'components/common/loading'
   import Footer from 'components/footer/footer'
   import aFilter from './filter'
-  import city from '../../../components/common/wlist.vue'
+//  import VDistpicker from 'v-distpicker'
+  import VDistpicker from '../../../components/city/Distpicker.vue'
+//  import city from '../../../components/common/wlist.vue'
 
   //  import BScroll from 'better-scroll'
   import {postData} from '@/server'
@@ -67,7 +72,15 @@
         sortObj: {'id':'1','sortType':'0'},  // 排序对象
         fenleiObj: {'ClsId': ''},
         showCity: false,
-        cityName: '',
+        cityName: {
+          city:{
+            value: ''
+          },
+          area:{
+            value: ''
+          }
+        },
+        addAllArea: false,
         swiperOption: {
           pagination: {
             el: '.swiper-pagination'
@@ -76,6 +89,17 @@
           autoplay: {
             disableOnInteraction: false,
           },
+        },
+        curPoisition: {
+          city:{
+            value: ''
+          },
+          area:{
+            value: ''
+          },
+          province: {
+            value: ''
+          }
         }
       }
     },
@@ -107,6 +131,7 @@
     },
 
     mounted() {
+
 //      this.timer1 = setTimeout(() => {
 //        this.scroll = new BScroll('#category-left', {
 //          //开启点击事件 默认为false
@@ -120,6 +145,7 @@
 
     },
     methods: {
+
       toScreen(e) {
         const targetId = e.currentTarget.getAttribute('data-pid');
         console.log(targetId);
@@ -142,12 +168,78 @@
       },
       handleChangeCity() {
         console.log('changecity');
+//        this.$refs.homepage.ontouchmove = function (e) {
+//          e.preventDefault();
+//          console.log('prevent move')
+//        }
         this.showCity = !this.showCity;
       },
-      handleChooseCity(obj) {
-        this.showCity = false;
-        this.cityName = obj;
-      }
+      onSelected(d) {
+        console.log(d)
+        console.log(d.province.value + ' | ' + d.city.value + ' | ' + d.area.value);
+//        let temp = {};
+//
+//        if(d.area.value==='全部') {
+////          temp.area.value = '';
+//          for(let key in d) {
+//            temp[key] = d[key]
+//          }
+//          temp.area.value = '';
+//          console.log('temp1',temp)
+//        } else {
+//          temp = d;
+//          console.log('temp',temp)
+//        }
+        this.showCity = !this.showCity;
+        this.cityName = d;
+        this.curPoisition = d;
+
+      },
+      onProvince(d) {
+        console.log('onProvince:',d);
+        this.curPoisition.province.value = d.value;
+      },
+      onCity(d) {
+        console.log('oncity:',d)
+        this.curPoisition.city.value = d.value;
+
+        let ul = document.querySelectorAll('.address-container ul')[0];
+        let firstLi = ul.querySelectorAll('li')[0];
+//        let cl = firstLi.classList;
+//        console.log(cl)
+
+//        if(cl.length===0) {
+//          let newLi = document.createElement('li');
+//          newLi.innerHTML = '全部';
+//          newLi.classList.add('all-city');
+//
+//          newLi.onclick = ()=> {
+//            this.showCity = !this.showCity;
+//            let me = this;
+//            let theCity = {
+//              city: {
+//                value: d.value,
+//              },
+//              area: {
+//                value: ''
+//              },
+//              province: {
+//                value: me.curPoisition.province.value
+//              }
+//            };
+//            this.cityName = theCity;
+//            this.curPoisition = theCity;
+//          };
+//          ul.insertBefore(newLi,firstLi);
+//        }
+
+
+//        console.log(ul)
+
+
+
+      },
+
     },
     components: {
       aFilter,
@@ -156,7 +248,8 @@
       swiper,
       swiperSlide,
       Loading,
-      city
+      VDistpicker
+//      city
     },
 
     beforeDestroy: function () {
@@ -261,6 +354,15 @@
   .fill-div {
     height: 1.65rem;
   }
+  .city-wrapper {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 999999;
+    background-color: #fff;
+  }
+
 
 
 </style>

@@ -88,9 +88,9 @@
         }
       },
       cityName: {
-        type: String,
+        type: Object,
         default: function () {
-          return ''
+          return {}
         }
       }
 
@@ -114,6 +114,7 @@
         this.getData();
       },
       cityName(n,o) {
+        console.log('4141')
         console.log(n, o);
         this.screenList = [];
         this.getData();
@@ -259,7 +260,7 @@
           OrderBy: this.sortObj.id,
           OrderType: this.sortObj.sortType,
           ClsId: this.fenleiObj.ClsId,
-          AreaName: this.cityName
+          AreaName: this.cityName.city.value + ',' + this.cityName.area.value,
         };
         postData(url, data).then((res) => {
           console.log(res)
