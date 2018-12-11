@@ -20,6 +20,7 @@ $(function () {
   var tabBoxes2 = $('.tab-box2 .tab-box2-li');
   var tabBoxes3 = $('.tab-box3 .tab-box2-li');
   var tabBoxes4 = $('.tab-box4 .tab-box2-li');
+  var tabBoxes5 = $('.tab-box5 .tab-box2-li');
 
   var title = $('.title');
   pointControl = new PlacePointView(theMap);
@@ -49,6 +50,7 @@ $(function () {
       var box2 = tabBoxes2[j];
       var box3 = tabBoxes3[j];
       var box4 = tabBoxes4[j];
+      var box5 = tabBoxes5[j];
       // 交通枢纽绑定
       $(box2).on('click',function () {
         clickTab2(tabBoxes2,this)
@@ -60,6 +62,9 @@ $(function () {
       // 收费站
       $(box4).on('click',function () {
         clickTab2(tabBoxes4,this)
+      })
+      $(box5).on('click',function () {
+        clickTab2(tabBoxes5,this)
       })
     }
     arrowBindClick();
@@ -283,7 +288,7 @@ $(function () {
       temp = $('#tab4');
     }
     if(nowTab==='高速') {
-      // temp = $('#tab3');
+      temp = $('#tab5');
     }
     if(nowTab==='高速路网') {
       // temp = $('#tab3');
@@ -711,9 +716,12 @@ $(function () {
       tab4Li2initEchart2();
       tab4Li2InitEchart3();
       tab4Li3InitEchart1();
+      tab4Li3InitEchart2();
+      tab4Li4InitEchart1();
+      tab4Li4InitEchart2();
     }
     if(nowTab===tabArr[3]) {
-      // $('#tab2').removeClass('vh');
+      $('#tab5').removeClass('vh');
     }
     if(nowTab===tabArr[4]) {
       // $('#tab2').removeClass('vh');
@@ -3059,6 +3067,373 @@ $(function () {
     }
   }
 
+  var tab4Li3Echart2;
+  function tab4Li3InitEchart2() {
+    if(!tab4Li3Echart2) {
+      tab4Li3Echart2 = echarts.init(document.getElementById('tab4-zlsc2'));
+    }
+    var date = [];
+
+    for (var i = 0; i < 25; i++) {  // 时间(小时)
+      date.push(i);
+    }
+    var option = {
+      title: {
+        text: '实时驻留时长',
+        textStyle: {
+          color: 'rgb(221,243,255)',
+          fontSize: 18,
+          fontFamily: 'Microsoft YaHei',
+          // fontWeight:400
+        }
+      },
+      tooltip: {
+        trigger: 'axis',
+        //show:true,
+        axisPointer: {
+          type: 'line',
+          show: true,
+          label: {
+            show: true
+          }
+        },
+        backgroundColor: 'transparent',
+        formatter: function (params) {
+          return params[params.length - 1].data;
+        }
+      },
+
+      legend: {
+        show:true,
+        textStyle: {
+          color: '#557398',
+        },
+        data: ['搜索引擎']
+      },
+      /* visualMap:{
+           show:false,
+           seriesIndex:1,
+       },*/
+      /*legend: {
+          data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+      },*/
+      /* grid: {
+           left: '3%',
+           right: '4%',
+           bottom: '3%',
+           containLabel: true
+       },*/
+      grid: {
+        left: '5%',
+        right: '10%',
+        top: '25%',
+        bottom: '10%',
+        // width: 1194,
+        // height: 236,
+        containLabel: true
+      },
+      /*toolbox: {
+          feature: {
+              saveAsImage: {}
+          }
+      },*/
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        name: '(小时)',
+        axisLine: {
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+        data: date
+      },
+      yAxis: {
+        type: 'value',
+        name: '(人数)',
+        splitLine: {show: false},
+        axisLine: {
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+
+      },
+      series: [
+
+        {
+          name: '搜索引擎',
+          type: 'line',
+          z: 2,
+          //stack: '总量',
+          smooth: true,
+          data: [820, 932, 901, 934, 1290, 1330],
+          lineStyle: {
+            normal: {
+              color: 'rgb(70,158,228)'//rgba(55,255,75
+            }
+          },
+          areaStyle: {
+            normal: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'rgba(70,158,228,0.3)'
+                }, {
+                  offset: 0.5, color: 'rgba(70,158,228,0.15)'
+                }, {
+                  offset: 1, color: 'rgba(70,158,228,0)'
+                }]
+              }
+            }
+          },
+        },
+        {
+          name: '搜索引擎',
+          symbol: 'none',
+          z: 3,
+          type: 'line',
+          itemStyle: {
+            normal: {
+              lineStyle: {
+                width: 2,
+                color: 'rgb(70,158,228)',
+                type: 'dotted'  //'dotted'虚线 'solid'实线
+              }
+            }
+          },
+          smooth: true,
+          //stack: '总量',
+          data: [820, 932, 901, 934, 1290, 1330, 1320]
+        },
+
+
+      ]
+    };
+    tab4Li3Echart2.setOption(option);
+  }
+
+  var tab4Li4Echart1;
+  function tab4Li4InitEchart1() {
+    var dom = $('#tab4-zklqs');
+    if(!tab4Li4Echart1) {
+      tab4Li4Echart1 = echarts.init(dom[0]);
+    }
+    option = null;
+    var date = ['12月1日','12月2日','12月3日','12月4日','12月5日','12月6日','12月7日'];
+
+    var myDate = new Date();//获取系统当前时间
+
+
+    option = {
+      title: {
+        text: '每日总客流趋势',
+        textStyle: {
+          color: 'rgb(221,243,255)',
+          fontSize: 18,
+          fontFamily: 'Microsoft YaHei',
+          // fontWeight:400
+        }
+      },
+      tooltip: {
+        trigger: 'axis',
+        // formatter: "{a} <br/>{b}: {c} ({d}%)"
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        name: '日期',
+        data: date,
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+        // 分割线
+        splitLine: {
+          show: false
+        },
+        axisLabel: {
+          interval: 0,
+          rotate: 45,
+          //倾斜度 -90 至 90 默认为0
+          margin: 10,
+          textStyle: {
+            // fontWeight: "bolder",
+            // color: "#000000"
+          }
+        },
+      },
+      yAxis: {
+        boundaryGap: [0, '50%'],
+        type: 'value',
+        name: '人数/万',
+        // 轴 样式
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+        // 分割线
+        splitLine: {
+          show: false
+        }
+      },
+      series: [
+        {
+          name: '客流量',
+          type: 'line',
+          smooth: true,
+          symbol: 'none',
+          stack: 'a',
+          label: {
+            normal: {
+              show: true
+            }
+          },
+          // 填充区域样式
+          areaStyle: {
+            normal: {
+              // color: 'rgb(62,139,230)',
+              // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: '#ad9955' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
+                }],
+                globalCoord: false // 缺省为 false
+              }
+            }
+          },
+          lineStyle: {
+            color: 'rgb(255,215,93)'
+          },
+          data: []
+        }
+      ]
+    };
+
+    if (option && typeof option === "object") {
+      tab4Li4Echart1.setOption(option, true);
+    }
+  }
+
+  var tab4Li4Echart2;
+  function tab4Li4InitEchart2() {
+    var dom = document.getElementById("tab4-clqs");
+    if(!tab4Li4Echart2) {
+      tab4Li4Echart2 = echarts.init(dom);
+    }
+    option = null;
+    var date = ['12月1日','12月2日','12月3日','12月4日','12月5日','12月6日','12月7日'];
+
+    option = {
+      title: {
+        text: '车辆趋势',
+        textStyle: {
+          color: 'rgb(221,243,255)',
+          fontSize: 18,
+          fontFamily: 'Microsoft YaHei',
+          // fontWeight:400
+        }
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+
+      legend: {
+        data: ['进入车辆', '离开车辆'],
+        textStyle: {
+          color: 'rgb(221,243,255)'
+        }
+      },
+      grid: {
+        left: '5%',
+        right: '10%',
+        bottom: '5%',
+        containLabel: true
+      },
+      yAxis: {
+        type: 'value',
+        boundaryGap: [0, 0.1],
+        name: '数量',
+        // 轴 样式
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+        // 分割线
+        splitLine: {
+          show: false
+        }
+      },
+      xAxis: {
+        type: 'category',
+        data: date,
+        name: '日期',
+        // 轴 样式
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+        axisLabel: {
+          interval: 0,
+          rotate: 45,
+          //倾斜度 -90 至 90 默认为0
+          margin: 10,
+          textStyle: {
+            // fontWeight: "bolder",
+            // color: "#000000"
+          }
+        },
+      },
+      series: [
+        {
+          name: '进入车辆',
+          type: 'bar',
+          barGap: 0,
+          // 柱子颜色
+          itemStyle: {
+            color: 'rgb(97,80,218)'
+          },
+          data: [18203, 23489, 29034, 104970, 131744, 630230,131744]
+        },
+        {
+          name: '离开车辆',
+          type: 'bar',
+          barGap: 0,
+          // 柱子颜色
+          itemStyle: {
+            color: 'rgb(254,158,79)'
+          },
+          data: [19325, 23438, 31000, 121594, 134141, 681807,151744]
+        }
+      ]
+    };
+
+    if (option && typeof option === "object") {
+      tab4Li4Echart2.setOption(option, true);
+    }
+  }
 
 });
 

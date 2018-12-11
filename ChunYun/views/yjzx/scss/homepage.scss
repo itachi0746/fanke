@@ -480,7 +480,7 @@ html,body{
     top: -2.5px;
   }
 }
-.tab-box2,.tab-box3,.tab-box4 {
+.tab-box2,.tab-box3,.tab-box4,.tab-box5 {
   position: absolute;
   left: 0;
   top: 300px;
@@ -796,10 +796,12 @@ html,body{
     .chart1 {
       width: 100%;
       height: 200px;
+      padding-left: 15px;
     }
     .chart2 {
       width: 100%;
       height: 240px;
+      padding-left: 15px;
     }
     //小日历box
     .calendar-box {
@@ -886,6 +888,48 @@ html,body{
     width: 600px;
     height: 950px;
     top: -340px;
+  }
+  .calendar-box {
+    width: 130px;
+    height: 30px;
+    background-color: #12508f;
+    position: absolute;
+    top: 5px;
+    right: 44px;
+    z-index: 10;
+    text-align: left;
+    .sskl-cld2 {
+      width: 100px;
+      height: 100%;
+      background-color: #12508f;
+      font-size: 16px;
+      color: #ddf3ff;
+    }
+    .arrow {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 30px;
+      height: 30px;
+      background: url(../img/icon_date_arrows_nor.png) no-repeat;
+      background-position: center;
+    }
+  }
+}
+
+.tab-box5 .tab-box2-li2 {
+  background: url("../img/4icon_left_2_nor.png") no-repeat;
+  margin: 50px 0;
+  .li-tab-box {
+    width: 600px;
+    height: 600px;
+    top: -200px;
+  }
+
+  .chart {
+    width: 600px;
+    height: 250px;
+    position: relative;
   }
   .calendar-box {
     width: 130px;
@@ -1105,6 +1149,61 @@ html,body{
 
 }
 
+.tab-box5 .tab-box2-li3 {
+  background: url("../img/4icon_left_4_nor.png") no-repeat;
+  .tab5-big-cld {
+    width: 295px;
+    height: 100%;
+    position: absolute;
+    left: 45px;
+    top: 0;
+    background-color: rgb(18,80,143);
+  }
+  .arrow {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    background: url(../img/icon_date_arrows_nor.png) no-repeat;
+    background-position: center;
+  }
+
+  .cld-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 45px;
+    height: 40px;
+    background: url("../img/icon_date.png") no-repeat;
+  }
+
+
+  .li-tab-box {
+    height: 850px;
+    width: 600px;
+    top: -500px;
+
+    .calendar-box {
+      display: flex;
+      padding: 20px 30px;
+      justify-content: center;
+      //background-color: red;
+    }
+    .calendar {
+      width: 380px;
+      height: 40px;
+      background-color: rgb(18,80,143);
+      position: relative;
+    }
+
+  }
+
+  .chart-box {
+    height: 250px;
+    padding-left: 20px;
+  }
+}
 .ZLSC {
   width: 100%;
   height: 100%;
@@ -1169,6 +1268,7 @@ html,body{
   .tab4-zlsc2 {
     width: 100%;
     height: 250px;
+    padding-left: 15px;
   }
 
   //中日历
