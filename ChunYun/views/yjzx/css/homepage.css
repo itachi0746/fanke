@@ -468,7 +468,8 @@ html, body {
           align-items: center; }
   .KLHX-box .KLHX {
     width: 100%;
-    height: 100%; }
+    height: 100%;
+    padding-left: 15px; }
 
 .hm {
   width: 80px;
@@ -487,11 +488,11 @@ html, body {
 
 .man {
   background: url("../img/icon_man.png") no-repeat;
-  left: 43%; }
+  left: 45%; }
 
 .woman {
   background: url("../img/icon_woman.png") no-repeat;
-  left: 55%; }
+  left: 56%; }
 
 .line-box {
   padding: 0 20px; }
@@ -641,31 +642,33 @@ html, body {
 .tab-box2-li1.active {
   background: url("../img/4icon_left_1_on.png") no-repeat !important; }
 
+.header2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding-bottom: 20px;
+  padding-top: 20px; }
+  .header2 div {
+    width: 200px;
+    text-align: center; }
+    .header2 div .title-name {
+      font-size: 16px;
+      color: #ddf3ff; }
+    .header2 div p {
+      font-size: 16px;
+      color: #ddf3ff; }
+    .header2 div label {
+      font-size: 34px;
+      color: #ddf3ff; }
+
 .tab-box2 .tab-box2-li2 {
   background: url("../img/4icon_left_2_nor.png") no-repeat; }
-  .tab-box2 .tab-box2-li2 .header2 {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-            justify-content: space-between;
-    padding-bottom: 20px; }
-    .tab-box2 .tab-box2-li2 .header2 div {
-      width: 200px;
-      text-align: center; }
-      .tab-box2 .tab-box2-li2 .header2 div .title-name {
-        font-size: 16px;
-        color: #ddf3ff; }
-      .tab-box2 .tab-box2-li2 .header2 div p {
-        font-size: 16px;
-        color: #ddf3ff; }
-      .tab-box2 .tab-box2-li2 .header2 div label {
-        font-size: 34px;
-        color: #ddf3ff; }
   .tab-box2 .tab-box2-li2 .li-tab-box {
-    height: 800px;
-    top: -225px; }
+    height: 750px;
+    top: -235px; }
     .tab-box2 .tab-box2-li2 .li-tab-box header {
       width: 100%;
       padding: 30px 100px 25px; }
@@ -676,8 +679,9 @@ html, body {
       .tab-box2 .tab-box2-li2 .li-tab-box header span {
         font-size: 50px;
         color: #68e5ff; }
-        .tab-box2 .tab-box2-li2 .li-tab-box header span i {
-          font-size: 24px; }
+      .tab-box2 .tab-box2-li2 .li-tab-box header i {
+        font-size: 24px;
+        color: #68e5ff; }
     .tab-box2 .tab-box2-li2 .li-tab-box .chart-box {
       padding-left: 20px;
       width: 100%;
@@ -720,7 +724,7 @@ html, body {
         background: url("../img/icon_date_arrows_on.png") no-repeat;
         background-position: center; }
     .tab-box2 .tab-box2-li2 .li-tab-box .chart-box2 {
-      height: 300px;
+      height: 250px;
       padding: 0 20px; }
       .tab-box2 .tab-box2-li2 .li-tab-box .chart-box2 .header label {
         font-size: 18px;
@@ -788,6 +792,31 @@ html, body {
       background: url(../img/icon_date_arrows_nor.png) no-repeat;
       background-position: center; }
 
+.tab4-zlsc {
+  width: 100%;
+  height: 200px;
+  padding-left: 15px; }
+
+.tab4-klqs-box {
+  width: 100%;
+  height: 240px;
+  position: relative; }
+
+.tab4-klqs {
+  width: 100%;
+  height: 100%;
+  padding-left: 15px; }
+
+.tab4-klhx-box {
+  width: 100%;
+  height: 400px;
+  position: relative;
+  padding-left: 15px; }
+
+.tab4-klhx {
+  width: 100%;
+  height: 400px; }
+
 .tab-box4 .tab-box2-li2 {
   background: url("../img/4icon_left_2_nor.png") no-repeat; }
   .tab-box4 .tab-box2-li2 .header1 {
@@ -804,7 +833,31 @@ html, body {
         font-size: 24px; }
   .tab-box4 .tab-box2-li2 .li-tab-box {
     width: 600px;
-    height: 800px; }
+    height: 950px;
+    top: -340px; }
+  .tab-box4 .tab-box2-li2 .calendar-box {
+    width: 130px;
+    height: 30px;
+    background-color: #12508f;
+    position: absolute;
+    top: 5px;
+    right: 44px;
+    z-index: 10;
+    text-align: left; }
+    .tab-box4 .tab-box2-li2 .calendar-box .sskl-cld2 {
+      width: 100px;
+      height: 100%;
+      background-color: #12508f;
+      font-size: 16px;
+      color: #ddf3ff; }
+    .tab-box4 .tab-box2-li2 .calendar-box .arrow {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 30px;
+      height: 30px;
+      background: url(../img/icon_date_arrows_nor.png) no-repeat;
+      background-position: center; }
 
 .tab-box2-li2.active {
   background: url("../img/4icon_left_2_on.png") no-repeat !important; }
@@ -859,16 +912,6 @@ html, body {
     .tab-box2 .tab-box2-li3 .li-tab-box .chart-box {
       height: 250px;
       padding-left: 20px; }
-      .tab-box2 .tab-box2-li3 .li-tab-box .chart-box .header {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-pack: justify;
-            -ms-flex-pack: justify;
-                justify-content: space-between; }
-        .tab-box2 .tab-box2-li3 .li-tab-box .chart-box .header label {
-          font-size: 18px;
-          color: #ddf3ff; }
     .tab-box2 .tab-box2-li3 .li-tab-box .chart-box2 {
       height: 250px;
       background-color: darkgreen; }
@@ -926,6 +969,48 @@ html, body {
 
 .tab-box4 .tab-box2-li3 {
   background: url("../img/4icon_left_4_nor.png") no-repeat; }
+  .tab-box4 .tab-box2-li3 .tab4-big-cld {
+    width: 295px;
+    height: 100%;
+    position: absolute;
+    left: 45px;
+    top: 0;
+    background-color: #12508f; }
+  .tab-box4 .tab-box2-li3 .arrow {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    background: url(../img/icon_date_arrows_nor.png) no-repeat;
+    background-position: center; }
+  .tab-box4 .tab-box2-li3 .cld-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 45px;
+    height: 40px;
+    background: url("../img/icon_date.png") no-repeat; }
+  .tab-box4 .tab-box2-li3 .li-tab-box {
+    height: 580px;
+    width: 600px;
+    top: -300px; }
+    .tab-box4 .tab-box2-li3 .li-tab-box .calendar-box {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      padding: 20px 30px;
+      -webkit-box-pack: center;
+          -ms-flex-pack: center;
+              justify-content: center; }
+    .tab-box4 .tab-box2-li3 .li-tab-box .calendar {
+      width: 380px;
+      height: 40px;
+      background-color: #12508f;
+      position: relative; }
+  .tab-box4 .tab-box2-li3 .chart-box {
+    height: 250px;
+    padding-left: 20px; }
 
 .ZLSC {
   width: 100%;
@@ -953,6 +1038,69 @@ html, body {
 
 .tab-box4 .tab-box2-li4 {
   background: url("../img/4icon_left_3_nor.png") no-repeat; }
+  .tab-box4 .tab-box2-li4 .li-tab-box {
+    height: 650px;
+    top: -220px; }
+  .tab-box4 .tab-box2-li4 header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    padding-bottom: 10px; }
+    .tab-box4 .tab-box2-li4 header div {
+      width: 200px;
+      text-align: center; }
+      .tab-box4 .tab-box2-li4 header div .title-name {
+        font-size: 16px;
+        color: #ddf3ff; }
+      .tab-box4 .tab-box2-li4 header div p {
+        font-size: 16px;
+        color: #ddf3ff; }
+      .tab-box4 .tab-box2-li4 header div label {
+        font-size: 34px;
+        color: #ddf3ff; }
+  .tab-box4 .tab-box2-li4 .tab4-zlsc {
+    width: 100%;
+    height: 250px; }
+  .tab-box4 .tab-box2-li4 .tab4-zlsc2 {
+    width: 100%;
+    height: 250px; }
+  .tab-box4 .tab-box2-li4 .calendar {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 20px 20px;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    position: relative; }
+    .tab-box4 .tab-box2-li4 .calendar .arrow {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 40px;
+      height: 40px;
+      background: url(../img/icon_date_arrows_nor.png) no-repeat;
+      background-position: center; }
+    .tab-box4 .tab-box2-li4 .calendar .cld-icon {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 45px;
+      height: 40px;
+      background: url("../img/icon_date.png") no-repeat; }
+    .tab-box4 .tab-box2-li4 .calendar .m-cld {
+      width: 195px;
+      height: 40px;
+      background-color: #114d8a;
+      position: absolute;
+      right: 30px;
+      top: 0;
+      font-size: 16px;
+      color: #ddf3ff;
+      text-align: center; }
 
 .tab-box2 .tab-box2-li4 {
   background: url("../img/4icon_left_3_nor.png") no-repeat; }

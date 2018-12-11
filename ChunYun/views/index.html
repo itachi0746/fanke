@@ -257,25 +257,26 @@
       <div class="li-tab-box">
         <header>
           <label>实时客流量</label>
-          <span>23,450<i>人</i></span>
+          <span class="sskl-num"></span>
+          <i>人</i>
         </header>
         <div class="header2">
           <div>
             <p class="title-name">实时进入人数</p>
             <p>
-              <label>23445</label>万
+              <label class="sskl-in"></label>万
             </p>
           </div>
           <div>
             <p class="title-name">实时离开人数</p>
             <p>
-              <label>23445</label>万
+              <label class="sskl-out"></label>万
             </p>
           </div>
           <div>
             <p class="title-name">小时新增人数</p>
             <p>
-              <label>23445</label>万
+              <label class="sskl-hour-add"></label>万
             </p>
           </div>
         </div>
@@ -662,11 +663,178 @@
   <!--收费站tab-->
   <ul id="tab4" class="tab-box4 vh">
     <li data-name="实时监控" class="tab-box2-li1 tab-box2-li">
+      <div class="li-tab-box">
+        <div class="video-play-box">
+          <div class="add-box"></div>
+          <div class="full-screen"></div>
+        </div>
+        <div class="video-list" id="video-list2">
+          <ul>
+            <li>
+              <div class="footer"></div>
+            </li>
+            <li>
+              <div class="footer"></div>
+            </li>
+            <li>
+              <div class="footer"></div>
+            </li>
+            <li>
+              <div class="footer"></div>
+            </li>
+            <li>
+              <div class="footer"></div>
+            </li>
+            <li>
+              <div class="footer"></div>
+            </li>
+            <li>
+              <div class="footer"></div>
+            </li>
+          </ul>
+        </div>
+        <div class="line-box">
+          <div class="line" id="line3">
+            <div class="tuodong" id="tuodong3"></div>
+          </div>
+        </div>
+        <div class="emp-box">
+          <div class="touxiang">
+
+          </div>
+          <div class="emp-data-box">
+            <p>
+              <label for="">值班人:</label>
+              <span></span>
+            </p>
+            <p>
+              <label for="">预警电话:</label>
+              <span></span>
+            </p>
+          </div>
+          <div class="icon"></div>
+        </div>
+
+        <div class="video-play-box2">
+          <div class="box2-main">
+            <span>请选择摄像头</span>
+          </div>
+          <div class="video-list">
+            <ul>
+              <li>
+                <div class="footer"></div>
+              </li>
+              <li>
+                <div class="footer"></div>
+              </li>
+            </ul>
+          </div>
+          <div class="line-box">
+            <div class="line">
+              <div class="tuodong"></div>
+            </div>
+          </div>
+          <div class="close-icon"></div>
+        </div>
+      </div>
 
     </li>
-    <li data-name="实时客流" class="tab-box2-li2 tab-box2-li"></li>
-    <li data-name="旅客洞察" class="tab-box2-li4 tab-box2-li"></li>
-    <li data-name="旅客趋势" class="tab-box2-li3 tab-box2-li"></li>
+    <li data-name="实时客流" class="tab-box2-li2 tab-box2-li">
+      <div class="li-tab-box">
+        <div class="header2">
+          <div>
+            <p class="title-name">实时客流量</p>
+            <p>
+              <label>23445</label>万
+            </p>
+          </div>
+          <div>
+            <p class="title-name">实时进入车辆</p>
+            <p>
+              <label>23445</label>万
+            </p>
+          </div>
+          <div>
+            <p class="title-name">实时离开车辆</p>
+            <p>
+              <label>23445</label>万
+            </p>
+          </div>
+        </div>
+        <div class="tab4-zlsc" id="tab4-zlsc"></div>
+        <div class="tab4-klqs-box">
+          <div class="calendar-box">
+            <input type="text" id="tab4-klqs-cld2" class="sskl-cld2">
+            <div class="arrow"></div>
+          </div>
+          <div class="tab4-klqs" id="tab4-klqs"></div>
+        </div>
+        <div class="tab4-klhx-box">
+          <div class="hm man">
+            <span>12%</span>
+          </div>
+          <div class="hm woman">
+            <span>12%</span>
+          </div>
+          <div class="tab4-klhx" id="tab4-klhx"></div>
+        </div>
+      </div>
+
+    </li>
+    <li data-name="旅客洞察" class="tab-box2-li4 tab-box2-li">
+      <div class="li-tab-box">
+        <div class="calendar-box">
+          <div class="calendar">
+            <div style="width: 280px;height: 40px;background-color: #114d8a;position: relative;">
+              <div class="cld-icon"></div>
+              <input type="text" class="m-cld" id="tab4-m-cld">
+              <div class="arrow"></div>
+            </div>
+          </div>
+        </div>
+        <header>
+          <div>
+            <p class="title-name">全天客流量</p>
+            <p>
+              <label for="">23445</label>万
+            </p>
+          </div>
+          <div>
+            <p class="title-name">全天进入车辆</p>
+            <p>
+              <label for="">23445</label>万
+            </p>
+          </div>
+          <div>
+            <p class="title-name">全天离开车辆</p>
+            <p>
+              <label for="">23445</label>万
+            </p>
+          </div>
+
+        </header>
+        <div class="tab4-zlsc" id="tab4-zlsc-day"></div>
+        <div class="tab4-zlsc2" id="tab4-zlsc2"></div>
+      </div>
+
+    </li>
+    <li data-name="旅客趋势" class="tab-box2-li3 tab-box2-li">
+      <div class="li-tab-box">
+        <div class="calendar-box">
+          <div class="calendar">
+            <div class="cld-icon"></div>
+            <input type="text" id="tab4-big-cld" class="tab4-big-cld">
+            <div class="arrow"></div>
+          </div>
+        </div>
+        <div class="chart-box">
+
+        </div>
+        <div class="chart-box">
+
+        </div>
+      </div>
+    </li>
   </ul>
   <!--鹰眼-->
   <div id="container2" class="container container2" style="width: 400px;height: 300px;">

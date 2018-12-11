@@ -67,7 +67,7 @@ $(function(){
 
   function handleErr(e) {
     console.log('请求错误:',e);
-    layer.alert('很抱歉!请求出错!请刷新页面', {icon: 0});
+    // layer.alert('很抱歉!请求出错!请刷新页面', {icon: 0});
   }
 
 

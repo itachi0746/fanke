@@ -429,6 +429,7 @@ html,body{
   .KLHX {
     width: 100%;
     height: 100%;
+    padding-left: 15px;
   }
 
 }
@@ -454,12 +455,11 @@ html,body{
 }
 .man {
   background: url("../img/icon_man.png") no-repeat;
-  left: 43%;
+  left: 45%;
 }
 .woman {
   background: url("../img/icon_woman.png") no-repeat;
-  left: 55%;
-
+  left: 56%;
 }
 
 .line-box {
@@ -642,37 +642,36 @@ html,body{
 
 }
 
-.tab-box2 .tab-box2-li2 {
+.header2 {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  padding-top: 20px;
 
-  background: url("../img/4icon_left_2_nor.png") no-repeat;
-
-  .header2 {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 20px;
-
-    div {
-      //flex: 1;
-      width: 200px;
-      text-align: center;
-      .title-name {
-        font-size: 16px;
-        color: rgb(221,243,255);
-      }
-      p {
-        font-size: 16px;
-        color: rgb(221,243,255);
-      }
-      label {
-        font-size: 34px;
-        color: rgb(221,243,255);
-      }
+  div {
+    //flex: 1;
+    width: 200px;
+    text-align: center;
+    .title-name {
+      font-size: 16px;
+      color: rgb(221,243,255);
     }
-
+    p {
+      font-size: 16px;
+      color: rgb(221,243,255);
+    }
+    label {
+      font-size: 34px;
+      color: rgb(221,243,255);
+    }
   }
+
+}
+.tab-box2 .tab-box2-li2 {
+  background: url("../img/4icon_left_2_nor.png") no-repeat;
   .li-tab-box {
-    height: 800px;
-    top: $tab2Top*1.5;
+    height: 750px;
+    top: -235px;
 
     header {
       width: 100%;
@@ -686,10 +685,10 @@ html,body{
       span {
         font-size: 50px;
         color: rgb(104,229,255);
-
-        i {
-          font-size: 24px;
-        }
+      }
+      i {
+        font-size: 24px;
+        color: rgb(104,229,255);
       }
     }
     .chart-box {
@@ -741,7 +740,7 @@ html,body{
       }
     }
     .chart-box2 {
-      height: 300px;
+      height: 250px;
       padding: 0 20px;
       .header {
         label {
@@ -802,7 +801,7 @@ html,body{
       width: 100%;
       height: 240px;
     }
-
+    //小日历box
     .calendar-box {
       width: 130px;
       height: 30px;
@@ -832,6 +831,36 @@ html,body{
   }
 }
 
+
+.tab4-zlsc {
+  width: 100%;
+  height: 200px;
+  padding-left: 15px;
+}
+.tab4-klqs-box {
+  width: 100%;
+  height: 240px;
+  position: relative;
+}
+.tab4-klqs {
+  width: 100%;
+  height: 100%;
+  padding-left: 15px;
+
+}
+.tab4-klhx-box {
+  width: 100%;
+  height: 400px;
+  position: relative;
+  padding-left: 15px;
+
+}
+.tab4-klhx {
+  width: 100%;
+  height: 400px;
+}
+
+
 .tab-box4 .tab-box2-li2 {
   background: url("../img/4icon_left_2_nor.png") no-repeat;
   .header1 {
@@ -855,7 +884,34 @@ html,body{
 
   .li-tab-box {
     width: 600px;
-    height: 800px;
+    height: 950px;
+    top: -340px;
+  }
+  .calendar-box {
+    width: 130px;
+    height: 30px;
+    background-color: #12508f;
+    position: absolute;
+    top: 5px;
+    right: 44px;
+    z-index: 10;
+    text-align: left;
+    .sskl-cld2 {
+      width: 100px;
+      height: 100%;
+      background-color: #12508f;
+      font-size: 16px;
+      color: #ddf3ff;
+    }
+    .arrow {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 30px;
+      height: 30px;
+      background: url(../img/icon_date_arrows_nor.png) no-repeat;
+      background-position: center;
+    }
   }
 }
 .tab-box2-li2.active {
@@ -919,16 +975,6 @@ html,body{
     .chart-box {
       height: 250px;
       padding-left: 20px;
-      //background-color: darkgreen;
-      .header {
-        display: flex;
-        justify-content: space-between;
-        label {
-          font-size: 18px;
-          color: rgb(221,243,255);
-        }
-      }
-
     }
     .chart-box2 {
       height: 250px;
@@ -1003,6 +1049,60 @@ html,body{
 
 .tab-box4 .tab-box2-li3 {
   background: url("../img/4icon_left_4_nor.png") no-repeat;
+
+  .tab4-big-cld {
+    width: 295px;
+    height: 100%;
+    position: absolute;
+    left: 45px;
+    top: 0;
+    background-color: rgb(18,80,143);
+  }
+  .arrow {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    background: url(../img/icon_date_arrows_nor.png) no-repeat;
+    background-position: center;
+  }
+
+  .cld-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 45px;
+    height: 40px;
+    background: url("../img/icon_date.png") no-repeat;
+  }
+
+
+  .li-tab-box {
+    height: 580px;
+    width: 600px;
+    top: $tab2Top*2;
+
+    .calendar-box {
+      display: flex;
+      padding: 20px 30px;
+      justify-content: center;
+      //background-color: red;
+    }
+    .calendar {
+      width: 380px;
+      height: 40px;
+      background-color: rgb(18,80,143);
+      position: relative;
+    }
+
+  }
+
+  .chart-box {
+    height: 250px;
+    padding-left: 20px;
+  }
+
 }
 
 .ZLSC {
@@ -1031,10 +1131,86 @@ html,body{
 .guishufenxi {
   width: 100%;
   height: 250px;
-
 }
 .tab-box4 .tab-box2-li4 {
   background: url("../img/4icon_left_3_nor.png") no-repeat;
+
+  .li-tab-box {
+    height: 650px;
+    top: -220px;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+
+    div {
+      //flex: 1;
+      width: 200px;
+      text-align: center;
+      .title-name {
+        font-size: 16px;
+        color: rgb(221,243,255);
+      }
+      p {
+        font-size: 16px;
+        color: rgb(221,243,255);
+      }
+      label {
+        font-size: 34px;
+        color: rgb(221,243,255);
+      }
+    }
+  }
+  .tab4-zlsc {
+    width: 100%;
+    height: 250px;
+  }
+  .tab4-zlsc2 {
+    width: 100%;
+    height: 250px;
+  }
+
+  //中日历
+  .calendar {
+    display: flex;
+    padding: 20px 20px;
+    justify-content: center;
+    position: relative;
+    //background-color: red;
+
+    .arrow {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 40px;
+      height: 40px;
+      background: url(../img/icon_date_arrows_nor.png) no-repeat;
+      background-position: center;
+    }
+
+    .cld-icon {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 45px;
+      height: 40px;
+      background: url("../img/icon_date.png") no-repeat;
+    }
+
+    .m-cld {
+      width: 195px;
+      height: 40px;
+      background-color: #114d8a;
+      position: absolute;
+      right: 30px;
+      top: 0;
+      font-size: 16px;
+      color: #ddf3ff;
+      text-align: center;
+    }
+  }
+
 
 }
 .tab-box2 .tab-box2-li4 {
