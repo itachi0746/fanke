@@ -54,7 +54,7 @@ $(function(){
       url: serviceBase + url,
       dataType: "json",
       success: function(d){
-        console.log('访问成功!')
+        // console.log('访问成功!')
 
         successfn(d);
       },

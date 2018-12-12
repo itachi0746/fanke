@@ -926,10 +926,19 @@ html,body{
     top: -200px;
   }
 
-  .chart {
+  .chart-box {
     width: 600px;
     height: 250px;
     position: relative;
+    padding-left: 15px;
+  }
+  .tab5-yxsd {
+    width: 100%;
+    height: 100%;
+  }
+  .tab5-klqs {
+    width: 100%;
+    height: 100%;
   }
   .calendar-box {
     width: 130px;
@@ -1223,8 +1232,22 @@ html,body{
   overflow-y: auto;
 }
 
-.scroll-box::-webkit-scrollbar {
-  display: none;
+//.scroll-box::-webkit-scrollbar {
+//  display: none;
+//}
+.scroll-box::-webkit-scrollbar {/*滚动条整体样式*/
+  width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+  height: 1px;
+}
+.scroll-box::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+  background: #2a659d;
+}
+.scroll-box::-webkit-scrollbar-track {/*滚动条里面轨道*/
+  -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+  border-radius: 10px;
+  background: rgba(0,0,0,0);
 }
 
 .guishufenxi {

@@ -44,3 +44,7 @@
 湛江机场|
 揭阳机场|
 
+tab2Li3InitEchart1();
+tab2Li3InitEchart2();
+tab2Li3InitEchart3();
+tab2Li3InitEchart4();
