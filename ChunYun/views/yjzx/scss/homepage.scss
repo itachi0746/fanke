@@ -411,7 +411,7 @@ html,body{
   display: none!important;
 }
 .SSKL {
-  width: 578px;
+  width: 100%;
   height: 100%;
 }
 .ZLSC1 {
@@ -429,7 +429,7 @@ html,body{
   .KLHX {
     width: 100%;
     height: 100%;
-    padding-left: 15px;
+    padding: 0 20px;
   }
 
 }
@@ -675,7 +675,7 @@ html,body{
 
     header {
       width: 100%;
-      padding: 30px 100px 25px;
+      padding: 30px 100px 0px;
 
       label {
         font-size: 26px;
@@ -692,7 +692,7 @@ html,body{
       }
     }
     .chart-box {
-      padding-left: 20px;
+      padding: 0 20px;
       width: 100%;
       height: 250px;
       position: relative;
@@ -796,12 +796,12 @@ html,body{
     .chart1 {
       width: 100%;
       height: 200px;
-      padding-left: 15px;
+      padding: 0 20px;
     }
     .chart2 {
       width: 100%;
       height: 240px;
-      padding-left: 15px;
+      padding: 0 20px;
     }
     //小日历box
     .calendar-box {
@@ -837,7 +837,7 @@ html,body{
 .tab4-zlsc {
   width: 100%;
   height: 200px;
-  padding-left: 15px;
+  padding: 0 20px;
 }
 .tab4-klqs-box {
   width: 100%;
@@ -847,14 +847,14 @@ html,body{
 .tab4-klqs {
   width: 100%;
   height: 100%;
-  padding-left: 15px;
+  padding: 0 20px;
 
 }
 .tab4-klhx-box {
   width: 100%;
   height: 400px;
   position: relative;
-  padding-left: 15px;
+  padding: 0 20px;
 
 }
 .tab4-klhx {
@@ -930,7 +930,7 @@ html,body{
     width: 600px;
     height: 250px;
     position: relative;
-    padding-left: 15px;
+    padding: 0 20px;
   }
   .tab5-yxsd {
     width: 100%;
@@ -1027,12 +1027,12 @@ html,body{
     }
     .chart-box {
       height: 250px;
-      padding-left: 20px;
+      padding: 0 20px;
     }
-    .chart-box2 {
-      height: 250px;
-      background-color: darkgreen;
-    }
+    //.chart-box2 {
+    //  height: 250px;
+    //  background-color: darkgreen;
+    //}
   }
 }
 
@@ -1093,10 +1093,12 @@ html,body{
   .chart1 {
     width: 100%;
     height: 250px;
+    padding: 0 20px;
   }
   .chart2 {
     width: 100%;
     height: 250px;
+    padding: 0 20px;
   }
 }
 
@@ -1153,7 +1155,7 @@ html,body{
 
   .chart-box {
     height: 250px;
-    padding-left: 20px;
+    padding: 0 20px;
   }
 
 }
@@ -1210,7 +1212,7 @@ html,body{
 
   .chart-box {
     height: 250px;
-    padding-left: 20px;
+    padding: 0 20px;
   }
 }
 .ZLSC {
@@ -1253,6 +1255,7 @@ html,body{
 .guishufenxi {
   width: 100%;
   height: 250px;
+  padding: 0 20px;
 }
 .tab-box4 .tab-box2-li4 {
   background: url("../img/4icon_left_3_nor.png") no-repeat;
@@ -1291,7 +1294,7 @@ html,body{
   .tab4-zlsc2 {
     width: 100%;
     height: 250px;
-    padding-left: 15px;
+    padding: 0 20px;
   }
 
   //中日历
@@ -1411,14 +1414,12 @@ html,body{
       width: 600px;
       height: 160px;
       margin-top: 30px;
-      padding-left: 20px;
+      padding: 0 20px;
       //background-color: blue;
     }
     .chart-box2 {
       width: 596px;
-      //height: 200px;
-      //background-color: #fff;
-      margin-left: 2px;
+      padding: 0 20px;
       display: flex;
       justify-content: space-between;
 
@@ -1669,6 +1670,7 @@ html,body{
     .chart1 {
       height: 220px;
       width: 100%;
+      padding: 0 20px;
       //background-color: #fff;
     }
     .chart2 {

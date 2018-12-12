@@ -446,7 +446,7 @@ html, body {
   display: none !important; }
 
 .SSKL {
-  width: 578px;
+  width: 100%;
   height: 100%; }
 
 .ZLSC1 {
@@ -469,7 +469,7 @@ html, body {
   .KLHX-box .KLHX {
     width: 100%;
     height: 100%;
-    padding-left: 15px; }
+    padding: 0 20px; }
 
 .hm {
   width: 80px;
@@ -671,7 +671,7 @@ html, body {
     top: -235px; }
     .tab-box2 .tab-box2-li2 .li-tab-box header {
       width: 100%;
-      padding: 30px 100px 25px; }
+      padding: 30px 100px 0px; }
       .tab-box2 .tab-box2-li2 .li-tab-box header label {
         font-size: 26px;
         color: #ddf3ff;
@@ -683,7 +683,7 @@ html, body {
         font-size: 24px;
         color: #68e5ff; }
     .tab-box2 .tab-box2-li2 .li-tab-box .chart-box {
-      padding-left: 20px;
+      padding: 0 20px;
       width: 100%;
       height: 250px;
       position: relative; }
@@ -765,11 +765,11 @@ html, body {
     .tab-box3 .tab-box2-li2 .li-tab-box .chart1 {
       width: 100%;
       height: 200px;
-      padding-left: 15px; }
+      padding: 0 20px; }
     .tab-box3 .tab-box2-li2 .li-tab-box .chart2 {
       width: 100%;
       height: 240px;
-      padding-left: 15px; }
+      padding: 0 20px; }
     .tab-box3 .tab-box2-li2 .li-tab-box .calendar-box {
       width: 130px;
       height: 30px;
@@ -797,7 +797,7 @@ html, body {
 .tab4-zlsc {
   width: 100%;
   height: 200px;
-  padding-left: 15px; }
+  padding: 0 20px; }
 
 .tab4-klqs-box {
   width: 100%;
@@ -807,13 +807,13 @@ html, body {
 .tab4-klqs {
   width: 100%;
   height: 100%;
-  padding-left: 15px; }
+  padding: 0 20px; }
 
 .tab4-klhx-box {
   width: 100%;
   height: 400px;
   position: relative;
-  padding-left: 15px; }
+  padding: 0 20px; }
 
 .tab4-klhx {
   width: 100%;
@@ -872,7 +872,7 @@ html, body {
     width: 600px;
     height: 250px;
     position: relative;
-    padding-left: 15px; }
+    padding: 0 20px; }
   .tab-box5 .tab-box2-li2 .tab5-yxsd {
     width: 100%;
     height: 100%; }
@@ -955,10 +955,7 @@ html, body {
       position: relative; }
     .tab-box2 .tab-box2-li3 .li-tab-box .chart-box {
       height: 250px;
-      padding-left: 20px; }
-    .tab-box2 .tab-box2-li3 .li-tab-box .chart-box2 {
-      height: 250px;
-      background-color: darkgreen; }
+      padding: 0 20px; }
 
 .tab-box2-li3.active {
   background: url("../img/4icon_left_4_on.png") no-repeat !important; }
@@ -1006,10 +1003,12 @@ html, body {
       position: relative; }
   .tab-box3 .tab-box2-li3 .chart1 {
     width: 100%;
-    height: 250px; }
+    height: 250px;
+    padding: 0 20px; }
   .tab-box3 .tab-box2-li3 .chart2 {
     width: 100%;
-    height: 250px; }
+    height: 250px;
+    padding: 0 20px; }
 
 .tab-box4 .tab-box2-li3 {
   background: url("../img/4icon_left_4_nor.png") no-repeat; }
@@ -1054,7 +1053,7 @@ html, body {
       position: relative; }
   .tab-box4 .tab-box2-li3 .chart-box {
     height: 250px;
-    padding-left: 20px; }
+    padding: 0 20px; }
 
 .tab-box5 .tab-box2-li3 {
   background: url("../img/4icon_left_4_nor.png") no-repeat; }
@@ -1099,7 +1098,7 @@ html, body {
       position: relative; }
   .tab-box5 .tab-box2-li3 .chart-box {
     height: 250px;
-    padding-left: 20px; }
+    padding: 0 20px; }
 
 .ZLSC {
   width: 100%;
@@ -1138,7 +1137,8 @@ html, body {
 
 .guishufenxi {
   width: 100%;
-  height: 250px; }
+  height: 250px;
+  padding: 0 20px; }
 
 .tab-box4 .tab-box2-li4 {
   background: url("../img/4icon_left_3_nor.png") no-repeat; }
@@ -1171,7 +1171,7 @@ html, body {
   .tab-box4 .tab-box2-li4 .tab4-zlsc2 {
     width: 100%;
     height: 250px;
-    padding-left: 15px; }
+    padding: 0 20px; }
   .tab-box4 .tab-box2-li4 .calendar {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -1269,10 +1269,10 @@ html, body {
       width: 600px;
       height: 160px;
       margin-top: 30px;
-      padding-left: 20px; }
+      padding: 0 20px; }
     .tab-box2 .tab-box2-li4 .li-tab-box .chart-box2 {
       width: 596px;
-      margin-left: 2px;
+      padding: 0 20px;
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
@@ -1445,7 +1445,8 @@ html, body {
       text-align: center; }
     .tab-box3 .tab-box2-li4 .li-tab-box .chart1 {
       height: 220px;
-      width: 100%; }
+      width: 100%;
+      padding: 0 20px; }
     .tab-box3 .tab-box2-li4 .li-tab-box .chart2 {
       height: 260px;
       width: 100%; }
