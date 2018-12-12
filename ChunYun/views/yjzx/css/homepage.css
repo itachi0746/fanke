@@ -117,6 +117,106 @@ html, body {
   z-index: 10;
   cursor: pointer; }
 
+.road-net {
+  height: 97px;
+  width: 1222px;
+  position: absolute;
+  top: 20px;
+  right: 65px;
+  z-index: 9;
+  padding: 0 17px 0 45px;
+  font-size: 18px;
+  color: #ffffff;
+  background-color: rgba(25, 54, 105, 0.9);
+  display: none; }
+  .road-net header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    border-bottom: 1px solid #79d8ff; }
+    .road-net header div {
+      text-align: center;
+      height: 30px;
+      line-height: 30px; }
+    .road-net header div:nth-child(1) {
+      width: 50px; }
+    .road-net header div:nth-child(2) {
+      width: 460px; }
+    .road-net header div:nth-child(3) {
+      width: 200px; }
+    .road-net header div:nth-child(4) {
+      width: 140px; }
+    .road-net header div:nth-child(5) {
+      width: 150px; }
+    .road-net header div:nth-child(6) {
+      width: 160px; }
+  .road-net li {
+    border-bottom: 1px solid #335c8d;
+    height: 32px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex; }
+    .road-net li div {
+      text-align: center;
+      height: 30px;
+      line-height: 30px; }
+    .road-net li div:nth-child(1) {
+      width: 50px; }
+    .road-net li div:nth-child(2) {
+      width: 460px; }
+    .road-net li div:nth-child(3) {
+      width: 200px;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center; }
+      .road-net li div:nth-child(3) span {
+        width: 70px;
+        height: 20px;
+        border-radius: 10px;
+        background-color: red;
+        line-height: 20px; }
+    .road-net li div:nth-child(4) {
+      width: 140px; }
+    .road-net li div:nth-child(5) {
+      width: 150px; }
+    .road-net li div:nth-child(6) {
+      width: 160px; }
+
+.road-net-tips {
+  width: 386px;
+  height: 33px;
+  padding: 3px;
+  position: absolute;
+  right: 54px;
+  bottom: 355px;
+  z-index: 99;
+  color: #ffffff;
+  background-color: #fff;
+  display: none; }
+  .road-net-tips ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex; }
+  .road-net-tips li {
+    width: 95px;
+    height: 27px;
+    text-align: center;
+    line-height: 27px; }
+  .road-net-tips li:nth-child(1) {
+    background-color: #821e16; }
+  .road-net-tips li:nth-child(2) {
+    background-color: #cd2b1e; }
+  .road-net-tips li:nth-child(3) {
+    background-color: #f7be45; }
+  .road-net-tips li:nth-child(4) {
+    background-color: #5cad32; }
+
 .top3 {
   height: 97px;
   position: absolute;

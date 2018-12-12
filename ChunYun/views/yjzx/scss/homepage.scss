@@ -34,15 +34,134 @@ html,body{
   z-index: 10;
   cursor: pointer;
 }
+.road-net {
+  height: 97px;
+  width: 1222px;
+  position: absolute;
+  top: 20px;
+  right: 65px;
+  z-index: 9;
+  padding: 0 17px 0 45px;
+  font-size: 18px;
+  color: #ffffff;
+  background-color: rgba(25,54,105,0.9);
+  display: none;
+
+  header {
+    display: flex;
+    border-bottom: 1px solid rgb(121,216,255);
+
+    div {
+      text-align: center;
+      height: 30px;
+      line-height: 30px;
+    }
+
+    div:nth-child(1) {
+      width: 50px;
+    }
+    div:nth-child(2) {
+      width: 460px;
+    }
+    div:nth-child(3) {
+      width: 200px;
+    }
+    div:nth-child(4) {
+      width: 140px;
+    }
+    div:nth-child(5) {
+      width: 150px;
+    }
+    div:nth-child(6) {
+      width: 160px;
+    }
+  }
+
+
+  li {
+    border-bottom: 1px solid rgb(51,92,141);
+    height: 32px;
+    display: flex;
+
+    div {
+      text-align: center;
+      height: 30px;
+      line-height: 30px;
+    }
+    div:nth-child(1) {
+      width: 50px;
+    }
+    div:nth-child(2) {
+      width: 460px;
+    }
+    div:nth-child(3) {
+      width: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      span {
+        width: 70px;
+        height: 20px;
+        border-radius: 10px;
+        background-color: red;
+        line-height: 20px;
+      }
+    }
+    div:nth-child(4) {
+      width: 140px;
+    }
+    div:nth-child(5) {
+      width: 150px;
+    }
+    div:nth-child(6) {
+      width: 160px;
+    }
+  }
+}
+.road-net-tips {
+  width: 386px;
+  height: 33px;
+  padding: 3px;
+  position: absolute;
+  right: 54px;
+  bottom: 355px;
+  z-index: 99;
+  color: #ffffff;
+  background-color: #fff;
+  display: none;
+
+  ul {
+    display: flex;
+  }
+
+  li {
+    width: 95px;
+    height: 27px;
+    text-align: center;
+    line-height: 27px;
+  }
+
+  li:nth-child(1) {
+    background-color: rgb(130,30,22);
+  }
+  li:nth-child(2) {
+    background-color: rgb(205,43,30);
+  }
+  li:nth-child(3) {
+    background-color: rgb(247,190,69);
+  }
+  li:nth-child(4) {
+    background-color: rgb(92,173,50);
+  }
+}
 .top3 {
-  //width: 1220px;
   height: 97px;
   position: absolute;
   top: 20px;
-  //left: 614px;
   right: 65px;
   z-index: 9;
-  //background: url("../img/top_3.png") no-repeat;
+  //display: none;
+
   .p-name {
     width: 132px;
     //display: inline-block;
@@ -112,32 +231,6 @@ html,body{
       }
     }
 
-    //.list {
-    //  li {
-    //    display: flex;
-    //    align-items: center;
-    //    margin-bottom: 5px;
-    //    cursor: pointer;
-    //    //height: 22px;
-    //    * {
-    //      cursor: pointer;
-    //    }
-    //
-    //    p {
-    //      font-weight:bold;
-    //      font-size: 22px;
-    //      display: flex;
-    //    }
-    //    span {
-    //      font-weight:normal;
-    //    }
-    //    .num {
-    //      font-weight:bold;
-    //
-    //    }
-    //
-    //  }
-    //}
 
   }
   .yongji:hover {
