@@ -30,7 +30,7 @@
 <div id="container" class="container">
   <div class="title"></div>
   <!--预警top3-->
-  <div class="top3">
+  <div id="top3" class="top3">
     <!--拥挤预警-->
     <div class="yongji">
       <div class="head">
@@ -87,7 +87,8 @@
     </div>
 
   </div>
-  <div class="road-net">
+  <!--高速路网-->
+  <div id="road-net" class="road-net">
     <header>
       <div>排名</div>
       <div>道路名称</div>
@@ -110,7 +111,7 @@
 
     </ul>
   </div>
-  <div class="road-net-tips">
+  <div id="road-net-tips" class="road-net-tips">
     <ul>
       <li>严重拥堵</li>
       <li>拥堵</li>
@@ -395,7 +396,7 @@
           <div class="data-box">
             <div class="header">
               <div class="container">
-                <div class="dongcha-tab">
+                <div class="dongcha-tab active">
                   省外
                 </div>
                 <div class="dongcha-tab">
@@ -413,13 +414,12 @@
                   来源Top5
                 </div>
                 <ul class="body">
-                  <li>
-                    <i class="index">1</i>
-                    <label>美国</label>
-                    <i class="line"></i>
-                    <span class="num">234人</span>
-                  </li>
-
+                  <!--<li>-->
+                    <!--<i class="index">1</i>-->
+                    <!--<label>美国</label>-->
+                    <!--<i class="line"></i>-->
+                    <!--<span class="num">234人</span>-->
+                  <!--</li>-->
                 </ul>
               </div>
               <div class="to-chart">
@@ -427,13 +427,12 @@
                   去向Top5
                 </div>
                 <ul class="body">
-                  <li>
-                    <i class="index">1</i>
-                    <label>美国</label>
-                    <i class="line"></i>
-                    <span class="num">234人</span>
-                  </li>
-
+                  <!--<li>-->
+                    <!--<i class="index">1</i>-->
+                    <!--<label>美国</label>-->
+                    <!--<i class="line"></i>-->
+                    <!--<span class="num">234人</span>-->
+                  <!--</li>-->
                 </ul>
               </div>
             </div>
@@ -1098,7 +1097,7 @@
 </script>
 <script src="yjzx/js/data.js"></script>
 <!--<script src="yjzx/js/tuodong.js"></script>-->
-<script src="yjzx/js/simulation.js"></script>
+<script src="lib/underscore-min.js"></script>
 <script src="yjzx/js/ajax.js"></script>
 <script src="yjzx/js/homepage.js"></script>
 </body>

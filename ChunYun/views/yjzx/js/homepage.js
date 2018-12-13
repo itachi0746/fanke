@@ -370,18 +370,33 @@ $(function () {
 
     if(nowTab===tabArr[0]) {
       positionType = 1;  // 场站type
+      $('#top3').show();
+      $('#road-net-tips').hide();
+      $('#road-net').hide();
     }
     if(nowTab===tabArr[1]) {
       positionType = 2;  // 服务区type
+      $('#top3').show();
+      $('#road-net-tips').hide();
+      $('#road-net').hide();
     }
     if(nowTab===tabArr[2]) {
       positionType = 3;  // 收费站type
+      $('#top3').show();
+      $('#road-net-tips').hide();
+      $('#road-net').hide();
     }
     if(nowTab==='高速') {
+      positionType = 4;  // 高速路段type
 
+      $('#top3').show();
+      $('#road-net-tips').hide();
+      $('#road-net').hide();
     }
     if(nowTab==='高速路网') {
-
+      $('#top3').hide();
+      $('#road-net-tips').show();
+      $('#road-net').show();
     }
 
     pointControl.ReturnDefualt();
@@ -434,6 +449,7 @@ $(function () {
     }
     if(nowTab===tabArr[0]&&tab2Name==='旅客洞察') {
       getPassengerData();
+      getAreaData($(tabDomNameArr[0]),'省外',returnDate(1))  // 默认省外
 
       tab2Li3InitEchart1();
       tab2Li3InitEchart2();
@@ -441,6 +457,7 @@ $(function () {
       tab2Li3InitEchart4();
     }
     if(nowTab===tabArr[0]&&tab2Name==='旅客趋势') {
+
       tab2Li4InitEchart();
       tab2Li4InitEchart2();
     }
@@ -899,8 +916,106 @@ $(function () {
     })
   }
 
+  /**
+   * 返回今天或者指定日期
+   * @param detract
+   * @returns {string}
+   */
+  function returnDate(detract) {
+    var myDate = new Date();
+    var y,m,d;
+    if(!detract) {
+      y = myDate.getFullYear();
+      m = myDate.getMonth() + 1;
+      d = myDate.getDate();
+      return y+'-'+m+'-'+d;
+    } else {
+      // var preDate = new Date(curDate.getTime() - 24*60*60*1000); //前一天
+      // y = myDate.getFullYear();
+      // m = myDate.getMonth() + 1;
+      var sec = 24*60*60*1000*detract;
+      var theDate = new Date(myDate.getTime()-sec);
+      y = theDate.getFullYear();
+      m = theDate.getMonth() + 1;
+      d = theDate.getDate();
+      return y+'-'+m+'-'+d;
+    }
+
+  }
+
+  /**
+   * 请求省内省外境外来源去向洞察数据
+   * @param dom
+   * @param area
+   * @param date
+   */
+  function getAreaData(dom,area,date) {
+    dom.find('.from-chart ul.body').empty();
+    dom.find('.to-chart ul.body').empty();
+    var d = date?date:returnDate();
+    var url = 'terminal/selectTerminalOriginAndLeaveTop.do?postionType='+positionType+'&postionName='+curPosition+'&area='+area+'&countDate='+d;
+    $.axpost(url,{},function (data) {
+      var oriArr,toArr;
+      if(area==='省外') {
+        oriArr = _.sortBy(data.data.listOutProvinceOrigin, function(item) {
+          return -item.travelerValue;
+        });
+        toArr = _.sortBy(data.data.listOutProvinceLeave, function(item) {
+          return -item.travelerValue;
+        });
+      }
+      if(area==='省内') {
+        oriArr = _.sortBy(data.data.listInProvinceOrigin, function(item) {
+          return -item.travelerValue;
+        });
+        toArr = _.sortBy(data.data.listInProvinceLeave, function(item) {
+          return -item.travelerValue;
+        });
+      }
+      if(area==='境外') {
+        oriArr = _.sortBy(data.data.listForgeinOrigin, function(item) {
+          return -item.travelerValue;
+        });
+        toArr = _.sortBy(data.data.listForgeinLeave, function(item) {
+          return -item.travelerValue;
+        });
+      }
+      var num = 0;
+      for (var i = 0; i < oriArr.length; i++) {
+        var obj = oriArr[i];
+        num++;
+        var str = '<li>\n' +
+          '<i class="index">'+ num +'</i>\n' +
+          '<label>'+ obj.originAreaName +'</label>\n' +
+          '<i class="line"></i>\n' +
+          '<span class="num">' + obj.travelerValue +'人</span>\n' +
+          '</li>';
+        var li = $(str);
+        dom.find('.from-chart ul.body').append(li)
+      }
+
+      var num2 = 0;
+      for (var j = 0; j < toArr.length; j++) {
+        var obj2 = toArr[j];
+        num2++;
+        var str2 = '<li>\n' +
+          '<i class="index">'+ num2 +'</i>\n' +
+          '<label>'+ obj2.toAreaName +'</label>\n' +
+          '<i class="line"></i>\n' +
+          '<span class="num">' + obj2.travelerValue +'人</span>\n' +
+          '</li>';
+        var li2 = $(str2);
+        dom.find('.to-chart ul.body').append(li2)
+      }
+
+    })
+  }
+
   function dongchaTabBindClick() {
-    var dongchaTabs = $('.dongcha-tab');
+    // 枢纽 洞察点击i
+    var dongchaTabs = $('#tab2 .dongcha-tab');
+    var area;
+    var dom;
     for (var i = 0; i < dongchaTabs.length; i++) {
       var t = dongchaTabs[i];
       $(t).on('click',function () {
@@ -909,6 +1024,26 @@ $(function () {
           $(t).removeClass('active')
         }
         $(this).addClass('active');
+        area = $(this).text().trim();
+        dom = $('#tab2');
+        // console.log('area:',area);
+        getAreaData(dom,area)
+
+      })
+    }
+
+    // 服务区 洞察点击i
+    var dongchaTabs2 = $('#tab3 .dongcha-tab');
+    for (var k = 0; k < dongchaTabs2.length; k++) {
+      var t2 = dongchaTabs[k];
+      $(t2).on('click',function () {
+        for (var j = 0; j < dongchaTabs.length; j++) {
+          var t2 = dongchaTabs[j];
+          $(t2).removeClass('active')
+        }
+        $(this).addClass('active');
+
+
 
       })
     }
@@ -1243,40 +1378,6 @@ $(function () {
       tab2Li4Echart = echarts.init(dom[0]);
     }
     option = null;
-    var date = ['12月1日','12月2日','12月3日','12月4日','12月5日','12月6日','12月7日'];
-
-    var myDate = new Date();//获取系统当前时间
-    var data = [Math.round(Math.random() * 150)];
-    // var data2 = [Math.random() * 160];
-
-
-    function addData() {
-//    now = [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/');
-      // date.push(hour);
-      if(data.length>=24) {
-        data = [Math.round(Math.random() * 150)];
-        // data2 = [Math.random() * 160];
-      }
-      data.push((Math.round(Math.random() - 0.3) * 10) + data[data.length - 1]);
-      // data2.push((Math.random() - 0.4) * 10 + data[data.length - 1]);
-      // hour >= 23? hour = 0: hour++;
-
-      // if (shift) {
-      //   // date.shift();
-      //   data.shift();
-      // }
-
-//    now = new Date(+new Date(now) + oneDay);
-    }
-    //
-    // for (var i = 0; i < 25; i++) {  // 时间(小时)
-    //   date.push(i);
-    //   // addData(false);
-    // }
-    for (var i = 0; i < 12; i++) {  // 模拟数据
-      // date.push(i);
-      addData();
-    }
 
     option = {
       title: {
@@ -1296,7 +1397,7 @@ $(function () {
         type: 'category',
         boundaryGap: false,
         name: '日期',
-        data: date,
+        data: [],
         axisLine: {
           onZero: false,
           lineStyle: {
@@ -1369,65 +1470,59 @@ $(function () {
           lineStyle: {
             color: 'rgb(255,215,93)'
           },
-          data: data,
-          // 在Y轴显示指标线(虚线)
-          // markLine: {
-          //         silent: true,
-          //         data: [{
-          //             yAxis: 50
-          //         }, {
-          //             yAxis: 100
-          //         }, {
-          //             yAxis: 150
-          //         }, {
-          //             yAxis: 200
-          //         }, {
-          //             yAxis: 300
-          //         }]
-          //     }
+          data: [],
+
         },
-        // {
-        //   name: '预测',
-        //   type: 'line',
-        //   smooth: true,
-        //   symbol: 'none',
-        //   stack: 'a',
-        //   // areaStyle: {
-        //   //   normal: {
-        //   //   }
-        //   // },
-        //   lineStyle: {
-        //     type: 'dotted'
-        //   },
-        //   data: data2
-        // }
+
       ]
     };
 
-    // setInterval(function () {
-    //   addData(true);
-    //   // console.log(data);
-    //
-    //   tab2Li4Echart.setOption({
-    //     xAxis: {
-    //       data: date
-    //     },
-    //     series: [
-    //       {
-    //         name: '实时',
-    //         data: data
-    //       },
-    //       {
-    //         name: '预测',
-    //         data: data2
-    //       },
-    //     ]
-    //   });
-    // }, 500);
-    ;
+    tab2Li4EchartReqData();
+
     if (option && typeof option === "object") {
       tab2Li4Echart.setOption(option, true);
     }
+  }
+
+  function tab2Li4EchartReqData(date) {
+    var d;
+    if(date) {
+      d = date;
+    } else {
+      d = {
+        start: returnDate(7),
+        end: returnDate(1)
+      };
+      // console.log('d',d);
+
+    }
+    tab2Li4Echart.showLoading();    //加载动画
+    var url = 'terminal/selectTerminalPassengerTrend.do?postionType='+ positionType +'&postionName='+ curPosition +'&startDate='+d.start + '&endDate='+d.end;
+    $.axpost(url,{},function (data) {
+      // console.log('tab2Li4Echart',data);
+      var dayArr = [];
+      var dataArr = [];
+      for (var i = 0; i < data.data.listTerminalPassengerTrend.length; i++) {
+        var obj = data.data.listTerminalPassengerTrend[i];
+        dayArr.push(obj.statDate);
+        dataArr.push(obj.travelers);
+      }
+      // debugger
+
+      tab2Li4Echart.hideLoading();    //隐藏加载动画
+
+      tab2Li4Echart.setOption({
+        xAxis: {
+          data: dayArr
+        },
+        series: [
+          {
+            name: '客流量',
+            data: dataArr
+          }
+        ]
+      })
+    })
   }
 
   var tab2Li4Echart2;
@@ -1437,40 +1532,7 @@ $(function () {
       tab2Li4Echart2 = echarts.init(dom[0]);
     }
     option = null;
-    var date = ['12月1日','12月2日','12月3日','12月4日','12月5日','12月6日','12月7日'];
 
-    var myDate = new Date();//获取系统当前时间
-    var data = [Math.round(Math.random() * 150)];
-    // var data2 = [Math.random() * 160];
-
-
-    function addData() {
-//    now = [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/');
-      // date.push(hour);
-      if(data.length>=24) {
-        data = [Math.round(Math.random() * 150)];
-        // data2 = [Math.random() * 160];
-      }
-      data.push((Math.round(Math.random() - 0.3) * 10) + data[data.length - 1]);
-      // data2.push((Math.random() - 0.4) * 10 + data[data.length - 1]);
-      // hour >= 23? hour = 0: hour++;
-
-      // if (shift) {
-      //   // date.shift();
-      //   data.shift();
-      // }
-
-//    now = new Date(+new Date(now) + oneDay);
-    }
-    //
-    // for (var i = 0; i < 25; i++) {  // 时间(小时)
-    //   date.push(i);
-    //   // addData(false);
-    // }
-    for (var i = 0; i < 12; i++) {  // 模拟数据
-      // date.push(i);
-      addData();
-    }
     option = {
       title: {
         text: '旅客趋势',
@@ -1488,7 +1550,7 @@ $(function () {
         }
       },
       legend: {
-        data: ['出发旅客量', '到达旅客量'],
+        data: [],
         textStyle: {
           color: 'rgb(221,243,255)'
         }
@@ -1516,7 +1578,7 @@ $(function () {
       },
       xAxis: {
         type: 'category',
-        data: date,
+        data: [],
         name: '日期',
         axisLabel: {
           interval: 0,
@@ -1551,7 +1613,7 @@ $(function () {
               position: 'insideRight'
             }
           },
-          data: [320, 302, 301, 334, 390, 330, 320]
+          data: []
         },
         {
           name: '到达旅客量',
@@ -1567,36 +1629,66 @@ $(function () {
               position: 'insideRight'
             }
           },
-          data: [120, 132, 101, 134, 90, 230, 210]
+          data: []
         },
 
       ]
     };
 
-    // setInterval(function () {
-    //   addData(true);
-    //   // console.log(data);
-    //
-    //   tab2Li4Echart2.setOption({
-    //     xAxis: {
-    //       data: date
-    //     },
-    //     series: [
-    //       {
-    //         name: '实时',
-    //         data: data
-    //       },
-    //       {
-    //         name: '预测',
-    //         data: data2
-    //       },
-    //     ]
-    //   });
-    // }, 500);
-    ;
+    tab2Li4Echart2ReqData();
+
     if (option && typeof option === "object") {
       tab2Li4Echart2.setOption(option, true);
     }
+  }
+
+  function tab2Li4Echart2ReqData(date) {
+    var d;
+    if(date) {
+      d = date;
+    } else {
+      d = {
+        start: returnDate(7),
+        end: returnDate(1)
+      };
+      // console.log('d',d);
+    }
+    tab2Li4Echart2.showLoading();    //加载动画
+    var url = 'terminal/selectTerminalPassengerTrend.do?postionType='+ positionType +'&postionName='+ curPosition +'&startDate='+d.start + '&endDate='+d.end;
+    $.axpost(url,{},function (data) {
+      console.log('tab2Li4Echart2',data);
+      var dayArr = [];
+      var ariArr = [];
+      var leaArr = [];
+      for (var i = 0; i < data.data.listTerminalPassengerTrend.length; i++) {
+        var obj = data.data.listTerminalPassengerTrend[i];
+        dayArr.push(obj.statDate);
+        ariArr.push(obj.arrivalValue);
+        leaArr.push(obj.leaveValue);
+      }
+      // debugger
+
+      tab2Li4Echart2.hideLoading();    //隐藏加载动画
+
+      tab2Li4Echart2.setOption({
+        legend: {
+          data: ['出发旅客量','到达旅客量']
+        },
+        xAxis: {
+          data: dayArr
+        },
+        series: [
+          {
+            name: '出发旅客量',
+            data: leaArr
+          },
+          {
+            name: '到达旅客量',
+            data: ariArr
+          }
+        ]
+      })
+    })
   }
 
   var tab2Li3Echart1;
@@ -1709,7 +1801,7 @@ $(function () {
     d = date?date:'';
     var url = 'terminal/selectTerminalLinger.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
-      console.log('tab2Li3Echart1',data);
+      // console.log('tab2Li3Echart1',data);
       var dataArr = [];
       for (var i = 0; i < data.data.length; i++) {
         var obj = data.data[i];
@@ -1850,7 +1942,7 @@ $(function () {
     d = date?date:'';
     var url = 'terminal/selectTerminalSexAge.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
-      console.log('tab2Li3Echart2',data);
+      // console.log('tab2Li3Echart2',data);
       var dataArr = [];
       for (var i = 0; i < data.data.terminalAgeList.length; i++) {
         var obj = data.data.terminalAgeList[i];
@@ -1860,7 +1952,7 @@ $(function () {
           value: obj.ageZb
         })
       }
-      console.log('dataArr:',dataArr);
+      // console.log('dataArr:',dataArr);
 
       tab2Li3Echart2.hideLoading();    //隐藏加载动画
       tab2Li3Echart2.setOption({
@@ -1895,7 +1987,6 @@ $(function () {
     var app = {};
     option = null;
     app.title = '环形图';
-    var colors = ['rgb(252,162,34)','rgb(152,113,253)','rgb(38,229,225)'];
 
     option = {
       title: {
@@ -1915,7 +2006,7 @@ $(function () {
         orient: 'horizontal',
         // x: 'top',
         top: '90%',
-        data: ['境外', '省内', '省外'],
+        data: [],
         textStyle: {
           color: '#fff'
         }
@@ -1945,18 +2036,73 @@ $(function () {
             }
           },
           data: [
-            {value: 335, name: '境外',itemStyle: {color:colors[0]}},
-            {value: 310, name: '省内',itemStyle: {color:colors[1]}},
-            {value: 234, name: '省外',itemStyle: {color:colors[2]}}
+            // {value: 335, name: '境外',itemStyle: {color:colors[0]}},
+            // {value: 310, name: '省内',itemStyle: {color:colors[1]}},
+            // {value: 234, name: '省外',itemStyle: {color:colors[2]}}
           ]
         }
       ]
     };
-    ;
+
+    tab2Li3Echart3ReqData();
+
     if (option && typeof option === "object") {
       tab2Li3Echart3.setOption(option, true);
     }
 
+  }
+
+  function tab2Li3Echart3ReqData(date) {
+    var colors = ['rgb(252,162,34)','rgb(152,113,253)','rgb(38,229,225)'];
+    tab2Li3Echart3.showLoading();    //加载动画
+    var d;
+    d = date?date:'';
+    var url = 'terminal/selectTerminalOriginAndLeave.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
+    $.axpost(url,{},function (data) {
+      // console.log('tab2Li3Echart3', data);
+      var tempArr = [];
+      var dataArr = [];
+      var name;
+      for(var key in data.data.originMap) {
+        tempArr.push({
+          type: key,
+          value: data.data.originMap[key]
+        })
+      }
+      for (var i = 0; i < tempArr.length; i++) {
+        var obj = tempArr[i];
+        if(obj.type==='inProvinceOrigin') {
+          name = '省内'
+        }
+        if(obj.type==='outProvinceOrigin') {
+          name = '省外'
+        }
+        if(obj.type==='forgeinOrigin') {
+          name = '境外'
+        }
+        dataArr.push({
+          name: name,
+          value: obj.value.travelerZb,
+          itemStyle: {
+            color: colors[i]
+          }
+        })
+      }
+      // console.log('tempArr:', dataArr,tempArr);
+
+      tab2Li3Echart3.hideLoading();    //隐藏加载动画
+      tab2Li3Echart3.setOption({
+        series: [
+          {
+            name: '来源洞察',
+            data: dataArr
+          }
+        ],
+        legend: {
+          data: ['境外', '省内', '省外']
+        }
+      })
+    })
   }
 
   var tab2Li3Echart4;
@@ -1968,7 +2114,7 @@ $(function () {
     var app = {};
     option = null;
     app.title = '环形图';
-    var colors = ['rgb(252,162,34)','rgb(152,113,253)','rgb(38,229,225)'];
+    // var colors = ['rgb(252,162,34)','rgb(152,113,253)','rgb(38,229,225)'];
 
     option = {
       title: {
@@ -1988,7 +2134,7 @@ $(function () {
         orient: 'horizontal',
         // x: 'top',
         top: '90%',
-        data: ['境外', '省内', '省外'],
+        data: [],
         textStyle: {
           color: '#fff'
         }
@@ -2018,19 +2164,74 @@ $(function () {
             }
           },
           data: [
-            {value: 335, name: '境外',itemStyle: {color:colors[0]}},
-            {value: 310, name: '省内',itemStyle: {color:colors[1]}},
-            {value: 234, name: '省外',itemStyle: {color:colors[2]}}
+            // {value: 335, name: '境外',itemStyle: {color:colors[0]}},
+            // {value: 310, name: '省内',itemStyle: {color:colors[1]}},
+            // {value: 234, name: '省外',itemStyle: {color:colors[2]}}
 
           ]
         }
       ]
     };
 
+    tab2Li3Echart4ReqData();
+
     if (option && typeof option === "object") {
       tab2Li3Echart4.setOption(option, true);
     }
 
+  }
+
+  function tab2Li3Echart4ReqData(date) {
+    var colors = ['rgb(252,162,34)','rgb(152,113,253)','rgb(38,229,225)'];
+    tab2Li3Echart4.showLoading();    //加载动画
+    var d;
+    d = date?date:'';
+    var url = 'terminal/selectTerminalOriginAndLeave.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
+    $.axpost(url,{},function (data) {
+      // console.log('tab2Li3Echart4', data);
+      var tempArr = [];
+      var dataArr = [];
+      var name;
+      for(var key in data.data.leaveMap) {
+        tempArr.push({
+          type: key,
+          value: data.data.leaveMap[key]
+        })
+      }
+      for (var i = 0; i < tempArr.length; i++) {
+        var obj = tempArr[i];
+        if(obj.type==='inProvinceLeave') {
+          name = '省内'
+        }
+        if(obj.type==='outProvinceLeave') {
+          name = '省外'
+        }
+        if(obj.type==='forgeinLeave') {
+          name = '境外'
+        }
+        dataArr.push({
+          name: name,
+          value: obj.value.travelerZb,
+          itemStyle: {
+            color: colors[i]
+          }
+        })
+      }
+      // console.log('tempArr:', dataArr,tempArr);
+
+      tab2Li3Echart4.hideLoading();    //隐藏加载动画
+      tab2Li3Echart4.setOption({
+        legend: {
+          data: ['境外', '省内', '省外']
+        },
+        series: [
+          {
+            name: '去向洞察',
+            data: dataArr
+          }
+        ]
+      })
+    })
   }
 
   // 服务区图表
