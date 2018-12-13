@@ -43,12 +43,5 @@
 广州白云国际机场|
 湛江机场|
 揭阳机场|
-
-tab3Li2InitEchart();
-tab3Li2InitEchart2();
-
-tab3Li3InitEchart();
-tab3Li3InitKLHX2();
-guishufenxiChart();
-
-tab3Li4InitEchart()
+tab2Li4EchartReqData()
+tab2Li4Echart2ReqData()

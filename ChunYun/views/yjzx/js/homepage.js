@@ -236,16 +236,10 @@ $(function () {
    * 日历初始化
    */
   function initCalendar() {
-    var myDate = new Date();
-    var y = myDate.getFullYear();
-    var m = myDate.getMonth() + 1;
-    var day = myDate.getDate();
-    var date = y + '-' + m + '-' + day;
-
-    // 交通枢纽
+    // 交通枢纽 实时客流
     laydate.render({
-      elem:'#tab-li2-cld'
-      ,value: date
+      elem:'#tab2-li2-cld'
+      ,value: returnDate()
       ,type:'date'//默认为date
       ,trigger:'click'//默认为click，即点击后出现日历框
       ,done: function(value, date, endDate){
@@ -254,26 +248,46 @@ $(function () {
       // console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
         tab2Li2Echart1reqData(value);
     }
-    })
-
+    });
+    // 交通枢纽 旅客洞察
     laydate.render({
-      elem:'#tab-li3-cld'
+      elem:'#tab2-li4-cld'
+      ,type:'date'//默认为date
+      ,trigger:'click'//默认为click，即点击后出现日历框
+      ,done: function(value, date, endDate){
+        // console.log(value); //得到日期生成的值，如：2017-08-18
+        // console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+        // console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+        tab2Li3Echart1reqData(value);
+        tab2Li3Echart2ReqData(value);
+        tab2Li3Echart3ReqData(value);
+        tab2Li3Echart4ReqData(value);
+        getAreaData($('#tab2'),'省外',value)
+      }
+    })
+    // 交通枢纽 旅客趋势
+    laydate.render({
+      elem:'#tab2-li3-cld'
       ,type:'date'//默认为date
       ,trigger:'click'//默认为click，即点击后出现日历框
       ,range: true
-    })
-    laydate.render({
-      elem:'#tab-li3-cld2'
-      ,type:'date'//默认为date
-      ,trigger:'click'//默认为click，即点击后出现日历框
-      ,range: true
+      ,done: function(value, date, endDate){
+        var dateObj = {
+          start: date.year+'-'+date.month+'-'+date.date,
+          end: endDate.year+'-'+endDate.month+'-'+endDate.date,
+        }
+        // console.log(dateObj)
+        tab2Li4EchartReqData(dateObj);
+        tab2Li4Echart2ReqData(dateObj)
+      }
     })
 
     // 服务区
     laydate.render({
-      elem:'#tab-li4-cld'
+      elem:'#tab3-li3-cld2'
       ,type:'date'//默认为date
       ,trigger:'click'//默认为click，即点击后出现日历框
+      ,range: true
     })
     laydate.render({
       elem:'#tab-li4-cld2'
@@ -952,7 +966,7 @@ $(function () {
   function getAreaData(dom,area,date) {
     dom.find('.from-chart ul.body').empty();
     dom.find('.to-chart ul.body').empty();
-    var d = date?date:returnDate();
+    var d = date?date:returnDate(1);
     var url = 'terminal/selectTerminalOriginAndLeaveTop.do?postionType='+positionType+'&postionName='+curPosition+'&area='+area+'&countDate='+d;
     $.axpost(url,{},function (data) {
       var oriArr,toArr;
@@ -1084,8 +1098,9 @@ $(function () {
   }
 
   // 交通枢纽图表
+  // 枢纽 实时客流
   var tab2Li2Echart1;
-  function tab2Li2InitEchart(dateParam) {
+  function tab2Li2InitEchart() {
     var SSKL = $('#SSKL');
     if(!tab2Li2Echart1) {
       tab2Li2Echart1 = echarts.init(SSKL[0]);
@@ -1193,18 +1208,8 @@ $(function () {
         // }
       ]
     };
-    if(dateParam) {
-      tab2Li2Echart1reqData(dateParam);
-    } else {
-      var myDate = new Date();
-      var year = myDate.getFullYear();
-      var month = myDate.getMonth() + 1;
-      var day = myDate.getDate();
-      var datestr = year+'-'+month+'-'+day;
-      // console.log('现在是:',datestr);
-      tab2Li2Echart1reqData(datestr);
-    }
 
+    tab2Li2Echart1reqData(returnDate());
 
     if (option && typeof option === "object") {
       tab2Li2Echart1.setOption(option, true);
@@ -1332,12 +1337,7 @@ $(function () {
       ]
     };
 
-    var myDate = new Date();
-    var year = myDate.getFullYear();
-    var month = myDate.getMonth() + 1;
-    var day = myDate.getDate();
-    var datestr = year+'-'+month+'-'+day;
-    tab2Li2Echart2reqData(datestr);
+    tab2Li2Echart2reqData(returnDate());
 
     if (option && typeof option === "object") {
       tab2Li2Echart2.setOption(option, true);
@@ -1348,7 +1348,7 @@ $(function () {
     tab2Li2Echart2.showLoading();    //加载动画
     var url = 'terminal/selectTerminalFlowLinger.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+date;
     $.axpost(url,{},function (data) {
-      console.log('tab2Li2Echart2',data);
+      // console.log('tab2Li2Echart2',data);
       var d = [];
       for (var i = 0; i < data.data.length; i++) {
         var obj = data.data[i];
@@ -1371,6 +1371,7 @@ $(function () {
 
   }
 
+  // 枢纽 旅客趋势
   var tab2Li4Echart;
   function tab2Li4InitEchart() {
     var dom = $('#KLQS');
@@ -1691,6 +1692,7 @@ $(function () {
     })
   }
 
+  // 枢纽 旅客洞察
   var tab2Li3Echart1;
   function tab2Li3InitEchart1() {
     var dom = $('#ZLSC');
@@ -1798,7 +1800,7 @@ $(function () {
   function tab2Li3Echart1reqData(date) {
     tab2Li3Echart1.showLoading();    //加载动画
     var d;
-    d = date?date:'';
+    d = date?date:returnDate(1);
     var url = 'terminal/selectTerminalLinger.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
       // console.log('tab2Li3Echart1',data);
@@ -1939,7 +1941,7 @@ $(function () {
   function tab2Li3Echart2ReqData(date) {
     tab2Li3Echart2.showLoading();    //加载动画
     var d;
-    d = date?date:'';
+    d = date?date:returnDate(1);
     var url = 'terminal/selectTerminalSexAge.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
       // console.log('tab2Li3Echart2',data);
@@ -2056,7 +2058,7 @@ $(function () {
     var colors = ['rgb(252,162,34)','rgb(152,113,253)','rgb(38,229,225)'];
     tab2Li3Echart3.showLoading();    //加载动画
     var d;
-    d = date?date:'';
+    d = date?date:returnDate(1);
     var url = 'terminal/selectTerminalOriginAndLeave.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
       // console.log('tab2Li3Echart3', data);
@@ -2185,7 +2187,7 @@ $(function () {
     var colors = ['rgb(252,162,34)','rgb(152,113,253)','rgb(38,229,225)'];
     tab2Li3Echart4.showLoading();    //加载动画
     var d;
-    d = date?date:'';
+    d = date?date:returnDate(1);
     var url = 'terminal/selectTerminalOriginAndLeave.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
       // console.log('tab2Li3Echart4', data);
