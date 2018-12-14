@@ -842,8 +842,9 @@ html, body {
     .tab-box3 .tab-box2-li2 .header1 span {
       font-size: 50px;
       color: #68e5ff; }
-      .tab-box3 .tab-box2-li2 .header1 span i {
-        font-size: 24px; }
+    .tab-box3 .tab-box2-li2 .header1 i {
+      font-size: 24px;
+      color: #68e5ff; }
   .tab-box3 .tab-box2-li2 .li-tab-box {
     height: 690px;
     top: -340px; }
@@ -862,6 +863,8 @@ html, body {
         text-align: center; }
         .tab-box3 .tab-box2-li2 .li-tab-box header div i {
           font-size: 34px; }
+          .tab-box3 .tab-box2-li2 .li-tab-box header div i span {
+            font-size: 16px; }
     .tab-box3 .tab-box2-li2 .li-tab-box .chart1 {
       width: 100%;
       height: 200px;
@@ -1020,7 +1023,9 @@ html, body {
     position: absolute;
     left: 45px;
     top: 0;
-    background-color: #12508f; }
+    background-color: #12508f;
+    color: #fff;
+    text-align: center; }
   .tab-box2 .tab-box2-li3 .arrow {
     position: absolute;
     right: 0;
@@ -1457,18 +1462,11 @@ html, body {
           margin-right: 10px;
           margin-left: 20px; }
         .data-box .container2-1 .from-chart .body label, .data-box .container2-1 .to-chart .body label {
-          display: -webkit-box;
-          display: -ms-flexbox;
-          display: flex;
-          -webkit-box-pack: justify;
-              -ms-flex-pack: justify;
-                  justify-content: space-between;
-          -webkit-box-flex: 1;
-              -ms-flex: 1;
-                  flex: 1;
           overflow: hidden;
           text-overflow: ellipsis;
-          white-space: nowrap; }
+          white-space: nowrap;
+          width: 80px;
+          text-align: justify; }
         .data-box .container2-1 .from-chart .body .line, .data-box .container2-1 .to-chart .body .line {
           display: -webkit-box;
           display: -ms-flexbox;
@@ -1481,10 +1479,15 @@ html, body {
           display: -webkit-box;
           display: -ms-flexbox;
           display: flex;
-          width: 380px;
+          width: 340px;
           height: 2px;
           margin-right: 15px;
           background-color: #b5e2fe; }
+        .data-box .container2-1 .from-chart .body .num, .data-box .container2-1 .to-chart .body .num {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width: 78px; }
 
 .tab-box2-li4.active {
   background: url("../img/4icon_left_3_on.png") no-repeat !important; }

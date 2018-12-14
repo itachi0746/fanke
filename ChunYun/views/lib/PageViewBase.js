@@ -16,7 +16,7 @@ function PageViewBase() {
         "test": "qxjc.html",
         "insight": "qxdc.html",
         "bridge": "gzadq.html",
-        "strait": "",
+        "strait": "qzhx.html",
     };
     $('.topbutton').click(function () {
         if ($(this).hasClass('test')) {
@@ -32,8 +32,62 @@ function PageViewBase() {
             location.href = theUrlMap['strait'];
         }
     });
+
 }
 
+PageViewBase.prototype.getProvinceCity = function (province) {
+    var theShengs =
+        {
+            "北京市": "北京",
+            "北京": "北京",
+            "天津市": "天津",
+            "天津": "天津",
+            "上海市": "上海",
+            "上海": "上海",
+            "重庆市": " 重庆",
+            "重庆": " 重庆",
+            "河北省": "石家庄",
+            "山西省": "太原",
+            "陕西省": " 西安",
+            "山东省": " 济南",
+            "河南省": "郑州",
+            "辽宁省": " 沈阳",
+            "吉林省": " 长春",
+            "黑龙江省": " 哈尔滨",
+            "江苏省": "南京",
+            "浙江省": "杭州",
+            "安徽省": "合肥",
+            "江西省": "南昌",
+            "福建省": "福州",
+            "湖北省": "武汉",
+            "湖南省": "长沙",
+            "四川省": "成都",
+            "贵州省": "贵阳",
+            "云南省": "昆明",
+            "广东省": "广州",
+            "海南省": "海口",
+            "甘肃省": "兰州",
+            "青海省": "西宁",
+            "台湾省": "台北",
+            "内蒙古自治区": "呼和浩特",
+            "内蒙古": "呼和浩特",
+            "新疆维吾尔自治区": "乌鲁木齐",
+            "新疆": "乌鲁木齐",
+            "西藏自治区": "拉萨",
+            "西藏": "拉萨",
+            "广西壮族自治区": "南宁",
+            "广西": "南宁",
+            "宁夏回族自治区": "银川",
+            "宁夏": "银川",
+            "香港特别行政区": "香港",
+            "香港": "香港",
+            "澳门特别行政区": "澳门",
+            "澳门": "澳门"
+        };
+
+    return theShengs[province] || theShengs[province + '省'];
+
+}
 PageViewBase.prototype.getAreaCode = function (cityName) {
     var AreaMap = [
         {
@@ -181,14 +235,17 @@ PageViewBase.prototype.loadTemplateTable = function (theTableId, data, pageindex
     var theTemplateStr = $(theTemplate).html();
     pageindex = pageindex || 0;
     pagesize = pagesize || 5;
-    var theStartIndex = pagesize * index;
-    var theEndIndex = pagesize * index + pagesize;
+    var theStartIndex = pagesize * (index || 0);
+    var theEndIndex = pagesize * (index || 0) + pagesize;
     $(theTableBody).empty();
-    data = data || [];
+    var datas = data || [];
     var index = 0;
     var theTemArrays = [];
-    for (; theStartIndex < theEndIndex; theStartIndex++) {
-        var data = data[theStartIndex];
+    for (var i = theStartIndex; i < theEndIndex; i++) {
+        if (i >= datas.length) {
+            break;
+        }
+        var data = datas[i];
         var theResultStr = eval('`' + theTemplateStr + '`');
         index++;
         theTemArrays.push(theResultStr);
@@ -200,6 +257,26 @@ PageViewBase.prototype.loadTemplateTable = function (theTableId, data, pageindex
     return theResultStr;
 }).join('');*/
     $(theTableBody).append(theResultString);
+    $(theTableBody).data('data', datas);
+    var thePageNum =Math.floor(datas.length / pagesize)+(datas.length%pagesize>0?1:0);
+    var thePageDiv = $('#' + theTableId).closest('.table-div').next('.page');
+    $(thePageDiv).empty();
+    var me = this;
+    for (var i = 1; i <= thePageNum; i++) {
+        var select = 'select';
+        if (i != pageindex + 1) {
+            select = '';
+        }
+        var thePageText = ` <div class="page-item-${i} data-page='${i - 1}' page-item ${select}"></div>`;
+        var thePageItem = $(thePageText);
+        $(thePageItem).unbind().click(function () {
+            $(thePageDiv).find('.page-item').removeClass('select');
+            $(this).addClass('select');
+            var thePageIndex = $(this).data('page');
+            me.loadTemplateTable(theTableId, datas, thePageIndex, pagesize);
+        });
+        $(thePageDiv).append(thePageItem);
+    }
 }
 /*
 * 加载并展示表格数据
@@ -337,6 +414,130 @@ PageViewBase.prototype.initExtend = function () {
             return arr;
         };
     }
+}
+/**
+ * 显示热力图
+ * @param data
+ */
+PageViewBase.prototype.drawReli = function (data) {
+    //var map = Loca.create(theMap);
+    //var layer = Loca.visualLayer({
+    //    container: map,
+    //    type: 'heatmap',
+    //    // 基本热力图
+    //    shape: 'normal'
+    //});
+    var theCenter = this.theMap.getCenter();
+    if (!this.theHeartLayer) {
+        var map = Loca.create(this.theMap);
+        this.theHeartLayer = Loca.visualLayer({
+            container: map,
+            type: 'heatmap',
+            // 基本热力图
+            shape: 'normal'
+        });
+    }
+    lng = theCenter.lng;
+    lat = theCenter.lat;
+    var theValue = Math.floor((Math.random() * 10));
+    layer = this.theHeartLayer;
+    var list = [];
+    var i = -1, length = 4000;
+    while (++i < length) {
+        //var item = heatmapData[i + theValue];
+        //i = i + theValue;
+
+        list.push({
+            coordinate: [lng + Math.random(), lat + Math.random()],
+            count: Math.floor((Math.random() * 1000))
+        })
+    }
+
+    layer.setData(list, {
+        lnglat: 'coordinate',
+        value: 'count'
+    });
+
+    layer.setOptions({
+        style: {
+            radius: 30,
+            color: {
+                0.5: '#2c7bb6',
+                0.65: '#abd9e9',
+                0.7: '#ffffbf',
+                0.9: '#fde468',
+                1.0: '#d7191c'
+            }
+        }
+    });
+
+    layer.render();
+}
+/**
+ *
+ * @param name 1 港珠澳 2 琼州海峡
+ */
+PageViewBase.prototype.initMap = function (id) {
+    //最大的缩放程度
+    var theMaxZoom = 18;
+    //现在的缩放程度
+    var theCurrentZoom = 1;
+    //
+    var theMakerLayer = null;
+    //室内地图层
+    var theInnerLayer = null;
+    //热力图地图层
+    var theHeartLayer = null;
+    //创建地图实例
+    var theMap = new AMap.Map('container', {
+        pitch: 0,
+        mapStyle: 'amap://styles/9f47a75c5a80f716945988ccbc61aeb7',
+        //mapStyle: 'amap://styles/c6b6ea6de59432d8973e27caa9b04355',
+        //mapStyle: 'amap://styles/grey',//'amap://styles/blue',
+        viewMode: '3D',// 地图模式
+        //lat: 22.251472
+        //lng: 113.766128
+        center: id == 1 ? [113.766128, 22.251472] : [110.322391, 20.146053],//港珠澳大桥
+
+        //center:[110.322391,20.146053 ],//琼州海峡 //lat: 20.146053  lng: 110.322391
+
+        //center: [113.275824, 22.994826],
+        features: ['bg', 'building', 'point', 'road'],//['all'],// ['bg', 'building','point'],
+        zoom: 12,
+        keyboardEnable: false,
+        layers: [
+            //satellite,
+            // building,
+            //roadNet
+        ]
+    });
+    this.theMap = theMap;
+    //地图加载完成事件
+    theMap.on('complete', function () {
+        console.log("地图加载完成!");
+    });
+    //监听放大缩小事件
+    theMap.on('zoom', function (arg) {
+        var theZoom = theMap.getZoom();
+        if (theZoom >= 12) {
+            console.log("显示点");
+            theMap.setFeatures(['bg', 'road', 'building', 'point']);
+            theInnerLayer && theInnerLayer.setzIndex(1000);
+            //theMap.add(satellite);
+            //theMap.setMapStyle("normal");
+
+        }
+        else {
+            console.log("隐藏点");
+            //theHeartLayer && theHeartLayer.setMap(null);
+            //theHeartLayer && theHeartLayer.remove() ;
+            //theHeartLayer = null;
+            //theMap.setMapStyle("amap://styles/grey");
+        }
+
+    });
+
+
 }
 /**
  * 加载服务端的数据
