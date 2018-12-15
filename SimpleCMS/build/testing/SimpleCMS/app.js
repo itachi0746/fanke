@@ -59137,7 +59137,10 @@ Ext.define('SimpleCMS.ux.form.field.VTypes', {override:'Ext.form.field.VTypes', 
     return val == pwd.getValue();
   }
   return true;
-}, passwordText:I18N.PasswordText});
+}, passwordText:I18N.PasswordText, car:function(val, field) {
+  var reg = /^([1-5])/i;
+  return reg.test(val);
+}, carText:'输入错误'});
 Ext.define('Ext.form.trigger.Trigger', {alias:'trigger.trigger', mixins:[Ext.mixin.Factoryable], factoryConfig:{defaultType:'trigger'}, repeatClick:false, hidden:false, hideOnReadOnly:undefined, tooltip:null, weight:0, preventMouseDown:true, focusOnMousedown:false, baseCls:Ext.baseCSSPrefix + 'form-trigger', focusCls:Ext.baseCSSPrefix + 'form-trigger-focus', overCls:Ext.baseCSSPrefix + 'form-trigger-over', clickCls:Ext.baseCSSPrefix + 'form-trigger-click', validIdRe:Ext.validIdRe, renderTpl:['\x3cdiv id\x3d"{triggerId}" class\x3d"{baseCls} {baseCls}-{ui} {cls} {cls}-{ui} {extraCls} ', 
 '{childElCls}"\x3ctpl if\x3d"triggerStyle"\x3e style\x3d"{triggerStyle}"\x3c/tpl\x3e', '\x3ctpl if\x3d"ariaRole"\x3e role\x3d"{ariaRole}"\x3ctpl else\x3e role\x3d"presentation"\x3c/tpl\x3e', '\x3e', '{[values.$trigger.renderBody(values)]}', '\x3c/div\x3e'], statics:{weightComparator:function(triggerA, triggerB) {
   return triggerA.weight - triggerB.weight;
@@ -62676,6 +62679,534 @@ Ext.define('Ext.toolbar.TextItem', {extend:Ext.toolbar.Item, alias:'widget.tbtex
 }, setText:function(text) {
   this.update(text);
 }});
+Ext.define('Ext.form.trigger.Spinner', {extend:Ext.form.trigger.Trigger, alias:'trigger.spinner', cls:Ext.baseCSSPrefix + 'form-trigger-spinner', spinnerCls:Ext.baseCSSPrefix + 'form-spinner', spinnerUpCls:Ext.baseCSSPrefix + 'form-spinner-up', spinnerDownCls:Ext.baseCSSPrefix + 'form-spinner-down', focusCls:Ext.baseCSSPrefix + 'form-spinner-focus', overCls:Ext.baseCSSPrefix + 'form-spinner-over', clickCls:Ext.baseCSSPrefix + 'form-spinner-click', focusFieldOnClick:true, vertical:true, bodyTpl:'\x3ctpl if\x3d"vertical"\x3e' + 
+'\x3cdiv class\x3d"{spinnerCls} {spinnerCls}-{ui} {spinnerUpCls} {spinnerUpCls}-{ui}' + ' {childElCls} {upDisabledCls}"\x3e\x3c/div\x3e' + '\x3c/tpl\x3e' + '\x3cdiv class\x3d"{spinnerCls} {spinnerCls}-{ui} {spinnerDownCls} {spinnerDownCls}-{ui}' + ' {childElCls} {downDisabledCls}"\x3e\x3c/div\x3e' + '\x3ctpl if\x3d"!vertical"\x3e' + '\x3cdiv class\x3d"{spinnerCls} {spinnerCls}-{ui} {spinnerUpCls} {spinnerUpCls}-{ui}' + ' {childElCls} {upDisabledCls}"\x3e\x3c/div\x3e' + '\x3c/tpl\x3e', destroy:function() {
+  var me = this;
+  if (me.spinnerEl) {
+    me.spinnerEl.destroy();
+    me.spinnerEl = me.upEl = me.downEl = null;
+  }
+  me.callParent();
+}, getBodyRenderData:function() {
+  var me = this;
+  return {vertical:me.vertical, upDisabledCls:me.upEnabled ? '' : me.spinnerUpCls + '-disabled', downDisabledCls:me.downEnabled ? '' : me.spinnerDownCls + '-disabled', spinnerCls:me.spinnerCls, spinnerUpCls:me.spinnerUpCls, spinnerDownCls:me.spinnerDownCls};
+}, getStateEl:function() {
+  return this.spinnerEl;
+}, onClick:function() {
+  var me = this, args = arguments, e = me.clickRepeater ? args[1] : args[0], field = me.field;
+  if (!field.readOnly && !field.disabled) {
+    if (me.upEl.contains(e.target)) {
+      Ext.callback(me.upHandler, me.scope, [field, me, e], 0, field);
+    } else {
+      if (me.downEl.contains(e.target)) {
+        Ext.callback(me.downHandler, me.scope, [field, me, e], 0, field);
+      }
+    }
+  }
+  field.inputEl.focus();
+}, onFieldRender:function() {
+  var me = this, vertical = me.vertical, spinnerEl, elements;
+  me.callParent();
+  spinnerEl = me.spinnerEl = me.el.select('.' + me.spinnerCls, true);
+  elements = spinnerEl.elements;
+  me.upEl = vertical ? elements[0] : elements[1];
+  me.downEl = vertical ? elements[1] : elements[0];
+}, setUpEnabled:function(enabled) {
+  this.upEl[enabled ? 'removeCls' : 'addCls'](this.spinnerUpCls + '-disabled');
+}, setDownEnabled:function(enabled) {
+  this.downEl[enabled ? 'removeCls' : 'addCls'](this.spinnerDownCls + '-disabled');
+}});
+Ext.define('Ext.form.field.Spinner', {extend:Ext.form.field.Text, alias:'widget.spinnerfield', alternateClassName:'Ext.form.Spinner', config:{triggers:{spinner:{type:'spinner', upHandler:'onSpinnerUpClick', downHandler:'onSpinnerDownClick', endHandler:'onSpinEnd', scope:'this'}}}, spinUpEnabled:true, spinDownEnabled:true, keyNavEnabled:true, mouseWheelEnabled:true, repeatTriggerClick:true, onSpinUp:Ext.emptyFn, onSpinDown:Ext.emptyFn, ariaRole:'spinbutton', applyTriggers:function(triggers) {
+  var me = this, spinnerTrigger = triggers.spinner;
+  spinnerTrigger.upEnabled = me.spinUpEnabled;
+  spinnerTrigger.downEnabled = me.spinDownEnabled;
+  return me.callParent([triggers]);
+}, onRender:function() {
+  var me = this, spinnerTrigger = me.getTrigger('spinner');
+  me.callParent();
+  if (me.keyNavEnabled) {
+    me.spinnerKeyNav = new Ext.util.KeyNav(me.inputEl, {scope:me, up:me.spinUp, down:me.spinDown});
+    me.inputEl.on({keyup:me.onInputElKeyUp, scope:me});
+  }
+  if (me.mouseWheelEnabled) {
+    me.mon(me.bodyEl, 'mousewheel', me.onMouseWheel, me);
+  }
+  me.spinUpEl = spinnerTrigger.upEl;
+  me.spinDownEl = spinnerTrigger.downEl;
+}, onSpinnerUpClick:function() {
+  this.spinUp();
+}, onSpinnerDownClick:function() {
+  this.spinDown();
+}, spinUp:function() {
+  var me = this;
+  if (me.spinUpEnabled && !me.disabled) {
+    me.fireEvent('spin', me, 'up');
+    me.fireEvent('spinup', me);
+    me.onSpinUp();
+  }
+}, spinDown:function() {
+  var me = this;
+  if (me.spinDownEnabled && !me.disabled) {
+    me.fireEvent('spin', me, 'down');
+    me.fireEvent('spindown', me);
+    me.onSpinDown();
+  }
+}, setSpinUpEnabled:function(enabled) {
+  var me = this, wasEnabled = me.spinUpEnabled;
+  me.spinUpEnabled = enabled;
+  if (wasEnabled !== enabled && me.rendered) {
+    me.getTrigger('spinner').setUpEnabled(enabled);
+  }
+}, setSpinDownEnabled:function(enabled) {
+  var me = this, wasEnabled = me.spinDownEnabled;
+  me.spinDownEnabled = enabled;
+  if (wasEnabled !== enabled && me.rendered) {
+    me.getTrigger('spinner').setDownEnabled(enabled);
+  }
+}, onMouseWheel:function(e) {
+  var me = this, delta;
+  if (me.hasFocus) {
+    delta = e.getWheelDelta();
+    if (delta > 0) {
+      me.spinUp();
+    } else {
+      if (delta < 0) {
+        me.spinDown();
+      }
+    }
+    e.stopEvent();
+    me.onSpinEnd();
+  }
+}, onInputElKeyUp:function(e) {
+  if (e.keyCode === e.UP || e.keyCode === e.DOWN) {
+    this.onSpinEnd();
+  }
+}, doDestroy:function() {
+  Ext.destroyMembers(this, 'spinnerKeyNav');
+  this.callParent();
+}}, function(Spinner) {
+  Spinner.prototype.onSpinEnd = Ext.Function.createBuffered(function() {
+    this.fireEvent('spinend', this);
+  }, 100);
+});
+Ext.define('Ext.form.field.Number', {extend:Ext.form.field.Spinner, alias:'widget.numberfield', alternateClassName:['Ext.form.NumberField', 'Ext.form.Number'], allowExponential:true, allowDecimals:true, decimalSeparator:null, submitLocaleSeparator:true, decimalPrecision:2, minValue:Number.NEGATIVE_INFINITY, maxValue:Number.MAX_VALUE, step:1, minText:'The minimum value for this field is {0}', maxText:'The maximum value for this field is {0}', nanText:'{0} is not a valid number', negativeText:'The value cannot be negative', 
+baseChars:'0123456789', autoStripChars:false, initComponent:function() {
+  var me = this;
+  if (me.decimalSeparator === null) {
+    me.decimalSeparator = Ext.util.Format.decimalSeparator;
+  }
+  me.callParent();
+  me.setMinValue(me.minValue);
+  me.setMaxValue(me.maxValue);
+}, getSubTplData:function(fieldData) {
+  var me = this, min = me.minValue, max = me.maxValue, data, inputElAttr, value;
+  data = me.callParent([fieldData]);
+  inputElAttr = data.inputElAriaAttributes;
+  if (inputElAttr) {
+    if (min > Number.NEGATIVE_INFINITY) {
+      inputElAttr['aria-valuemin'] = min;
+    }
+    if (max < Number.MAX_VALUE) {
+      inputElAttr['aria-valuemax'] = max;
+    }
+    value = me.getValue();
+    if (value != null && value >= min && value <= max) {
+      inputElAttr['aria-valuenow'] = value;
+    }
+  }
+  return data;
+}, setValue:function(value) {
+  var me = this, bind, valueBind;
+  if (me.hasFocus) {
+    bind = me.getBind();
+    valueBind = bind && bind.value;
+    if (valueBind && valueBind.syncing && value === me.value) {
+      return me;
+    }
+  }
+  return me.callParent([value]);
+}, getErrors:function(value) {
+  value = arguments.length > 0 ? value : this.processRawValue(this.getRawValue());
+  var me = this, errors = me.callParent([value]), format = Ext.String.format, num;
+  if (value.length < 1) {
+    return errors;
+  }
+  value = String(value).replace(me.decimalSeparator, '.');
+  if (isNaN(value)) {
+    errors.push(format(me.nanText, value));
+  }
+  num = me.parseValue(value);
+  if (me.minValue === 0 && num < 0) {
+    errors.push(this.negativeText);
+  } else {
+    if (num < me.minValue) {
+      errors.push(format(me.minText, me.minValue));
+    }
+  }
+  if (num > me.maxValue) {
+    errors.push(format(me.maxText, me.maxValue));
+  }
+  return errors;
+}, rawToValue:function(rawValue) {
+  var value = this.fixPrecision(this.parseValue(rawValue));
+  if (value === null) {
+    value = rawValue || null;
+  }
+  return value;
+}, valueToRaw:function(value) {
+  var me = this, decimalSeparator = me.decimalSeparator;
+  value = me.parseValue(value);
+  value = me.fixPrecision(value);
+  value = Ext.isNumber(value) ? value : parseFloat(String(value).replace(decimalSeparator, '.'));
+  value = isNaN(value) ? '' : String(value).replace('.', decimalSeparator);
+  return value;
+}, getSubmitValue:function() {
+  var me = this, value = me.callParent();
+  if (!me.submitLocaleSeparator) {
+    value = value.replace(me.decimalSeparator, '.');
+  }
+  return value;
+}, onChange:function(newValue) {
+  var ariaDom = this.ariaEl.dom;
+  this.toggleSpinners();
+  this.callParent(arguments);
+  if (ariaDom) {
+    if (Ext.isNumber(newValue) && isFinite(newValue)) {
+      ariaDom.setAttribute('aria-valuenow', newValue);
+    } else {
+      ariaDom.removeAttribute('aria-valuenow');
+    }
+  }
+}, toggleSpinners:function() {
+  var me = this, value = me.getValue(), valueIsNull = value === null, enabled;
+  if (me.spinUpEnabled || me.spinUpDisabledByToggle) {
+    enabled = valueIsNull || value < me.maxValue;
+    me.setSpinUpEnabled(enabled, true);
+  }
+  if (me.spinDownEnabled || me.spinDownDisabledByToggle) {
+    enabled = valueIsNull || value > me.minValue;
+    me.setSpinDownEnabled(enabled, true);
+  }
+}, setMinValue:function(value) {
+  var me = this, ariaDom = me.ariaEl.dom, minValue, allowed, ariaDom;
+  me.minValue = minValue = Ext.Number.from(value, Number.NEGATIVE_INFINITY);
+  me.toggleSpinners();
+  if (ariaDom) {
+    if (minValue > Number.NEGATIVE_INFINITY) {
+      ariaDom.setAttribute('aria-valuemin', minValue);
+    } else {
+      ariaDom.removeAttribute('aria-valuemin');
+    }
+  }
+  if (me.disableKeyFilter !== true) {
+    allowed = me.baseChars + '';
+    if (me.allowExponential) {
+      allowed += me.decimalSeparator + 'e+-';
+    } else {
+      if (me.allowDecimals) {
+        allowed += me.decimalSeparator;
+      }
+      if (me.minValue < 0) {
+        allowed += '-';
+      }
+    }
+    allowed = Ext.String.escapeRegex(allowed);
+    me.maskRe = new RegExp('[' + allowed + ']');
+    if (me.autoStripChars) {
+      me.stripCharsRe = new RegExp('[^' + allowed + ']', 'gi');
+    }
+  }
+}, setMaxValue:function(value) {
+  var ariaDom = this.ariaEl.dom, maxValue;
+  this.maxValue = maxValue = Ext.Number.from(value, Number.MAX_VALUE);
+  if (ariaDom) {
+    if (maxValue < Number.MAX_VALUE) {
+      ariaDom.setAttribute('aria-valuemax', maxValue);
+    } else {
+      ariaDom.removeAttribute('aria-valuemax');
+    }
+  }
+  this.toggleSpinners();
+}, parseValue:function(value) {
+  value = parseFloat(String(value).replace(this.decimalSeparator, '.'));
+  return isNaN(value) ? null : value;
+}, fixPrecision:function(value) {
+  var me = this, nan = isNaN(value), precision = me.decimalPrecision;
+  if (nan || !value) {
+    return nan ? '' : value;
+  } else {
+    if (!me.allowDecimals || precision <= 0) {
+      precision = 0;
+    }
+  }
+  return parseFloat(Ext.Number.toFixed(parseFloat(value), precision));
+}, onBlur:function(e) {
+  var me = this, v = me.rawToValue(me.getRawValue());
+  if (!Ext.isEmpty(v)) {
+    me.setValue(v);
+  }
+  me.callParent([e]);
+}, setSpinUpEnabled:function(enabled, internal) {
+  this.callParent(arguments);
+  if (!internal) {
+    delete this.spinUpDisabledByToggle;
+  } else {
+    this.spinUpDisabledByToggle = !enabled;
+  }
+}, onSpinUp:function() {
+  var me = this;
+  if (!me.readOnly) {
+    me.setSpinValue(Ext.Number.constrain(me.getValue() + me.step, me.minValue, me.maxValue));
+  }
+}, setSpinDownEnabled:function(enabled, internal) {
+  this.callParent(arguments);
+  if (!internal) {
+    delete this.spinDownDisabledByToggle;
+  } else {
+    this.spinDownDisabledByToggle = !enabled;
+  }
+}, onSpinDown:function() {
+  var me = this;
+  if (!me.readOnly) {
+    me.setSpinValue(Ext.Number.constrain(me.getValue() - me.step, me.minValue, me.maxValue));
+  }
+}, setSpinValue:function(value) {
+  var me = this;
+  if (me.enforceMaxLength) {
+    if (me.fixPrecision(value).toString().length > me.maxLength) {
+      return;
+    }
+  }
+  me.setValue(value);
+}});
+Ext.define('Ext.toolbar.Paging', {extend:Ext.toolbar.Toolbar, xtype:'pagingtoolbar', alternateClassName:'Ext.PagingToolbar', mixins:[Ext.util.StoreHolder], displayInfo:false, prependButtons:false, displayMsg:'Displaying {0} - {1} of {2}', emptyMsg:'No data to display', beforePageText:'Page', afterPageText:'of {0}', firstText:'First Page', prevText:'Previous Page', nextText:'Next Page', lastText:'Last Page', refreshText:'Refresh', inputItemWidth:30, emptyPageData:{total:0, currentPage:0, pageCount:0, 
+toRecord:0, fromRecord:0}, defaultBindProperty:'store', getPagingItems:function() {
+  var me = this, inputListeners = {scope:me, blur:me.onPagingBlur};
+  inputListeners[Ext.supports.SpecialKeyDownRepeat ? 'keydown' : 'keypress'] = me.onPagingKeyDown;
+  return [{itemId:'first', tooltip:me.firstText, overflowText:me.firstText, iconCls:Ext.baseCSSPrefix + 'tbar-page-first', disabled:true, handler:me.moveFirst, scope:me}, {itemId:'prev', tooltip:me.prevText, overflowText:me.prevText, iconCls:Ext.baseCSSPrefix + 'tbar-page-prev', disabled:true, handler:me.movePrevious, scope:me}, '-', me.beforePageText, {xtype:'numberfield', itemId:'inputItem', name:'inputItem', cls:Ext.baseCSSPrefix + 'tbar-page-number', allowDecimals:false, minValue:1, hideTrigger:true, 
+  enableKeyEvents:true, keyNavEnabled:false, selectOnFocus:true, submitValue:false, isFormField:false, width:me.inputItemWidth, margin:'-1 2 3 2', listeners:inputListeners}, {xtype:'tbtext', itemId:'afterTextItem', html:Ext.String.format(me.afterPageText, 1)}, '-', {itemId:'next', tooltip:me.nextText, overflowText:me.nextText, iconCls:Ext.baseCSSPrefix + 'tbar-page-next', disabled:true, handler:me.moveNext, scope:me}, {itemId:'last', tooltip:me.lastText, overflowText:me.lastText, iconCls:Ext.baseCSSPrefix + 
+  'tbar-page-last', disabled:true, handler:me.moveLast, scope:me}, '-', {itemId:'refresh', tooltip:me.refreshText, overflowText:me.refreshText, iconCls:Ext.baseCSSPrefix + 'tbar-loading', disabled:me.store.isLoading(), handler:me.doRefresh, scope:me}];
+}, initComponent:function() {
+  var me = this, userItems = me.items || me.buttons || [], pagingItems;
+  me.bindStore(me.store || 'ext-empty-store', true);
+  if (me.store && !me.store.nextPage) {
+    Ext.raise('Store is not compatible with this component (does not support paging)');
+  }
+  pagingItems = me.getPagingItems();
+  if (me.prependButtons) {
+    me.items = userItems.concat(pagingItems);
+  } else {
+    me.items = pagingItems.concat(userItems);
+  }
+  delete me.buttons;
+  if (me.displayInfo) {
+    me.items.push('-\x3e');
+    me.items.push({xtype:'tbtext', itemId:'displayItem'});
+  }
+  me.callParent();
+}, beforeRender:function() {
+  this.callParent(arguments);
+  this.updateBarInfo();
+}, onAdded:function(owner) {
+  var me = this, oldStore = me.store, autoStore = me._autoStore, listener, store;
+  if (autoStore === undefined) {
+    me._autoStore = autoStore = !(oldStore && !oldStore.isEmptyStore);
+  }
+  if (autoStore) {
+    listener = me._storeChangeListener;
+    if (listener) {
+      listener.destroy();
+      listener = null;
+    }
+    store = owner && owner.store;
+    if (store) {
+      listener = owner.on({destroyable:true, scope:me, storechange:'onOwnerStoreChange'});
+    }
+    me._storeChangeListener = listener;
+    me.onOwnerStoreChange(owner, store);
+  }
+  me.callParent(arguments);
+}, onOwnerStoreChange:function(owner, store) {
+  this.setStore(store || Ext.getStore('ext-empty-store'));
+}, updateBarInfo:function() {
+  var me = this;
+  if (!me.store.isLoading()) {
+    me.calledInternal = true;
+    me.onLoad();
+    me.calledInternal = false;
+  }
+}, updateInfo:function() {
+  var me = this, displayItem = me.child('#displayItem'), store = me.store, pageData = me.getPageData(), count, msg;
+  if (displayItem) {
+    count = store.getCount();
+    if (count === 0) {
+      msg = me.emptyMsg;
+    } else {
+      msg = Ext.String.format(me.displayMsg, pageData.fromRecord, pageData.toRecord, pageData.total);
+    }
+    displayItem.setText(msg);
+  }
+}, onLoad:function() {
+  var me = this, pageData, currPage, pageCount, afterText, count, isEmpty, item;
+  count = me.store.getCount();
+  isEmpty = count === 0;
+  if (!isEmpty) {
+    pageData = me.getPageData();
+    currPage = pageData.currentPage;
+    pageCount = pageData.pageCount;
+    if (currPage > pageCount) {
+      if (pageCount > 0) {
+        me.store.loadPage(pageCount);
+      } else {
+        me.getInputItem().reset();
+      }
+      return;
+    }
+    afterText = Ext.String.format(me.afterPageText, isNaN(pageCount) ? 1 : pageCount);
+  } else {
+    currPage = 0;
+    pageCount = 0;
+    afterText = Ext.String.format(me.afterPageText, 0);
+  }
+  Ext.suspendLayouts();
+  item = me.child('#afterTextItem');
+  if (item) {
+    item.update(afterText);
+  }
+  item = me.getInputItem();
+  if (item) {
+    item.setDisabled(isEmpty).setValue(currPage);
+  }
+  me.setChildDisabled('#first', currPage === 1 || isEmpty);
+  me.setChildDisabled('#prev', currPage === 1 || isEmpty);
+  me.setChildDisabled('#next', currPage === pageCount || isEmpty);
+  me.setChildDisabled('#last', currPage === pageCount || isEmpty);
+  me.setChildDisabled('#refresh', false);
+  me.updateInfo();
+  Ext.resumeLayouts(true);
+  if (!me.calledInternal) {
+    me.fireEvent('change', me, pageData || me.emptyPageData);
+  }
+}, setChildDisabled:function(selector, disabled) {
+  var item = this.child(selector);
+  if (item) {
+    item.setDisabled(disabled);
+  }
+}, getPageData:function() {
+  var store = this.store, totalCount = store.getTotalCount(), pageCount = Math.ceil(totalCount / store.pageSize), toRecord = Math.min(store.currentPage * store.pageSize, totalCount);
+  return {total:totalCount, currentPage:store.currentPage, pageCount:Ext.Number.isFinite(pageCount) ? pageCount : 1, fromRecord:(store.currentPage - 1) * store.pageSize + 1, toRecord:toRecord || totalCount};
+}, onLoadError:function() {
+  this.setChildDisabled('#refresh', false);
+}, getInputItem:function() {
+  return this.child('#inputItem');
+}, readPageFromInput:function(pageData) {
+  var inputItem = this.getInputItem(), pageNum = false, v;
+  if (inputItem) {
+    v = inputItem.getValue();
+    pageNum = parseInt(v, 10);
+    if (!v || isNaN(pageNum)) {
+      inputItem.setValue(pageData.currentPage);
+      return false;
+    }
+  }
+  return pageNum;
+}, onPagingBlur:function(e) {
+  var inputItem = this.getInputItem(), curPage;
+  if (inputItem) {
+    curPage = this.getPageData().currentPage;
+    inputItem.setValue(curPage);
+  }
+}, onPagingKeyDown:function(field, e) {
+  this.processKeyEvent(field, e);
+}, processKeyEvent:function(field, e) {
+  var me = this, key = e.getKey(), pageData = me.getPageData(), increment = e.shiftKey ? 10 : 1, pageNum;
+  if (key === e.RETURN) {
+    e.stopEvent();
+    pageNum = me.readPageFromInput(pageData);
+    if (pageNum !== false) {
+      pageNum = Math.min(Math.max(1, pageNum), pageData.pageCount);
+      if (pageNum !== pageData.currentPage && me.fireEvent('beforechange', me, pageNum) !== false) {
+        me.store.loadPage(pageNum);
+      }
+    }
+  } else {
+    if (key === e.HOME || key === e.END) {
+      e.stopEvent();
+      pageNum = key === e.HOME ? 1 : pageData.pageCount;
+      field.setValue(pageNum);
+    } else {
+      if (key === e.UP || key === e.PAGE_UP || key === e.DOWN || key === e.PAGE_DOWN) {
+        e.stopEvent();
+        pageNum = me.readPageFromInput(pageData);
+        if (pageNum) {
+          if (key === e.DOWN || key === e.PAGE_DOWN) {
+            increment *= -1;
+          }
+          pageNum += increment;
+          if (pageNum >= 1 && pageNum <= pageData.pageCount) {
+            field.setValue(pageNum);
+          }
+        }
+      }
+    }
+  }
+}, beforeLoad:function() {
+  this.setChildDisabled('#refresh', true);
+}, moveFirst:function() {
+  if (this.fireEvent('beforechange', this, 1) !== false) {
+    this.store.loadPage(1);
+    return true;
+  }
+  return false;
+}, movePrevious:function() {
+  var me = this, store = me.store, prev = store.currentPage - 1;
+  if (prev > 0) {
+    if (me.fireEvent('beforechange', me, prev) !== false) {
+      store.previousPage();
+      return true;
+    }
+  }
+  return false;
+}, moveNext:function() {
+  var me = this, store = me.store, total = me.getPageData().pageCount, next = store.currentPage + 1;
+  if (next <= total) {
+    if (me.fireEvent('beforechange', me, next) !== false) {
+      store.nextPage();
+      return true;
+    }
+  }
+  return false;
+}, moveLast:function() {
+  var me = this, last = me.getPageData().pageCount;
+  if (me.fireEvent('beforechange', me, last) !== false) {
+    me.store.loadPage(last);
+    return true;
+  }
+  return false;
+}, doRefresh:function() {
+  var me = this, store = me.store, current = store.currentPage;
+  if (me.fireEvent('beforechange', me, current) !== false) {
+    store.loadPage(current);
+    return true;
+  }
+  return false;
+}, getStoreListeners:function() {
+  return {beforeload:this.beforeLoad, load:this.onLoad, exception:this.onLoadError};
+}, onBindStore:function() {
+  if (this.rendered) {
+    this.updateBarInfo();
+  }
+}, doDestroy:function() {
+  var me = this, listener = me._storeChangeListener;
+  if (listener) {
+    listener.destroy();
+    me._storeChangeListener = null;
+  }
+  me.bindStore(null);
+  me.callParent();
+}});
+Ext.define('Ext.theme.neptune.toolbar.Paging', {override:'Ext.toolbar.Paging', defaultButtonUI:'plain-toolbar', inputItemWidth:40});
+Ext.define('Ext.theme.triton.toolbar.Paging', {override:'Ext.toolbar.Paging', inputItemWidth:50});
 Ext.define('Ext.tip.Tip', {extend:Ext.panel.Panel, xtype:'tip', alternateClassName:'Ext.Tip', minWidth:40, maxWidth:500, shadow:'sides', constrainPosition:true, autoRender:true, hidden:true, baseCls:Ext.baseCSSPrefix + 'tip', focusOnToFront:false, maskOnDisable:false, closeAction:'hide', alwaysFramed:true, frameHeader:false, initComponent:function() {
   var me = this;
   me.floating = Ext.apply({}, {shadow:me.shadow}, me.self.prototype.floating);
@@ -74973,8 +75504,8 @@ Ext.define('Ext.theme.triton.selection.CheckboxModel', {override:'Ext.selection.
 }});
 Ext.define('Ext.toolbar.Fill', {extend:Ext.Component, alias:'widget.tbfill', alternateClassName:'Ext.Toolbar.Fill', ariaRole:'presentation', isFill:true, flex:1});
 Ext.define('Ext.toolbar.Spacer', {extend:Ext.Component, alias:'widget.tbspacer', alternateClassName:'Ext.Toolbar.Spacer', baseCls:Ext.baseCSSPrefix + 'toolbar-spacer', ariaRole:'presentation'});
-Ext.define('SimpleCMS.store.NavigationTree', {extend:Ext.data.TreeStore, storeId:'NavigationTree', fields:[{name:'text'}], root:{expanded:true, children:[{text:'空白页', viewType:'pageblank', leaf:true, visible:false}, {text:'登录页', viewType:'login', leaf:true, visible:true}, {text:'500页面', viewType:'page500', leaf:true, visible:false}, {text:'重置密码', viewType:'passwordreset', leaf:true, visible:false}, {text:'用户管理', viewType:'userView', leaf:true, visible:true}, {text:'例子', viewType:'cardatapage', leaf:true, 
-visible:true}, {text:'例子', viewType:'form-main', leaf:true, visible:true}]}});
+Ext.define('SimpleCMS.store.NavigationTree', {extend:Ext.data.TreeStore, storeId:'NavigationTree', fields:[{name:'text'}], root:{expanded:true, children:[{text:'空白页', viewType:'pageblank', leaf:true, visible:false}, {text:'登录页', viewType:'login', leaf:true, visible:false}, {text:'500页面', viewType:'page500', leaf:true, visible:false}, {text:'重置密码', viewType:'passwordreset', leaf:true, visible:false}, {text:'用户管理', viewType:'userView', leaf:true, visible:true}, {text:'表格', viewType:'cardataMain', leaf:true, 
+visible:true}]}});
 Ext.define('SimpleCMS.Application', {extend:Ext.app.Application, name:'SimpleCMS', quickTips:false, platformConfig:{desktop:{quickTips:true}}, stores:['NavigationTree'], launch:function() {
   console.log('app launch');
   Ext.util.Format.defaultValue = function(value, defaultValue) {
@@ -74989,6 +75520,8 @@ Ext.define('SimpleCMS.Application', {extend:Ext.app.Application, name:'SimpleCMS
 }});
 Ext.define('SimpleCMS.model.Base', {extend:Ext.data.Model, fields:[{name:'Id', type:'int'}], identifier:'negative', schema:{namespace:'SimpleCMS.model'}});
 Ext.define('SimpleCMS.model.User', {extend:SimpleCMS.model.Base, fields:[{name:'UserName', defaultValue:''}, {name:'Roles', defaultValue:'编辑'}, {name:'Created', type:'date', dateFormat:I18N.DefaultDatetimeFormat}, {name:'LastLogin', type:'date', dateFormat:I18N.DefaultDatetimeFormat}, {name:'Lockout', type:'bool', defaultValue:false}, {name:'IsApprove', type:'bool', defaultValue:true}]});
+Ext.define('SimpleCMS.view.cardata.MainModel', {extend:Ext.data.Model, alias:'viewModel.cardata', fields:[{name:'orderNum', mapping:'orderNum'}, {name:'carType', mapping:'carType'}, {name:'code', mapping:'code'}, {name:'state', mapping:'state'}]});
+Ext.define('SimpleCMS.store.CarStore', {extend:Ext.data.Store, alias:'store.carStore', storeId:'carStore', autoLoad:true, pageSize:5, model:'SimpleCMS.view.cardata.MainModel', proxy:{type:'ajax', url:'/app/simulated/data.json', reader:{type:'json', rootProperty:'cardata', totalProperty:'total'}}});
 Ext.define('SimpleCMS.util.Url', {alternateClassName:'URI', singleton:true, config:{}, constructor:function(config) {
   this.initConfig(config);
   this.callParent(arguments);
@@ -75024,6 +75557,7 @@ Ext.define('SimpleCMS.ux.container.FixedHeightOfFirstItem', {extend:Ext.containe
 }});
 Ext.define('SimpleCMS.ux.form.field.Search', {extend:Ext.form.field.Text, alias:'widget.uxsearchfield', mixins:[Ext.util.StoreHolder], triggers:{clear:{weight:0, cls:Ext.baseCSSPrefix + 'form-clear-trigger', hidden:true, handler:'onClearClick', scope:'this'}, search:{weight:1, cls:Ext.baseCSSPrefix + 'form-search-trigger', handler:'onSearchClick', scope:'this'}}, hasSearch:false, paramName:'query', initComponent:function() {
   var me = this, store = me.store, proxy;
+  console.log(store);
   me.bindStore(me.store || 'ext-empty-store', true);
   me.callParent(arguments);
   me.on('specialkey', function(f, e) {
@@ -75094,22 +75628,32 @@ inputType:'password', hideLabel:true, allowBlank:false, emptyText:'旧密码', t
   return old === v ? I18N.OldPasswordEqualNew : true;
 }, triggers:{glyphed:{cls:'trigger-glyph-noop auth-password-trigger'}}}, {xtype:'textfield', cls:'auth-textbox', height:55, name:'ConfirmPassword', inputType:'password', hideLabel:true, allowBlank:false, emptyText:'确认新密码', vtype:'password', initialPassField:'NewPassword', triggers:{glyphed:{cls:'trigger-glyph-noop auth-password-trigger'}}}, {xtype:'button', reference:'resetPassword', scale:'large', ui:'soft-green', formBind:true, iconAlign:'right', iconCls:'x-fa fa-angle-right', text:'保存', listeners:{click:'onResetClick'}}, 
 {xtype:'button', scale:'large', ui:'soft-blue', iconAlign:'right', iconCls:'x-fa fa-angle-right', text:'返回', listeners:{click:'onReturnClick'}}]}]});
-Ext.define('SimpleCMS.view.cardata.CarDataModel', {extend:Ext.data.Model, alias:'model.cardata', fields:[{name:'orderNum', mapping:'orderNum'}, {name:'carType', mapping:'carType'}, {name:'code', mapping:'code'}, {name:'state', mapping:'state'}]});
-Ext.define('SimpleCMS.view.cardata.CarDataController', {extend:Ext.app.ViewController, alias:'controller.cardata', onSellClick:function() {
-  console.log('1');
-}, onBuyClick:function() {
-  console.log(2);
+Ext.define('SimpleCMS.view.cardata.CarData', {extend:Ext.grid.Panel, xtype:'cardatapage', store:{type:'carStore'}, frame:true, stripeRows:true, title:'表格示例', width:600, height:500, collapsible:true, enableColumnMove:false, enableColumnResize:false, dockedItems:[{xtype:'pagingtoolbar', store:{type:'carStore'}, dock:'bottom', displayInfo:true}], columns:[{header:'序号', dataIndex:'orderNum', id:'orderNum', align:'center', flex:0.5, sortable:true, hideable:true}, {header:'车型', dataIndex:'carType', flex:1, 
+align:'center', sortable:true, hideable:false}, {header:'车型代号', dataIndex:'code', flex:1, align:'center', sortable:true}, {header:'状态', dataIndex:'state', flex:1, sortable:true, align:'center'}, {header:'操作', flex:1, align:'center', sortable:false}], tbar:[{text:'新增', xtype:'button', handler:'onAddClick'}, {text:'删除', reference:'removeEmployee', disabled:true}, '-\x3e', {xtype:'uxsearchfield', fieldLabel:'搜索', labelWidth:40, width:260}], initComponent:function() {
+  console.log('init');
+  console.log(this.getStore('carStore') == this.store);
+  this.callParent();
 }});
-var myData = [{orderNum:'1', carType:'GS4', code:'A01', state:'启用'}, {orderNum:'2', carType:'GS4', code:'A02', state:'启用'}, {orderNum:'3', carType:'GS4', code:'A03', state:'启用'}, {orderNum:'4', carType:'GS4', code:'A04', state:'启用'}];
-var carStore = Ext.create('Ext.data.Store', {model:'SimpleCMS.view.cardata.CarDataModel', data:myData});
-Ext.define('SimpleCMS.view.cardata.CarData', {extend:Ext.grid.Panel, xtype:'cardatapage', model:'cardata', controller:'cardata', store:carStore, stripeRows:true, title:'表格示例', width:600, collapsible:true, enableColumnMove:true, enableColumnResize:true, actions:{edit:{iconCls:'x-fa fa-cog', tooltip:'编辑', handler:'onSellClick', flex:1}, check:{iconCls:'x-fa fa-cog', tooltip:'查看', handler:'onBuyClick', flex:1}}, columns:[{header:'序号', dataIndex:'orderNum', id:'orderNum', align:'center', flex:0.5, sortable:true, 
-hideable:true}, {header:'车型', dataIndex:'carType', flex:1, align:'center', sortable:true, hideable:false}, {header:'车型代号', dataIndex:'code', flex:1, align:'center', sortable:true}, {header:'状态', dataIndex:'state', flex:1, sortable:true, align:'center'}, {header:'操作', flex:1, align:'center', sortable:false, xtype:'actioncolumn', items:['@edit', '@check']}], tbar:[{text:'新增', xtype:'button', listeners:{click:function() {
-  console.log(12313);
-}}}, {text:'删除', reference:'removeEmployee', disabled:true}, '-\x3e', {xtype:'label', text:'请输入关键字：'}, {xtype:'textfield', id:'KeyWord'}, {text:'搜索', handler:function() {
-  alert('搜索');
-}}]});
-Ext.define('SimpleCMS.view.form.Main', {extend:Ext.form.Panel, xtype:'form-main', title:'', frame:false, width:320, bodyPadding:10, padding:100, defaultType:'textfield', items:[{allowBlank:false, fieldLabel:'车型', name:'user'}, {allowBlank:false, fieldLabel:'车型代码', name:'pass'}, {allowBlank:false, fieldLabel:'状态', name:'state'}], buttons:[{text:'保存'}, {text:'取消'}], defaults:{anchor:'100%', labelWidth:120}});
-Ext.define('SimpleCMS.view.main.MainContainerWrap', {extend:Ext.container.Container, xtype:'maincontainerwrap', scrollable:'y', layout:{type:'hbox', align:'stretchmax', animate:true, animatePolicy:{x:true, width:true}}, beforeLayout:function() {
+Ext.define('SimpleCMS.view.cardata.Form', {extend:Ext.form.Panel, xtype:'carform', title:'表达标题', frame:true, width:320, bodyPadding:10, defaultType:'textfield', items:[{allowBlank:false, fieldLabel:'车型', name:'carType', vtype:'car'}, {allowBlank:false, fieldLabel:'车型代码', name:'carCode'}, {allowBlank:false, fieldLabel:'状态', name:'state'}], buttons:[{text:'保存', handler:'onSave'}, {text:'取消'}], defaults:{anchor:'100%', labelWidth:120}});
+Ext.define('SimpleCMS.view.cardata.MainController', {extend:Ext.app.ViewController, alias:'controller.cardata', onEditClick:function() {
+  console.log('1');
+}, onCheckClick:function() {
+  console.log(2);
+}, onAddClick:function() {
+  this.setCurrentView('carform', {});
+}, onSave:function() {
+  console.log('save');
+  this.setCurrentView('cardatapage', {});
+}, setCurrentView:function(view, params) {
+  var me = this, contentPanel = me.getView(), layout = contentPanel.getLayout(), currentItem = layout.getActiveItem();
+  if (!contentPanel || view === '' || currentItem.xtype === view) {
+    return false;
+  }
+  console.log(currentItem.xtype);
+  layout.setActiveItem(view);
+}});
+Ext.define('SimpleCMS.view.cardata.Main', {extend:Ext.container.Container, xtype:'cardataMain', controller:'cardata', viewModel:'cardata', layout:'card', items:[{xtype:'cardatapage', itemId:'cardatapage', bind:{store:'{carStore}'}}, {xtype:'carform', itemId:'carform'}]});
+Ext.define('SimpleCMS.view.main.MainContainerWrap', {extend:Ext.container.Container, xtype:'maincontainerwrap', scrollable:'y', layout:{type:'hbox', align:'begin', animate:true, animatePolicy:{x:true, width:true}}, beforeLayout:function() {
   var me = this, height = Ext.Element.getViewportHeight() - 64, navTree = me.getComponent('navigationTreeList');
   me.minHeight = height;
   navTree.setStyle({'min-height':height + 'px'});
@@ -75196,7 +75740,7 @@ text:I18N.UserModel.Created, dataIndex:'Created', format:I18N.DefaultDatetimeFor
 bind:{disabled:'{!selection}'}}, {iconCls:'x-fa fa-refresh', ui:'soft-cyan', tooltip:I18N.Refresh, handler:'onRefresh'}, '-', {xtype:'uxsearchfield', fieldLabel:'输入关键字', labelWidth:80, width:260, bind:{store:'{users}'}}, '-\x3e', {xtype:'tbtext', bind:I18N.Count}]}]});
 Ext.define('SimpleCMS.view.main.Main', {extend:Ext.container.Viewport, controller:'main', viewModel:'main', cls:'sencha-dash-viewport', itemId:'mainView', layout:{type:'vbox', align:'stretch'}, listeners:{render:'onMainViewRender'}, items:[{xtype:'toolbar', cls:'sencha-dash-dash-headerbar shadow', height:64, itemId:'headerBar', items:[{xtype:'component', reference:'senchaLogo', cls:'sencha-logo', html:'\x3cdiv class\x3d"main-logo"\x3e\x3cimg src\x3d"' + URI.getResource('logo') + '"\x3e后台管理系统\x3c/div\x3e', 
 width:250}, {margin:'0 0 0 8', ui:'header', iconCls:'x-fa fa-navicon', id:'main-navigation-btn', handler:'onToggleNavigationSize'}, '-\x3e', {iconCls:'x-fa fa-key', ui:'header', tooltip:I18N.PasswordResetTitle, href:'#passwordreset', hrefTarget:'self'}, {ui:'header', iconCls:'x-fa fa-power-off', handler:'onLogout', tooltip:I18N.Logout}, {xtype:'tbtext', text:'Goff Smith', cls:'top-user-name'}]}, {xtype:'maincontainerwrap', id:'main-view-detail-wrap', reference:'mainContainerWrap', flex:1, items:[{xtype:'treelist', 
-reference:'navigationTreeList', itemId:'navigationTreeList', ui:'navigation', store:'NavigationTree', width:250, expanderFirst:false, expanderOnly:false, listeners:{selectionchange:'onNavigationTreeSelectionChange'}}, {xtype:'container', flex:1, reference:'mainCardPanel', cls:'sencha-dash-right-main-container', itemId:'contentPanel', layout:{type:'card', anchor:'100%'}}]}]});
+reference:'navigationTreeList', itemId:'navigationTreeList', ui:'navigation', store:'NavigationTree', width:250, expanderFirst:false, expanderOnly:false, listeners:{selectionchange:'onNavigationTreeSelectionChange'}}, {xtype:'container', padding:'0 0 0 20', reference:'mainCardPanel', cls:'sencha-dash-right-main-container', itemId:'contentPanel', layout:{type:'card', anchor:'100%'}}]}]});
 Ext.application({name:'SimpleCMS', extend:SimpleCMS.Application, mainView:'SimpleCMS.view.main.Main'});
 Ext.onReady(function() {
   Ext.create('Ext.Button', {renderTo:Ext.getElementById('msgBox'), text:'Click Me', listeners:{click:function() {

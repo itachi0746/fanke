@@ -12,16 +12,16 @@
   <div class="title">广东省春运交通大数据预测分析平台</div>
   <div class="login-box">
     <div class="tips">
-      请输入密码
+
     </div>
-    <form action="" method="post">
+    <form action="" method="post" id="login-form" onsubmit="return sb1()">
       <div class="input-box">
         <div class="icon1"></div>
-        <input type="text" name="name" placeholder="请输入账号" autocomplete="off">
+        <input type="text" name="name" id="username" placeholder="请输入账号" autocomplete="off">
       </div>
       <div class="input-box" style="margin-top: 20px;">
         <div class="icon2"></div>
-        <input type="password" name="password" placeholder="请输入密码">
+        <input type="password" id="pwd" name="password" placeholder="请输入密码">
       </div>
       <div class="sel-box">
         <div class="font">
@@ -29,12 +29,12 @@
         </div>
         <div class="sbox">
           <div class="c1">
-            <input name="p" type="radio" id="fx">
+            <input name="p" checked="checked" type="radio" id="fx" value="fx">
             <label for="fx">分析中心</label>
             <!--<span>分析中心</span>-->
           </div>
           <div class="">
-            <input name="p" type="radio" id="yj">
+            <input name="p" type="radio" id="yj" value="yj">
             <label for="yj">预警中心</label>
             <!--<span>预警中心</span>-->
           </div>
@@ -45,5 +45,29 @@
       </div>
     </form>
   </div>
+  <script src="lib/jquery-1.8.2.min.js"></script>
+  <script>
+    function sb1(){
+      var username = document.getElementById("username");
+      var password = document.getElementById("pwd");
+      if(trim(username.value)==null || trim(username.value)==""){
+        alert("请输入用户名");
+        username.focus();
+        $('.tips').text("请输入用户名");
+        return false;
+      }
+      if(trim(password.value)==null || trim(password.value)==""){
+        alert("请输入密码");
+        $('.tips').text("请输入密码");
+        password.focus();
+        return false;
+      }
+
+      return true;
+    }
+    function trim(str){ //删除左右两端的空格
+      return str.replace(/(^\s*)|(\s*$)/g, "");
+    }
+  </script>
 </body>
 </html>

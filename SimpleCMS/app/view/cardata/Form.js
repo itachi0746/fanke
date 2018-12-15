@@ -3,7 +3,7 @@ Ext.define('SimpleCMS.view.cardata.Form', {
     extend: 'Ext.form.Panel',
     xtype: 'carform',
 
-    title: '表达标题',
+    title: '表单标题',
     frame:true,
     width: 320,
     bodyPadding: 10,

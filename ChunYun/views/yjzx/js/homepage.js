@@ -27,7 +27,9 @@ $(function () {
   init();
   // console.log(pointControl.PlacePoints)
 
-
+  /**
+   * 初始化应用
+   */
   function init() {
     console.log('切换到:',nowTab);
     initCalendar();
@@ -203,7 +205,10 @@ $(function () {
     }
   }
 
-  // 根据名字移动到地点  name 字符串
+  /**
+   * 根据名字移动到地点
+   * @param name
+   */
   function goToPointByName(name) {
 
     var clickTarget = pointControl.findPointByName(name);
@@ -369,7 +374,9 @@ $(function () {
     }
   }
 
-  // 主tab点击事件
+  /**
+   * 主tab点击事件
+   */
   function clickTab() {
     for (var j = 0; j < tabBoxes.length; j++) {
       var obj = tabBoxes[j];
@@ -423,7 +430,11 @@ $(function () {
     markerBindClick();
   }
 
-  // tab2点击事件 目标,this
+  /**
+   * 点击小的tab2
+   * @param target  目标
+   * @param me  this
+   */
   function clickTab2(target,me) {
     // console.log(target,me);
 
@@ -612,7 +623,9 @@ $(function () {
   }
 
 
-  // 后去预警数据
+  /**
+   * 获取3级预警数据
+   */
   function getYJData() {
     var url = 'terminal/getTerminalWarningList.do';
     var data = {
@@ -872,6 +885,9 @@ $(function () {
 
   }
 
+  /**
+   * 显示小的tab
+   */
   function showWhichTab() {
     // 交通枢纽
     if(nowTab===tabArr[0]) {
@@ -911,6 +927,11 @@ $(function () {
     }
   }
 
+  /**
+   * 点击箭头
+   * @param tabName 当前大tab
+   * @param arrows  箭头数组
+   */
   function clickArrow(tabName,arrows) {
     if(isHideStation) {
       isHideStation = false;
@@ -938,6 +959,9 @@ $(function () {
     }
   }
 
+  /**
+   * 箭头绑定点击事件
+   */
   function arrowBindClick() {
     // console.log($('#tab-box-cur .arrow'))
     var tabBoxCur = $('#tab-box-cur');
@@ -951,11 +975,6 @@ $(function () {
     });
 
     tabBoxCur.on('click',function () {
-      // for (var j = 0; j < arrows.length; j++) {
-      //   var a2 = arrows[j];
-      //   $(a2).toggleClass('dn')
-      // }
-      // isHideStation = false;
       clickArrow(nowTab,arrows)
 
     })
@@ -963,9 +982,9 @@ $(function () {
 
   /**
    * 请求省内省外境外来源去向洞察数据
-   * @param dom
-   * @param area
-   * @param date
+   * @param dom   当前所在主tab
+   * @param area  区域:省内 省外 境外
+   * @param date  日期:yyyy-mm-dd
    */
   function getAreaData(dom,area,date) {
 
@@ -1074,33 +1093,11 @@ $(function () {
 
       }
     })
-
   }
+
   /**
-   * 格式化数字,千分位,例如"12,345,678"
-   * @param val 数字
-   * @returns {*}
+   * 旅客洞察点击
    */
-  function formatVal(val) {
-    val+='';
-    var result,temp,temp2,temp3;
-    if(val.length>=7) {
-      temp = ',' + val.slice(val.length-3);
-      temp2 = ',' + val.slice(val.length-6,val.length-3);
-      temp3 = val.slice(0,val.length-6);
-      result = temp3 + temp2 + temp;
-      return result
-    }
-    if(val.length>=4) {
-      temp = ',' + val.slice(val.length-3);
-      temp2 = val.slice(0,val.length-3);
-      result = temp2 + temp;
-      return result
-    }
-  }
-
-
-
   function dongchaTabBindClick() {
     // 枢纽 洞察点击i
     var dongchaTabs = $('#tab2 .dongcha-tab');
@@ -1140,6 +1137,9 @@ $(function () {
     }
   }
 
+  /**
+   * 显示当前地点(点击地图点放大后)
+   */
   function showCurLocaction() {
     var tabBoxCur = $('#tab-box-cur');
     var curPosDataBox = $('#cur-pos-data-box');
@@ -1152,6 +1152,9 @@ $(function () {
     isHideStation = false;
   }
 
+  /**
+   * 隐藏当前地点(点击地图点放大后)
+   */
   function hideCurLocaction() {
     var tabBoxCur = $('#tab-box-cur');
     var curPosDataBox = $('#cur-pos-data-box');

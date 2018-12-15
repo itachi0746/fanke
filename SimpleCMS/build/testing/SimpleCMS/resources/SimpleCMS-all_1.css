@@ -9081,6 +9081,126 @@ body > .x-mask {
 .x-form-cb-label-default.x-form-cb-label-after {
     padding-left: 22px;
 }
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/var/form/trigger/Spinner.scss:71 */
+.x-form-trigger-spinner-default {
+    width: 32px;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/var/form/trigger/Spinner.scss:79 */
+.x-form-trigger-spinner-default:before {
+    content: '';
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/var/form/trigger/Spinner.scss:85 */
+.x-form-spinner-default {
+    background-color: #fff;
+    width: 32px;
+    height: 15px;
+    color: #919191;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/var/form/trigger/Spinner.scss:131 */
+.x-form-spinner-up-default {
+    font: 16px/1 ExtJS;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:126 */
+.x-form-spinner-up-default:before {
+    content: "\e61c";
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/var/form/trigger/Spinner.scss:137 */
+.x-form-spinner-down-default {
+    font: 16px/1 ExtJS;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:126 */
+.x-form-spinner-down-default:before {
+    content: "\e61b";
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/var/form/trigger/Spinner.scss:143 */
+.x-form-spinner-up-default {
+    background-position: 0 0;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/var/form/trigger/Spinner.scss:146 */
+.x-form-spinner-up-default.x-form-spinner-over {
+    background-position: -32px 0;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/var/form/trigger/Spinner.scss:148 */
+.x-form-spinner-up-default.x-form-spinner-over.x-form-spinner-focus {
+    background-position: -128px 0;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/var/form/trigger/Spinner.scss:153 */
+.x-form-spinner-up-default.x-form-spinner-focus {
+    background-position: -96px 0;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/var/form/trigger/Spinner.scss:158 */
+.x-form-spinner-up-default.x-form-spinner.x-form-spinner-click {
+    background-position: -64px 0;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/var/form/trigger/Spinner.scss:163 */
+.x-form-spinner-down-default {
+    background-position: 0 -15px;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/var/form/trigger/Spinner.scss:166 */
+.x-form-spinner-down-default.x-form-spinner-over {
+    background-position: -32px -15px;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/var/form/trigger/Spinner.scss:168 */
+.x-form-spinner-down-default.x-form-spinner-over.x-form-spinner-focus {
+    background-position: -128px -15px;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/var/form/trigger/Spinner.scss:173 */
+.x-form-spinner-down-default.x-form-spinner-focus {
+    background-position: -96px -15px;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/var/form/trigger/Spinner.scss:178 */
+.x-form-spinner-down-default.x-form-spinner.x-form-spinner-click {
+    background-position: -64px -15px;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/src/toolbar/Paging.scss:1 */
+.x-tbar-page-number {
+    width: 30px;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/src/toolbar/Paging.scss:10 */
+.x-btn-icon-el.x-tbar-page-first {
+    font: 16px/16px ExtJS;
+    color: #919191;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:126 */
+.x-btn-icon-el.x-tbar-page-first:before {
+    content: "\e617";
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/src/toolbar/Paging.scss:19 */
+.x-btn-icon-el.x-tbar-page-prev {
+    font: 16px/16px ExtJS;
+    color: #919191;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:126 */
+.x-btn-icon-el.x-tbar-page-prev:before {
+    content: "\e615";
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/src/toolbar/Paging.scss:28 */
+.x-btn-icon-el.x-tbar-page-next {
+    font: 16px/16px ExtJS;
+    color: #919191;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:126 */
+.x-btn-icon-el.x-tbar-page-next:before {
+    content: "\e616";
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/src/toolbar/Paging.scss:37 */
+.x-btn-icon-el.x-tbar-page-last {
+    font: 16px/16px ExtJS;
+    color: #919191;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:126 */
+.x-btn-icon-el.x-tbar-page-last:before {
+    content: "\e618";
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/src/toolbar/Paging.scss:46 */
+.x-btn-icon-el.x-tbar-loading {
+    font: 16px/16px FontAwesome;
+    color: #919191;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:126 */
+.x-btn-icon-el.x-tbar-loading:before {
+    content: "\f021";
+}
 /* C:/web/SimpleCMS/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-tip-default {
     -webkit-border-radius: 2px;
@@ -15193,83 +15313,4 @@ body > .x-mask {
 /* C:/web/SimpleCMS/ext/packages/font-awesome/sass/etc/_icons.scss:331 */
 .fa-minus-square:before {
     content: "\f146" !important;
-}
-/* C:/web/SimpleCMS/ext/packages/font-awesome/sass/etc/_icons.scss:332 */
-.fa-minus-square-o:before {
-    content: "\f147" !important;
-}
-/* C:/web/SimpleCMS/ext/packages/font-awesome/sass/etc/_icons.scss:333 */
-.fa-level-up:before {
-    content: "\f148" !important;
-}
-/* C:/web/SimpleCMS/ext/packages/font-awesome/sass/etc/_icons.scss:334 */
-.fa-level-down:before {
-    content: "\f149" !important;
-}
-/* C:/web/SimpleCMS/ext/packages/font-awesome/sass/etc/_icons.scss:335 */
-.fa-check-square:before {
-    content: "\f14a" !important;
-}
-/* C:/web/SimpleCMS/ext/packages/font-awesome/sass/etc/_icons.scss:336 */
-.fa-pencil-square:before {
-    content: "\f14b" !important;
-}
-/* C:/web/SimpleCMS/ext/packages/font-awesome/sass/etc/_icons.scss:337 */
-.fa-external-link-square:before {
-    content: "\f14c" !important;
-}
-/* C:/web/SimpleCMS/ext/packages/font-awesome/sass/etc/_icons.scss:338 */
-.fa-share-square:before {
-    content: "\f14d" !important;
-}
-/* C:/web/SimpleCMS/ext/packages/font-awesome/sass/etc/_icons.scss:339 */
-.fa-compass:before {
-    content: "\f14e" !important;
-}
-/* C:/web/SimpleCMS/ext/packages/font-awesome/sass/etc/_icons.scss:340 */
-.fa-toggle-down:before,
-.fa-caret-square-o-down:before {
-    content: "\f150" !important;
-}
-/* C:/web/SimpleCMS/ext/packages/font-awesome/sass/etc/_icons.scss:342 */
-.fa-toggle-up:before,
-.fa-caret-square-o-up:before {
-    content: "\f151" !important;
-}
-/* C:/web/SimpleCMS/ext/packages/font-awesome/sass/etc/_icons.scss:344 */
-.fa-toggle-right:before,
-.fa-caret-square-o-right:before {
-    content: "\f152" !important;
-}
-/* C:/web/SimpleCMS/ext/packages/font-awesome/sass/etc/_icons.scss:346 */
-.fa-euro:before,
-.fa-eur:before {
-    content: "\f153" !important;
-}
-/* C:/web/SimpleCMS/ext/packages/font-awesome/sass/etc/_icons.scss:348 */
-.fa-gbp:before {
-    content: "\f154" !important;
-}
-/* C:/web/SimpleCMS/ext/packages/font-awesome/sass/etc/_icons.scss:349 */
-.fa-dollar:before,
-.fa-usd:before {
-    content: "\f155" !important;
-}
-/* C:/web/SimpleCMS/ext/packages/font-awesome/sass/etc/_icons.scss:351 */
-.fa-rupee:before,
-.fa-inr:before {
-    content: "\f156" !important;
-}
-/* C:/web/SimpleCMS/ext/packages/font-awesome/sass/etc/_icons.scss:353 */
-.fa-cny:before,
-.fa-rmb:before,
-.fa-yen:before,
-.fa-jpy:before {
-    content: "\f157" !important;
-}
-/* C:/web/SimpleCMS/ext/packages/font-awesome/sass/etc/_icons.scss:357 */
-.fa-ruble:before,
-.fa-rouble:before,
-.fa-rub:before {
-    content: "\f158" !important;
 }

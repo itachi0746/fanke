@@ -1,3 +1,70 @@
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/src/button/Button.scss:762 */
+.x-btn-header-small .x-btn-arrow-el {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 27px;
+    pointer-events: none;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/src/button/Button.scss:778 */
+.x-btn-header-small.x-arrow-focus .x-btn-arrow-el {
+    border: 1px solid #cbe5f1;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
+.x-btn-over.x-btn-header-small {
+    border-color: #2d9fd2;
+    background-image: none;
+    background-color: transparent;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
+.x-btn.x-btn-menu-active.x-btn-header-small,
+.x-btn.x-btn-pressed.x-btn-header-small {
+    border-color: #2582ac;
+    background-image: none;
+    background-color: transparent;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/src/button/Button.scss:897 */
+.x-btn.x-btn-disabled.x-btn-header-small {
+    background-image: none;
+    background-color: transparent;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/src/button/Button.scss:929 */
+.x-btn-focus .x-btn-header-small-tl,
+.x-btn-focus .x-btn-header-small-bl,
+.x-btn-focus .x-btn-header-small-tr,
+.x-btn-focus .x-btn-header-small-br,
+.x-btn-focus .x-btn-header-small-tc,
+.x-btn-focus .x-btn-header-small-bc {
+    background-image: url(images/btn/btn-header-small-focus-corners.gif);
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/src/button/Button.scss:937 */
+.x-btn-focus .x-btn-header-small-ml,
+.x-btn-focus .x-btn-header-small-mr {
+    background-image: url(images/btn/btn-header-small-focus-sides.gif);
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/src/button/Button.scss:941 */
+.x-btn-focus .x-btn-header-small-mc {
+    background-color: transparent;
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/src/button/Button.scss:953 */
+.x-btn-over .x-btn-header-small-tl,
+.x-btn-over .x-btn-header-small-bl,
+.x-btn-over .x-btn-header-small-tr,
+.x-btn-over .x-btn-header-small-br,
+.x-btn-over .x-btn-header-small-tc,
+.x-btn-over .x-btn-header-small-bc {
+    background-image: url(images/btn/btn-header-small-over-corners.gif);
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/src/button/Button.scss:961 */
+.x-btn-over .x-btn-header-small-ml,
+.x-btn-over .x-btn-header-small-mr {
+    background-image: url(images/btn/btn-header-small-over-sides.gif);
+}
+/* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/src/button/Button.scss:965 */
+.x-btn-over .x-btn-header-small-mc {
+    background-color: transparent;
+}
 /* C:/web/SimpleCMS/ext/classic/theme-neutral/sass/src/button/Button.scss:977 */
 .x-btn-focus.x-btn-over .x-btn-header-small-tl,
 .x-btn-focus.x-btn-over .x-btn-header-small-bl,
