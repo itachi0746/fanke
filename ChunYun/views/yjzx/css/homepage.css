@@ -110,12 +110,18 @@ html, body {
 .title {
   width: 700px;
   height: 160px;
-  background: url("../img/tittle.png") no-repeat;
+  background: url("../img/tittle2.png") no-repeat;
   position: absolute;
   top: 0;
   left: 0;
   z-index: 10;
   cursor: pointer; }
+  .title .switch-btn {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    top: 32px;
+    left: 32px; }
 
 .road-net {
   height: 97px;
@@ -763,6 +769,9 @@ html, body {
     .header2 div label {
       font-size: 34px;
       color: #ddf3ff; }
+      .header2 div label span {
+        font-size: 16px;
+        color: #ddf3ff; }
 
 .tab-box2 .tab-box2-li2 {
   background: url("../img/4icon_left_2_nor.png") no-repeat; }
@@ -1559,8 +1568,6 @@ html, body {
   top: 86px;
   left: -130px;
   z-index: 10;
-  width: 820px;
-  height: 540px;
   background-color: rgba(9, 32, 74, 0.9);
   border: 2px solid #28eefb;
   cursor: default;
@@ -1607,24 +1614,24 @@ html, body {
       background: url("../img/icon_search.png") no-repeat;
       cursor: pointer; }
   .cur-pos-data-box .station-box {
-    width: 100%;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex; }
     .cur-pos-data-box .station-box .station-box-1 {
       width: 110px;
-      margin-right: 48px; }
+      margin-right: 28px; }
     .cur-pos-data-box .station-box .station-box-2 {
-      width: 340px;
-      margin-right: 48px; }
+      width: 360px;
+      margin-right: 28px; }
       .cur-pos-data-box .station-box .station-box-2 ul li {
         width: 170px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        float: left; }
+        float: left;
+        margin-right: 10px; }
     .cur-pos-data-box .station-box .station-box-3 {
-      width: 210px; }
+      width: 220px; }
     .cur-pos-data-box .station-box header {
       font-size: 20px;
       color: #ddf3ff;

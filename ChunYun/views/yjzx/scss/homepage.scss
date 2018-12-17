@@ -24,15 +24,24 @@ html,body{
 .container2 {
   box-shadow: 5px 5px 5px rgba(0,0,0,0.2),5px -5px 5px rgba(0,0,0,0.2),-5px 5px 5px rgba(0,0,0,0.2),-5px -5px 5px rgba(0,0,0,0.2);
 }
+
 .title {
   width: 700px;
   height: 160px;
-  background: url("../img/tittle.png") no-repeat;
+  background: url("../img/tittle2.png") no-repeat;
   position: absolute;
   top: 0;
   left: 0;
   z-index: 10;
   cursor: pointer;
+  .switch-btn {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    top: 32px;
+    left: 32px;
+    //background-color: #fff;
+  }
 }
 .road-net {
   height: 97px;
@@ -756,6 +765,11 @@ html,body{
     label {
       font-size: 34px;
       color: rgb(221,243,255);
+      span {
+        font-size: 16px;
+        color: rgb(221,243,255);
+
+      }
     }
   }
 
@@ -1805,8 +1819,8 @@ html,body{
   top: 86px;
   left: -130px;
   z-index: 10;
-  width: 820px;
-  height: 540px;
+  //width: 820px;
+  //height: 540px;
   background-color: rgba(9,32,74,.9);
   border: 2px solid rgb(40,238,251);
   cursor: default;
@@ -1861,35 +1875,31 @@ html,body{
   }
 
   .station-box {
-    width: 100%;
+    //width: 100%;
     display: flex;
-    //div {
-    //  height: 100px;
-    //  //background-color: #fff;
-    //}
 
     .station-box-1 {
       width: 110px;
-      margin-right: 48px;
+      margin-right: 28px;
 
       header {
 
       }
     }
     .station-box-2 {
-      width: 340px;
-      margin-right: 48px;
+      width: 360px;
+      margin-right: 28px;
       ul li {
         width: 170px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         float: left;
+        margin-right: 10px;
       }
     }
     .station-box-3 {
-      width: 210px;
-
+      width: 220px;
     }
 
     header {
