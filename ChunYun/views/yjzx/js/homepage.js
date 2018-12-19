@@ -17,12 +17,14 @@ $(function () {
 
   // console.log(newTabArr)
   var tabBoxes = $('.tab-box');
-  var tabBoxes2 = $('.tab-box2 .tab-box2-li');
-  var tabBoxes3 = $('.tab-box3 .tab-box2-li');
-  var tabBoxes4 = $('.tab-box4 .tab-box2-li');
-  var tabBoxes5 = $('.tab-box5 .tab-box2-li');
+  var tabBoxes2 = $('#tab2 .tab-box2-li');
+  var tabBoxes3 = $('#tab3 .tab-box2-li');
+  var tabBoxes4 = $('#tab4 .tab-box2-li');
+  var tabBoxes5 = $('#tab5 .tab-box2-li');
+  var tabBoxesArr = [tabBoxes2,tabBoxes3,tabBoxes4,tabBoxes5];
+  // console.log(tabBoxes2)
   window.mapbase = new MapBase();
-  var title = $('.title');
+  var title = $('#title');
   pointControl = new PlacePointView(theMap);
   init();
   // console.log(pointControl.PlacePoints)
@@ -123,30 +125,16 @@ $(function () {
       window.location.href = 'left.html';
     });
 
+    // 1级tab绑定点击事件
     for (var i = 0; i < tabBoxes.length; i++) {
       var box = tabBoxes[i];
       $(box).on('click',clickTab)
     }
-    for (var j = 0; j < tabBoxes2.length; j++) {
-      var box2 = tabBoxes2[j];
-      var box3 = tabBoxes3[j];
-      var box4 = tabBoxes4[j];
-      var box5 = tabBoxes5[j];
-      // 交通枢纽绑定
-      $(box2).on('click',function () {
-        clickTab2(tabBoxes2,this)
-      })
-      // 服务区绑定
-      $(box3).on('click',function () {
-        clickTab2(tabBoxes3,this)
-      })
-      // 收费站
-      $(box4).on('click',function () {
-        clickTab2(tabBoxes4,this)
-      })
-      $(box5).on('click',function () {
-        clickTab2(tabBoxes5,this)
-      })
+
+    // 2级tab绑定点击事件
+    for (var j = 0; j < tabBoxesArr.length; j++) {
+      var tArr = tabBoxesArr[j];
+      tabBoxesBindClick(tArr)
     }
     arrowBindClick();
     dongchaTabBindClick();
@@ -161,7 +149,6 @@ $(function () {
   }
   var isHideStation = true;
   // 添加交通枢纽
-
   function addStation() {
     clearStation();
     showStation();
@@ -285,6 +272,19 @@ $(function () {
         changePosText(name);
       })
       $('#station-box-3').find('ul').append(stationDom3);
+    }
+  }
+
+  /**
+   * 2级tab绑定点击事件
+   * @param boxesArr
+   */
+  function tabBoxesBindClick(boxesArr) {
+    for (var j = 0; j < boxesArr.length; j++) {
+      var b = boxesArr[j];
+      $(b).on('click',function () {
+        clickTab2(boxesArr,this)
+      })
     }
   }
 
@@ -592,10 +592,16 @@ $(function () {
     // addStation2()
   }
 
+  var sb3 = $('#station-box-3');
+  var sb2 = $('#station-box-2');
+  var sb1 = $('#station-box-1');
+  /**
+   * 清空搜索框下的站点
+   */
   function clearStation() {
-    var sb3 = $('#station-box-3');
-    var sb2 = $('#station-box-2');
-    var sb1 = $('#station-box-1');
+    // var sb3 = $('#station-box-3');
+    // var sb2 = $('#station-box-2');
+    // var sb1 = $('#station-box-1');
     var theArr = [sb1,sb2,sb3];
     for (var i = 0; i < theArr.length; i++) {
       var sb = theArr[i];
@@ -604,10 +610,13 @@ $(function () {
     }
   }
 
+  /**
+   * 显示搜索框下的站点
+   */
   function showStation() {
-    var sb3 = $('#station-box-3');
-    var sb2 = $('#station-box-2');
-    var sb1 = $('#station-box-1');
+    // var sb3 = $('#station-box-3');
+    // var sb2 = $('#station-box-2');
+    // var sb1 = $('#station-box-1');
     var theArr = [sb1,sb2,sb3];
     for (var i = 0; i < theArr.length; i++) {
       var sb = theArr[i];
@@ -624,9 +633,9 @@ $(function () {
     clearStation();
     showStation();
     var tgt;
-    var sb1 = $('#station-box-1');
-    var sb2 = $('#station-box-2');
-    var sb3 = $('#station-box-3');
+    // var sb1 = $('#station-box-1');
+    // var sb2 = $('#station-box-2');
+    // var sb3 = $('#station-box-3');
 
     if(nowTab===tabArr[1]) {
       sb1.hide();
@@ -666,7 +675,7 @@ $(function () {
   }
 
   /**
-   * 点击小的tab2
+   * 点击2级tab
    * @param target  目标
    * @param me  this
    */
@@ -703,6 +712,10 @@ $(function () {
     initTab2(me.dataset.name);
   }
 
+  /**
+   * 点击2级tab后,初始化相关图表,日历
+   * @param tab2Name
+   */
   function initTab2(tab2Name) {
     initCalendar();
     if(nowTab===tabArr[0]&&tab2Name==='实时客流') {  // 交通枢纽
@@ -977,7 +990,7 @@ $(function () {
     $('#tab-name').text(posName);
   }
 
-  // 隐藏tab,显示tab2
+  // 隐藏1级tab,显示2级tab
   function hideTabs(name) {
     var tab = $('#tab');
     var tabBox = tab.find('.tab-box');
@@ -1198,7 +1211,7 @@ $(function () {
   }
 
   /**
-   * 显示小的tab
+   * 显示2级tab
    */
   function showWhichTab() {
     // 交通枢纽
@@ -1226,7 +1239,7 @@ $(function () {
 
   }
 
-  // 显示tab
+  // 显示1级tab
   function showTabs() {
     var dis = 102;
     var tab = $('#tab');
