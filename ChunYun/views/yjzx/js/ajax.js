@@ -1,5 +1,5 @@
 $(function(){
-  var serviceBase = "http://localhost/gdcnymot/";  // 基地址
+  var serviceBase = serviceBase;  // 基地址
 
   /**
    * ajax封装

@@ -341,11 +341,13 @@ html, body {
   top: 260px;
   left: 20px; }
   .tab .tab-box-cur {
+    opacity: 0;
     height: 102px;
     position: absolute;
     top: -102px;
-    left: 190px;
-    cursor: pointer; }
+    left: 0;
+    cursor: pointer;
+    z-index: 9; }
     .tab .tab-box-cur .bg-div {
       height: 100%;
       width: auto;
@@ -548,6 +550,50 @@ html, body {
   100% {
     background-position: -750px 0; } }
 
+@-webkit-keyframes moveAndShowKF {
+  0% {
+    left: 0;
+    opacity: 0; }
+  100% {
+    left: 190px;
+    opacity: 1; } }
+
+@keyframes moveAndShowKF {
+  0% {
+    left: 0;
+    opacity: 0; }
+  100% {
+    left: 190px;
+    opacity: 1; } }
+
+@-webkit-keyframes moveAndHideKF {
+  0% {
+    left: 190px;
+    opacity: 1; }
+  100% {
+    left: 0;
+    opacity: 0; } }
+
+@keyframes moveAndHideKF {
+  0% {
+    left: 190px;
+    opacity: 1; }
+  100% {
+    left: 0;
+    opacity: 0; } }
+
+.moveAndShow {
+  -webkit-animation: moveAndShowKF .3s;
+          animation: moveAndShowKF .3s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards; }
+
+.moveAndHide {
+  -webkit-animation: moveAndHideKF .3s;
+          animation: moveAndHideKF .3s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards; }
+
 .dn {
   display: none !important; }
 
@@ -574,8 +620,7 @@ html, body {
           align-items: center; }
   .KLHX-box .KLHX {
     width: 100%;
-    height: 100%;
-    padding: 0 20px; }
+    height: 100%; }
 
 .hm {
   width: 80px;
@@ -1082,6 +1127,8 @@ html, body {
     position: absolute;
     left: 45px;
     top: 0;
+    text-align: center;
+    color: #fff;
     background-color: #12508f; }
   .tab-box3 .tab-box2-li3 .arrow {
     position: absolute;
@@ -1132,6 +1179,8 @@ html, body {
     position: absolute;
     left: 45px;
     top: 0;
+    text-align: center;
+    color: #ffffff;
     background-color: #12508f; }
   .tab-box4 .tab-box2-li3 .arrow {
     position: absolute;
@@ -1177,6 +1226,8 @@ html, body {
     position: absolute;
     left: 45px;
     top: 0;
+    text-align: center;
+    color: #ffffff;
     background-color: #12508f; }
   .tab-box5 .tab-box2-li3 .arrow {
     position: absolute;
@@ -1219,17 +1270,19 @@ html, body {
   height: 100%; }
 
 .laiyuan {
-  width: 298px;
+  width: 50%;
   height: 250px; }
 
 .quxiang {
-  width: 298px;
+  width: 50%;
   height: 250px; }
 
 .scroll-box {
   height: 790px;
   width: 100%;
   overflow-y: auto; }
+  .scroll-box .sb-container {
+    padding: 0 20px; }
 
 .scroll-box::-webkit-scrollbar {
   /*滚动条整体样式*/
@@ -1251,8 +1304,7 @@ html, body {
 
 .guishufenxi {
   width: 100%;
-  height: 250px;
-  padding: 0 20px; }
+  height: 250px; }
 
 .tab-box4 .tab-box2-li4 {
   background: url("../img/4icon_left_3_nor.png") no-repeat; }
@@ -1379,27 +1431,24 @@ html, body {
         .tab-box2 .tab-box2-li4 .li-tab-box header div label {
           font-size: 34px;
           color: #ddf3ff; }
+          .tab-box2 .tab-box2-li4 .li-tab-box header div label span {
+            font-size: 16px;
+            color: #ddf3ff; }
     .tab-box2 .tab-box2-li4 .li-tab-box .chart-box1 {
-      width: 600px;
+      width: 100%;
       height: 160px;
-      margin-top: 30px;
-      padding: 0 29px 0 20px; }
+      margin-top: 30px; }
     .tab-box2 .tab-box2-li4 .li-tab-box .chart-box2 {
-      width: 596px;
-      padding: 0 20px;
+      width: 100%;
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
       -webkit-box-pack: justify;
           -ms-flex-pack: justify;
               justify-content: space-between; }
-      .tab-box2 .tab-box2-li4 .li-tab-box .chart-box2 .chart1, .tab-box2 .tab-box2-li4 .li-tab-box .chart-box2 .chart2 {
-        -webkit-box-flex: 1;
-            -ms-flex: 1;
-                flex: 1; }
 
 .data-box {
-  padding: 20px; }
+  padding: 20px 0; }
   .data-box .header {
     width: 100%; }
     .data-box .header .container {
@@ -1557,8 +1606,7 @@ html, body {
       text-align: center; }
     .tab-box3 .tab-box2-li4 .li-tab-box .chart1 {
       height: 220px;
-      width: 100%;
-      padding: 0 20px; }
+      width: 100%; }
     .tab-box3 .tab-box2-li4 .li-tab-box .chart2 {
       height: 260px;
       width: 100%; }
@@ -1600,7 +1648,8 @@ html, body {
         -ms-flex-align: center;
             align-items: center;
     border: 1px solid #05caf4;
-    margin-top: 16px; }
+    margin-top: 16px;
+    position: relative; }
     .cur-pos-data-box .search input {
       width: 470px;
       height: 28px;
@@ -1613,6 +1662,19 @@ html, body {
       height: 30px;
       background: url("../img/icon_search.png") no-repeat;
       cursor: pointer; }
+    .cur-pos-data-box .search .result-list {
+      position: absolute;
+      width: 498px;
+      top: 100%;
+      left: -1px;
+      border: 1px solid #05caf4;
+      display: none; }
+    .cur-pos-data-box .search li {
+      width: 100%;
+      height: 30px;
+      padding: 0 5px;
+      line-height: 30px;
+      background-color: #ffffff; }
   .cur-pos-data-box .station-box {
     display: -webkit-box;
     display: -ms-flexbox;
