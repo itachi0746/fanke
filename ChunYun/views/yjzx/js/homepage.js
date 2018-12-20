@@ -22,6 +22,8 @@ $(function () {
   var tabBoxes4 = $('#tab4 .tab-box2-li');
   var tabBoxes5 = $('#tab5 .tab-box2-li');
   var tabBoxesArr = [tabBoxes2,tabBoxes3,tabBoxes4,tabBoxes5];
+  var isHideStation = true;
+  var isDefaultView = true;  // 默认视角
   // console.log(tabBoxes2)
   window.mapbase = new MapBase();
   var title = $('#title');
@@ -38,13 +40,15 @@ $(function () {
 
     // 点击标题
     title.on('click',function () {
-      pointControl.ReturnDefualt();  // 默认视角
-      pointControl.showMarkers();  // 显示点标记
-      showTabs();
-      hideCurLocaction();
-      hideTab2();
-      $('#floor').addClass('dn');
+      toDefaultView();
+      // pointControl.ReturnDefualt();  // 默认视角
+      // pointControl.showMarkers();  // 显示点标记
+      // showTabs();
+      // hideCurLocaction();
+      // hideTab2();
+      // $('#floor').addClass('dn');
     });
+    backDivBandClick();
 
     // 点击搜索按钮
     $('#search-btn').on('click',function () {
@@ -147,7 +151,7 @@ $(function () {
     markerBindClick();
 
   }
-  var isHideStation = true;
+
   // 添加交通枢纽
   function addStation() {
     clearStation();
@@ -275,6 +279,29 @@ $(function () {
     }
   }
 
+
+  function backDivBandClick() {
+    var backDiv = $('#back-div');
+    backDiv.on('click',function () {
+      if(!isDefaultView) {
+        toDefaultView()
+      }
+    })
+  }
+
+  /**
+   * 返回默认视角
+   */
+  function toDefaultView() {
+    pointControl.ReturnDefualt();  // 默认视角
+    pointControl.showMarkers();  // 显示点标记
+    showTabs();
+    hideCurLocaction();
+    hideTab2();
+    $('#floor').addClass('dn');
+    isDefaultView = true;
+  }
+
   /**
    * 2级tab绑定点击事件
    * @param boxesArr
@@ -305,7 +332,8 @@ $(function () {
         lng: lng
       };
       // console.log(clickTarget['地址'][0].lnglat)
-      pointControl.MoveToPoint(arg,18)
+      pointControl.MoveToPoint(arg,18);
+      isDefaultView = false;
     }
   }
 
@@ -345,26 +373,41 @@ $(function () {
         }
       })
       // 交通枢纽 旅客趋势
+      // laydate.render({
+      //   elem:'#tab2-li3-cld'
+      //   ,type:'date'//默认为date
+      //   ,trigger:'click'//默认为click，即点击后出现日历框
+      //   ,range: true
+      //   ,value: returnDate(7) + ' - ' + returnDate(1)
+      //   // ,min: -8 //7天前
+      //   // ,max: 0 //7天后
+      //   ,done: function(value, date, endDate){
+      //     console.log(value,date,endDate);
+      //
+      //     if(date) {
+      //       var dateObj = {
+      //         start: date.year+'-'+date.month+'-'+date.date,
+      //         end: endDate.year+'-'+endDate.month+'-'+endDate.date,
+      //       };
+      //       // console.log(dateObj)
+      //       tab2Li4EchartReqData(dateObj);
+      //       tab2Li4Echart2ReqData(dateObj)
+      //     } else {
+      //       console.log('date不能为空');
+      //     }
+      //   }
+      // });
       laydate.render({
-        elem:'#tab2-li3-cld'
+        elem:'#tab2-li3-cld-1'
         ,type:'date'//默认为date
         ,trigger:'click'//默认为click，即点击后出现日历框
-        ,range: true
-        ,value: returnDate(7) + ' - ' + returnDate(1)
+        // ,range: true
+        // ,value: returnDate(7) + ' - ' + returnDate(1)
         // ,min: -8 //7天前
         // ,max: 0 //7天后
         ,done: function(value, date, endDate){
-          if(date) {
-            var dateObj = {
-              start: date.year+'-'+date.month+'-'+date.date,
-              end: endDate.year+'-'+endDate.month+'-'+endDate.date,
-            };
-            // console.log(dateObj)
-            tab2Li4EchartReqData(dateObj);
-            tab2Li4Echart2ReqData(dateObj)
-          } else {
-            console.log('date不能为空');
-          }
+          console.log(value,date,endDate);
+          $('#tab2-li3-cld').val("2018-12-13 - 2018-12-18")
         }
       });
     }
@@ -1231,12 +1274,11 @@ $(function () {
     // 高速路网
     if(nowTab===tabArr[3]) {
       $('#tab5').removeClass('vh');
-
     }
     if(nowTab===tabArr[4]) {
       // $('#tab2').removeClass('vh');
     }
-
+    isDefaultView = false;
   }
 
   // 显示1级tab
@@ -1537,6 +1579,7 @@ $(function () {
           color: 'rgb(221,243,255)',
           fontSize: 18,
           fontFamily: 'Microsoft YaHei',
+
           // fontWeight:400
         }
       },
@@ -1547,7 +1590,12 @@ $(function () {
         backgroundColor: '#065f89',
         padding: 10,
         borderColor: '#28eefb',
-        borderWidth: 1
+        borderWidth: 1,
+        axisPointer: {
+          lineStyle: {
+            color: '#68e5ff'
+          }
+        }
       },
       xAxis: {
         type: 'category',
@@ -1560,6 +1608,9 @@ $(function () {
             color: 'rgb(133,168,184)'
           }
         },
+        axisLabel: {
+          interval: 3
+        }
       },
       yAxis: {
         boundaryGap: [0, '50%'],
@@ -1782,10 +1833,11 @@ $(function () {
             color: 'rgb(70,158,228)'
           },
           label: {
-            normal: {
-              show: false,
-              position: 'insideRight'
-            }
+            show: true,
+            position: 'top',
+            align: 'middle',
+            // verticalAlign: 'middle'
+            formatter: '{c}%'
           },
           data: []
         },
@@ -2709,6 +2761,12 @@ $(function () {
           // fontWeight:400
         }
       },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+          type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+      },
       xAxis: {
         type: 'category',
         data: hourArr,
@@ -2735,22 +2793,23 @@ $(function () {
         }
       },
       series: [
-        {name: '占比',
-        data: [],
-        type: 'bar',
-        label: {
-          show: true,
-          position: 'top',
-          align: 'middle',
-          // verticalAlign: 'middle'
-          formatter: '{c}%'
+        {
+          name: '占比',
+          data: [],
+          type: 'bar',
+          label: {
+            show: true,
+            position: 'top',
+            align: 'middle',
+            // verticalAlign: 'middle'
+            formatter: '{c}%'
+          },
+          // 柱子颜色
+          itemStyle: {
+            color: 'rgb(70,158,228)'
+          },
+          barWidth: '50%',
 
-        },
-        // 柱子颜色
-        itemStyle: {
-          color: 'rgb(70,158,228)'
-        },
-        barWidth: '50%',
 
       }]
     };
@@ -2809,19 +2868,20 @@ $(function () {
           // fontWeight:400
         }
       },
-      tooltip: {
+      tooltip: {  // 提示框样式
         trigger: 'axis',
-        //show:true,
-        axisPointer: {
-          type: 'line',
-          show: true,
-          label: {
-            show: false
-          }
-        },
-        backgroundColor: 'transparent',
+        // formatter: "{a} <br/>{b}: {c} ({d}%)"
         formatter: function (params) {
-          return params[params.length - 1].data;
+          return params[params.length - 1].data + '万';
+        },
+        backgroundColor: '#065f89',
+        padding: 10,
+        borderColor: '#28eefb',
+        borderWidth: 1,
+        axisPointer: {  // 指示线
+          lineStyle: {
+            color: '#68e5ff'
+          }
         }
       },
 
@@ -2832,33 +2892,15 @@ $(function () {
         },
         data: []
       },
-      /* visualMap:{
-           show:false,
-           seriesIndex:1,
-       },*/
-      /*legend: {
-          data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
-      },*/
-      /* grid: {
-           left: '3%',
-           right: '4%',
-           bottom: '3%',
-           containLabel: true
-       },*/
       grid: {
         left: '5%',
         right: '10%',
-        top: '15%',
+        top: '25%',
         bottom: '5%',
         // width: 1194,
         // height: 236,
         containLabel: true
       },
-      /*toolbox: {
-          feature: {
-              saveAsImage: {}
-          }
-      },*/
       xAxis: {
         type: 'category',
         boundaryGap: false,
@@ -2867,6 +2909,9 @@ $(function () {
           lineStyle: {
             color: 'rgb(133,168,184)'
           }
+        },
+        axisLabel: {
+          interval: 3
         },
         data: date
       },
@@ -2882,11 +2927,11 @@ $(function () {
 
       },
       series: [
-
         {
           name: '实时客流量',
           type: 'line',
           z: 2,
+          symbol: 'none',
           //stack: '总量',
           smooth: true,
           data: [],
@@ -2914,24 +2959,24 @@ $(function () {
             }
           },
         },
-        // {
-        //   name: '预测客流量',
-        //   symbol: 'none',
-        //   z: 3,
-        //   type: 'line',
-        //   itemStyle: {
-        //     normal: {
-        //       lineStyle: {
-        //         width: 2,
-        //         color: 'rgb(70,158,228)',
-        //         type: 'dotted'  //'dotted'虚线 'solid'实线
-        //       }
-        //     }
-        //   },
-        //   smooth: true,
-        //   //stack: '总量',
-        //   data: [820, 932, 901, 934, 1290, 1330, 1320]
-        // },
+        {
+          name: '预测客流量',
+          symbol: 'none',
+          z: 3,
+          type: 'line',
+          itemStyle: {
+            normal: {
+              lineStyle: {
+                width: 1,
+                color: 'rgb(70,158,228)',
+                type: 'dotted'  //'dotted'虚线 'solid'实线
+              }
+            }
+          },
+          smooth: true,
+          //stack: '总量',
+          data: []
+        },
 
 
       ]
@@ -2946,13 +2991,18 @@ $(function () {
     $('#tab3-cld1-box').hide();
     tab3Li2Echart1.showLoading();    //加载动画
     var url = 'serviceArea/selectServiceFlowTrend.do?postionType='+ positionType +'&postionName='+ curPosition.split('-')[0] +'&countDate='+d;
+    var url2 = 'serviceArea/selectServiceFlowPredict.do?postionType='+ positionType +'&postionName='+ curPosition.split('-')[0] +'&countDate='+d;
+
     $.axpost(url,{},function (data) {
       // console.log('tab2Li2InitEchart',data);
       var dataArr = [];
       // d = data.data;
       for (var i = 0; i < data.data.length; i++) {
         var obj = data.data[i];
-        dataArr.push(obj.userCnt);
+        var tempArr = obj.countTime.split('-');
+        var hour = strDelZero(tempArr[tempArr.length-1]);
+        var objArr = [hour,obj.userCnt];
+        dataArr.push(objArr);
       }
       // debugger
       $('#tab3-cld1-box').show();
@@ -2961,6 +3011,30 @@ $(function () {
         series: [
           {
             name: '实时客流量',
+            data: dataArr
+          }
+        ]
+      })
+    })
+
+    $.axpost(url2,{},function (data) {
+      // console.log('tab2Li2InitEchart',data);
+      var dataArr = [];
+      // d = data.data;
+      for (var i = 0; i < data.data.length; i++) {
+        var obj = data.data[i];
+        var tempArr = obj.countTime.split('-');
+        var hour = strDelZero(tempArr[tempArr.length-1]);
+        var objArr = [hour,obj.preUserCnt];
+        dataArr.push(objArr);
+      }
+      // debugger
+      $('#tab3-cld1-box').show();
+      tab3Li2Echart1.hideLoading();    //隐藏加载动画
+      tab3Li2Echart1.setOption({
+        series: [
+          {
+            name: '预测客流量',
             data: dataArr
           }
         ]
@@ -3649,10 +3723,11 @@ $(function () {
             color: 'rgb(70,158,228)'
           },
           label: {
-            normal: {
-              show: false,
-              position: 'insideRight'
-            }
+            show: true,
+            position: 'top',
+            align: 'middle',
+            // verticalAlign: 'middle'
+            formatter: '{c}%'
           },
           data: []
         },
@@ -3715,9 +3790,30 @@ $(function () {
           // fontWeight:400
         }
       },
-      tooltip: {
+      grid: {
+        left: '5%',
+        right: '10%',
+        top: '15%',
+        bottom: '5%',
+        // width: 1194,
+        // height: 236,
+        containLabel: true
+      },
+      tooltip: {  // 提示框样式
         trigger: 'axis',
         // formatter: "{a} <br/>{b}: {c} ({d}%)"
+        formatter: function (params) {
+          return params[params.length - 1].data + '万';
+        },
+        backgroundColor: '#065f89',
+        padding: 10,
+        borderColor: '#28eefb',
+        borderWidth: 1,
+        axisPointer: {  // 指示线
+          lineStyle: {
+            color: '#68e5ff'
+          }
+        }
       },
       xAxis: {
         type: 'category',
@@ -3729,6 +3825,9 @@ $(function () {
           lineStyle: {
             color: 'rgb(133,168,184)'
           }
+        },
+        axisLabel: {
+          interval: 3
         },
       },
       yAxis: {
@@ -3785,21 +3884,27 @@ $(function () {
           data: [],
 
         },
-        // {
-        //   name: '预测',
-        //   type: 'line',
-        //   smooth: true,
-        //   symbol: 'none',
-        //   stack: 'a',
-        //   // areaStyle: {
-        //   //   normal: {
-        //   //   }
-        //   // },
-        //   lineStyle: {
-        //     type: 'dotted'
-        //   },
-        //   data: data2
-        // }
+        {
+          name: '预测客流趋势',
+          type: 'line',
+          smooth: true,
+          symbol: 'none',
+          // stack: 'a',
+          // areaStyle: {
+          //   normal: {
+          //   }
+          // },
+          itemStyle: {
+            normal: {
+              lineStyle: {
+                width: 1,
+                color: 'rgb(70,158,228)',
+                type: 'dotted'  //'dotted'虚线 'solid'实线
+              }
+            }
+          },
+          data: []
+        }
       ]
     };
 
@@ -3815,12 +3920,19 @@ $(function () {
     $('#tab4-klqs-cld2-box').hide();
     tab4Li2Echart2.showLoading();    //加载动画
     var url = 'toll/selectTollFlowTrend.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
+    var url2 = 'toll/selectTollFlowPredict.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
       // console.log('tab2Li2InitEchart',data);
       var dataArr = [];
       for (var i = 0; i < data.data.length; i++) {
+        // var obj = data.data[i];
+        // dataArr.push(obj.pepValue);
+
         var obj = data.data[i];
-        dataArr.push(obj.pepValue);
+        var tempArr = obj.countTime.split('-');
+        var hour = strDelZero(tempArr[tempArr.length-1]);
+        var objArr = [hour,obj.pepValue];
+        dataArr.push(objArr);
       }
       // debugger
       $('#tab4-klqs-cld2-box').show();
@@ -3829,6 +3941,31 @@ $(function () {
         series: [
           {
             name: '实时客流趋势',
+            data: dataArr
+          }
+        ]
+      })
+    })
+    $.axpost(url2,{},function (data) {
+      // console.log('tab2Li2InitEchart',data);
+      var dataArr = [];
+      for (var i = 0; i < data.data.length; i++) {
+        // var obj = data.data[i];
+        // dataArr.push(obj.pepValue);
+
+        var obj = data.data[i];
+        var tempArr = obj.countTime.split('-');
+        var hour = strDelZero(tempArr[tempArr.length-1]);
+        var objArr = [hour,obj.preUserCnt];
+        dataArr.push(objArr);
+      }
+      // debugger
+      $('#tab4-klqs-cld2-box').show();
+      tab4Li2Echart2.hideLoading();    //隐藏加载动画
+      tab4Li2Echart2.setOption({
+        series: [
+          {
+            name: '预测客流趋势',
             data: dataArr
           }
         ]
@@ -4154,6 +4291,9 @@ $(function () {
             color: 'rgb(133,168,184)'
           }
         },
+        axisLabel: {
+          interval: 3
+        },
         data: date
       },
       yAxis: {
@@ -4226,11 +4366,12 @@ $(function () {
   }
 
   function tab4Li3Echart2reqData(date) {
-    var d = date?date:returnDate(1);
+    // var d = date?date:returnDate(1);
+    var d = date?date:returnDate(0);
     tab4Li3Echart2.showLoading();    //加载动画
     var url = 'toll/selectTollLingerDay.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
+    var url2 = 'toll/selectTollLingerPredict.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
-
       var dataArr = [];
       var index = 0;
       for (var key in data.data) {
@@ -4278,18 +4419,7 @@ $(function () {
         });
         index++;
       }
-      console.log('dataArr',dataArr);
-
-      // var result = [];
-      // for (var j = 0; j < dataArr.length; j++) {
-      //   var item = dataArr[j];
-      //   result.push({
-      //     name: item[0],
-      //     data: item[1]
-      //   })
-      // }
-      // console.log('result',result);
-
+      // console.log('dataArr',dataArr);
       // debugger
       tab4Li3Echart2.hideLoading();    //隐藏加载动画
       tab4Li3Echart2.setOption({
@@ -4297,10 +4427,64 @@ $(function () {
         legend: {
           data: hourArr
         }
-
-
       })
     })
+
+    $.axpost(url2,{},function (data) {
+      var dataArr = [];
+      var index = 0;
+      for (var key in data.data) {
+        var newArr = [];
+        for (var i = 0; i < data.data[key].length; i++) {
+          var obj = data.data[key][i];
+          // debugger
+          // console.log(i);
+          
+          // newArr.push(obj.timeValue)
+
+          var tempArr = obj.countTime.split('-');
+          var hour = strDelZero(tempArr[tempArr.length-1]);
+          var objArr = [hour,obj.preUserCnt];
+          newArr.push(objArr);
+        }
+        console.log('newArr:',newArr);
+
+        dataArr.push(
+          {
+            name: hourArr[index] + '预测',
+            type: 'line',
+            smooth: true,
+            symbol: 'none',
+            // stack: 'a',
+            // areaStyle: {
+            //   normal: {
+            //   }
+            // },
+            itemStyle: {
+              normal: {
+                lineStyle: {
+                  width: 1,
+                  color: 'rgb(70,158,228)',
+                  type: 'dotted'  //'dotted'虚线 'solid'实线
+                }
+              }
+            },
+            data: newArr
+          }
+        );
+        index++;
+      }
+      console.log('dataArr',dataArr);
+      // debugger
+      tab4Li3Echart2.hideLoading();    //隐藏加载动画
+      tab4Li3Echart2.setOption({
+        series: dataArr,
+        legend: {
+          data: hourArr
+        }
+      })
+    })
+
   }
 
   var tab4Li4Echart1;
@@ -4632,11 +4816,18 @@ $(function () {
       tooltip: {  // 提示框样式
         trigger: 'axis',
         // formatter: "{a} <br/>{b}: {c} ({d}%)"
-        formatter: "{c}万",
+        formatter: function (params) {
+          return params[params.length - 1].data + '万';
+        },
         backgroundColor: '#065f89',
         padding: 10,
         borderColor: '#28eefb',
-        borderWidth: 1
+        borderWidth: 1,
+        axisPointer: {  // 指示线
+          lineStyle: {
+            color: '#68e5ff'
+          }
+        }
       },
       xAxis: {
         type: 'category',
@@ -4648,6 +4839,9 @@ $(function () {
           lineStyle: {
             color: 'rgb(133,168,184)'
           }
+        },
+        axisLabel: {
+          interval: 3
         },
       },
       yAxis: {
@@ -4704,21 +4898,27 @@ $(function () {
           data: [],
 
         },
-        // {
-        //   name: '预测',
-        //   type: 'line',
-        //   smooth: true,
-        //   symbol: 'none',
-        //   stack: 'a',
-        //   // areaStyle: {
-        //   //   normal: {
-        //   //   }
-        //   // },
-        //   lineStyle: {
-        //     type: 'dotted'
-        //   },
-        //   data: data2
-        // }
+        {
+          name: '预测客流趋势',
+          type: 'line',
+          smooth: true,
+          symbol: 'none',
+          // stack: 'a',
+          // areaStyle: {
+          //   normal: {
+          //   }
+          // },
+          itemStyle: {
+            normal: {
+              lineStyle: {
+                width: 1,
+                color: 'rgb(70,158,228)',
+                type: 'dotted'  //'dotted'虚线 'solid'实线
+              }
+            }
+          },
+          data: []
+        }
       ]
     };
     tab5Li2Echart1reqData();
@@ -4735,13 +4935,21 @@ $(function () {
     tab5Li2Echart1.showLoading();    //加载动画
     // var url = 'highSpeed/selectGsFlowTrend.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     var url = 'highSpeed/selectGsFlowTrend.do?postionType='+ positionType +'&postionName='+ str +'&countDate='+d;
+    var url2 = 'highSpeed/selectGsFlowPredict.do?postionType='+ positionType +'&postionName='+ str +'&countDate='+d;
     $.axpost(url,{},function (data) {
       // console.log('tab2Li2InitEchart',data);
       var dataArr = [];
       for (var i = 0; i < data.data.length; i++) {
         var obj = data.data[i];
-        dataArr.push(obj.peopleNum);
+        // dataArr.push(obj.peopleNum);
+
+        var tempArr = obj.countTime.split('-');
+        var hour = strDelZero(tempArr[tempArr.length-1]);
+        var objArr = [hour,obj.peopleNum];
+        dataArr.push(objArr);
       }
+      // console.log('dataArr:',dataArr);
+
       // debugger
       $('#tab5-cld1').show();
       tab5Li2Echart1.hideLoading();    //隐藏加载动画
@@ -4754,6 +4962,32 @@ $(function () {
         ]
       })
     })
+
+    $.axpost(url2,{},function (data) {
+      // console.log('tab2Li2InitEchart',data);
+      var dataArr = [];
+      for (var i = 0; i < data.data.length; i++) {
+        var obj = data.data[i];
+        // dataArr.push(obj.peopleNum);
+
+        var tempArr = obj.countTime.split('-');
+        var hour = strDelZero(tempArr[tempArr.length-1]);
+        var objArr = [hour,obj.preUserCnt];
+        dataArr.push(objArr);
+      }
+      // debugger
+      $('#tab5-cld1').show();
+      tab5Li2Echart1.hideLoading();    //隐藏加载动画
+      tab5Li2Echart1.setOption({
+        series: [
+          {
+            name: '预测客流趋势',
+            data: dataArr
+          }
+        ]
+      })
+    })
+
   }
 
   var tab5Li2Echart2;
@@ -4780,9 +5014,21 @@ $(function () {
           // fontWeight:400
         }
       },
-      tooltip: {
+      tooltip: {  // 提示框样式
         trigger: 'axis',
         // formatter: "{a} <br/>{b}: {c} ({d}%)"
+        formatter: function (params) {
+          return params[params.length - 1].data + '万';
+        },
+        backgroundColor: '#065f89',
+        padding: 10,
+        borderColor: '#28eefb',
+        borderWidth: 1,
+        axisPointer: {  // 指示线
+          lineStyle: {
+            color: '#68e5ff'
+          }
+        }
       },
       xAxis: {
         type: 'category',
@@ -4794,6 +5040,9 @@ $(function () {
           lineStyle: {
             color: 'rgb(133,168,184)'
           }
+        },
+        axisLabel: {
+          interval: 3
         },
       },
       yAxis: {
@@ -4850,21 +5099,23 @@ $(function () {
           data: [],
 
         },
-        // {
-        //   name: '预测',
-        //   type: 'line',
-        //   smooth: true,
-        //   symbol: 'none',
-        //   stack: 'a',
-        //   // areaStyle: {
-        //   //   normal: {
-        //   //   }
-        //   // },
-        //   lineStyle: {
-        //     type: 'dotted'
-        //   },
-        //   data: data2
-        // }
+        {
+          name: '预测平均通行速度',
+          type: 'line',
+          smooth: true,
+          symbol: 'none',
+          stack: 'a',
+          // areaStyle: {
+          //   normal: {
+          //   }
+          // },
+          lineStyle: {
+            type: 'dotted',
+            color: '#15ad64'
+
+          },
+          data: []
+        }
       ]
     };
     tab5Li2Echart2reqData();
@@ -4881,12 +5132,45 @@ $(function () {
     tab5Li2Echart2.showLoading();    //加载动画
     // var url = 'highSpeed/selectGsAveSpeed.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     var url = 'highSpeed/selectGsAveSpeed.do?postionType='+ positionType +'&postionName='+ str +'&countDate='+d;
+    var url2 = 'highSpeed/selectGsAveSpeedPredict.do?postionType='+ positionType +'&postionName='+ str +'&countDate='+d;
     $.axpost(url,{},function (data) {
       // console.log('tab2Li2InitEchart',data);
       var dataArr = [];
       for (var i = 0; i < data.data.length; i++) {
         var obj = data.data[i];
-        dataArr.push(obj.avgSpeed);
+        // dataArr.push(obj.avgSpeed);
+
+        var tempArr = obj.countTime.split('-');
+        var hour = strDelZero(tempArr[tempArr.length-1]);
+        var objArr = [hour,obj.avgSpeed];
+        dataArr.push(objArr);
+      }
+      console.log('dataArr:',dataArr);
+
+      // debugger
+      $('#tab5-cld2').show();
+      tab5Li2Echart2.hideLoading();    //隐藏加载动画
+      tab5Li2Echart2.setOption({
+        series: [
+          {
+            name: '实时平均通行速度',
+            data: dataArr
+          }
+        ]
+      })
+    })
+
+    $.axpost(url2,{},function (data) {
+      // console.log('tab2Li2InitEchart',data);
+      var dataArr = [];
+      for (var i = 0; i < data.data.length; i++) {
+        var obj = data.data[i];
+        // dataArr.push(obj.avgSpeed);
+
+        var tempArr = obj.countTime.split('-');
+        var hour = strDelZero(tempArr[tempArr.length-1]);
+        var objArr = [hour,obj.preAvgSpeed];
+        dataArr.push(objArr);
       }
       // debugger
       $('#tab5-cld2').show();
@@ -4894,12 +5178,13 @@ $(function () {
       tab5Li2Echart2.setOption({
         series: [
           {
-            name: '实时客流趋势',
+            name: '预测平均通行速度',
             data: dataArr
           }
         ]
       })
     })
+
   }
 
   var tab5Li3Echart1;

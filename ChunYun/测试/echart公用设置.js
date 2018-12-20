@@ -17,11 +17,33 @@ option = {
   tooltip: {  // 提示框样式
     trigger: 'axis',
     // formatter: "{a} <br/>{b}: {c} ({d}%)"
-    formatter: "{c}万",
+    formatter: function (params) {
+      return params[params.length - 1].data + '万';
+    },
     backgroundColor: '#065f89',
     padding: 10,
     borderColor: '#28eefb',
-    borderWidth: 1
+    borderWidth: 1,
+    axisPointer: {  // 指示线
+      lineStyle: {
+        color: '#68e5ff'
+      }
+    }
+  },
+  tooltip: {
+    trigger: 'axis',
+    //show:true,
+    axisPointer: {
+      type: 'line',
+      show: true,
+      label: {
+        show: false
+      }
+    },
+    backgroundColor: 'transparent',
+    formatter: function (params) {
+      return params[params.length - 1].data + '万';
+    }
   },
   legend: {
     data: ['出发旅客量', '到达旅客量'],
