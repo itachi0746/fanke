@@ -1,5 +1,7 @@
+// console.log(serviceBase);
+var serviceBase = serviceBase;  // 基地址
+
 $(function(){
-  var serviceBase = serviceBase;  // 基地址
 
   /**
    * ajax封装

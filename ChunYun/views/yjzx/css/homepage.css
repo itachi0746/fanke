@@ -821,7 +821,7 @@ html, body {
 .tab-box2 .tab-box2-li2 {
   background: url("../img/4icon_left_2_nor.png") no-repeat; }
   .tab-box2 .tab-box2-li2 .li-tab-box {
-    height: 750px;
+    height: 670px;
     top: -235px; }
     .tab-box2 .tab-box2-li2 .li-tab-box header {
       width: 100%;
@@ -878,7 +878,7 @@ html, body {
         background: url("../img/icon_date_arrows_on.png") no-repeat;
         background-position: center; }
     .tab-box2 .tab-box2-li2 .li-tab-box .chart-box2 {
-      height: 250px;
+      height: 200px;
       padding: 0 20px; }
       .tab-box2 .tab-box2-li2 .li-tab-box .chart-box2 .header label {
         font-size: 18px;

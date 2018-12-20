@@ -592,16 +592,16 @@ $(function () {
     // addStation2()
   }
 
-  var sb3 = $('#station-box-3');
-  var sb2 = $('#station-box-2');
-  var sb1 = $('#station-box-1');
+  // var sb3 = $('#station-box-3');
+  // var sb2 = $('#station-box-2');
+  // var sb1 = $('#station-box-1');
   /**
    * 清空搜索框下的站点
    */
   function clearStation() {
-    // var sb3 = $('#station-box-3');
-    // var sb2 = $('#station-box-2');
-    // var sb1 = $('#station-box-1');
+    var sb3 = $('#station-box-3');
+    var sb2 = $('#station-box-2');
+    var sb1 = $('#station-box-1');
     var theArr = [sb1,sb2,sb3];
     for (var i = 0; i < theArr.length; i++) {
       var sb = theArr[i];
@@ -614,9 +614,9 @@ $(function () {
    * 显示搜索框下的站点
    */
   function showStation() {
-    // var sb3 = $('#station-box-3');
-    // var sb2 = $('#station-box-2');
-    // var sb1 = $('#station-box-1');
+    var sb3 = $('#station-box-3');
+    var sb2 = $('#station-box-2');
+    var sb1 = $('#station-box-1');
     var theArr = [sb1,sb2,sb3];
     for (var i = 0; i < theArr.length; i++) {
       var sb = theArr[i];
@@ -633,9 +633,9 @@ $(function () {
     clearStation();
     showStation();
     var tgt;
-    // var sb1 = $('#station-box-1');
-    // var sb2 = $('#station-box-2');
-    // var sb3 = $('#station-box-3');
+    var sb1 = $('#station-box-1');
+    var sb2 = $('#station-box-2');
+    var sb3 = $('#station-box-3');
 
     if(nowTab===tabArr[1]) {
       sb1.hide();
@@ -1423,7 +1423,6 @@ $(function () {
           '</li>';
         theDom = $(liStr);
         dom.find('.from-chart ul.body').append(theDom)
-
       }
     })
   }
@@ -1541,9 +1540,14 @@ $(function () {
           // fontWeight:400
         }
       },
-      tooltip: {
+      tooltip: {  // 提示框样式
         trigger: 'axis',
         // formatter: "{a} <br/>{b}: {c} ({d}%)"
+        formatter: "{c}万",
+        backgroundColor: '#065f89',
+        padding: 10,
+        borderColor: '#28eefb',
+        borderWidth: 1
       },
       xAxis: {
         type: 'category',
@@ -1582,7 +1586,7 @@ $(function () {
           stack: 'a',
           label: {
             normal: {
-              show: true
+              show: false
             }
           },
           // 填充区域样式
@@ -1610,21 +1614,22 @@ $(function () {
           },
           data: [],
         },
-        // {
-        //   name: '预测',
-        //   type: 'line',
-        //   smooth: true,
-        //   symbol: 'none',
-        //   stack: 'a',
-        //   // areaStyle: {
-        //   //   normal: {
-        //   //   }
-        //   // },
-        //   lineStyle: {
-        //     type: 'dotted'
-        //   },
-        //   data: data2
-        // }
+        {
+          name: '客流预测',
+          type: 'line',
+          smooth: true,
+          symbol: 'none',
+          stack: 'a',
+          // areaStyle: {
+          //   normal: {
+          //   }
+          // },
+          lineStyle: {
+            type: 'dotted',
+            color: 'rgb(62,139,230)',
+          },
+          data: []
+        }
       ]
     };
 
@@ -1639,15 +1644,20 @@ $(function () {
     $('#SSKL-cld-box').hide();
     tab2Li2Echart1.showLoading();    //加载动画
     var url = 'terminal/selectTerminalFlowTrend.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+date;
+    var url2 = 'terminal/selectTerminalFlowPredict.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+date;
     $.axpost(url,{},function (data) {
       console.log('tab2Li2InitEchart',data);
       var d = [];
       // d = data.data;
       for (var i = 0; i < data.data.length; i++) {
         var obj = data.data[i];
-
-        d.push(obj.userCnt);
+        var tempArr = obj.countTime.split('-');
+        var hour = strDelZero(tempArr[tempArr.length-1]);
+        var objArr = [hour,obj.userCnt];
+        d.push(objArr);
       }
+      // console.log(d);
+      
       // debugger
       $('#SSKL-cld-box').show();
       tab2Li2Echart1.hideLoading();    //隐藏加载动画
@@ -1655,6 +1665,32 @@ $(function () {
         series: [
           {
             name: '实时客流',
+            data: d
+          }
+        ]
+      })
+    });
+
+    $.axpost(url2,{},function (data) {
+      console.log('tab2Li2InitEchart',data);
+      var d = [];
+      // d = data.data;
+      for (var i = 0; i < data.data.length; i++) {
+        var obj = data.data[i];
+        var tempArr = obj.countTime.split('-');
+        var hour = strDelZero(tempArr[tempArr.length-1]);
+        var objArr = [hour,obj.preUserCnt];
+        d.push(objArr);
+      }
+      console.log(d);
+
+      // debugger
+      // $('#SSKL-cld-box').show();
+      tab2Li2Echart1.hideLoading();    //隐藏加载动画
+      tab2Li2Echart1.setOption({
+        series: [
+          {
+            name: '客流预测',
             data: d
           }
         ]
@@ -1864,7 +1900,7 @@ $(function () {
           stack: 'a',
           label: {
             normal: {
-              show: true
+              show: false
             }
           },
           // 填充区域样式
@@ -2780,7 +2816,7 @@ $(function () {
           type: 'line',
           show: true,
           label: {
-            show: true
+            show: false
           }
         },
         backgroundColor: 'transparent',
@@ -3348,7 +3384,7 @@ $(function () {
           stack: 'a',
           label: {
             normal: {
-              show: true
+              show: false
             }
           },
           // 填充区域样式
@@ -4340,7 +4376,7 @@ $(function () {
           stack: 'a',
           label: {
             normal: {
-              show: true
+              show: false
             }
           },
           // 填充区域样式
@@ -4593,9 +4629,14 @@ $(function () {
           // fontWeight:400
         }
       },
-      tooltip: {
+      tooltip: {  // 提示框样式
         trigger: 'axis',
         // formatter: "{a} <br/>{b}: {c} ({d}%)"
+        formatter: "{c}万",
+        backgroundColor: '#065f89',
+        padding: 10,
+        borderColor: '#28eefb',
+        borderWidth: 1
       },
       xAxis: {
         type: 'category',
@@ -4689,11 +4730,11 @@ $(function () {
 
   function tab5Li2Echart1reqData(date) {
     var d = date?date:returnDate();
-    // var str = '虎门大桥';
+    var str = '虎门大桥';
     $('#tab5-cld1').hide();
     tab5Li2Echart1.showLoading();    //加载动画
-    var url = 'highSpeed/selectGsFlowTrend.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
-    // var url = 'highSpeed/selectGsFlowTrend.do?postionType='+ positionType +'&postionName='+ str +'&countDate='+d;
+    // var url = 'highSpeed/selectGsFlowTrend.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
+    var url = 'highSpeed/selectGsFlowTrend.do?postionType='+ positionType +'&postionName='+ str +'&countDate='+d;
     $.axpost(url,{},function (data) {
       // console.log('tab2Li2InitEchart',data);
       var dataArr = [];

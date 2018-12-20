@@ -12,7 +12,7 @@
 
     <div class="screen-data">
       <h5>{{resData.Name}}</h5>
-      <p class="screen-desc">{{resData.Desc}}</p>
+      <p class="screen-desc" v-html="html">{{resData.Desc}}</p>
 
       <p class="screen-desc">Step1: 点击日期查看大屏的剩余广告位</p>
       <p class="screen-desc">Step2: 选择广告位数量, 点击添加</p>

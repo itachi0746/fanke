@@ -14,6 +14,15 @@ option = {
       // fontWeight:400
     }
   },
+  tooltip: {  // 提示框样式
+    trigger: 'axis',
+    // formatter: "{a} <br/>{b}: {c} ({d}%)"
+    formatter: "{c}万",
+    backgroundColor: '#065f89',
+    padding: 10,
+    borderColor: '#28eefb',
+    borderWidth: 1
+  },
   legend: {
     data: ['出发旅客量', '到达旅客量'],
     textStyle: {

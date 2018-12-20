@@ -56,3 +56,20 @@ function returnDate(detract) {
     return y+'-'+m+'-'+d;
   }
 }
+
+/**
+ * 去掉字符串中的'0'
+ * @param str
+ */
+function strDelZero(str) {
+  var num = parseInt(str);
+  if(num<10) {
+    var i = str.indexOf('0');
+    if(i>-1) {
+      str = str.slice(i+1)
+    }
+  }
+
+  // console.log(str);
+  return str
+}
