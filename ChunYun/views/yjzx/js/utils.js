@@ -73,3 +73,32 @@ function strDelZero(str) {
   // console.log(str);
   return str
 }
+
+/**
+ * 返回点击中的日期的前一周
+ * @param date 日期字符串
+ * @returns {{start: (string|*), end: *}|*}
+ */
+function calDate(date) {
+  if(!date){
+    console.log('date不能为空');
+    return
+  }
+  var y,m,d,result,temp;
+
+  var sec = 24*60*60*1000*6;
+  var endD = new Date(date);
+  var StartD = new Date(endD.getTime()-sec);
+  y = StartD.getFullYear();
+  m = StartD.getMonth() + 1;
+  d = StartD.getDate();
+  temp = y + '-' + m + '-' + d;
+  // result = temp + ' - ' + date;
+  result = {
+    start: temp,
+    end: date
+  };
+  return result
+  // console.log(result)
+
+}

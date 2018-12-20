@@ -107,6 +107,18 @@ html, body {
   -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2), 5px -5px 5px rgba(0, 0, 0, 0.2), -5px 5px 5px rgba(0, 0, 0, 0.2), -5px -5px 5px rgba(0, 0, 0, 0.2);
           box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2), 5px -5px 5px rgba(0, 0, 0, 0.2), -5px 5px 5px rgba(0, 0, 0, 0.2), -5px -5px 5px rgba(0, 0, 0, 0.2); }
 
+.hidden-cld {
+  width: 295px;
+  height: 100%;
+  position: absolute;
+  left: 45px;
+  top: 0;
+  background-color: #12508f;
+  color: #fff;
+  text-align: center;
+  z-index: 2;
+  opacity: 0; }
+
 .title {
   width: 700px;
   height: 160px;
@@ -1094,17 +1106,6 @@ html, body {
     color: #fff;
     text-align: center;
     z-index: 1; }
-  .tab-box2 .tab-box2-li3 .tab-li3-cld-1 {
-    width: 295px;
-    height: 100%;
-    position: absolute;
-    left: 45px;
-    top: 0;
-    background-color: #12508f;
-    color: #fff;
-    text-align: center;
-    z-index: 2;
-    opacity: 0; }
   .tab-box2 .tab-box2-li3 .arrow {
     position: absolute;
     right: 0;
@@ -1206,6 +1207,7 @@ html, body {
     top: 0;
     text-align: center;
     color: #ffffff;
+    z-index: 1;
     background-color: #12508f; }
   .tab-box4 .tab-box2-li3 .arrow {
     position: absolute;

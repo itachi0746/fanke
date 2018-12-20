@@ -129,6 +129,18 @@
     <!--地图-->
     <Map @hide-map="handleMap" :coordinate="{'Latitude':resData.Latitude,'Longitude':resData.Longitude,'Name':resData.Name}" v-if="showMap"></Map>
     <!--<div class="iosBtm" v-if="isIOS"></div>-->
+    <!--商品详情-->
+    <div class="screen-dtl">
+      <header>
+        <div class="head-font">
+          大屏详情
+        </div>
+      </header>
+      <div class="dtl-main" v-html="html">
+        {{resData.DtlDesc}}
+        <!--该媒体地处江门市有名的it专业市场、电脑城，位于江门市蓬江区东华路与江华路交汇处新华电脑城外墙，是在新会电脑城商圈不可多得的好位置。周边集饮食、娱乐、时尚品牌购物、金融中心、电器、建材、高尚小区等地理优势，每天人流如注，川流不息，是江门闹市LED媒体中的难得的黄金广告位。媒体周围干扰较小，视觉冲击力强，画面艳丽。是各快消类客户、汽车类客户、电商类客户、电子产品客户等想要短期内辐射特定人群的首选高性价比LED媒体。-->
+      </div>
+    </div>
     <div class="fillBtm"></div>
 
     <Footer></Footer>
@@ -448,6 +460,34 @@
 
     .screen-desc:nth-child(3) {
       margin-top: .5rem;
+    }
+  }
+
+  .screen-dtl {
+    margin: .5rem;
+
+    header {
+      height: 1.5rem;
+      border-bottom: 2px solid #42aef3;
+
+    }
+
+    .head-font {
+      background: #3297f5;
+      width: 92px;
+      margin-bottom: 5px;
+      /*margin-left: .5rem;*/
+      color: #fff;
+      height: 1.5rem;
+      line-height: 1.5rem;
+      text-align: center;
+      font-size: .8rem;
+    }
+    .dtl-main {
+      text-indent: 2em;
+      margin-top: 5px;
+      font-size: 14px;
+      line-height: 20px;
     }
   }
 

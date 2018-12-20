@@ -342,6 +342,8 @@ $(function () {
    */
   function initCalendar() {
     if(nowTab===tabArr[0]) {
+      $('#tab2-li3-cld').val(returnDate(7)+" - "+returnDate(1));
+
       // 交通枢纽 实时客流
       laydate.render({
         elem:'#tab2-li2-cld'
@@ -406,30 +408,50 @@ $(function () {
         // ,min: -8 //7天前
         // ,max: 0 //7天后
         ,done: function(value, date, endDate){
-          console.log(value,date,endDate);
-          $('#tab2-li3-cld').val("2018-12-13 - 2018-12-18")
+          // console.log(value,date,endDate);
+          var dateObj = calDate(value);
+          $('#tab2-li3-cld').val(dateObj.start+" - "+dateObj.end);
+          tab2Li4EchartReqData(dateObj);
+          tab2Li4Echart2ReqData(dateObj)
         }
       });
     }
     if(nowTab===tabArr[1]) {
       // 服务区
+      $('#tab3-li3-cld2').val(returnDate(7) + ' - ' + returnDate(1));
+
+      // laydate.render({
+      //   elem:'#tab3-li3-cld2'
+      //   ,type:'date'//默认为date
+      //   ,trigger:'click'//默认为click，即点击后出现日历框
+      //   ,range: true
+      //   ,value: returnDate(7) + ' - ' + returnDate(1)
+      //   ,done: function(value, date, endDate){
+      //     if(date) {
+      //       var dateObj = {
+      //         start: date.year+'-'+date.month+'-'+date.date,
+      //         end: endDate.year+'-'+endDate.month+'-'+endDate.date
+      //       };
+      //       // console.log(dateObj)
+      //       tab3Li4EchartReqData(dateObj);
+      //     } else {
+      //       console.log('date不能为空');
+      //     }
+      //   }
+      // });
       laydate.render({
-        elem:'#tab3-li3-cld2'
+        elem:'#tab3-li3-cld2-1'
         ,type:'date'//默认为date
         ,trigger:'click'//默认为click，即点击后出现日历框
-        ,range: true
-        ,value: returnDate(7) + ' - ' + returnDate(1)
+        // ,range: true
+        // ,value: returnDate(7) + ' - ' + returnDate(1)
+        // ,min: -8 //7天前
+        // ,max: 0 //7天后
         ,done: function(value, date, endDate){
-          if(date) {
-            var dateObj = {
-              start: date.year+'-'+date.month+'-'+date.date,
-              end: endDate.year+'-'+endDate.month+'-'+endDate.date
-            };
-            // console.log(dateObj)
-            tab3Li4EchartReqData(dateObj);
-          } else {
-            console.log('date不能为空');
-          }
+          // console.log(value,date,endDate);
+          var dateObj = calDate(value);
+          $('#tab3-li3-cld2').val(dateObj.start+" - "+dateObj.end);
+          tab3Li4EchartReqData(dateObj);
         }
       });
       laydate.render({
@@ -455,6 +477,8 @@ $(function () {
       })
     }
     if(nowTab===tabArr[2]) {
+      $('#tab4-big-cld').val(returnDate(7) + ' - ' + returnDate(1));
+
       // 收费站
       laydate.render({
         elem:'#tab4-klqs-cld2'
@@ -475,29 +499,47 @@ $(function () {
           tab4Li3Echart2reqData(value);
         }
       })
+      // laydate.render({
+      //   elem:'#tab4-big-cld'
+      //   ,type:'date'//默认为date
+      //   ,trigger:'click'//默认为click，即点击后出现日历框
+      //   ,range: true
+      //   ,value: returnDate(7) + ' - ' + returnDate(1)
+      //   ,done: function(value, date, endDate){
+      //     if(date) {
+      //       var dateObj = {
+      //         start: date.year+'-'+date.month+'-'+date.date,
+      //         end: endDate.year+'-'+endDate.month+'-'+endDate.date,
+      //       };
+      //       // console.log(dateObj)
+      //       tab4Li4EchartReqData(dateObj);
+      //       tab4Li4Echart2ReqData(dateObj);
+      //     } else {
+      //       console.log('date不能为空');
+      //     }
+      //   }
+      // })
       laydate.render({
-        elem:'#tab4-big-cld'
+        elem:'#tab4-big-cld-1'
         ,type:'date'//默认为date
         ,trigger:'click'//默认为click，即点击后出现日历框
-        ,range: true
-        ,value: returnDate(7) + ' - ' + returnDate(1)
+        // ,range: true
+        // ,value: returnDate(7) + ' - ' + returnDate(1)
+        // ,min: -8 //7天前
+        // ,max: 0 //7天后
         ,done: function(value, date, endDate){
-          if(date) {
-            var dateObj = {
-              start: date.year+'-'+date.month+'-'+date.date,
-              end: endDate.year+'-'+endDate.month+'-'+endDate.date,
-            };
-            // console.log(dateObj)
-            tab4Li4EchartReqData(dateObj);
-            tab4Li4Echart2ReqData(dateObj);
-          } else {
-            console.log('date不能为空');
-          }
+          // console.log(value,date,endDate);
+          var dateObj = calDate(value);
+          $('#tab4-big-cld').val(dateObj.start+" - "+dateObj.end);
+          tab4Li4EchartReqData(dateObj);
+          tab4Li4Echart2ReqData(dateObj);
         }
-      })
+      });
     }
     if(nowTab===tabArr[3]) {
       // 高速路段
+      $('#tab5-big-cld').val(returnDate(7) + ' - ' + returnDate(1));
+
       laydate.render({
         elem:'#tab5-klqs-cld'
         ,type:'date'//默认为date
@@ -516,28 +558,45 @@ $(function () {
           tab5Li2Echart2reqData(value);
         }
       })
+      // laydate.render({
+      //   elem:'#tab5-big-cld'
+      //   ,type:'date'//默认为date
+      //   ,trigger:'click'//默认为click，即点击后出现日历框
+      //   ,range: true
+      //   // ,value: '2018-12-01 - 2018-12-07'
+      //   ,value: returnDate(7) + ' - ' + returnDate(1)
+      //   ,done: function(value, date, endDate){
+      //     if(date) {
+      //       var dateObj = {
+      //         start: date.year+'-'+date.month+'-'+date.date,
+      //         end: endDate.year+'-'+endDate.month+'-'+endDate.date,
+      //       };
+      //       // console.log(dateObj)
+      //       tab5Li3Echart1ReqData(dateObj);
+      //       tab5Li3Echart2ReqData(dateObj);
+      //       tab5Li3Echart3reqData(dateObj);
+      //     } else {
+      //       console.log('date不能为空');
+      //     }
+      //   }
+      // })
       laydate.render({
-        elem:'#tab5-big-cld'
+        elem:'#tab5-big-cld-1'
         ,type:'date'//默认为date
         ,trigger:'click'//默认为click，即点击后出现日历框
-        ,range: true
-        // ,value: '2018-12-01 - 2018-12-07'
-        ,value: returnDate(7) + ' - ' + returnDate(1)
+        // ,range: true
+        // ,value: returnDate(7) + ' - ' + returnDate(1)
+        // ,min: -8 //7天前
+        // ,max: 0 //7天后
         ,done: function(value, date, endDate){
-          if(date) {
-            var dateObj = {
-              start: date.year+'-'+date.month+'-'+date.date,
-              end: endDate.year+'-'+endDate.month+'-'+endDate.date,
-            };
-            // console.log(dateObj)
-            tab5Li3Echart1ReqData(dateObj);
-            tab5Li3Echart2ReqData(dateObj);
-            tab5Li3Echart3reqData(dateObj);
-          } else {
-            console.log('date不能为空');
-          }
+          // console.log(value,date,endDate);
+          var dateObj = calDate(value);
+          $('#tab5-big-cld').val(dateObj.start+" - "+dateObj.end);
+          tab5Li3Echart1ReqData(dateObj);
+          tab5Li3Echart2ReqData(dateObj);
+          tab5Li3Echart3reqData(dateObj);
         }
-      })
+      });
     }
   }
 
