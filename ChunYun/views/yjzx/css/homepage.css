@@ -117,7 +117,8 @@ html, body {
   color: #fff;
   text-align: center;
   z-index: 2;
-  opacity: 0; }
+  opacity: 0;
+  cursor: pointer; }
 
 .title {
   width: 700px;
@@ -615,6 +616,10 @@ html, body {
   -webkit-animation-fill-mode: forwards;
           animation-fill-mode: forwards; }
 
+.rotate {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg); }
+
 .dn {
   display: none !important; }
 
@@ -887,7 +892,8 @@ html, body {
         background-color: #12508f;
         font-size: 16px;
         color: #ddf3ff;
-        padding-left: 10px; }
+        padding-left: 10px;
+        cursor: pointer; }
       .tab-box2 .tab-box2-li2 .li-tab-box .chart-box .arrow {
         position: absolute;
         right: 0;
@@ -1098,10 +1104,10 @@ html, body {
     width: 100%; }
   .tab-box2 .tab-box2-li3 .tab-li3-cld {
     width: 295px;
-    height: 100%;
+    height: 40px;
     position: absolute;
-    left: 45px;
-    top: 0;
+    left: 154px;
+    top: 20px;
     background-color: #12508f;
     color: #fff;
     text-align: center;
@@ -1132,7 +1138,9 @@ html, body {
       padding: 20px 30px;
       -webkit-box-pack: center;
           -ms-flex-pack: center;
-              justify-content: center; }
+              justify-content: center;
+      cursor: default;
+      position: relative; }
     .tab-box2 .tab-box2-li3 .li-tab-box .calendar {
       width: 380px;
       height: 40px;
@@ -1149,13 +1157,14 @@ html, body {
   background: url("../img/4icon_left_4_nor.png") no-repeat; }
   .tab-box3 .tab-box2-li3 .tab-li3-cld {
     width: 295px;
-    height: 100%;
+    height: 40px;
     position: absolute;
-    left: 45px;
-    top: 0;
+    left: 154px;
+    top: 20px;
     text-align: center;
     color: #fff;
-    background-color: #12508f; }
+    background-color: #12508f;
+    z-index: 1; }
   .tab-box3 .tab-box2-li3 .arrow {
     position: absolute;
     right: 0;
@@ -1201,10 +1210,10 @@ html, body {
   background: url("../img/4icon_left_4_nor.png") no-repeat; }
   .tab-box4 .tab-box2-li3 .tab4-big-cld {
     width: 295px;
-    height: 100%;
+    height: 40px;
     position: absolute;
-    left: 45px;
-    top: 0;
+    left: 154px;
+    top: 20px;
     text-align: center;
     color: #ffffff;
     z-index: 1;
@@ -1249,10 +1258,10 @@ html, body {
   background: url("../img/4icon_left_4_nor.png") no-repeat; }
   .tab-box5 .tab-box2-li3 .tab5-big-cld {
     width: 295px;
-    height: 100%;
+    height: 40px;
     position: absolute;
-    left: 45px;
-    top: 0;
+    left: 154px;
+    top: 20px;
     text-align: center;
     color: #ffffff;
     background-color: #12508f; }
@@ -1438,7 +1447,8 @@ html, body {
       top: 0;
       font-size: 16px;
       color: #ddf3ff;
-      text-align: center; }
+      text-align: center;
+      cursor: pointer; }
     .tab-box2 .tab-box2-li4 .li-tab-box header {
       display: -webkit-box;
       display: -ms-flexbox;
@@ -1630,7 +1640,8 @@ html, body {
       top: 0;
       font-size: 16px;
       color: #ddf3ff;
-      text-align: center; }
+      text-align: center;
+      cursor: pointer; }
     .tab-box3 .tab-box2-li4 .li-tab-box .chart1 {
       height: 220px;
       width: 100%; }

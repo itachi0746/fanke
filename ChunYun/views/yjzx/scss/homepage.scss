@@ -35,6 +35,7 @@ html,body{
   text-align: center;
   z-index: 2;
   opacity: 0;
+  cursor: pointer;
 }
 .title {
   width: 700px;
@@ -561,7 +562,9 @@ html,body{
   animation: moveAndHideKF .3s;
   animation-fill-mode: forwards;
 }
-
+.rotate {
+  transform: rotate(180deg);
+}
 .dn {
   display: none!important;
 }
@@ -883,6 +886,7 @@ html,body{
         font-size: 16px;
         color: rgb(221,243,255);
         padding-left: 10px;
+        cursor: pointer;
         //display: none;
       }
       .arrow {
@@ -1151,10 +1155,10 @@ html,body{
   }
   .tab-li3-cld {
     width: 295px;
-    height: 100%;
+    height: 40px;
     position: absolute;
-    left: 45px;
-    top: 0;
+    left: 154px;
+    top: 20px;
     background-color: rgb(18,80,143);
     color: #fff;
     text-align: center;
@@ -1189,6 +1193,8 @@ html,body{
       display: flex;
       padding: 20px 30px;
       justify-content: center;
+      cursor: default;
+      position: relative;
       //background-color: red;
     }
     .calendar {
@@ -1217,13 +1223,14 @@ html,body{
 
   .tab-li3-cld {
     width: 295px;
-    height: 100%;
+    height: 40px;
     position: absolute;
-    left: 45px;
-    top: 0;
+    left: 154px;
+    top: 20px;
     text-align: center;
     color: #fff;
     background-color: rgb(18,80,143);
+    z-index: 1;
   }
   .arrow {
     position: absolute;
@@ -1281,10 +1288,10 @@ html,body{
 
   .tab4-big-cld {
     width: 295px;
-    height: 100%;
+    height: 40px;
     position: absolute;
-    left: 45px;
-    top: 0;
+    left: 154px;
+    top: 20px;
     text-align: center;
     color: #ffffff;
     z-index: 1;
@@ -1341,10 +1348,10 @@ html,body{
   background: url("../img/4icon_left_4_nor.png") no-repeat;
   .tab5-big-cld {
     width: 295px;
-    height: 100%;
+    height: 40px;
     position: absolute;
-    left: 45px;
-    top: 0;
+    left: 154px;
+    top: 20px;
     text-align: center;
     color: #ffffff;
     background-color: rgb(18,80,143);
@@ -1568,6 +1575,7 @@ html,body{
       font-size: 16px;
       color: #ddf3ff;
       text-align: center;
+      cursor: pointer;
     }
 
     header {
@@ -1858,6 +1866,7 @@ html,body{
       font-size: 16px;
       color: #ddf3ff;
       text-align: center;
+      cursor: pointer;
     }
 
     .chart1 {

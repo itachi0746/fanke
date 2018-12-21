@@ -279,7 +279,9 @@ $(function () {
     }
   }
 
-
+  /**
+   * 遮罩div 返回默认视角
+   */
   function backDivBandClick() {
     var backDiv = $('#back-div');
     backDiv.on('click',function () {
@@ -342,163 +344,144 @@ $(function () {
    */
   function initCalendar() {
     if(nowTab===tabArr[0]) {
-      $('#tab2-li3-cld').val(returnDate(7)+" - "+returnDate(1));
 
       // 交通枢纽 实时客流
-      laydate.render({
-        elem:'#tab2-li2-cld'
-        ,value: returnDate()
-        ,type:'date'//默认为date
-        ,trigger:'click'//默认为click，即点击后出现日历框
-        ,done: function(value, date, endDate){
-          // console.log(value); //得到日期生成的值，如：2017-08-18
-          // console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
-          // console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
-          tab2Li2Echart1reqData(value);
-        }
+      $('#tab2-li2-cld').val(returnDate())
+      lay('#SSKL-cld-box').on('click', function(e){ //假设 test1 是一个按钮
+        laydate.render({
+          elem: '#tab2-li2-cld'
+          // ,value: returnDate()
+          ,show: true //直接显示
+          ,closeStop: '#SSKL-cld-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
+          ,done: function(value, date, endDate){
+            tab2Li2Echart1reqData(value);
+          }
+        });
       });
       // 交通枢纽 旅客洞察
-      laydate.render({
-        elem:'#tab2-li4-cld'
-        ,type:'date'//默认为date
-        ,trigger:'click'//默认为click，即点击后出现日历框
-        ,value: returnDate(1)
-        ,done: function(value, date, endDate){
-          // console.log(value); //得到日期生成的值，如：2017-08-18
-          // console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
-          // console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
-          tab2Li3Echart1reqData(value);
-          tab2Li3Echart2ReqData(value);
-          tab2Li3Echart3ReqData(value);
-          tab2Li3Echart4ReqData(value);
-          getAreaData($('#tab2'),'省外',value)
-        }
+      $('#tab2-li4-cld').val(returnDate(1));
+      lay('#tab2-li4-cld-box').on('click',function (e) {
+        laydate.render({
+          elem:'#tab2-li4-cld'
+          // ,value: returnDate(1)
+          ,show: true //直接显示
+          ,closeStop: '#tab2-li4-cld-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
+          ,done: function(value, date, endDate){
+            tab2Li3Echart1reqData(value);
+            tab2Li3Echart2ReqData(value);
+            tab2Li3Echart3ReqData(value);
+            tab2Li3Echart4ReqData(value);
+            getAreaData($('#tab2'),'省外',value)
+          }
+        })
       })
+
       // 交通枢纽 旅客趋势
-      // laydate.render({
-      //   elem:'#tab2-li3-cld'
-      //   ,type:'date'//默认为date
-      //   ,trigger:'click'//默认为click，即点击后出现日历框
-      //   ,range: true
-      //   ,value: returnDate(7) + ' - ' + returnDate(1)
-      //   // ,min: -8 //7天前
-      //   // ,max: 0 //7天后
-      //   ,done: function(value, date, endDate){
-      //     console.log(value,date,endDate);
-      //
-      //     if(date) {
-      //       var dateObj = {
-      //         start: date.year+'-'+date.month+'-'+date.date,
-      //         end: endDate.year+'-'+endDate.month+'-'+endDate.date,
-      //       };
-      //       // console.log(dateObj)
-      //       tab2Li4EchartReqData(dateObj);
-      //       tab2Li4Echart2ReqData(dateObj)
-      //     } else {
-      //       console.log('date不能为空');
-      //     }
-      //   }
-      // });
-      laydate.render({
-        elem:'#tab2-li3-cld-1'
-        ,type:'date'//默认为date
-        ,trigger:'click'//默认为click，即点击后出现日历框
-        // ,range: true
-        // ,value: returnDate(7) + ' - ' + returnDate(1)
-        // ,min: -8 //7天前
-        // ,max: 0 //7天后
-        ,done: function(value, date, endDate){
-          // console.log(value,date,endDate);
-          var dateObj = calDate(value);
-          $('#tab2-li3-cld').val(dateObj.start+" - "+dateObj.end);
-          tab2Li4EchartReqData(dateObj);
-          tab2Li4Echart2ReqData(dateObj)
-        }
-      });
+      $('#tab2-li3-cld').val(returnDate(7)+" - "+returnDate(1));
+      lay('#tab2-li3-cld-box').on('click',function (e) {
+        laydate.render({
+          elem:'#tab2-li3-cld-1'
+          // ,range: true
+          // ,value: returnDate(7) + ' - ' + returnDate(1)
+          // ,min: -8 //7天前
+          // ,max: 0 //7天后
+          ,show: true //直接显示
+          ,closeStop: '#tab2-li3-cld-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
+          ,done: function(value, date, endDate){
+            // console.log(value,date,endDate);
+            var dateObj = calDate(value);
+            $('#tab2-li3-cld').val(dateObj.start+" - "+dateObj.end);
+            tab2Li4EchartReqData(dateObj);
+            tab2Li4Echart2ReqData(dateObj)
+          }
+        });
+      })
+
     }
     if(nowTab===tabArr[1]) {
       // 服务区
       $('#tab3-li3-cld2').val(returnDate(7) + ' - ' + returnDate(1));
-
-      // laydate.render({
-      //   elem:'#tab3-li3-cld2'
-      //   ,type:'date'//默认为date
-      //   ,trigger:'click'//默认为click，即点击后出现日历框
-      //   ,range: true
-      //   ,value: returnDate(7) + ' - ' + returnDate(1)
-      //   ,done: function(value, date, endDate){
-      //     if(date) {
-      //       var dateObj = {
-      //         start: date.year+'-'+date.month+'-'+date.date,
-      //         end: endDate.year+'-'+endDate.month+'-'+endDate.date
-      //       };
-      //       // console.log(dateObj)
-      //       tab3Li4EchartReqData(dateObj);
-      //     } else {
-      //       console.log('date不能为空');
-      //     }
-      //   }
-      // });
-      laydate.render({
-        elem:'#tab3-li3-cld2-1'
-        ,type:'date'//默认为date
-        ,trigger:'click'//默认为click，即点击后出现日历框
-        // ,range: true
-        // ,value: returnDate(7) + ' - ' + returnDate(1)
-        // ,min: -8 //7天前
-        // ,max: 0 //7天后
-        ,done: function(value, date, endDate){
-          // console.log(value,date,endDate);
-          var dateObj = calDate(value);
-          $('#tab3-li3-cld2').val(dateObj.start+" - "+dateObj.end);
-          tab3Li4EchartReqData(dateObj);
-        }
+      lay('#tab3-li3-cld2-box').on('click',function (e) {
+        laydate.render({
+          elem:'#tab3-li3-cld2-1'
+          // ,range: true
+          // ,value: returnDate(7) + ' - ' + returnDate(1)
+          // ,min: -8 //7天前
+          // ,max: 0 //7天后
+          ,show: true //直接显示
+          ,closeStop: '#tab3-li3-cld2-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
+          ,done: function(value, date, endDate){
+            // console.log(value,date,endDate);
+            var dateObj = calDate(value);
+            $('#tab3-li3-cld2').val(dateObj.start+" - "+dateObj.end);
+            tab3Li4EchartReqData(dateObj);
+          }
+        });
       });
-      laydate.render({
-        elem:'#tab-li4-cld2'
-        ,type:'date'//默认为date
-        ,trigger:'click'//默认为click，即点击后出现日历框
-        ,value: returnDate(1)
-        ,done: function(value, date, endDate){
-          tab3Li3Echart1reqData(value);
-          tab3Li3Echart2ReqData(value);
-          guishufenxiReqData(value);
-          getAreaData2($('#tab3'),'省外',value)
-        }
+
+      $('#tab-li4-cld2').val(returnDate(1));
+      lay('#tab-li4-cld2-box').on('click',function (e) {
+        laydate.render({
+          elem:'#tab-li4-cld2'
+          // ,value: returnDate(1)
+          ,show: true //直接显示
+          ,closeStop: '#tab-li4-cld2-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
+          ,done: function(value, date, endDate){
+            tab3Li3Echart1reqData(value);
+            tab3Li3Echart2ReqData(value);
+            guishufenxiReqData(value);
+            getAreaData2($('#tab3'),'省外',value)
+          }
+        });
+      });
+
+
+      $('#sskl-cld2').val(returnDate());
+      lay('#tab3-cld1-box').on('click',function (e) {
+        laydate.render({
+          elem:'#sskl-cld2'
+          // ,value: returnDate()
+          ,show: true //直接显示
+          ,closeStop: '#tab3-cld1-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
+          ,done: function(value, date, endDate){
+            tab3Li2Echart1reqData(value);
+          }
+        })
       })
-      laydate.render({
-        elem:'#sskl-cld2'
-        ,type:'date'//默认为date
-        ,trigger:'click'//默认为click，即点击后出现日历框
-        ,value: returnDate()
-        ,done: function(value, date, endDate){
-          tab3Li2Echart1reqData(value);
-        }
-      })
+
     }
     if(nowTab===tabArr[2]) {
-      $('#tab4-big-cld').val(returnDate(7) + ' - ' + returnDate(1));
 
       // 收费站
-      laydate.render({
-        elem:'#tab4-klqs-cld2'
-        ,type:'date'//默认为date
-        ,trigger:'click'//默认为click，即点击后出现日历框
-        ,value: returnDate()
-        ,done: function(value, date, endDate){
-          tab4Li2Echart2reqData(value);
-        }
-      })
-      laydate.render({
-        elem:'#tab4-m-cld'
-        ,type:'date'//默认为date
-        ,trigger:'click'//默认为click，即点击后出现日历框
-        ,value: returnDate(1)
-        ,done: function(value, date, endDate){
-          tab4Li3Echart1reqData(value);
-          tab4Li3Echart2reqData(value);
-        }
-      })
+      $('#tab4-klqs-cld2').val(returnDate());
+      lay('#tab4-klqs-cld2-box').on('click',function (e) {
+        laydate.render({
+          elem:'#tab4-klqs-cld2'
+          // ,value: returnDate()
+          ,show: true //直接显示
+          ,closeStop: '#tab4-klqs-cld2-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
+          ,done: function(value, date, endDate){
+            tab4Li2Echart2reqData(value);
+          }
+        })
+      });
+
+      $('#tab4-m-cld').val(returnDate(1));
+      lay('#tab4-m-cld-box').on('click',function (e) {
+        laydate.render({
+          elem:'#tab4-m-cld'
+          ,type:'date'//默认为date
+          ,trigger:'click'//默认为click，即点击后出现日历框
+          // ,value: returnDate(1)
+          ,show: true //直接显示
+          ,closeStop: '#tab4-m-cld-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
+          ,done: function(value, date, endDate){
+            tab4Li3Echart1reqData(value);
+            tab4Li3Echart2reqData(value);
+          }
+        })
+      });
+
       // laydate.render({
       //   elem:'#tab4-big-cld'
       //   ,type:'date'//默认为date
@@ -519,45 +502,55 @@ $(function () {
       //     }
       //   }
       // })
-      laydate.render({
-        elem:'#tab4-big-cld-1'
-        ,type:'date'//默认为date
-        ,trigger:'click'//默认为click，即点击后出现日历框
-        // ,range: true
-        // ,value: returnDate(7) + ' - ' + returnDate(1)
-        // ,min: -8 //7天前
-        // ,max: 0 //7天后
-        ,done: function(value, date, endDate){
-          // console.log(value,date,endDate);
-          var dateObj = calDate(value);
-          $('#tab4-big-cld').val(dateObj.start+" - "+dateObj.end);
-          tab4Li4EchartReqData(dateObj);
-          tab4Li4Echart2ReqData(dateObj);
-        }
-      });
+
+      $('#tab4-big-cld').val(returnDate(7) + ' - ' + returnDate(1));
+      lay('#tab4-big-cld-box').on('click',function (e) {
+        laydate.render({
+          elem:'#tab4-big-cld-1'
+          // ,range: true
+          // ,value: returnDate(7) + ' - ' + returnDate(1)
+          // ,min: -8 //7天前
+          // ,max: 0 //7天后
+          ,show: true //直接显示
+          ,closeStop: '#tab4-big-cld-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
+          ,done: function(value, date, endDate){
+            // console.log(value,date,endDate);
+            var dateObj = calDate(value);
+            $('#tab4-big-cld').val(dateObj.start+" - "+dateObj.end);
+            tab4Li4EchartReqData(dateObj);
+            tab4Li4Echart2ReqData(dateObj);
+          }
+        });
+      })
+
     }
     if(nowTab===tabArr[3]) {
       // 高速路段
-      $('#tab5-big-cld').val(returnDate(7) + ' - ' + returnDate(1));
+      $('#tab5-klqs-cld').val(returnDate());
+      lay('#tab5-cld1').on('click',function (e) {
+        laydate.render({
+          elem:'#tab5-klqs-cld'
+          // ,value: returnDate()
+          ,show: true //直接显示
+          ,closeStop: '#tab5-cld1' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
+          ,done: function(value, date, endDate){
+            tab5Li2Echart1reqData(value);
+          }
+        })
+      })
 
-      laydate.render({
-        elem:'#tab5-klqs-cld'
-        ,type:'date'//默认为date
-        ,trigger:'click'//默认为click，即点击后出现日历框
-        ,value: returnDate()
-        ,done: function(value, date, endDate){
-          tab5Li2Echart1reqData(value);
-        }
+      $('#tab5-klqs-cld2').val(returnDate());
+      lay('#tab5-cld2').on('click',function (e) {
+        laydate.render({
+          elem:'#tab5-klqs-cld2'
+          ,show: true //直接显示
+          ,closeStop: '#tab5-cld2' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
+          ,done: function(value, date, endDate){
+            tab5Li2Echart2reqData(value);
+          }
+        })
       })
-      laydate.render({
-        elem:'#tab5-klqs-cld2'
-        ,type:'date'//默认为date
-        ,trigger:'click'//默认为click，即点击后出现日历框
-        ,value: returnDate()
-        ,done: function(value, date, endDate){
-          tab5Li2Echart2reqData(value);
-        }
-      })
+
       // laydate.render({
       //   elem:'#tab5-big-cld'
       //   ,type:'date'//默认为date
@@ -580,23 +573,30 @@ $(function () {
       //     }
       //   }
       // })
-      laydate.render({
-        elem:'#tab5-big-cld-1'
-        ,type:'date'//默认为date
-        ,trigger:'click'//默认为click，即点击后出现日历框
-        // ,range: true
-        // ,value: returnDate(7) + ' - ' + returnDate(1)
-        // ,min: -8 //7天前
-        // ,max: 0 //7天后
-        ,done: function(value, date, endDate){
-          // console.log(value,date,endDate);
-          var dateObj = calDate(value);
-          $('#tab5-big-cld').val(dateObj.start+" - "+dateObj.end);
-          tab5Li3Echart1ReqData(dateObj);
-          tab5Li3Echart2ReqData(dateObj);
-          tab5Li3Echart3reqData(dateObj);
-        }
-      });
+
+      $('#tab5-big-cld').val(returnDate(7) + ' - ' + returnDate(1));
+      lay('#tab5-big-cld-box').on('click').on('click',function (e) {
+        laydate.render({
+          elem:'#tab5-big-cld-1'
+          ,type:'date'//默认为date
+          ,trigger:'click'//默认为click，即点击后出现日历框
+          // ,range: true
+          // ,value: returnDate(7) + ' - ' + returnDate(1)
+          // ,min: -8 //7天前
+          // ,max: 0 //7天后
+          ,show: true //直接显示
+          ,closeStop: '#tab5-big-cld-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
+          ,done: function(value, date, endDate){
+            // console.log(value,date,endDate);
+            var dateObj = calDate(value);
+            $('#tab5-big-cld').val(dateObj.start+" - "+dateObj.end);
+            tab5Li3Echart1ReqData(dateObj);
+            tab5Li3Echart2ReqData(dateObj);
+            tab5Li3Echart3reqData(dateObj);
+          }
+        });
+      })
+
     }
   }
 
@@ -1574,11 +1574,25 @@ $(function () {
    * 显示当前地点(点击地图点放大后)
    */
   function showCurLocaction() {
+    var top = 102;
+    var topDis;
+    if(nowTab===tabArr[0]) {
+      topDis = 0;
+    }
+    if(nowTab===tabArr[1]) {
+      topDis = top;
+    }
+    if(nowTab===tabArr[2]) {
+      topDis = top * 2;
+    }
+    if(nowTab===tabArr[3]) {
+      topDis = top * 3;
+    }
     var tabBoxCur = $('#tab-box-cur');
     var curPosDataBox = $('#cur-pos-data-box');
     // tabBoxCur.removeClass('dn');
     tabBoxCur.addClass('moveAndShow');
-    tabBoxCur.removeClass('moveAndHide')
+    tabBoxCur.removeClass('moveAndHide');
     tabBoxCur.find('.arrow.up').addClass('dn');
     tabBoxCur.find('.arrow.down').removeClass('dn');
 

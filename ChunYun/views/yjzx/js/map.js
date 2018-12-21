@@ -118,6 +118,8 @@ $(function () {
                     }
 
                 }
+                console.log('theBigBounds',theBigBounds);
+
                 me.showLine(theBigBounds, theMap, theMap2);
 
             })
