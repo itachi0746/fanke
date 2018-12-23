@@ -730,7 +730,7 @@ $(function () {
     //     traffic.drawRoads(theRows)
     //   }
     // })
-    debugger
+    // debugger
 
         var rows = def.data.rows;
         console.log('row',rows)
