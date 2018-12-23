@@ -280,21 +280,6 @@ PlacePointView.prototype.showPoints = function (pointType) {
       // 模拟数据=============
 
 
-      var me = this;
-      marker.on('click', function (arg) {
-        //var thelng = arg.lnglat;
-
-        var thelng = arg.target.getPosition();// new AMap.LngLat(113.2685860000, 22.9874720000);
-        var theCurrentMaxLevel = 18;//arg.target.getExtData().maxLevel || theMaxLevel;
-        //{ "latitude": , "longitude":  }
-        var theZoom = theMap.getZoom();
-        if (theZoom <= 10) {
-          me.MoveToPoint(thelng, theCurrentMaxLevel);
-        }
-        else {
-          me.ReturnDefualt();
-        }
-      })
       this.markes.push(marker);
       theMap.add(marker);
     }

@@ -172,6 +172,7 @@ TrafficView.prototype.hideRoads = function () {
     if (this.RoadPath) {
         if (this.RoadPaths) {
             for(var i=0;i<this.RoadPaths.length;i++){
+                debugger
                 this.RoadPaths[i].hide();
             }
         }
@@ -210,6 +211,20 @@ TrafficView.prototype.destory = function () {
         if (this.EndPoint) {
             this.TheMap.remove(this.EndPoint);
         }
+        if (this.RoadPaths) {
+            for(var i=0;i<this.RoadPaths.length;i++){
+                this.TheMap.remove(this.RoadPaths[i]);
+            }
+            this.RoadPaths=[];
+        }
+    }
+
+}
+
+// 清空高速路段
+TrafficView.prototype.removePaths = function () {
+    if (this.TheMap) {
+
         if (this.RoadPaths) {
             for(var i=0;i<this.RoadPaths.length;i++){
                 this.TheMap.remove(this.RoadPaths[i]);

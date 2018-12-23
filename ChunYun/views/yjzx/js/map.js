@@ -119,7 +119,7 @@ $(function () {
                     }
 
                 }
-                console.log('theBigBounds',theBigBounds);
+                // console.log('theBigBounds',theBigBounds);
 
                 me.showLine(theBigBounds, theMap, theMap2);
 

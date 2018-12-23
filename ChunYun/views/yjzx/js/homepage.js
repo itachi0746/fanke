@@ -298,6 +298,7 @@ $(function () {
   function toDefaultView() {
     pointControl.ReturnDefualt();  // 默认视角
     pointControl.showMarkers();  // 显示点标记
+    traffic.removePaths();  // 清除高速路段的线
     showTabs();
     hideCurLocaction();
     hideTab2();
@@ -336,12 +337,7 @@ $(function () {
       };
       // console.log(clickTarget['地址'][0].lnglat)
 
-      if(nowTab==='高速') {
-        // debugger
-        isDefaultView = false;
-        return
-      }
-      debugger
+      // debugger
       pointControl.MoveToPoint(arg,18);
       isDefaultView = false;
     }
@@ -695,7 +691,8 @@ $(function () {
       // $('#road-net').show();
 
       mapbase.setTrafficStyle();
-      reqGaoSuDtlData()
+      // reqLuWangDtlData()
+      jamRankLiClick()
     }
     else {
       mapbase.restoreDefaultStyle();
@@ -709,7 +706,7 @@ $(function () {
   /**
    * 查询高速路拥堵事件详细信息
    */
-  function reqGaoSuDtlData() {
+  function reqLuWangDtlData() {
     var url = 'highSpeed/selectGsCongestionDetails.do'
     var data = {
       sid: 60004,
@@ -740,10 +737,25 @@ $(function () {
           // console.log('r',r);
             theRows.push(r);
         }
-        setTimeout(function () {
+        // setTimeout(function () {
           traffic.drawRoads(theRows)
 
-        },1000)
+        // },1000)
+
+  }
+
+  /**
+   * 拥堵排行榜的点击事件
+   */
+  function jamRankLiClick() {
+    var liArr = $('#jam-rank').find('li');
+    for (var i = 0; i < liArr.length; i++) {
+      var li = liArr[i];
+      $(li).on('click',function () {
+        reqLuWangDtlData()
+
+      })
+    }
 
   }
 
@@ -1386,24 +1398,43 @@ $(function () {
     // 高速路段
     if(nowTab===tabArr[3]) {
       $('#tab5').removeClass('vh');
-      var url = 'http://restapi.amap.com/v3/road/roadname?city=020&key=8d3ac117e5e739d89d425f8c6798b781&keywords=%E7%A7%91%E9%9F%B5%E8%B7%AF'
-      $.ajax({
-        type: "GET",
-        url: url,
-        data: {},
-        dataType: "json",
-        success: function(data){
-          console.log(data.roads)
-          handleRoadData(data.roads);
-        }
-
-      });
+      // var url = 'http://restapi.amap.com/v3/road/roadname?city=020&key=8d3ac117e5e739d89d425f8c6798b781&keywords=%E7%A7%91%E9%9F%B5%E8%B7%AF'
+      // $.ajax({
+      //   type: "GET",
+      //   url: url,
+      //   data: {},
+      //   dataType: "json",
+      //   success: function(data){
+      //     console.log(data.roads)
+      //     handleRoadData(data.roads);
+      //   }
+      //
+      // });
     }
     // 高速路网
     if(nowTab===tabArr[4]) {
       // $('#tab2').removeClass('vh');
     }
     isDefaultView = false;
+  }
+
+  /**
+   * 请求高速路段数据
+   * @param name 路段名字
+   */
+  function reqRoadData(name) {
+    var url = 'http://restapi.amap.com/v3/road/roadname?city=020&key=8d3ac117e5e739d89d425f8c6798b781&keywords=' + name;
+    $.ajax({
+      type: "GET",
+      url: url,
+      data: {},
+      dataType: "json",
+      success: function(data){
+        console.log(data.roads)
+        handleRoadData(data.roads);
+      }
+
+    });
   }
 
   /**
@@ -1717,8 +1748,13 @@ $(function () {
       // debugger
       m.on('click',function () {
         // console.log(this.C.extData['枢纽名称']);
-
-        hideTabs(this.C.extData['枢纽名称'])
+        var theName = this.C.extData['枢纽名称'];
+        if(nowTab===tabArr[3]) {
+          reqRoadData(theName)
+        } else {
+          goToPointByName(theName)
+        }
+        hideTabs(theName)
       })
     }
   }
