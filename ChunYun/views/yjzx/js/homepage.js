@@ -1,5 +1,5 @@
-
-var pointControl
+var def = {"data":{"rows":[{"createTime":"2015-09-10 11:38:34","dirvingDir":3,"eventJamDist":0,"eventJamSpeed":0,"length":59,"linkId":"5904801865530345221","pubRunStatus":0,"reliability":0,"roadName":"珠江东二路","roadType":7,"sectionInfo":"","sectionNum":1,"speed":9,"state":3,"travelTime":319,"xy":"113.5512067,22.70646278","xys":"113.5468733,22.70191167;113.5479081,22.70299722;113.5458842,22.70086222;113.5465861,22.7015825;113.5468733,22.70191167;113.5542467,22.70917;113.5535961,22.70863639;113.5535961,22.70863639;113.5526908,22.70786;113.5479081,22.70299722;113.5487494,22.70385556;113.5496036,22.70477472;113.5496036,22.70477472;113.5502475,22.7054675;113.5504058,22.70564167;113.5504058,22.70564167;113.5504556,22.70569667;113.5510547,22.70630917;113.5512067,22.70646278;113.5520792,22.7072925;113.5512067,22.70646278"}],"event":{"city":"420100","dist":"","eventId":"4201144185223420","handleState":1,"id":67531160,"insertTime":{"date":10,"day":4,"hours":11,"minutes":40,"month":8,"seconds":34,"time":1441856434000,"timezoneOffset":-480,"year":115},"isNormal":0,"jamDist":852,"jamSpeed":8,"longTime":60,"province":"","pubRunStatus":1,"roadName":"沿河大道","roadType":0,"state":2,"xy":"114.284225,30.566847"}},"isSuccess":true,"msg":"success"}
+var pointControl,traffic;
 $(function () {
   var hourArr = ['0-1', '1-2','2-3', '3-4', '4-5', '5-6', '6-7', '7-8','8-24'];
   var tabArr = ['客运站,铁路,机场,港口','服务区','收费站','高速','高速路网'];
@@ -28,6 +28,7 @@ $(function () {
   window.mapbase = new MapBase();
   var title = $('#title');
   pointControl = new PlacePointView(theMap);
+  traffic = new TrafficView(theMap);
   init();
   // console.log(pointControl.PlacePoints)
 
@@ -334,6 +335,13 @@ $(function () {
         lng: lng
       };
       // console.log(clickTarget['地址'][0].lnglat)
+
+      if(nowTab==='高速') {
+        // debugger
+        isDefaultView = false;
+        return
+      }
+      debugger
       pointControl.MoveToPoint(arg,18);
       isDefaultView = false;
     }
@@ -677,21 +685,66 @@ $(function () {
       positionType = 4;  // 高速路段type
 
       $('#top3').show();
-      $('#road-net-tips').hide();
-      $('#road-net').hide();
+      // $('#road-net-tips').hide();
+      // $('#road-net').hide();
     }
     if (nowTab === '高速路网') {
       $('#top3').hide();
-      $('#road-net-tips').show();
-      $('#road-net').show();
+      $('#luwang-box').show();
+      // $('#road-net-tips').show();
+      // $('#road-net').show();
+
       mapbase.setTrafficStyle();
+      reqGaoSuDtlData()
     }
     else {
       mapbase.restoreDefaultStyle();
+      $('#luwang-box').hide();
     }
 
     // console.log('theDataObject:', pointControl.markes)
     // addStation2()
+  }
+
+  /**
+   * 查询高速路拥堵事件详细信息
+   */
+  function reqGaoSuDtlData() {
+    var url = 'highSpeed/selectGsCongestionDetails.do'
+    var data = {
+      sid: 60004,
+      reqData: {"province":"330000","eventId":"4201144185235417","type":"1","insertTime":"2015-09-10 10:38:34"},
+      serviceKey: '2746555197B6CD66C5E00DA88C8cd5BF'
+    };
+    // $.axpost(url,data,function (data) {
+    //   console.log(data)
+    //   if(data.isSuccess && data.data) {
+    //     var rows = data.data.rows;
+    //     // console.log('row',rows)
+    //       var theRows=[];
+    //     for (var i = 0; i < rows.length; i++) {
+    //       var r = rows[i].xys.split(';');
+    //       // console.log('r',r);
+    //         theRows.push(r);
+    //     }
+    //     traffic.drawRoads(theRows)
+    //   }
+    // })
+    debugger
+
+        var rows = def.data.rows;
+        console.log('row',rows)
+          var theRows=[];
+        for (var i = 0; i < rows.length; i++) {
+          var r = rows[i].xys.split(';');
+          // console.log('r',r);
+            theRows.push(r);
+        }
+        setTimeout(function () {
+          traffic.drawRoads(theRows)
+
+        },1000)
+
   }
 
   // var sb3 = $('#station-box-3');
@@ -1330,14 +1383,54 @@ $(function () {
       $('#tab4').removeClass('vh');
 
     }
-    // 高速路网
+    // 高速路段
     if(nowTab===tabArr[3]) {
       $('#tab5').removeClass('vh');
+      var url = 'http://restapi.amap.com/v3/road/roadname?city=020&key=8d3ac117e5e739d89d425f8c6798b781&keywords=%E7%A7%91%E9%9F%B5%E8%B7%AF'
+      $.ajax({
+        type: "GET",
+        url: url,
+        data: {},
+        dataType: "json",
+        success: function(data){
+          console.log(data.roads)
+          handleRoadData(data.roads);
+        }
+
+      });
     }
+    // 高速路网
     if(nowTab===tabArr[4]) {
       // $('#tab2').removeClass('vh');
     }
     isDefaultView = false;
+  }
+
+  /**
+   * 处理高速路段数据
+   * @param arr
+   */
+  function handleRoadData(arr) {
+    var theDataArr = [];
+    
+    for (var i = 0; i < arr.length; i++) {
+      var lnglatArr = arr[i].polylines;
+      // console.log(lnglatArr)
+      theDataArr.push(lnglatArr)
+      
+    }
+    console.log(theDataArr)
+    var theRoadsArr = [];
+    for (var j = 0; j < theDataArr.length; j++) {
+      var theArr = theDataArr[j];
+      for (var k = 0; k < theArr.length; k++) {
+        var lnglat = theArr[k];
+        // debugger
+        var paramArr = lnglat.split(';');
+        theRoadsArr.push(paramArr)
+      }
+    }
+    traffic.drawRoads(theRoadsArr);
   }
 
   // 显示1级tab

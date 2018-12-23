@@ -24,6 +24,7 @@ $(function () {
         'interval': 180,         //刷新间隔，默认180s
     });
     var theDefaultMapStyle = 'amap://styles/9f47a75c5a80f716945988ccbc61aeb7';
+    var theMapStyle2 = 'amap://styles/b3469a25a850118cc6ac651282c9b5a7';
 //
     var theMakerLayer = null;
 //室内地图层
@@ -56,7 +57,7 @@ $(function () {
         theMap = new AMap.Map('container', {
             pitch: 0,
             mapStyle: theDefaultMapStyle,
-            viewMode: '3D',// 地图模式
+            // viewMode: '3D',// 地图模式
             center: theCenterPoint,
             features: ['bg', 'building', 'point'],//['all'],// ['bg', 'building','point'],
             zoom: 8,
@@ -250,9 +251,18 @@ $(function () {
             }
             if (theZoom >= 12) {
                 // console.log("显示点");
+                // console.log()
+              // debugger
+              if(me.isGaoSuLuWang) {
+                theMap.setFeatures(['bg','road']);
+              }
+              else {
+                  // debugger
                 theMap.setFeatures(['bg', 'building', 'point']);
                 theMap.add(roadNet);
                 theMap.add(building);
+              }
+
                 theMap.setPitch(45);
                 theInnerLayer && theInnerLayer.setzIndex(1000);
                 //theMap.add(satellite);
@@ -261,7 +271,15 @@ $(function () {
             }
             else {
                 console.log("隐藏点");
-                //theHeartLayer && theHeartLayer.setMap(null);
+                if(me.isGaoSuLuWang) {
+                  theMap.setFeatures(['bg','road']);
+
+                }else {
+                    theMap.setFeatures(['bg']);
+
+                }
+
+              //theHeartLayer && theHeartLayer.setMap(null);
                 theHeartLayer && theHeartLayer.remove();
                 theHeartLayer = null;
                 // theMap.setFeatures(['bg', 'building']);
@@ -397,13 +415,28 @@ $(function () {
     MapBase.prototype.restoreDefaultStyle = function () {
         theMap.setMapStyle(theDefaultMapStyle);
         theMap2.setMapStyle(theDefaultMapStyle);
+        this.hideOtherProvince(false);
+        theMap.remove(traffic);
+        theMap.remove(roadNet);
+      this.isGaoSuLuWang = false;
+
     };
     /**
      * 设置为 高速路网样式
      */
     MapBase.prototype.setTrafficStyle = function () {
-        theMap.setMapStyle('');
-        theMap2.setMapStyle('');
+        // theMap.setMapStyle('');
+        // theMap2.setMapStyle('');
+      this.isGaoSuLuWang = true;
+      this.hideOtherProvince(true);
+
+        theMap.remove(traffic);
+        theMap.remove(roadNet);
+
+        theMap.add(traffic);
+        // theMap.add(roadNet);
+      theMap.setMapStyle(theMapStyle2);
+
     }
 
     MapBase.prototype.showLine = function (thePaths, map, map2) {
@@ -569,6 +602,39 @@ $(function () {
         }, 10);
     }
 
+  MapBase.prototype.hideOtherProvince = function (status) {
+
+    if (!this.provinceLayer) {
+      var thePaths=theGdProvincePath.map(function (m) {
+        return [m.lng,m.lat];
+      });
+      var thePath2=[
+        [-180, -90],
+        [-180, 90],
+        [180, 90],
+        [180, -90],
+        [-180, -90]
+      ];
+      // debugger;
+      this.provinceLayer = new AMap.Polygon({
+        map: theMap,
+        //strokeWeight: 10,
+        fillColor:'#132c58',
+        fillOpacity: 1,
+        //strokeColor:'green',
+
+        path:[thePath2,thePaths]
+      });
+    }
+    if (!status) {
+      this.provinceLayer.hide();
+    }
+    else {
+      this.provinceLayer.show();
+      //theMap.setFitView(this.provinceLayer);
+    }
+  }
+
     MapBase.prototype.SwitchView = function (viewName) {
         this.ReturnDefualt();
         // ShowMark(viewName);
@@ -598,6 +664,13 @@ $(function () {
     MapBase.prototype.moveTo = function (lng, lat) {
         var thePoint = new AMap.LngLat(lng, lat);
         theMap.panTo(thePoint);
+
+    }
+
+    MapBase.prototype.showRoad = function () {
+        // var thePoint = new AMap.LngLat(lng, lat);
+        // theMap.panTo(thePoint);
+        theMap.add(traffic);
 
     }
 

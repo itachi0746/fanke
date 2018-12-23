@@ -49,7 +49,7 @@ $(function(){
       return;
     }
     console.log('开始访问:',url);
-    data = (data==null || data=="" || typeof(data)=="undefined")? {"date": new Date().getTime()} : data;
+    // data = (data==null || data=="" || typeof(data)=="undefined")? {"date": new Date().getTime()} : data;
     $.ajax({
       type: "post",
       data: data,
