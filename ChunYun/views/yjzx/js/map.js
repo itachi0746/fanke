@@ -258,8 +258,9 @@ $(function () {
               }
               else {
                   // debugger
-                theMap.setFeatures(['bg', 'building', 'point']);
-                theMap.add(roadNet);
+                theMap.setFeatures(['bg', 'building', 'point','road']);
+                // theMap.add(roadNet);
+                // theMap.add(traffic);
                 theMap.add(building);
               }
 
@@ -285,7 +286,7 @@ $(function () {
                 // theMap.setFeatures(['bg', 'building']);
                 theMap.remove(roadNet);
                 theMap.remove(building);
-                //theMap.remove(satellite);
+                // theMap.remove(traffic);
                 theMap.setPitch(0);
                 //theMap.setMapStyle("amap://styles/grey");
             }
@@ -331,6 +332,7 @@ $(function () {
                 }
                 var theLastBuilding = theBuilding;
                 theBuilding = theInnerLayer.getSelectedBuilding();
+                // console.log(theBuilding)
                 if (theBuilding != theLastBuilding) {
 
                     if (!theBuilding) {
@@ -343,6 +345,7 @@ $(function () {
                     //floor_complete
                     var theFloors = theBuilding.floor_details.floor_nonas;
                     var theFloorIndex = theBuilding.floor_details.floor_indexs;
+
                     for (var i = 0; i < theFloors.length; i++) {
                         var theName = theFloors[i];
                         var theIndex = theFloorIndex[i];
@@ -358,7 +361,7 @@ $(function () {
                         //开始显示楼层
                         //theBuilding.showFloor();
                     }
-                    ;
+
                     floorBindClick();
                 }
             }, 500);
@@ -413,13 +416,12 @@ $(function () {
      * 设置地图为默认样式
      */
     MapBase.prototype.restoreDefaultStyle = function () {
-        theMap.setMapStyle(theDefaultMapStyle);
-        theMap2.setMapStyle(theDefaultMapStyle);
-        this.hideOtherProvince(false);
-        theMap.remove(traffic);
-        theMap.remove(roadNet);
       this.isGaoSuLuWang = false;
-
+        this.hideOtherProvince(false);
+      theMap.setMapStyle(theDefaultMapStyle);
+      theMap2.setMapStyle(theDefaultMapStyle);
+      theMap.remove(traffic);
+      theMap.remove(roadNet);
     };
     /**
      * 设置为 高速路网样式

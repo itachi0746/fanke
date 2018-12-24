@@ -42,12 +42,7 @@ $(function () {
     // 点击标题
     title.on('click',function () {
       toDefaultView();
-      // pointControl.ReturnDefualt();  // 默认视角
-      // pointControl.showMarkers();  // 显示点标记
-      // showTabs();
-      // hideCurLocaction();
-      // hideTab2();
-      // $('#floor').addClass('dn');
+
     });
     backDivBandClick();
 
@@ -103,6 +98,7 @@ $(function () {
           resultList.empty();
           resultList.hide();
           var name = $(this).text();
+          curPosition = name;
           var curPosDataBox = $('#cur-pos-data-box');
           var tabBoxCur = $('#tab-box-cur');
           var arrows = tabBoxCur.find('.arrow');
@@ -214,6 +210,7 @@ $(function () {
       var stationDom = $('<li>'+ t +'</li>');
       stationDom.on('click',function () {
         var name = $(this).text();
+        curPosition = name;
         var curPosDataBox = $('#cur-pos-data-box');
         var tabBoxCur = $('#tab-box-cur');
         var arrows = tabBoxCur.find('.arrow');
@@ -299,6 +296,11 @@ $(function () {
     pointControl.ReturnDefualt();  // 默认视角
     pointControl.showMarkers();  // 显示点标记
     traffic.removePaths();  // 清除高速路段的线
+    // if(nowTab!=='高速路网') {
+    //   console.log(2)
+    //   mapbase.restoreDefaultStyle();
+    // }
+
     showTabs();
     hideCurLocaction();
     hideTab2();
@@ -604,6 +606,21 @@ $(function () {
     }
   }
 
+  var timer;
+  /**
+   * 更新时间
+   */
+  function refreshTime() {
+    var curDate = $('#curDate');
+    var curTime = $('#curTime');
+    function changeFont() {
+      curDate.text(moment().format('LL dddd'));
+      curTime.text(moment().format('h:mm:ss'));
+    }
+    changeFont();
+    timer = setInterval(changeFont,1000)
+  }
+
   // 隐藏tab2
   function hideTab2() {
     var temp;
@@ -657,46 +674,37 @@ $(function () {
     if (nowTab === tabArr[0]) {
       addStation();
       positionType = 1;  // 场站type
-      $('#top3').show();
-      $('#road-net-tips').hide();
-      $('#road-net').hide();
     }
     else {
       addStation2();
     }
     if (nowTab === tabArr[1]) {
       positionType = 2;  // 服务区type
-      $('#top3').show();
-      $('#road-net-tips').hide();
-      $('#road-net').hide();
+
     }
     if (nowTab === tabArr[2]) {
-
       positionType = 3;  // 收费站type
-      $('#top3').show();
-      $('#road-net-tips').hide();
-      $('#road-net').hide();
+
     }
     if (nowTab === '高速') {
       positionType = 4;  // 高速路段type
-
-      $('#top3').show();
-      // $('#road-net-tips').hide();
-      // $('#road-net').hide();
     }
     if (nowTab === '高速路网') {
+      refreshTime();
       $('#top3').hide();
       $('#luwang-box').show();
-      // $('#road-net-tips').show();
-      // $('#road-net').show();
-
+      // reqJamList();
       mapbase.setTrafficStyle();
       // reqLuWangDtlData()
-      jamRankLiClick()
+      jamRankLiClick();
+      $('#container2').hide()
     }
     else {
-      mapbase.restoreDefaultStyle();
+      clearInterval(timer);
+      $('#top3').show();
       $('#luwang-box').hide();
+      $('#container2').show();
+      mapbase.restoreDefaultStyle();
     }
 
     // console.log('theDataObject:', pointControl.markes)
@@ -704,7 +712,7 @@ $(function () {
   }
 
   /**
-   * 查询高速路拥堵事件详细信息
+   * 查询高速路网拥堵事件详细信息
    */
   function reqLuWangDtlData() {
     var url = 'highSpeed/selectGsCongestionDetails.do'
@@ -756,7 +764,24 @@ $(function () {
 
       })
     }
+  }
 
+  /**
+   * 查询高速拥堵事件列表
+   */
+  function reqJamList() {
+    var url = 'highSpeed/selectGsCongestion.do';
+    var data = {
+      sid: 60004,
+      reqData: {"province":"330000","orderType":"1"},
+      serviceKey: '2746555197B6CD66C5E00DA88C8cd5BF'
+    };
+    $.axpost(url,data,function (data) {
+      console.log('reqJamList:',data);
+      if(data.status.msg==='success' && data.data) {
+
+      }
+    })
   }
 
   // var sb3 = $('#station-box-3');
@@ -821,6 +846,7 @@ $(function () {
       var stationDom = $('<li>'+ m.C.extData['枢纽名称'] +'</li>');
       stationDom.on('click',function () {
         var name = $(this).text();
+        curPosition = name;
         var curPosDataBox = $('#cur-pos-data-box');
         var tabBoxCur = $('#tab-box-cur');
         var arrows = tabBoxCur.find('.arrow');
@@ -1423,6 +1449,7 @@ $(function () {
    * @param name 路段名字
    */
   function reqRoadData(name) {
+    console.log('name:',name);
     var url = 'http://restapi.amap.com/v3/road/roadname?city=020&key=8d3ac117e5e739d89d425f8c6798b781&keywords=' + name;
     $.ajax({
       type: "GET",
@@ -1430,7 +1457,7 @@ $(function () {
       data: {},
       dataType: "json",
       success: function(data){
-        console.log(data.roads)
+        console.log('data',data)
         handleRoadData(data.roads);
       }
 
