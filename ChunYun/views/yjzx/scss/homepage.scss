@@ -2076,6 +2076,7 @@ input:focus {
   z-index: 10;
   padding: 50px 40px;
   background-color: rgba(0, 0, 0, 0.5);
+  cursor: default;
   display: none;
 
   .container {
@@ -2141,6 +2142,7 @@ input:focus {
     li {
       display: flex;
       padding-top: 10px;
+      cursor: pointer;
     }
 
     li:nth-last-child(1) {
@@ -2188,4 +2190,7 @@ input:focus {
     display: none;
   }
 
+}
+.info {
+  font-size: 20px;
 }

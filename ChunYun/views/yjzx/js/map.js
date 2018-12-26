@@ -243,7 +243,7 @@ $(function () {
 //监听放大缩小事件
         theMap.on('zoom', function (arg) {
             var theZoom = theMap.getZoom();
-            if (theZoom >= 17) {
+            if (theZoom >= 14) {
                 $('#container2').hide()
             } else {
                 $('#container2').show()
@@ -273,9 +273,11 @@ $(function () {
             else {
                 console.log("隐藏点");
                 if(me.isGaoSuLuWang) {
+                  console.log(2222)
                   theMap.setFeatures(['bg','road']);
 
                 }else {
+                  console.log(122)
                     theMap.setFeatures(['bg']);
 
                 }
@@ -354,7 +356,7 @@ $(function () {
                             theInnerLayer.showFloor(theCurrentIndex);
                             var theCurrentBuild = theInnerLayer.getSelectedBuilding();
                             var theLnt = theCurrentBuild.lnglat;
-                            me.drawReli(theLnt.lng, theLnt.lat);
+                            me.drawReli(theLnt.lng, theLnt.lat);  // 热力图
 
                         }).appendTo($('#DivButton'));
                         console.log(theFloors[i]);
@@ -683,31 +685,91 @@ $(function () {
                 container: map,
                 type: 'heatmap',
                 // 基本热力图
-                shape: 'normal'
+                shape: 'normal',
             });
+          theHeartLayer.setZIndex(10000)
         }
     }
 
 
-    MapBase.prototype.drawReli = function (lng, lat, data) {
-        this.CreateHeartLayer();
-        lng = lng || 113.23;
-        lat = lat || 23.16;
-        var theValue = Math.floor((Math.random() * 10));
-        layer = theHeartLayer;
-        var list = [];
-        var i = -1, length = 400;
-        while (++i < length) {
-            //var item = heatmapData[i + theValue];
-            //i = i + theValue;
 
-            list.push({
-                coordinate: [lng + Math.random() / 1000, lat + Math.random() / 1000],
-                count: Math.floor((Math.random() * 100))
-            })
+  /**
+   *
+   * @param name 名称
+   * @param data 人数
+   */
+    MapBase.prototype.drawReli = function (name, data) {
+
+        var placeArr = {
+          '深圳北站':
+            [[114.0286,22.608196],[114.027709,22.609159],[114.029178,22.610417],[114.02955,22.610698],[114.030455,22.609765]],
+          '广州南站':
+            [[113.26794,22.987108],[113.26713,22.988296],[113.270557,22.990331],[113.271209,22.989086],[113.269443,22.987991]],
+          '白云机场':
+            [[113.301301,23.385968],[113.301723,23.387568],[113.304613,23.386954],[113.304136,23.385315]],
+          '宝安机场':
+            [[113.811961,22.623893],[113.811513,22.624723],[113.812374,22.625131],[113.813637,22.625844],[113.814257,22.626182],[113.814571,22.62592],[113.814919,22.625322]],
+          '广州站':
+            [[113.256631,23.148886],[113.256898,23.149427],[113.25737,23.149234],[113.259263,23.148291],[113.258991,23.147797]],
+
+          '广州站广场':
+            [[113.257712,23.148006],[113.257435,23.147872],[113.25721,23.147558],[113.257028,23.147511],[113.25695,23.147561],[113.256622,23.14829],[113.256618,23.14858],[113.256697,23.148751],[113.257154,23.148542],[113.258192,23.148094],[113.258907,23.147809],[113.258765,23.147579]],
         }
+        this.CreateHeartLayer();
+        var path = placeArr[name];
+        var value = data;
+        value=value||1000;
+        // if (!polygon) {
+        //     console.log("未找到图形不展示");
+        //     return;
+        // }
+        if(!path){
+            console.log("未找到对应的范围");
+            return;
+        }
+        var thePorints =path;
+        var lngs = thePorints.map(function (item) {
+            return item[0];
+        });
+        var lats = thePorints.map(function (item) {
+            return item[1];
+        });
 
-        layer.setData(list, {
+        var minLngs = lngs.min();
+        var maxLngs = lngs.max();
+        var minLats = lats.min();
+        var maxLats = lats.max();
+
+
+        var theValidPoints = [];
+        for (var i = 0; i < 1000; i++) {
+            var thePoint = Math.RandomPoint(minLngs, maxLngs, minLats, maxLats);
+            if (AMap.GeometryUtil.isPointInRing(thePoint, thePorints)) {
+                theValidPoints.push(thePoint);
+            }
+        }
+        var layer = theHeartLayer;
+
+        var theCurrentValue=value;
+        var theShowList=[];
+        var list=theValidPoints.map(function (item) {
+            var theTempValue=0;
+            if(theCurrentValue<=10){
+                theTempValue=theCurrentValue;
+            }
+            else{
+                theTempValue=Math.floor(Math.RandomRange(1,10));
+            }
+            theCurrentValue-=theTempValue;
+            if(theTempValue>0){
+                theShowList.push({
+                    coordinate: [item[0], item[1]],
+                    count: Math.floor(theTempValue)
+                });
+            }
+
+        })
+        layer.setData(theShowList, {
             lnglat: 'coordinate',
             value: 'count'
         });

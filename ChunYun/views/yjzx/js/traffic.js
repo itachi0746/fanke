@@ -56,7 +56,8 @@ TrafficView.prototype.drawPoints = function () {
 }
 
 
-TrafficView.prototype.drawRoads = function (paramters) {
+TrafficView.prototype.drawRoads = function (paramters,nowTab) {
+    this.nowTab = nowTab;
     if (!paramters) {
         console.log("道路参数不正确!");
         return;
@@ -67,14 +68,16 @@ TrafficView.prototype.drawRoads = function (paramters) {
     this.RoadPaths=[];
     for (var i=0;i<paramters.length;i++){
         var theParamter=paramters[i];
+        // debugger
         var theRoad=this.drawRoad(theParamter);
         this.RoadPaths.push(theRoad);
+
     }
 
     this.showRoads();
 }
 
-
+var idx = 0;
 /*画路线*/
 TrafficView.prototype.drawRoad = function (paramter) {
     if (!paramter) {
@@ -82,6 +85,8 @@ TrafficView.prototype.drawRoad = function (paramter) {
         return;
     }
     var path = paramter;
+    this.pArr = [];
+    var me = this;
     // var pathArray = [];
     // debugger
     var pathArray = path.map(function (item) {
@@ -89,7 +94,12 @@ TrafficView.prototype.drawRoad = function (paramter) {
         // console.log(temp)
         return new AMap.LngLat(parseFloat(temp[0]), parseFloat(temp[1]))
     });
-
+    // debugger
+      // console.log('pathArr:',pathArray);
+      pathArray.map(function (i) {
+        me.pArr.push(i)
+      })
+      // console.log('parr',pArr)
     var theStartPoint = path[0];
     var theEndPoint = path[path.length - 1];
 
@@ -103,10 +113,16 @@ TrafficView.prototype.drawRoad = function (paramter) {
         zIndex: 1000,
         strokeDasharray: [10, 5]
     });
-    // debugger
-    this.TheMap.add(RoadPath);
+
+
+  // debugger
+  //   this.TheMap.add(RoadPath);
     // idx++;
     // console.log(idx)
+
+    if(this.nowTab==='高速') {
+      this.TheMap.add(RoadPath);
+    }
     //this.RoadPath.setPath(path);
     // this.drawStart(theStartPoint);
     // this.drawEnd(theEndPoint);
@@ -155,6 +171,7 @@ TrafficView.prototype.showRoads = function () {
         // debugger
         // this.TheMap.setFitView();
         this.TheMap.setFitView(this.RoadPaths);
+      // debugger
     }
 
     // map.setFitView([polyline,marker1]);

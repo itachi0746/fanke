@@ -1801,6 +1801,7 @@ input:focus {
   z-index: 10;
   padding: 50px 40px;
   background-color: rgba(0, 0, 0, 0.5);
+  cursor: default;
   display: none; }
   .luwang-box .container {
     width: 300px;
@@ -1849,7 +1850,8 @@ input:focus {
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
-      padding-top: 10px; }
+      padding-top: 10px;
+      cursor: pointer; }
     .luwang-box .multiPanel div.container li:nth-last-child(1) {
       padding-bottom: 10px; }
     .luwang-box .multiPanel div.container .idx {
@@ -1889,5 +1891,8 @@ input:focus {
         white-space: nowrap; }
   .luwang-box .multiPanel div.container::-webkit-scrollbar {
     display: none; }
+
+.info {
+  font-size: 20px; }
 
 /*# sourceMappingURL=homepage.css.map */

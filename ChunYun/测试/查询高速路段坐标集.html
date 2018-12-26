@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="jquery-1.8.2.min.js"></script>
+</head>
+<body>
+
+<script>
+  var name = '长深高速'
+  function reqRoadData(name) {
+    console.log('name:',name);
+    var url = 'http://restapi.amap.com/v3/road/roadname?city=020&key=8d3ac117e5e739d89d425f8c6798b781&keywords=' + name;
+    $.ajax({
+      type: "GET",
+      url: url,
+      data: {},
+      dataType: "json",
+      success: function(data){
+        console.log('reqRoadData',data)
+//        handleRoadData(data.roads);
+      }
+    });
+  }
+  reqRoadData(name)
+</script>
+</body>
+</html>

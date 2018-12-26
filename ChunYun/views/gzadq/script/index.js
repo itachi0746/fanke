@@ -59,8 +59,9 @@ $(function () {
             var theBeginDay=theDate.getDay();
             var theBeginDate=theDate.addDays(theBeginDay);
             var theEndDate=theBeginDate.addDays(6);
-            return theBeginDate.getFullYear() + "-" + (theBeginDate.getMonth() + 1) + "-" + theBeginDate.getDate()+" - "+
-                theEndDate.getFullYear() + "-" + (theEndDate.getMonth() + 1) + "-" + theEndDate.getDate();
+           // debugger
+            return theBeginDate.getFullYear() + "-" + (theBeginDate.getMonth() + 1) + "-" + theBeginDate.getDate();
+            //+" - "+                theEndDate.getFullYear() + "-" + (theEndDate.getMonth() + 1) + "-" + theEndDate.getDate();
         }
         return theCurrentDate;//theCurrentDate.year + '-' + theCurrentDate.month + '-' + theCurrentDate.date;//
     }
@@ -283,6 +284,8 @@ $(function () {
             $(theParentContent).find('.part1').hide();
             $(theParentContent).find('.part2').hide();
             $(theParentContent).find('.part-' + theIndex).show();
+            $('.tab-item-right .firstline').css('margin-left','80px')
+            $('.tab-item-left .firstline').css('margin-left','54px')
 
 
         });
@@ -292,7 +295,8 @@ $(function () {
             $('.tab-main .tab-item-right').removeClass('select_a');
             $('.datediv,.dateline').hide();
             $('.datediv1,.dateline1').show();
-
+            $('.tab-item-left .firstline').css('margin-left','80px')
+            $('.tab-item-right .firstline').css('margin-left','54px')
 
             $(theParentContent).find('.part1').hide();
             $(theParentContent).find('.part2').hide();
@@ -334,7 +338,7 @@ $(function () {
         laydate.render({
             elem: '#date-input', //指定元素
             trigger: 'click',
-            range: true,//范围选择
+            //range: true,//范围选择
             //format:'yyyy年MM月dd日',
             value:formateDate(),
             done: function (value, date, endDate) {
@@ -787,7 +791,7 @@ $(function () {
         //debugger
         var theCallUrl = "bridge/bridgeAttributionType.do";
         var theParamter = {
-            personDirect: 1||personDirect,
+            personDirect: personDirect||1,
             date: formateDate()
         };
         var me = this;
@@ -803,8 +807,8 @@ $(function () {
                 {"fromType":"1","id":1,"percent":10,"postionName":"港珠澳大桥","postionType":"港珠澳大桥","statDate":"2018-12-12","stayNum":10000000,"toType":"1"},
                  {"fromType":"2","id":2,"percent":10,"postionName":"港珠澳大桥","postionType":"港珠澳大桥","statDate":"2018-12-12","stayNum":10000000,"toType":"1"},
                  {"fromType":"3","id":3,"percent":80,"postionName":"港珠澳大桥","postionType":"港珠澳大桥","statDate":"2018-12-12","stayNum":80000000,"toType":"1"}],"isSuccess":true,"msg":"success"}*/
-                for (var i = 0; i < res.data.length; i++) {
-                    var theItem = res.data[i];
+                for (var i = 0; i < data.length; i++) {
+                    var theItem = data[i];
                     $('#gzabelong' + theItem.fromType).text('(' + theItem.percent + '%)');
                 }
             }
@@ -818,10 +822,11 @@ $(function () {
      * @param personDirect,date,affiliationType
      */
     PageViewModel.prototype.loadBridgeAttributionArea = function (personDirect,affiliationType) {
+        affiliationType=affiliationType||1;
         var theCallUrl = "/bridge/bridgeAttributionArea.do";
         var theData = {
-            personDirect: 1||personDirect,
-            affiliationType:1||affiliationType,
+            personDirect: personDirect||1,
+            affiliationType:affiliationType||1,
             date: formateDate()
         };
         var me = this;
@@ -833,25 +838,26 @@ $(function () {
                 /*{"data":[{"id":1,"nation":"美国","percent":10,"postionName":"港珠澳大桥","postionType":"港珠澳大桥","statDate":"2018-12-12","stayNum":10000000,"toType":"1"}],"isSuccess":true,"msg":"success"}
                 {"data":[{"id":1,"percent":10,"postionName":"港珠澳大桥","postionType":"港珠澳大桥","province":"湖南","statDate":"2018-12-12","stayNum":10000000,"toType":"1"}],"isSuccess":true,"msg":"success"}*/
                 var theIndex = 1;
-                for (var i = 0; i < data.data.length; i++) {
+                for (var i = 0; i < 6; i++) {
                     var theItme = data.data[i];
+                   // debugger;
                     if(affiliationType==1){
                         var theTempalte = '<li>\n' +
-                            '                                        <span class="guishu-icon">' + theIndex + '</span>\n' +
+                            '                                        <span class="guishu-icon">' + (i+1) + '</span>\n' +
                             '                                        <span class="guishu-cuntry">' + theItme.nation + '</span>\n' +
                             '                                        <span class="guishu-line"></span>\n' +
                             '                                        <span class="guishu-num">' + formateNum(theItme.stayNum) + '</span>人\n' +
                             '                                    </li>';
                     }else if(affiliationType==2){
                         var theTempalte = '<li>\n' +
-                            '                                        <span class="guishu-icon">' + theIndex + '</span>\n' +
+                            '                                        <span class="guishu-icon">' + (i+1) + '</span>\n' +
                             '                                        <span class="guishu-cuntry">' + theItme.province + '</span>\n' +
                             '                                        <span class="guishu-line"></span>\n' +
                             '                                        <span class="guishu-num">' + formateNum(theItme.stayNum) + '</span>人\n' +
                             '                                    </li>';
                     }else{
                         var theTempalte = '<li>\n' +
-                            '                                        <span class="guishu-icon">' + theIndex + '</span>\n' +
+                            '                                        <span class="guishu-icon">' + (i+1) + '</span>\n' +
                             '                                        <span class="guishu-cuntry">' + theItme.city + '</span>\n' +
                             '                                        <span class="guishu-line"></span>\n' +
                             '                                        <span class="guishu-num">' + formateNum(theItme.stayNum) + '</span>人\n' +
@@ -873,7 +879,7 @@ $(function () {
      * 大桥客流趋势接口 startDate ,endDate  OK
      */
     PageViewModel.prototype.loadBridgeFlowDirection = function () {
-        debugger
+       // debugger
         var theCallUrl = "bridge/bridgeFlowDirection.do";
 
         var theCallArgument = {

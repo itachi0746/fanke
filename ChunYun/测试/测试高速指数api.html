@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>接口</title>
+  <script src="jquery-1.8.2.min.js"></script>
+  <!--<script src="moment.js"></script>-->
+
+  <script src="moment-with-locales.js"></script>
+  <script src="zh-cn.js"></script>
+
+</head>
+<body>
+
+<script>
+  var url = 'http://gdjtapi.televehicle.com/gd_traffic/api/highWayKpi/AllRoadsDirTpi';
+  var timeStamp = moment().format('YYYYMMDDhmmss') + ''
+  console.log(timeStamp)
+//  1.1	广东省全省高速出行指数 ProvTpi
+//  1.2	高速具体出行指数折线图数据 ProvTpiChartData 只有今天的
+// 1.3	具体高速道路指数查询（分方向） RoadsDirTpi  tpi和speed只有今天的数据，之前的都为0
+//  1.4	具体高速路段指数查询（分方向） RoadLinksTpi  只有今天的
+//  1.5	广东全省高速道路指数查询(分方向)  AllRoadsDirTpi  只有今天的
+  var date = '2018-12-25'
+  var data =
+    {
+      "auth": {
+        "opCode": "SJT",
+        "opPass": "XQWPwai8XOTW",
+        "signature": "A2A65DED49FF531B4A38A5C8E21AA19C",
+        "timeStamp": "20151203220306"
+      },"date":date
+    }
+
+
+
+
+
+
+
+
+
+  data = JSON.stringify(data)
+  $.ajax({
+     type: "POST",
+     url: url,
+     data: data,
+     success: function(data){
+       console.log(data)
+     }
+
+   });
+</script>
+</body>
+
+</html>

@@ -137,9 +137,10 @@
         </div>
       </header>
       <div class="dtl-main" v-html="resData.DtlDesc">
-      <!--<div class="dtl-main" v-html="test">-->
+      <!--<div class="dtl-main">-->
         <!--{{resData.DtlDesc}}-->
-        <!--该媒体地处江门市有名的it专业市场、电脑城，位于江门市蓬江区东华路与江华路交汇处新华电脑城外墙，是在新会电脑城商圈不可多得的好位置。周边集饮食、娱乐、时尚品牌购物、金融中心、电器、建材、高尚小区等地理优势，每天人流如注，川流不息，是江门闹市LED媒体中的难得的黄金广告位。媒体周围干扰较小，视觉冲击力强，画面艳丽。是各快消类客户、汽车类客户、电商类客户、电子产品客户等想要短期内辐射特定人群的首选高性价比LED媒体。-->
+        <!--<img src="../../../assets/lm.jpg" alt="">-->
+        <!--<p>该媒体地处江门市有名的it专业市场、电脑城，位于江门市蓬江区东华路与江华路交汇处新华电脑城外墙，是在新会电</p>-->
       </div>
     </div>
     <div class="fillBtm"></div>
@@ -490,6 +491,44 @@
       margin-top: 5px;
       font-size: 14px;
       line-height: 20px;
+      padding-top: 5px;
+
+      /deep/ * {
+        padding: 0;
+        margin: 0;
+      }
+      /deep/ img {
+        max-width: 100%;
+      }
+      /deep/ p,span {
+        font-size: 14px;
+        line-height: 20px;
+        font-family: "Microsoft Yahei", Arial, sans-serif;
+
+      }
+      /deep/ h1,h2,h3,h4,h5,h6{
+        font-family: "PT Sans","SF UI Display", ".PingFang SC","PingFang SC", "Neue Haas Grotesk Text Pro", "Arial Nova", "Segoe UI", "Microsoft YaHei", "Microsoft JhengHei", "Helvetica Neue", "Source Han Sans SC", "Noto Sans CJK SC", "Source Han Sans CN", "Noto Sans SC", "Source Han Sans TC", "Noto Sans CJK TC", "Hiragino Sans GB", sans-serif;
+        text-rendering:optimizelegibility;margin-bottom:1em;font-weight:bold; line-height: 1.2rem;
+      }
+
+    }
+    .dtl-main >>> * {
+      padding: 0;
+      margin: 0;
+    }
+    .dtl-main >>> img {
+      max-width: 100%;
+    }
+    .dtl-main >>> p,span {
+      font-size: 14px;
+      line-height: 20px;
+      font-family: "Microsoft Yahei", Arial, sans-serif;
+
+    }
+
+    .markDiv >>> h1,h2,h3,h4,h5,h6{
+      font-family: "PT Sans","SF UI Display", ".PingFang SC","PingFang SC", "Neue Haas Grotesk Text Pro", "Arial Nova", "Segoe UI", "Microsoft YaHei", "Microsoft JhengHei", "Helvetica Neue", "Source Han Sans SC", "Noto Sans CJK SC", "Source Han Sans CN", "Noto Sans SC", "Source Han Sans TC", "Noto Sans CJK TC", "Hiragino Sans GB", sans-serif;
+      text-rendering:optimizelegibility;margin-bottom:1em;font-weight:bold; line-height: 1.8rem;
     }
   }
 

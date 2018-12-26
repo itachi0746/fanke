@@ -4,7 +4,7 @@
  */
 
 function PageViewBase(frameElement) {
-    var frameElement=frameElement;
+    var frameElement = frameElement;
     this.timer = null;
     this.interval = 1000 * 60 * 5;
     this.currentTick = 0;
@@ -20,42 +20,47 @@ function PageViewBase(frameElement) {
         "bridge": "gzadq.html",
         "strait": "qzhx.html",
     };
+    if (parent) {
+        $(function () {
+            $(document.body).css('background-image', 'transparent');
+        });
+    }
     $('.topbutton').click(function () {
-        if($(this).hasClass('active')){
+        if ($(this).hasClass('active')) {
             return;
         }
         $('.topbutton').removeClass('active');
         $(this).addClass('active');
         if ($(this).hasClass('test')) {
-            if(frameElement){
-                $('#'+frameElement).attr('src',theUrlMap['test']);
+            if (frameElement) {
+                $('#' + frameElement).attr('src', theUrlMap['test']);
             }
-            else{
+            else {
                 location.href = theUrlMap['test'];
             }
 
         }
         if ($(this).hasClass('insight')) {
-            if(frameElement){
-                $('#'+frameElement).attr('src',theUrlMap['insight']);
+            if (frameElement) {
+                $('#' + frameElement).attr('src', theUrlMap['insight']);
             }
-            else{
+            else {
                 location.href = theUrlMap['insight'];
             }
         }
         if ($(this).hasClass('bridge')) {
-            if(frameElement){
-                $('#'+frameElement).attr('src',theUrlMap['bridge']);
+            if (frameElement) {
+                $('#' + frameElement).attr('src', theUrlMap['bridge']);
             }
-            else{
+            else {
                 location.href = theUrlMap['bridge'];
             }
         }
         if ($(this).hasClass('strait')) {
-            if(frameElement){
-                $('#'+frameElement).attr('src',theUrlMap['strait']);
+            if (frameElement) {
+                $('#' + frameElement).attr('src', theUrlMap['strait']);
             }
-            else{
+            else {
                 location.href = theUrlMap['strait'];
             }
         }
@@ -223,9 +228,10 @@ PageViewBase.prototype.getAreaCode = function (cityName) {
 
         }
     ];
+
     for (var i = 0; i < AreaMap.length; i++) {
         var theItem = AreaMap[i];
-        if (theItem.name == cityName + "市" || theItem.name == cityName) {
+        if (theItem.name+ "市" == cityName  || theItem.name == cityName) {
             return theItem.code;
         }
     }
@@ -286,7 +292,7 @@ PageViewBase.prototype.loadTemplateTable = function (theTableId, data, pageindex
 }).join('');*/
     $(theTableBody).append(theResultString);
     $(theTableBody).data('data', datas);
-    var thePageNum =Math.floor(datas.length / pagesize)+(datas.length%pagesize>0?1:0);
+    var thePageNum = Math.floor(datas.length / pagesize) + (datas.length % pagesize > 0 ? 1 : 0);
     var thePageDiv = $('#' + theTableId).closest('.table-div').next('.page');
     $(thePageDiv).empty();
     var me = this;
@@ -442,7 +448,7 @@ PageViewBase.prototype.initExtend = function () {
             return arr;
         };
     }
-    Date.prototype.addDays = function(days) {
+    Date.prototype.addDays = function (days) {
         var date = new Date(this.valueOf());
         date.setDate(date.getDate() + days);
         return date;
@@ -521,6 +527,8 @@ PageViewBase.prototype.initMap = function (id) {
     var theInnerLayer = null;
     //热力图地图层
     var theHeartLayer = null;
+    var theBounds1 = [[113.42469974130972, 22.652026255982374], [114.64627542077909, 22.652026255982374], [114.64627542077909, 22.01644131657448], [113.42469974130972, 22.01644131657448], [113.42469974130972, 22.652026255982374]];
+    var theBounds2=[[109.9814722996719,20.427689848885844],[110.74924185159136,20.427689848885844],[110.74924185159136,20.022448878077956],[109.9814722996719,20.022448878077956],[109.9814722996719,20.427689848885844]];
     //创建地图实例
     var theMap = new AMap.Map('container', {
         pitch: 0,
@@ -530,23 +538,38 @@ PageViewBase.prototype.initMap = function (id) {
         viewMode: '3D',// 地图模式
         //lat: 22.251472
         //lng: 113.766128
-        center: id == 1 ? [113.766128, 22.251472] : [110.322391, 20.146053],//港珠澳大桥
+        center: id == 1 ? [114.067447, 22.33259] : [110.427377,  20.260057],//港珠澳大桥
 
-        //center:[110.322391,20.146053 ],//琼州海峡 //lat: 20.146053  lng: 110.322391
+    //center:[110.322391,20.146053 ],//琼州海峡 //lat: 20.146053  lng: 110.322391
 
-        //center: [113.275824, 22.994826],
-        features: ['bg', 'building', 'point', 'road'],//['all'],// ['bg', 'building','point'],
-        zoom: 12,
-        keyboardEnable: false,
-        layers: [
-            //satellite,
-            // building,
-            //roadNet
-        ]
-    });
+    //center: [113.275824, 22.994826],
+    features: ['bg', 'building', 'point', 'road'],//['all'],// ['bg', 'building','point'],
+        zoom:  id==1? 11:11.5,// 11.78,
+        zooms:[10,20],
+        keyboardEnable:    false,
+        layers
+:
+    [
+        //satellite,
+        // building,
+        //roadNet
+    ]
+})
+    ;
+    //debugger;
     this.theMap = theMap;
+
+    /*if(id==1){
+        theMap.setLimitBounds(theBounds1);
+    }
+    else{
+        theMap.setLimitBounds(theBounds2);
+    }*/
+
     //地图加载完成事件
     theMap.on('complete', function () {
+        var bounds = theMap.getBounds();
+        theMap.setLimitBounds(bounds);
         console.log("地图加载完成!");
     });
     //监听放大缩小事件
@@ -554,7 +577,7 @@ PageViewBase.prototype.initMap = function (id) {
         var theZoom = theMap.getZoom();
         if (theZoom >= 12) {
             console.log("显示点");
-            theMap.setFeatures(['bg', 'road', 'building', 'point']);
+            theMap.setFeatures(['bg', 'road']);// 'building', 'point'
             theInnerLayer && theInnerLayer.setzIndex(1000);
             //theMap.add(satellite);
             //theMap.setMapStyle("normal");

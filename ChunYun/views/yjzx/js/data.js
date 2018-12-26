@@ -236,6 +236,7 @@ PlacePointView.prototype.showPoints = function (pointType) {
   }
   for (var i = 0; i < thePlaces.length; i++) {
     var thePlace = thePlaces[i];
+    // console.log('thePlage:',thePlace)
     //var theName = thePlace['名称'];
     var theNameLntLatStrs = thePlace['地址'];
     if (!theNameLntLatStrs || theNameLntLatStrs.length < 0) {

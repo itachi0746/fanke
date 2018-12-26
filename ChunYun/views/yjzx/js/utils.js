@@ -102,3 +102,19 @@ function calDate(date) {
   // console.log(result)
 
 }
+
+/**
+ * m化为km
+ * @param m
+ * @returns {string}
+ */
+function toKM(m) {
+  if(!m){
+    console.log('参数不能为空');
+    return
+  }
+
+  // var num = (m/1000).toFixed(2);
+  // console.log(num)
+  return (m/1000).toFixed(2) + 'km'
+}
