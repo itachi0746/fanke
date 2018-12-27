@@ -671,27 +671,58 @@ $(function () {
     pointControl.showPoints(t);  // 放大点
     markerBindClick();
     clearCenterMarker();
-
     if (nowTab === tabArr[0]) {
       addStation();
       positionType = 1;  // 场站type
+      clearInterval(timer);
+      clearJamList();
+      $('#top3').show();
+      $('#luwang-box').hide();
+      $('#container2').show();
+      mapbase.isGaoSuLuDuan = false;
+      mapbase.restoreDefaultStyle();
+      mapbase.setBg();
     }
-    else {
-      addStation2();
-    }
+
     if (nowTab === tabArr[1]) {
       positionType = 2;  // 服务区type
+      addStation2();
+      clearInterval(timer);
+      clearJamList();
+      $('#top3').show();
+      $('#luwang-box').hide();
+      $('#container2').show();
+      mapbase.isGaoSuLuDuan = false;
+      mapbase.restoreDefaultStyle();
+      mapbase.setBg();
 
     }
     if (nowTab === tabArr[2]) {
       positionType = 3;  // 收费站type
+      addStation2();
+      clearInterval(timer);
+      clearJamList();
+      $('#top3').show();
+      $('#luwang-box').hide();
+      $('#container2').show();
+      mapbase.isGaoSuLuDuan = false;
+      mapbase.restoreDefaultStyle();
+      mapbase.setBg();
 
     }
     if (nowTab === '高速') {
       positionType = 4;  // 高速路段type
-      mapbase.setTrafficStyle();
+      mapbase.setLuDuanStyle();
+      addStation2();
+      clearInterval(timer);
+      clearJamList();
+      $('#top3').show();
+      $('#luwang-box').hide();
+      $('#container2').show();
+      DrawLuDuan();
     }
     if (nowTab === '高速路网') {
+      mapbase.isGaoSuLuDuan = false;
       refreshTime();
       $('#top3').hide();
       $('#luwang-box').show();
@@ -702,18 +733,54 @@ $(function () {
       // jamRankLiClick();
       $('#container2').hide()
     }
-    else {
-      clearInterval(timer);
-      clearJamList();
-      $('#top3').show();
-      $('#luwang-box').hide();
-      $('#container2').show();
-      if(nowTab === '高速') {
-        mapbase.isGaoSuLuWang = false;
-      } else  {
-        mapbase.restoreDefaultStyle();
-      }
-    }
+
+    // if (nowTab === tabArr[0]) {
+    //   addStation();
+    //   positionType = 1;  // 场站type
+    // }
+    // else {
+    //   addStation2();
+    // }
+    // if (nowTab === tabArr[1]) {
+    //   positionType = 2;  // 服务区type
+    //
+    // }
+    // if (nowTab === tabArr[2]) {
+    //   positionType = 3;  // 收费站type
+    //
+    // }
+    // if (nowTab === '高速') {
+    //   positionType = 4;  // 高速路段type
+    //   mapbase.setLuDuanStyle();
+    //   // console.log(111)
+    // }
+    // if (nowTab === '高速路网') {
+    //   refreshTime();
+    //   $('#top3').hide();
+    //   $('#luwang-box').show();
+    //   // reqJamList();
+    //   mapbase.setTrafficStyle();
+    //   // reqLuWangDtlData()
+    //   reqJamList();
+    //   // jamRankLiClick();
+    //   $('#container2').hide()
+    // }
+    // else {
+    //   // console.log(222)
+    //   clearInterval(timer);
+    //   clearJamList();
+    //   $('#top3').show();
+    //   $('#luwang-box').hide();
+    //   $('#container2').show();
+    //   mapbase.isGaoSuLuDuan = false;
+    //
+    //   if(nowTab === '高速') {
+    //     mapbase.isGaoSuLuDuan = true;
+    //     mapbase.isGaoSuLuWang = false;
+    //   } else  {
+    //     mapbase.restoreDefaultStyle();
+    //   }
+    // }
 
     // console.log('theDataObject:', pointControl.markes)
     // addStation2()
@@ -777,7 +844,6 @@ $(function () {
       var li = liArr[i];
       $(li).on('click',function () {
         reqLuWangDtlData()
-
       })
     }
   }
@@ -793,29 +859,40 @@ $(function () {
    * 查询高速拥堵事件列表
    */
   function reqJamList() {
-    var url = 'highSpeed/selectGsCongestion.do';
+    var url = 'highSpeed/selectGsCongestionAndDetails.do';
     $.axpost(url,{},function (data) {
       console.log('reqJamList:',data);
       if(data.isSuccess && data.data) {
-        var theData = data.data.rows;
-        var jamList = [];  // 拥堵列表
-        for (var i = 0; i < theData.length; i++) {
-          var dataObj = theData[i];
-          jamList.push(dataObj)
-        }
+        var jamList = data.data.rows;
+        // var jamList = [];  // 拥堵列表
+        // for (var i = 0; i < theData.length; i++) {
+        //   var dataObj = theData[i];
+        //   jamList.push(dataObj)
+        // }
         // console.log('jamList:',jamList);
         var idx = 0;
         var jamRankUl = $('#jam-rank');
+
         for (var j = 0; j < jamList.length; j++) {
+          // debugger
           idx++;
           var liData = jamList[j];
+          var liDetailsArray = liData.congestionDetailsArray;
+          // debugger
+          var startLngLat = liDetailsArray[0].xys.split(';')[0].split(',').map(function (t) { return parseFloat(t) });  // 起点经纬度
+          var temp = liDetailsArray[liDetailsArray.length-1].xys.split(';');
+          var endLngLat = temp[temp.length-1].split(',').map(function (t) { return parseFloat(t) });  // 终点经纬度
+          // debugger
+          var angle = calcAngle(startLngLat,endLngLat);  // 角度
+          var dir = judgeDirection(angle);  // 方向
+          // debugger
           var liStr = '<li>\n' +
             '<div class="idx">\n' +
             '<span>'+idx+'</span>\n' +
             '</div>\n' +
             '<div class="road-profile">\n' +
             '<p>'+liData.roadName+'</p>\n' +
-            '<p></p>\n' +
+            '<p>'+dir+'</p>\n' +
             '</div>\n' +
             '<div class="jam-data">\n' +
             '<p>'+toKM(liData.jamDist)+'</p>\n' +
@@ -860,12 +937,6 @@ $(function () {
               // console.log('theRow:',theRows);
               console.log('pointArr:',pointArr);
 
-              // var m1 = new AMap.Marker({
-              //   position: new AMap.LngLat(parseFloat(pointArr[pointArr.length/2]),parseFloat(pointArr[pointArr.length/2])),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-              //   title: 'center'
-              // });
-              // theMap.add(m1);
-
               var centerRow = rows[parseInt(rows.length/2)];
               var lnglat = xy.split(',').map(function (t) { return parseFloat(t) });
               // var lnglat = eve.xy.split(',').map(function (t) { return parseFloat(t) });
@@ -875,7 +946,7 @@ $(function () {
               //   position: new AMap.LngLat(lnglat[0],lnglat[1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
               //   title: '北京'
               // });
-              traffic.drawRoads(theRows);
+              traffic.drawRoads(theRows,nowTab);
               // var m1 = new AMap.Marker({
               //   position: new AMap.LngLat(traffic.pArr[0].lng,traffic.pArr[0].lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
               //   title: '1'
@@ -1542,18 +1613,6 @@ $(function () {
     // 高速路段
     if(nowTab===tabArr[3]) {
       $('#tab5').removeClass('vh');
-      // var url = 'http://restapi.amap.com/v3/road/roadname?city=020&key=8d3ac117e5e739d89d425f8c6798b781&keywords=%E7%A7%91%E9%9F%B5%E8%B7%AF'
-      // $.ajax({
-      //   type: "GET",
-      //   url: url,
-      //   data: {},
-      //   dataType: "json",
-      //   success: function(data){
-      //     console.log(data.roads)
-      //     handleRoadData(data.roads);
-      //   }
-      //
-      // });
     }
     // 高速路网
     if(nowTab===tabArr[4]) {
@@ -1568,6 +1627,7 @@ $(function () {
    */
   function reqRoadData(name) {
     console.log('name:',name);
+
     var url = 'http://restapi.amap.com/v3/road/roadname?city=020&key=8d3ac117e5e739d89d425f8c6798b781&keywords=' + name;
     $.ajax({
       type: "GET",
@@ -1575,10 +1635,29 @@ $(function () {
       data: {},
       dataType: "json",
       success: function(data){
-        console.log('reqRoadData',data)
+        // console.log('reqRoadData',data)
         handleRoadData(data.roads);
       }
     });
+  }
+
+  /**
+   * 高速路段 画线
+   */
+  function DrawLuDuan() {
+    var lngLatArr = [];
+    for (var i = 0; i < LuDuanDataArr.length; i++) {
+      var luDuan = LuDuanDataArr[i];
+      var theArr = luDuan.xys.split(';');
+      lngLatArr.push(theArr);
+
+      // debugger
+      // console.log(lngLatArr)
+      // traffic.drawLuDuan(lngLatArr);
+
+    }
+    traffic.drawRoads(lngLatArr,tabArr[3]);
+    // console.log(lngLatArr)
   }
 
   /**
@@ -1594,7 +1673,7 @@ $(function () {
       theDataArr.push(lnglatArr)
       
     }
-    console.log(theDataArr)
+    // console.log(theDataArr)
     var theRoadsArr = [];
     for (var j = 0; j < theDataArr.length; j++) {
       var theArr = theDataArr[j];
@@ -1605,7 +1684,9 @@ $(function () {
         theRoadsArr.push(paramArr)
       }
     }
+    console.log(theRoadsArr)
     // 高速路段画线
+    // debugger
     traffic.drawRoads(theRoadsArr,nowTab);
   }
 

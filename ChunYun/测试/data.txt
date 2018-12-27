@@ -1,47 +1,61 @@
-福田汽车客运站CBG|
-龙岗长途汽车客运站|
-罗湖汽车站|
-深圳汽车站|
-广东省汽车客运站|
-广州芳村汽车客运站|
-广州市汽车客运站|
-广州市天河客运站|
-茂名市客运中心站|
-香洲长途站|
-佛山汽车站|
-河源汽车总站|
-中山汽车总站|
-中山小榄客运站|
-江门汽车客运站|
-惠州汽车总站|
-东莞汽车总站|
-东莞长安车站|
-潮州汽车客运站|
-清远汽车客运站|
-
-
-深圳北站|
-深圳西站|
-深圳站|
-广州北站|
-广州东站|
-广州南站|
-广州站|
-惠州站|
-东莞东|
-东莞站|
-虎门站|
-潮汕站|
-佛山西站|
-珠海站|
-
-
-
-湛江徐闻海安港|
-深圳宝安国际机场|
-白云国际机场二号航站楼|
-广州白云国际机场|
-湛江机场|
-揭阳机场|
-tab2Li4EchartReqData()
-tab2Li4Echart2ReqData()
+{status: "1",…}
+data: {codepoint: 0, code: "1", suggestion: {}, timestamp: "1545880726.27",…}
+bounds: "113.339729;23.038477;113.372547;23.281023"
+bus_list: []
+busline_count: "0"
+busline_list: []
+code: "1"
+codepoint: 0
+general_flag: "0"
+interior_count: "0"
+is_general_search: "0"
+keywords: "s4华南快速"
+lqii: {cache_directive: {cache_filter: {flag: "1", expires: "24"}, cache_all: {flag: "0"}},…}
+activity: {new_year: {flag: "0", tip: ""}}
+auto_query_cate: "地名=0.878000;交通出行=0.058000;出入口=0.054000地名|道路=0.878000;交通出行|收费站=0.058000;出入口|高速入口=0.039000"
+brand_intent: {t_tag: "", hierarchy_strategy: "0", cate: "", hierarchy_idx: "-1", flag: "0", query_brand: "",…}
+business: ""
+cache_directive: {cache_filter: {flag: "1", expires: "24"}, cache_all: {flag: "0"}}
+call_taxi: "0"
+car_icon_flag: "0"
+category_brand_recognition_flag: 0
+category_brand_recognition_result: "0"
+change_query_tip: ""
+change_query_type: ""
+city_info_attr: {map_view_city: "440100", target_city: "4401", user_loc_city: ""}
+distance_info: ""
+expand_range_tip: ""
+general_flag: ""
+has_recommend: "0"
+is_current_city: "2"
+is_tupu_sug: "0"
+is_view_city: "1"
+magic_box: {}
+pdheatmap: ""
+preload_next_page: "0"
+query_intent: {cate_list: "", type: "1000", cate: "", cate_ext: ""}
+querytype: "5"
+render_name_flag: "1"
+self_navigation: ""
+show_pic: ""
+showaoi: ""
+slayer: "0"
+slayer_type: "none"
+specialclassify: "0"
+suggest_query: {data: [], col: "", row: ""}
+suggestcontent: ""
+suggestionview: "1"
+target_view_city: ""
+tips_info: {tip_rule: "", target_keywords_list: []}
+utd_sceneid: "1000"
+view_region: "113.332134200,23.307424900,113.379399800,22.998558100"
+magicbox_data: {}
+message: "Successful."
+poi_list: [{rating: "", tel: "", typecode: "190301", areacode: "020", cityname: "广州市", display_brand: "",…},…]
+result: "true"
+suggestion: {}
+timestamp: "1545880726.27"
+total: "868"
+version: "2.0-3.0.8360.1434"
+searchOpt: {city: "440100", pageSize: "20", pageIndex: "1", ac: "false", keyword: "S4华南快速", type: "4"}
+status: "1"

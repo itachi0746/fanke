@@ -1,8 +1,8 @@
 var serviceBase;  // 基地址
 if(window.location.hostname==='localhost') {
-    serviceBase = "http://localhost/gdcnymot";
+    serviceBase = "http://localhost/gdcnymot/";
 } else {
-    serviceBase = "http://14.23.164.13:7001/gdcnymot";
+    serviceBase = "http://14.23.164.13:7001/gdcnymot/";
 }
 
 $(function () {

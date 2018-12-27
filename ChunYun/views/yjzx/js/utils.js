@@ -1,11 +1,10 @@
-
 /**
  * 数字化为金钱格式,千分位
  * @param num
  * @returns {string|*}
  */
-function toMoney(num){
-  if(!num) {
+function toMoney(num) {
+  if (!num) {
     console.log('toMoney:参数不能为空');
     return
   }
@@ -21,14 +20,14 @@ function toMoney(num){
  * @returns {number|*}
  */
 function toWan(num) {
-  if(!num) {
+  if (!num) {
     console.log('toWan:参数不能为空');
     return
   }
   var spanDom = '';
-  if(num>=1000) {
+  if (num >= 1000) {
     spanDom = '<span>万</span>';
-    num = (num/10000).toFixed(1);
+    num = (num / 10000).toFixed(1);
   }
   // result = val>=10000?Math.round(val/10000):val;
   return num + spanDom
@@ -41,19 +40,19 @@ function toWan(num) {
  */
 function returnDate(detract) {
   var myDate = new Date();
-  var y,m,d;
-  if(!detract) {
+  var y, m, d;
+  if (!detract) {
     y = myDate.getFullYear();
     m = myDate.getMonth() + 1;
     d = myDate.getDate();
-    return y+'-'+m+'-'+d;
+    return y + '-' + m + '-' + d;
   } else {
-    var sec = 24*60*60*1000*detract;
-    var theDate = new Date(myDate.getTime()-sec);
+    var sec = 24 * 60 * 60 * 1000 * detract;
+    var theDate = new Date(myDate.getTime() - sec);
     y = theDate.getFullYear();
     m = theDate.getMonth() + 1;
     d = theDate.getDate();
-    return y+'-'+m+'-'+d;
+    return y + '-' + m + '-' + d;
   }
 }
 
@@ -63,10 +62,10 @@ function returnDate(detract) {
  */
 function strDelZero(str) {
   var num = parseInt(str);
-  if(num<10) {
+  if (num < 10) {
     var i = str.indexOf('0');
-    if(i>-1) {
-      str = str.slice(i+1)
+    if (i > -1) {
+      str = str.slice(i + 1)
     }
   }
 
@@ -80,15 +79,15 @@ function strDelZero(str) {
  * @returns {{start: (string|*), end: *}|*}
  */
 function calDate(date) {
-  if(!date){
+  if (!date) {
     console.log('date不能为空');
     return
   }
-  var y,m,d,result,temp;
+  var y, m, d, result, temp;
 
-  var sec = 24*60*60*1000*6;
+  var sec = 24 * 60 * 60 * 1000 * 6;
   var endD = new Date(date);
-  var StartD = new Date(endD.getTime()-sec);
+  var StartD = new Date(endD.getTime() - sec);
   y = StartD.getFullYear();
   m = StartD.getMonth() + 1;
   d = StartD.getDate();
@@ -109,12 +108,62 @@ function calDate(date) {
  * @returns {string}
  */
 function toKM(m) {
-  if(!m){
+  if (!m) {
     console.log('参数不能为空');
     return
   }
 
   // var num = (m/1000).toFixed(2);
   // console.log(num)
-  return (m/1000).toFixed(2) + 'km'
+  return (m / 1000).toFixed(2) + 'km'
+}
+
+/**
+ * 要把经纬度坐标转换成地图容器坐标  0指向北 90西 180南 270东
+ * @param start 起点经纬度
+ * @param end 终点经纬度
+ * @returns {number}
+ */
+function calcAngle(start, end) {
+  // console.log(start,end);
+  var p_start = theMap.lngLatToContainer(start),
+    p_end = theMap.lngLatToContainer(end);
+  // console.log(p_start,p_end)
+
+  var diff_x = p_end.x - p_start.x,
+    diff_y = p_end.y - p_start.y;
+  // console.log(diff_x,diff_y);
+  return 360 * Math.atan2(diff_y, diff_x) / (2 * Math.PI) + 90;
+}
+
+// var a = [116.41635407421873, 39.90599332133357]; var b =  [115.97140778515623, 39.8870286178264];
+// console.log('aaa',calcAngle(a,b))
+
+/**
+ * 判断角度
+ * @param angle 角度 int
+ * @returns {string}
+ */
+function judgeDirection(angle) {
+  if (!angle) {
+    console.log('参数不正确');
+    return
+  }
+  var dir = '----';
+  if (angle >= 0 && angle < 45) {
+    dir = '由南向北'
+  }
+  if (angle >= 45 && angle < 135) {
+    dir = '由西向东'
+  }
+  if (angle >= 135 && angle < 225) {
+    dir = '由北向南'
+  }
+  if (angle >= 225 && angle < 315) {
+    dir = '由东向西'
+  }
+  if (angle >= 315 && angle <= 360) {
+    dir = '由南向北'
+  }
+  return dir
 }

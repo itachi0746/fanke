@@ -197,6 +197,10 @@ $(function () {
         this.initMapEvent();
         this.initMap2Event();
     }
+    MapBase.prototype.setBg = function () {
+      theMap.setFeatures(['bg']);
+
+    }
     /**
      * 初始化大图事件
      */
@@ -253,7 +257,7 @@ $(function () {
                 // console.log("显示点");
                 // console.log()
               // debugger
-              if(me.isGaoSuLuWang) {
+              if(me.isGaoSuLuWang || me.isGaoSuLuDuan) {
                 theMap.setFeatures(['bg','road']);
               }
               else {
@@ -272,12 +276,12 @@ $(function () {
             }
             else {
                 console.log("隐藏点");
-                if(me.isGaoSuLuWang) {
-                  console.log(2222)
+                if(me.isGaoSuLuWang || me.isGaoSuLuDuan) {
                   theMap.setFeatures(['bg','road']);
+                  console.log(1)
 
                 }else {
-                  console.log(122)
+                  console.log(2)
                     theMap.setFeatures(['bg']);
 
                 }
@@ -442,6 +446,21 @@ $(function () {
       theMap.setMapStyle(theMapStyle2);
 
     }
+  /**
+   * 设置为 高速路段样式
+   */
+  MapBase.prototype.setLuDuanStyle = function () {
+    this.isGaoSuLuDuan = true;
+    this.hideOtherProvince(true);
+    theMap.remove(traffic);
+    theMap.remove(roadNet);
+    // debugger
+    theMap.add(traffic);
+    // theMap.add(roadNet);
+    theMap.setMapStyle(theMapStyle2);
+    // theMap.setFeatures(['bg','road']);
+
+  }
 
     MapBase.prototype.showLine = function (thePaths, map, map2) {
         console.log("开始绘制线！");

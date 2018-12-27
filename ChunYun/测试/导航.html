@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="jquery-1.8.2.min.js"></script>
+</head>
+<body>
+<p id="p">
+
+</p>
+<script>
+  var p =document.getElementById('p');
+  var re = '';
+
+  var url = '//restapi.amap.com/v3/direction/driving?key=9fea49e84c21ed8c815151d9b858ea10&origin=114.747774,23.822304&destination=114.387296,23.205735&originid=&destinationid=&extensions=base&strategy=0&waypoints=&avoidpolygons=&avoidroad='
+  $.ajax({
+    type: "GET",
+    url: url,
+
+//     dataType: "json",
+    success: function(data) {
+      console.log(data);
+      var arr = data.route.paths;
+      for (var i = 0; i < arr.length; i++) {
+        var paths = arr[i];
+        debugger
+        for (var j = 0; j < paths.steps.length; j++) {
+          var step = paths.steps[j];
+//          debugger
+          var temp = step.polyline + ';';
+          re += step.polyline
+        }
+      }
+      console.log(re)
+//      debugger
+      p.innerText = re;
+    }
+    })
+
+</script>
+</body>
+</html>
