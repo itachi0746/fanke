@@ -98,9 +98,9 @@ function PlacePointView(theMap) {
     '公路|高速|济广高速金龙大道出入口|济广高速金龙大道出入口:114.425594,23.222671;\n' +
     '公路|高速|京港高速广汕公路出入口|京港高速广汕公路出入口:113.482522,23.215015;\n' +
     '公路|高速|粤赣高速小金口到热水段|粤赣高速小金口到热水段:114.690675,23.789941;\n' +
-    '公路|高速|京珠北高速|京珠北高速:113.692056,24.260996;\n' +
+    '公路|高速|京珠北高速|京珠北高速:113.412836,23.351586;\n' +
     '公路|高速|华南快速|华南快速:113.286245,23.226338;\n' +
-    '公路|高速|广深高速|广深高速(西北向)9:113.561042,23.027907;\n' +
+    '公路|高速|广深高速|广深高速:113.840318,22.641758;\n' +
     '公路|高速|机场高速|机场高速:113.285256,23.350941;\n';
 
   var placeData = theStr + theStr2;
@@ -127,6 +127,7 @@ function PlacePointView(theMap) {
     }
     theDataObject.push(theData);
   }
+  // debugger
   // console.log('theDataObject:',theDataObject)
   var theRegexName = /([^:]*):(\d*\.\d*\,\d*\.\d*)/ig;
   for (var i = 0; i < theDataObject.length; i++) {
@@ -228,6 +229,7 @@ PlacePointView.prototype.showPoints = function (pointType) {
   for (var i = 0; i < thePointTypes.length; i++) {
     var thePointType = thePointTypes[i];
     var theCurretTypePoints = this.getPlacePoints(thePointType);
+    // debugger
     thePlaces = thePlaces.concat(theCurretTypePoints);
   }
   if (!thePlaces) {
@@ -236,15 +238,23 @@ PlacePointView.prototype.showPoints = function (pointType) {
   }
   for (var i = 0; i < thePlaces.length; i++) {
     var thePlace = thePlaces[i];
+    // debugger
     // console.log('thePlage:',thePlace)
     //var theName = thePlace['名称'];
     var theNameLntLatStrs = thePlace['地址'];
+    // console.log(theNameLntLatStrs)
+    // debugger
+    var pointName = thePlace['枢纽名称'];
+    // console.log(pointName)
     if (!theNameLntLatStrs || theNameLntLatStrs.length < 0) {
       console.log(theName + "坐标错误!");
     }
     for (var j = 0; j < theNameLntLatStrs.length; j++) {
       var theData = theNameLntLatStrs[j];
-      var theName = theData.name.replace(/[0-9]/ig, "");
+      // var theName = theData.name.replace(/[0-9]/ig, "");
+      var theName = pointName;
+      // console.log(theName)
+      // debugger
       var theLntLatStr = theData.lnglat;
       var theLntLats = theLntLatStr.split(',');
 
@@ -252,7 +262,7 @@ PlacePointView.prototype.showPoints = function (pointType) {
       var theValue = Math.round(Math.random() * 10);
       // console.log(theValue)
 
-      // 模拟数据==========
+      // 模拟数据==========  todo 地图点的样式
       if (theValue >= 8) {
         marker = new AMap.Marker({
           position: new AMap.LngLat(theLntLats[0], theLntLats[1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]

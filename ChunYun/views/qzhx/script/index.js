@@ -61,7 +61,7 @@ $(function () {
         },
         yAxis: {
             min: '0',
-           // max: '30',
+            // max: '30',
             type: 'value',
             name: '(人数/万)',
             nameLocation: 'end',
@@ -106,10 +106,10 @@ $(function () {
         //debugger;
         if (!theCurrentDate1) {
             var theDate = new Date();
-            var theBeginDay=theDate.getDay();
-            var theBeginDate=theDate.addDays(theBeginDay);
-            var theEndDate=theBeginDate.addDays(6);
-            return theBeginDate.getFullYear() + "-" + (theBeginDate.getMonth() + 1) + "-" + theBeginDate.getDate()+" - "+
+            var theBeginDay = theDate.getDay();
+            var theBeginDate = theDate.addDays(-theBeginDay);
+            var theEndDate = theBeginDate.addDays(6);
+            return theBeginDate.getFullYear() + "-" + (theBeginDate.getMonth() + 1) + "-" + theBeginDate.getDate() + " - " +
                 theEndDate.getFullYear() + "-" + (theEndDate.getMonth() + 1) + "-" + theEndDate.getDate();
         }
         return theCurrentDate1;//theCurrentDate.year + '-' + theCurrentDate.month + '-' + theCurrentDate.date;//
@@ -118,8 +118,8 @@ $(function () {
     function PageViewModel() {
         this.initEvent();
         this.initCharts();
-        this.loadData();
         this.initMap(2);
+        this.loadData();
     }
 
 
@@ -194,10 +194,10 @@ $(function () {
             $(theParentContent).find('.part1').hide();
             $(theParentContent).find('.part2').hide();
             $(theParentContent).find('.part-' + theIndex).show();
-            if(theIndex==2){
+            if (theIndex == 2) {
                 me.loadPart2();
             }
-            else{
+            else {
                 me.loadPart1();
             }
             //debugger;
@@ -237,6 +237,8 @@ $(function () {
         else {
             this.loadPart2();
         }
+        //注意修改数据
+        this.loadWeather();
     }
     PageViewModel.prototype.loadChart1 = function (xData, data1, data2) {
         if (!this.Chart1) {
@@ -245,9 +247,11 @@ $(function () {
 
         var theCurrentOption = {};
         $.extend(theCurrentOption, option1);
-        theCurrentOption.xAxis.data=xData||theCurrentOption.xAxis.data;
+        theCurrentOption.grid.height = 80;
+        theCurrentOption.grid.bottom = 10;
+        theCurrentOption.xAxis.data = xData || theCurrentOption.xAxis.data;
         theCurrentOption.legend = {
-            data: [{name: '每日客流', textStyle: {color: "#85a8b8"}}, {name: '香港>>珠海澳门', textStyle: {color: "#85a8b8"}}],
+            data: [{name: '粤海铁路北港', textStyle: {color: "#85a8b8"}}, {name: '海安两港', textStyle: {color: "#85a8b8"}}],
             x: 'right',
             y: 'top'
         };
@@ -257,13 +261,13 @@ $(function () {
             {
                 //name: '搜索引擎',
                 type: 'line',
-                name: '每日客流',
+                name: '粤海铁路北港',
                 itemStyle: {
                     color: '#d1b96b'
                 },
                 //stack: '总量',
                 smooth: true,
-                data: data1 ,//|| [11, 14, 22, 15, 7, 8],
+                data: data1,//|| [11, 14, 22, 15, 7, 8],
                 areaStyle: {
                     normal: {
                         color: {
@@ -291,7 +295,7 @@ $(function () {
             {
                 //name: '搜索引擎',
                 type: 'line',
-                name: '香港>>珠海澳门',
+                name: '海安两港',
 
                 itemStyle: {
                     normal: {
@@ -316,7 +320,7 @@ $(function () {
         }
         var theCurrentOption = {};
         $.extend(theCurrentOption, option1);
-        theCurrentOption.xAxis.data=xData||theCurrentOption.xAxis.data;
+        theCurrentOption.xAxis.data = xData || theCurrentOption.xAxis.data;
         theCurrentOption.yAxis = [{
             name: '（人数/万）',
             type: 'value',
@@ -377,7 +381,7 @@ $(function () {
         }
         var theCurrentOption = {};
         $.extend(theCurrentOption, option1);
-        theCurrentOption.xAxis.data=xData||theCurrentOption.xAxis.data;
+        theCurrentOption.xAxis.data = xData || theCurrentOption.xAxis.data;
         theCurrentOption.series = [
             {
                 // name: '搜索引擎',
@@ -420,10 +424,10 @@ $(function () {
         if (!this.Chart4) {
             this.Chart4 = echarts.init(document.getElementById('chart4'));
         }
-       //debugger;
+        //debugger;
         var theCurrentOption = {};
         $.extend(theCurrentOption, option1);
-        theCurrentOption.xAxis.data=xData||theCurrentOption.xAxis.data;
+        theCurrentOption.xAxis.data = xData || theCurrentOption.xAxis.data;
         theCurrentOption.series = [
             {
                 // name: '搜索引擎',
@@ -465,6 +469,7 @@ $(function () {
      * 驻留时长图标
      */
     PageViewModel.prototype.loadChartBar = function (data) {
+        //debugger;
         this.ChartBar = echarts.init(document.getElementById('form_1'));
         var option = {
 
@@ -472,9 +477,9 @@ $(function () {
                 left: 92,
                 right: 5,
                 top: 30,
-                bottom: 5,
+                bottom: 0,
                 width: 560,
-                height: 110,
+                height: 80,
                 containLabel: true
             },
             xAxis: [
@@ -502,7 +507,7 @@ $(function () {
                 {
                     type: 'value',
                     min: '0',
-                    max: '30',
+                    //max: '30',
                     splitLine: '3',
                     name: '(百分比)',
                     nameLocation: 'end',
@@ -582,14 +587,25 @@ $(function () {
                     "statDate": "2018-12-12"
                 }]
             };*/
+
             if (res && res.isSuccess) {
                 var theDatas = res.data;
                 for (var i = 0; i < theDatas.length; i++) {
                     var theItem = theDatas[i];
                     var theStayTime = theItem.qzStayTime;
-                    theData[theStayTime] = theItem.qzStayPercentage;
+                    if (theStayTime > 8) {
+                        theData[theData.length - 1] = theItem.qzStayPercentage;
+                    }
+                    else if (theStayTime < 1) {
+                        theData[0] = theItem.qzStayPercentage;
+                    }
+                    else {
+                        theData[Math.ceil(theStayTime) - 1] = theItem.qzStayPercentage;
+                    }
+
                 }
             }
+            //debugger;
             me.loadChartBar(theData);
         });
     }
@@ -678,7 +694,7 @@ $(function () {
         $('.sex-girl-num').text(data.woman + '%');
         for (var i = 1; i <= 10; i++) {
             $('#age' + i).siblings('span').text((data['age' + i] || 0) + "%");
-            $('#age' + i).css('width', (data['age' + i]/2) + 'px');
+            $('#age' + i).css('width', (data['age' + i] / 2) + 'px');
         }
     }
     /***
@@ -691,6 +707,9 @@ $(function () {
         this.load(theCallUrl, theParamter, function (res) {
             var theData1 = [];
             var theData2 = [];
+
+            var theX1 = [];
+            var theX2 = [];
             var theX = [];
             /*res = {
                 "data": [[{
@@ -732,14 +751,24 @@ $(function () {
                     var theItems = res.data[0];
                     for (var i = 0; i < theItems.length; i++) {
                         theData1.push(theItems[i].allPeople);
-                        theX.push(theItems[i].statDate);
+                        theX1.push(theItems[i].statDate);
                     }
                 }
                 if (res.data.length >= 2) {
                     var theItems = res.data[1];
                     for (var i = 0; i < theItems.length; i++) {
                         theData2.push(theItems[i].allPeople);
+                        theX2.push(theItems[i].statDate);
                     }
+                }
+            }
+            var theTmpArray=theX1.concat(theX2);
+            theTmpArray.sort();
+            var theHash={};
+            for(var i=0;i<theTmpArray.length;i++){
+                if(!theHash[theTmpArray[i]]){
+                    theHash[theTmpArray[i]]=true;
+                    theX.push(theTmpArray[i]);
                 }
             }
             me.loadChart1(theX, theData1, theData2);
@@ -751,7 +780,7 @@ $(function () {
      */
     PageViewModel.prototype.loadQzFlowHistory = function () {
         var theCallUrl = "qz/qzFlowHistory.do";
-        var theDate=formateDate1();
+        var theDate = formateDate1();
         var theParamter = {};
         var me = this;
         //debugger;
@@ -803,7 +832,13 @@ $(function () {
     PageViewModel.prototype.loadzFlow = function () {
         var theCallUrl = "qz/qzFlow.do";
         var theParamter = {};
-
+        var me = this;
+        //粤海铁路北港码头0:110.130713,20.226732
+        //海安新港0:110.216824,20.267225
+        this.addMarker("粤海铁路北港", 110.130713, 20.226732);
+        // this.addInfoWindow("粤海铁路北港",110.130713,20.226732);
+        this.addMarker("海安两港", 110.221102, 20.270894);
+        // this.addInfoWindow("海安新港",110.216824,20.267225);
         this.load(theCallUrl, theParamter, function (res) {
             var theData = [0, 0, 0, 0, 0, 0, 0, 0, 0];
             res = {
@@ -815,11 +850,11 @@ $(function () {
                     "statDate": "2018-12-12",
                     "statTime": "12:00"
                 }, "isSuccess": true, "msg": "success"
-            }
-
-            ;
-            if (res && res.isSuccess) {
-
+            };
+            //粤海铁路北港码头0:110.130713,20.226732
+            //海安新港0:110.216824,20.267225
+            if (res && res.isSuccess && res.data) {
+                me.addMarker("海安两港", 110.221102, 20.270894, ((res.data.pepValue || 0) / 10000).toFixed(1));
             }
         });
     }
@@ -886,26 +921,26 @@ $(function () {
         var theParamter = {};
 
         this.load(theCallUrl, theParamter, function (res) {
-           // var theData = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-           /* res = {
-                "data": {
-                    "allPeople": 40000,
-                    "id": 5,
-                    "inPeople": 200000,
-                    "outPeople": 200000,
-                    "postionName": "淮安两港",
-                    "postionType": "琼州海峡",
-                    "statDate": "2018-12-17"
-                }, "isSuccess": true, "msg": "success"
-            };*/
+            // var theData = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+            /* res = {
+                 "data": {
+                     "allPeople": 40000,
+                     "id": 5,
+                     "inPeople": 200000,
+                     "outPeople": 200000,
+                     "postionName": "淮安两港",
+                     "postionType": "琼州海峡",
+                     "statDate": "2018-12-17"
+                 }, "isSuccess": true, "msg": "success"
+             };*/
 
-        var theData={};
+            var theData = {};
             if (res && res.isSuccess) {
-                theData=res.data;
+                theData = res.data;
             }
-            $('.newcome-people.all').text(theData['allPeople']||0);
-            $('.newcome-people.in').text(theData['inPeople']||0);
-            $('.newcome-people.out').text(theData['outPeople']||0);
+            $('.newcome-people.all').text(((theData['allPeople'] || 0) / 10000).toFixed(1));
+            $('.newcome-people.in').text(((theData['inPeople'] || 0) / 10000).toFixed(1));
+            $('.newcome-people.out').text(((theData['outPeople'] || 0) / 10000).toFixed(1));
         });
     }
     /**
@@ -987,6 +1022,7 @@ $(function () {
         this.loadQzRatio();
         this.loadQzStay();
         this.loadzFlow();
+        this.loadQzFlowTrend();
     }
     /***
      * 加载第二部分数据

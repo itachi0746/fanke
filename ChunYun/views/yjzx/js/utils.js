@@ -126,44 +126,70 @@ function toKM(m) {
  */
 function calcAngle(start, end) {
   // console.log(start,end);
-  var p_start = theMap.lngLatToContainer(start),
-    p_end = theMap.lngLatToContainer(end);
+  // var p_start = theMap.lngLatToContainer(start),
+  //   p_end = theMap.lngLatToContainer(end);
   // console.log(p_start,p_end)
-
-  var diff_x = p_end.x - p_start.x,
-    diff_y = p_end.y - p_start.y;
+  //
+  // var diff_x = p_end.x - p_start.x,
+  //   diff_y = p_end.y - p_start.y;
   // console.log(diff_x,diff_y);
-  return 360 * Math.atan2(diff_y, diff_x) / (2 * Math.PI) + 90;
+  // return 360 * Math.atan2(diff_y, diff_x) / (2 * Math.PI) + 90;
+
+  var diff_x = end[0] - start[0],
+    diff_y = end[1] - start[1];
+  // console.log(diff_x,diff_y);
+  return 360 * Math.atan2(diff_y, diff_x) / (2 * Math.PI);
+
 }
 
-// var a = [116.41635407421873, 39.90599332133357]; var b =  [115.97140778515623, 39.8870286178264];
+// var a = [116.416354, 39.905993]; var b =  [121.416354, 34.905993];
 // console.log('aaa',calcAngle(a,b))
 
 /**
- * 判断角度
+ * 根据角度,判断方向
  * @param angle 角度 int
  * @returns {string}
  */
 function judgeDirection(angle) {
-  if (!angle) {
-    console.log('参数不正确');
+  if (typeof angle !== 'number') {
+    console.log('参数类型不正确',angle);
     return
   }
+  console.log('angle',angle);
   var dir = '----';
   if (angle >= 0 && angle < 45) {
-    dir = '由南向北'
-  }
-  if (angle >= 45 && angle < 135) {
     dir = '由西向东'
   }
-  if (angle >= 135 && angle < 225) {
-    dir = '由北向南'
-  }
-  if (angle >= 225 && angle < 315) {
-    dir = '由东向西'
-  }
-  if (angle >= 315 && angle <= 360) {
+  if (angle >= 45 && angle < 135) {
     dir = '由南向北'
   }
+  if (angle >= 135 && angle <= 180) {
+    dir = '由东向西'
+  }
+
+  if (angle >= -45 && angle < 0) {
+    dir = '由西向东'
+  }
+  if (angle >= -135 && angle < -45) {
+    dir = '由北向南'
+  }
+  if (angle >= -180 && angle < -135) {
+    dir = '由东向西'
+  }
+  // if (angle >= 0 && angle < 45) {
+  //   dir = '由南向北'
+  // }
+  // if (angle >= 45 && angle < 135) {
+  //   dir = '由西向东'
+  // }
+  // if (angle >= 135 && angle < 225) {
+  //   dir = '由北向南'
+  // }
+  // if (angle >= 225 && angle < 315) {
+  //   dir = '由东向西'
+  // }
+  // if (angle >= 315 && angle <= 360) {
+  //   dir = '由南向北'
+  // }
   return dir
 }

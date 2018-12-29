@@ -277,7 +277,7 @@ $(function () {
             else {
                 console.log("隐藏点");
                 if(me.isGaoSuLuWang || me.isGaoSuLuDuan) {
-                  theMap.setFeatures(['bg','road']);
+                  theMap.setFeatures(['bg']);
                   console.log(1)
 
                 }else {

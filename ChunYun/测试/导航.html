@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>导航两点</title>
   <script src="jquery-1.8.2.min.js"></script>
 </head>
 <body>
@@ -24,15 +24,15 @@
       var arr = data.route.paths;
       for (var i = 0; i < arr.length; i++) {
         var paths = arr[i];
-        debugger
+//        debugger
         for (var j = 0; j < paths.steps.length; j++) {
           var step = paths.steps[j];
 //          debugger
           var temp = step.polyline + ';';
-          re += step.polyline
+          re += temp
         }
       }
-      console.log(re)
+//      console.log(re)
 //      debugger
       p.innerText = re;
     }

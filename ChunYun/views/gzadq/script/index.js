@@ -21,6 +21,7 @@ $(function () {
     var theCurrentView = "";
     var theDirection = "";
     var isStopRefresh = true;
+    var affiliationType=1;
     var theTimer = null;
     var theCurrentDate = null;
     var datebegin = null;
@@ -29,8 +30,9 @@ $(function () {
     function PageViewModel() {
         this.initEvent();
         this.initCharts();
-        this.loadData();
         this.initMap(1);
+        this.loadData();
+
     }
 
     PageViewModel.prototype = new PageViewBase();
@@ -54,13 +56,14 @@ $(function () {
     }
     //获取当前的日期数据
     var formateDate = function () {
+        //debugger;
         if (!theCurrentDate) {
-            var theDate = new Date();
-            var theBeginDay = theDate.getDay();
-            var theBeginDate = theDate.addDays(theBeginDay);
-            var theEndDate = theBeginDate.addDays(6);
+            theCurrentDate = new Date();
+            //var theBeginDay = theCurrentDate;// theDate.getDay();
+            //var theBeginDate = theDate.addDays(theBeginDay);
+            //var theEndDate = theBeginDate.addDays(6);
             // debugger
-            return theBeginDate.getFullYear() + "-" + (theBeginDate.getMonth() + 1) + "-" + theBeginDate.getDate();
+            return theCurrentDate.getFullYear() + "-" + (theCurrentDate.getMonth() + 1) + "-" + theCurrentDate.getDate();
             //+" - "+                theEndDate.getFullYear() + "-" + (theEndDate.getMonth() + 1) + "-" + theEndDate.getDate();
         }
         return theCurrentDate.year + '-' + theCurrentDate.month + '-' + theCurrentDate.date;//
@@ -70,15 +73,14 @@ $(function () {
         if (!theCurrentDate1) {
             var theDate1 = new Date();
             var theBeginDay1 = theDate1.getDay();
-            var theBeginDate1 = theDate1.addDays(theBeginDay1);
+            var theBeginDate1 = theDate1.addDays(-theBeginDay1);
             var theEndDate1 = theBeginDate1.addDays(6);
             datebegin = theBeginDate1.getFullYear() + "-" + (theBeginDate1.getMonth() + 1) + "-" + theBeginDate1.getDate();
             dateend = theEndDate1.getFullYear() + "-" + (theEndDate1.getMonth() + 1) + "-" + theEndDate1.getDate();
             return theBeginDate1.getFullYear() + "-" + (theBeginDate1.getMonth() + 1) + "-" + theBeginDate1.getDate() + " - " +
                 theEndDate1.getFullYear() + "-" + (theEndDate1.getMonth() + 1) + "-" + theEndDate1.getDate();
         }
-        return theBeginDate1.getFullYear() + "-" + (theBeginDate1.getMonth() + 1) + "-" + theBeginDate1.getDate() + " - " +
-            theEndDate1.getFullYear() + "-" + (theEndDate1.getMonth() + 1) + "-" + theEndDate1.getDate();
+        return theCurrentDate1;
     }
 
 
@@ -318,7 +320,9 @@ $(function () {
             $(this).addClass('select');
             var personDirect = theIndex;
             guishutype = theIndex;
-            me.loadBridgeAttributionType(personDirect)
+            me.loadBridgeAttributionType(personDirect);
+            //区域列表
+            me.loadBridgeAttributionArea(guishutype, affiliationType);
         });
         //归属类型切换
         $('.guishu .tab-item').click(function () {
@@ -361,8 +365,8 @@ $(function () {
                 console.log('日期变化:' + value); //得到日期生成的值，如：2017-08-18
                 console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
                 console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
-                if (theCurrentDate != date) {
-                    theCurrentDate = date;
+                if (theCurrentDate1 != value) {
+                    theCurrentDate1 = value;
                     // me.loadPredict();
                     me.loadPart2();
 
@@ -385,6 +389,10 @@ $(function () {
         else {
             this.loadPart2();
         }
+        //注意修改参数
+        this.loadWeather();
+        this.loadBridgeFlow();
+        this.loadBridgeRealTimeNumber();
     }
 
     PageViewModel.prototype.loadChart1 = function (data) {
@@ -884,7 +892,9 @@ $(function () {
     PageViewModel.prototype.loadBridgeFlowDirection = function () {
         // debugger
         var theCallUrl = "bridge/bridgeFlowDirection.do";
-
+        var theDate1String = formateDate1();
+        var datebegin = theDate1String.split(" - ")[0];
+        var dateend = theDate1String.split(" - ")[1];
         var theCallArgument = {
             startDate: datebegin,
             endDate: dateend,
@@ -900,23 +910,19 @@ $(function () {
             if (data && data.isSuccess) {
                 //{"isSuccess":true,"msg":"success","data":[{"id":1,"postionName":"港珠澳大桥","postionType":"港珠澳大桥","statDate":"2018-12-12","toHkTra":1000000,"toMzTra":10000000}]}
                 if (data.data.length > 1) {
-                    var theItems = data.data[0];
-                    for (var i = 0; i < theItems.length; i++) {
-                        theData1.push(theItems[i].tra_value);
-                        theX.push(theItems[i].statDate);
-                    }
-                }
-                if (data.data.length >= 2) {
-                    var theItems = data.data[1];
+                    var theItems = data.data;
                     for (var i = 0; i < theItems.length; i++) {
                         theData2.push(theItems[i].toMzTra);
                         theData3.push(theItems[i].toHkTra);
+                        theData1.push(theItems[i].toMzTra+theItems[i].toHkTra);
+                        theX.push(theItems[i].statDate);
                     }
                 }
+
             }
 
             else {
-                console.log("loadCurrent错误:" + data);
+                console.log("loadBridgeFlowDirection错误:" + data);
             }
             me.loadChart2(theX, theData1, theData2, theData3);
         });
@@ -925,15 +931,19 @@ $(function () {
      * 人工岛客流趋势接口  OK
      */
     PageViewModel.prototype.loadBridgeIslandsTrend = function () {
-        var theCallUrl = "/bridge/bridgeIslandsTrend.do";
+        var theCallUrl = "/bridge/bridgeTrendPortFlow.do";//"/bridge/bridgeIslandsTrend.do";
+        theDate1String=formateDate1();
+        var datebegin = theDate1String.split(" - ")[0];
+        var dateend = theDate1String.split(" - ")[1];
         var theCallArgument = {
             startDate: datebegin,
             endDate: dateend
         }
 
         var me = this;
-        // debugger;
+         //debugger;
         /*
+        [{"id":3,"postionName":"港珠澳大桥","postionType":"港珠澳大桥","rgdValue":1383444,"rgdVisitor":143333,"statDate":"2018-12-20"},{"id":4,"postionName":"港珠澳大桥","postionType":"港珠澳大桥","rgdValue":1383555,"rgdVisitor":1565381,"statDate":"2018-12-21"},{"id":5,"postionName":"港珠澳大桥","postionType":"港珠澳大桥","rgdValue":1385552,"rgdVisitor":17899981,"statDate":"2018-12-22"}]
         * {"isSuccess":true,"msg":"success","data":[{"flowType":"1","id":1,"percent":10,"postionName":"港珠澳大桥","postionType":"港珠澳大桥","statDate":"2018-12-12","stayNum":1000000},{"flowType":"2","id":2,"percent":50,"postionName":"港珠澳大桥","postionType":"港珠澳大桥","statDate":"2018-12-12","stayNum":10000000}]}
         * */
         this.load(theCallUrl, theCallArgument, function (data) {
@@ -942,21 +952,16 @@ $(function () {
             var theX = [];
             if (data && data.isSuccess) {
                 if (data.data.length > 1) {
-                    var theItems = data.data[0];
+                    theItems=data.data;
                     for (var i = 0; i < theItems.length; i++) {
-                        theData1.push(theItems[i].rgd_value);
+                        theData1.push(theItems[i].rgdValue);
                         theX.push(theItems[i].statDate);
-                    }
-                }
-                if (data.data.length >= 2) {
-                    var theItems = data.data[1];
-                    for (var i = 0; i < theItems.length; i++) {
-                        theData2.push(theItems[i].rgd_visitor);
+                        theData2.push(theItems[i].rgdVisitor);
                     }
                 }
             }
             else {
-                console.log("loadCurrent错误:" + data);
+                console.log("loadBridgeIslandsTrend错误:" + data);
             }
             me.loadChart3(theX, theData1, theData2);
         });
@@ -967,6 +972,9 @@ $(function () {
      */
     PageViewModel.prototype.loadBridgeTrendDayPassTime = function () {
         var theCallUrl = "/bridge/bridgeTrendDayPassTime.do";
+        theDate1String=formateDate1();
+        var datebegin = theDate1String.split(" - ")[0];
+        var dateend = theDate1String.split(" - ")[1];
         var theCallArgument = {
             startDate: datebegin,
             endDate: dateend
@@ -979,7 +987,7 @@ $(function () {
                 var theDatas = data.data;
                 for (var i = 0; i < theDatas.length; i++) {
                     var theItem = theDatas[i];
-                    var theStayTime = theItem.qzStayTime;
+                    var theStayTime = theItem.avePassTime;
                     chart1Data.push(theStayTime)
                 }
             }
@@ -996,6 +1004,7 @@ $(function () {
      */
     PageViewModel.prototype.loadChartBar = function (data) {
         this.ChartBar = echarts.init(document.getElementById('form_1'));
+        data = data || [];
         var option = {
 
             grid: {
@@ -1029,7 +1038,7 @@ $(function () {
                 {
                     type: 'value',
                     min: '0',
-                    max: '10',
+                    //max: '10',
                     "show": false,
                     "axisTick": {       //y轴刻度线
                         "show": false
@@ -1052,7 +1061,7 @@ $(function () {
                     name: '累积',
                     type: 'bar',
 //                        barWidth:'33.3%',
-                    data: data || [4, 5, 6, 3, 4.2, 3.5],
+                    data: data,// || [4, 5, 6, 3, 4.2, 3.5],
                     itemStyle: {
                         normal: {
                             color: '#80ddfe'
@@ -1076,14 +1085,17 @@ $(function () {
         var bridgeGps = [113.728361, 22.28002];
         var bridgeBounds = [[113.730068, 22.278834], [113.711688, 22.274786], [113.695492, 22.264382], [113.678056, 22.251648], [113.643183, 22.240596], [113.63326, 22.23637], [113.594097, 22.20946], [113.591794, 22.211593], [113.636709, 22.24112], [113.669761, 22.252132], [113.685975, 22.259945], [113.701248, 22.273654], [113.714493, 22.279067], [113.728361, 22.28102], [113.755533, 22.28275], [113.787706, 22.280576]];
         var me = this;
-
+        //debugger;
+        me.addMarker2("格力人工岛", 113.581696, 22.203582);
+        me.addMarker2("港珠澳大桥", 113.728361, 22.28002);
         this.load(theCallUrl, {}, function (res) {
             //debugger;
             if (res && res.isSuccess && res.data) {
                 var theData = res.data;
                 var theBridgeUser = theData.bridgeUser;//大桥人数
                 var thelandsUser = theData.islandsUser;//人工岛人数
-
+                me.addMarker2("格力人工岛", 113.581696, 22.203582, ((thelandsUser || 0) / 10000).toFixed(1));
+                me.addMarker2("港珠澳大桥", 113.728361, 22.28002, ((theBridgeUser || 0) / 10000).toFixed(1));
                 me.drawReli(landsBounds, thelandsUser || 0);
                 me.drawReli(bridgeBounds, theBridgeUser || 0);
             }
@@ -1091,6 +1103,59 @@ $(function () {
         });
     }
 
+    /**
+     * 查询实时人数
+     */
+    PageViewModel.prototype.loadBridgeRealTimeNumber = function () {
+        var theCallUrl = "/bridge/bridgeRealTimeNumber.do";
+        var me = this;
+        this.load(theCallUrl, {}, function (res) {
 
+            /*res = {
+                "data": {
+                    "ProCountPeople": [{
+                        "id": 1,
+                        "populationGd": 2000000,
+                        "populationIn": 1000000,
+                        "populationOut": 1000000,
+                        "provinceCity": "港珠澳",
+                        "statDate": "2018-12-20",
+                        "statTime": "12:00"
+                    }],
+                    "StationTollStay": [{
+                        "areaid": "港珠澳",
+                        "id": 1,
+                        "recordeddatetime": "2018-12-20 12:00",
+                        "sourcescope": "6",
+                        "statTime": "12:00",
+                        "staytimespan": "3",
+                        "subscribercount": 1000000
+                    }],
+                    "StationNewPeople": [{
+                        "areaid": "港珠澳",
+                        "id": 1,
+                        "recordeddatetime": "2018-12-20 12:00",
+                        "sourcescope": "6",
+                        "statTime": "12:00",
+                        "subscribercount": 1000000
+                    }]
+                }, "isSuccess": true, "msg": "success"
+            };*/
+            //debugger;
+            if (res && res.isSuccess && res.data) {
+                var theProCountPeople = res.data["ProCountPeople"][0] || {};
+                var theStationNewPeople = res.data["StationNewPeople"][0] || {};
+                var theStationTollStay = res.data["StationNewPeople"];//实时驻留时长
+                var theDatas = theStationTollStay.map(function (item) {
+                    return (item.subscribercount / 10000).toFixed(1);
+                })
+                me.loadChartBar(theDatas);
+                $('.newcome-people.in').text(((theProCountPeople["populationIn"] || 0) / 10000).toFixed(1)); //进入
+                $('.newcome-people.out').text(((theProCountPeople["populationOut"] || 0) / 10000).toFixed(1));//离开
+                $('.newcome-people.add').text(((theStationNewPeople["subscribercount"] || 0) / 10000).toFixed(1));//新增
+            }
+
+        });
+    }
     window.PageView = new PageViewModel();
 })

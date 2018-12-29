@@ -609,7 +609,7 @@ html body {
 
 
 .part1 .chart-div {
-    padding-top: 24px;
+    padding-top: 46px;/*24px;*/
 }
 .part-2 .chart-div {
     padding-top: 60px;
@@ -838,6 +838,12 @@ iframe {
     /*margin-left: 92px;*/
     /*margin-right: 20px;*/
 }
+#form_1{
+    height: 110px !important;
+}
+#chart1{
+    height: 130px !important;
+}
 #chart3,#form_2,#chart4,#chart2{
     margin-top:24px;
 }
@@ -852,4 +858,23 @@ iframe {
 
 .datediv2 #date-input1{
     width:230px;
+}
+.marker-marker-point{
+    background-image: url("img/icon_point.png");
+    width: 80px;
+    height: 80px;
+}
+.infowindow{
+    background-image: url("img/bg_21.png");
+    margin-left: -50px;
+    width: 198px;
+    height: 119px;
+    text-align: center;
+}
+.infowindow .first{
+    padding-top: 30px;
+    font-size: 20px;
+}
+.infowindow .second{
+    font-size: 34px;
 }
