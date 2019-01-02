@@ -357,6 +357,106 @@ html, body {
   .top3 .shushi {
     background-color: rgba(39, 214, 211, 0.8); }
 
+.keyunzhan-data {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 0 20px;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  color: #ddf3ff; }
+  .keyunzhan-data .hour-send {
+    font-size: 24px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: baseline;
+        -ms-flex-align: baseline;
+            align-items: baseline; }
+    .keyunzhan-data .hour-send i {
+      color: #68e5ff; }
+    .keyunzhan-data .hour-send span {
+      font-size: 50px;
+      color: #68e5ff; }
+  .keyunzhan-data .list-container {
+    margin-top: 10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+  .keyunzhan-data .province-in, .keyunzhan-data .province-out {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
+    .keyunzhan-data .province-in section, .keyunzhan-data .province-out section {
+      font-size: 18px;
+      color: #ddf3ff;
+      margin-bottom: 5px; }
+    .keyunzhan-data .province-in ul, .keyunzhan-data .province-out ul {
+      padding-right: 10px; }
+    .keyunzhan-data .province-in li, .keyunzhan-data .province-out li {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: justify;
+          -ms-flex-pack: justify;
+              justify-content: space-between;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center; }
+    .keyunzhan-data .province-in .index, .keyunzhan-data .province-out .index {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background-color: #26e5e1;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      font-size: 12px;
+      color: #ffffff;
+      margin-right: 10px;
+      margin-left: 20px; }
+    .keyunzhan-data .province-in label, .keyunzhan-data .province-out label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 80px;
+      text-align: justify; }
+    .keyunzhan-data .province-in .line, .keyunzhan-data .province-out .line {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      width: 50px;
+      height: 2px;
+      margin-right: 15px;
+      background-color: #b5e2fe; }
+    .keyunzhan-data .province-in .line2, .keyunzhan-data .province-out .line2 {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      width: 340px;
+      height: 2px;
+      margin-right: 15px;
+      background-color: #b5e2fe; }
+    .keyunzhan-data .province-in .num, .keyunzhan-data .province-out .num {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 78px; }
+  .keyunzhan-data ul {
+    font-size: 18px; }
+
 .tab {
   position: absolute;
   z-index: 11;
@@ -847,8 +947,7 @@ html, body {
 .tab-box2 .tab-box2-li2 {
   background: url("../img/4icon_left_2_nor.png") no-repeat; }
   .tab-box2 .tab-box2-li2 .li-tab-box {
-    height: 670px;
-    top: -235px; }
+    top: -275px; }
     .tab-box2 .tab-box2-li2 .li-tab-box header {
       width: 100%;
       padding-top: 30px;
@@ -916,7 +1015,8 @@ html, body {
         background-position: center; }
     .tab-box2 .tab-box2-li2 .li-tab-box .chart-box2 {
       height: 200px;
-      padding: 0 20px; }
+      padding: 0 20px;
+      margin-bottom: 20px; }
       .tab-box2 .tab-box2-li2 .li-tab-box .chart-box2 .header label {
         font-size: 18px;
         color: #ddf3ff; }
@@ -1543,7 +1643,8 @@ html, body {
       color: #ddf3ff; }
       .data-box .container2-1 .from-chart .header, .data-box .container2-1 .to-chart .header {
         font-size: 18px;
-        color: #ddf3ff; }
+        color: #ddf3ff;
+        margin-bottom: 5px; }
       .data-box .container2-1 .from-chart .body, .data-box .container2-1 .to-chart .body {
         padding-right: 10px; }
         .data-box .container2-1 .from-chart .body li, .data-box .container2-1 .to-chart .body li {

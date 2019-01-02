@@ -2,6 +2,7 @@ var pointControl,traffic;
 $(function () {
   var hourArr = ['0-1', '1-2','2-3', '3-4', '4-5', '5-6', '6-7', '7-8','8-24'];
   var tabArr = ['客运站,铁路,机场,港口','服务区','收费站','高速','高速路网'];
+  var tieluArr,gongluArr;
   var tabDomNameArr = ['#tab2','#tab3','#tab4','#tab5','#tab6'];
   var newTabArr = tabArr.map(function (item,index) {
     return {
@@ -49,7 +50,7 @@ $(function () {
     // 点击搜索按钮
     $('#search-btn').on('click',function () {
       var v = $('#search').val();
-      console.log('v:',v);
+      console.log('搜索值为:',v);
     });
 
     // 搜索框oninput事件
@@ -172,7 +173,7 @@ $(function () {
       '东莞汽车总站|\n' +
       '东莞长安车站|\n' +
       '潮州汽车客运站|\n' +
-      '清远汽车客运站|\n'
+      '清远汽车客运站'
 
     var tielu = '深圳北站|\n' +
       '深圳西站|\n' +
@@ -187,22 +188,24 @@ $(function () {
       '虎门站|\n' +
       '潮汕站|\n' +
       '佛山西站|\n' +
-      '珠海站|'
+      '珠海站'
 
     var shuiluminhang = '湛江徐闻海安港|\n' +
       '深圳宝安国际机场|\n' +
       '白云国际机场二号航站楼|\n' +
       '广州白云国际机场|\n' +
       '湛江机场|\n' +
-      '揭阳机场|'
+      '揭阳机场'
 
-    var tieluArr = tielu.trim().split('|');
-    var gongluArr = gonglu.trim().split('|');
+    tieluArr = tielu.trim().split('|').map(function (t2) { return t2.replace(/[\r\n]/g,"") });
+    // debugger
+    gongluArr = gonglu.trim().split('|').map(function (t2) { return t2.replace(/[\r\n]/g,"") });
     var shuiluminhangArr = shuiluminhang.trim().split('|');
 
     // console.log(tieluArr)
     for (var i = 0; i < tieluArr.length; i++) {
-      var t = tieluArr[i].replace(/[\r\n]/g,"");
+      // var t = tieluArr[i].replace(/[\r\n]/g,"");
+      var t = tieluArr[i];
       if(!t) {
         console.log(t);
         continue
@@ -250,6 +253,7 @@ $(function () {
         goToPointByName(name)
         // $('#tab-name').text($(this).text());
         changePosText(name);
+
       })
       $('#station-box-2').find('ul').append(stationDom2);
     }
@@ -272,6 +276,7 @@ $(function () {
         goToPointByName(name);
         // $('#tab-name').text($(this).text());
         changePosText(name);
+
       })
       $('#station-box-3').find('ul').append(stationDom3);
     }
@@ -298,6 +303,7 @@ $(function () {
     pointControl.showMarkers();  // 显示点标记
     // traffic.removePaths();  // 清除高速路段的线
     clearCenterMarker();
+    mapbase.removeHeartMap();
     // if(nowTab!=='高速路网') {
     //   console.log(2)
     //   mapbase.restoreDefaultStyle();
@@ -324,12 +330,23 @@ $(function () {
   }
 
   /**
+   * 隐藏特定的数据
+   */
+  function hideSpecialData() {
+    $('#bao-an').addClass('dn');
+    $('#tie-lu').addClass('dn');
+    $('#keyunzhan').addClass('dn');
+  }
+
+  /**
    * 根据名字移动到地点
-   * @param name
+   * @param name 地点名称
    */
   function goToPointByName(name) {
+    hideSpecialData();
 
     var clickTarget = pointControl.findPointByName(name);
+    // debugger
     if(clickTarget) {
       var lng = clickTarget['地址'][0].lnglat.split(',')[0];
       var lat = clickTarget['地址'][0].lnglat.split(',')[1];
@@ -344,7 +361,51 @@ $(function () {
       // debugger
       pointControl.MoveToPoint(arg,18);
       isDefaultView = false;
+      mapbase.drawReli(name,2000);
     }
+    if(clickTarget['枢纽类别']==='机场') {
+      if(name==='深圳宝安国际机场') {
+        $('#bao-an').removeClass('dn');
+      } else {
+        $('#bao-an').addClass('dn');
+      }
+    }
+    if(clickTarget['枢纽类别']==='铁路') {
+      for (var i = 0; i < tieluArr.length; i++) {
+        var tielu = tieluArr[i];
+        if(!tielu) {
+          console.log('铁路名字不对:',tielu);
+          return
+        }
+        if(name===tielu) {
+          console.log('点击铁路场站:',name)
+          $('#tie-lu').removeClass('dn');
+          return
+        } else {
+          $('#tie-lu').addClass('dn');
+        }
+      }
+    }
+    if(clickTarget['枢纽类别']==='客运站') {
+      for (var j = 0; j < gongluArr.length; j++) {
+        var gonglu = gongluArr[j];
+        if(!gonglu) {
+          console.log('客运站名字不对:',gonglu);
+          return
+        }
+        if(name===gonglu) {
+          console.log('点击客运站:',name)
+          // debugger
+          $('#keyunzhan').removeClass('dn');
+          return
+
+        } else {
+          $('#keyunzhan').addClass('dn');
+
+        }
+      }
+    }
+
   }
 
   /**
@@ -939,21 +1000,21 @@ $(function () {
               var theMiddlePointArr = pointArr[parseInt(pointArr.length/2)];
               addLuWangMarker(theMiddlePointArr,theData);
 
-              theMap.remove(mList);
-              var mIdx = 'm';
-              for (var i = 0; i < rows.length; i++) {
-                // debugger
-                var p = rows[i].xy.split(',');
-                mIdx+=i;
-
-                mIdx = new AMap.Marker({
-                  position: new AMap.LngLat(parseFloat(p[0]),parseFloat(p[1])),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-                  title: '中间点',
-                  content: '<div style="color:#fff;font-size:20px">'+i+'</div>'
-                });
-                mList.push(mIdx)
-              }
-              theMap.add(mList);
+              // theMap.remove(mList);
+              // var mIdx = 'm';
+              // for (var i = 0; i < rows.length; i++) {
+              //   // debugger
+              //   var p = rows[i].xy.split(',');
+              //   mIdx+=i;
+              //
+              //   mIdx = new AMap.Marker({
+              //     position: new AMap.LngLat(parseFloat(p[0]),parseFloat(p[1])),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+              //     title: '中间点',
+              //     content: '<div style="color:#fff;font-size:20px">'+i+'</div>'
+              //   });
+              //   mList.push(mIdx)
+              // }
+              // theMap.add(mList);
 
             })
           });
@@ -1123,7 +1184,6 @@ $(function () {
         goToPointByName(name);
         // console.log('m',m.C.extData['枢纽名称']);
         changePosText(name);
-        // $('#tab-name').text($(this).text());
       });
       tgt.find('header').text(m.C.extData['枢纽类别']);
       tgt.find('ul').append(stationDom);
@@ -1643,9 +1703,7 @@ $(function () {
     var url2 = 'highSpeed/selectGsIn.do?'+'postionType='+positionType+'&postionName='+curPosition;
     var url3 = 'highSpeed/selectGsOut.do?'+'postionType='+positionType+'&postionName='+curPosition;
 
-    var data = {
-
-    };
+    var data = {};
     $.axpost(url,data,function (data) {
       if(data.data&&data.isSuccess) {
         // console.log(data);
@@ -1780,16 +1838,16 @@ $(function () {
 
   /**
    * 点击箭头
-   * @param tabName 当前大tab
+   * @param tabName 当前一级tab
    * @param arrows  箭头数组
    */
   function clickArrow(tabName,arrows) {
     if(isHideStation) {
       isHideStation = false;
       // debugger
-      $('#cur-pos-data-box').show(300)
+      $('#cur-pos-data-box').show()
     } else {
-      $('#cur-pos-data-box').hide(300)
+      $('#cur-pos-data-box').hide()
       isHideStation = true;
 
     }
@@ -1829,15 +1887,6 @@ $(function () {
       clickArrow(nowTab,arrows)
 
     })
-  }
-
-  function search() {
-
-  }
-
-  function handleChange(v) {
-    console.log('onchang:',v);
-
   }
 
   /**
@@ -2042,7 +2091,6 @@ $(function () {
 
   // 地图点绑定点击事件
   function markerBindClick() {
-
     for (var k = 0; k < pointControl.markes.length; k++) {
       var m = pointControl.markes[k];
       // console.log(m.C.position) 点的经纬度
@@ -2053,6 +2101,7 @@ $(function () {
 
         // console.log(this.C.extData['枢纽名称']);
         var theName = this.C.extData['枢纽名称'];
+        // debugger
         // if(nowTab===tabArr[3]) {
         //   reqRoadData(theName)
         // } else {

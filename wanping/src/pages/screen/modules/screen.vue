@@ -137,10 +137,8 @@
         </div>
       </header>
       <div class="dtl-main" v-html="resData.DtlDesc">
-      <!--<div class="dtl-main">-->
+      <!--<div class="dtl-main" v-html="test">-->
         <!--{{resData.DtlDesc}}-->
-        <!--<img src="../../../assets/lm.jpg" alt="">-->
-        <!--<p>该媒体地处江门市有名的it专业市场、电脑城，位于江门市蓬江区东华路与江华路交汇处新华电脑城外墙，是在新会电</p>-->
       </div>
     </div>
     <div class="fillBtm"></div>
@@ -189,7 +187,7 @@
 //            disableOnInteraction: false,
 //          },
         },
-//        test: '<p>ffffff烦烦烦烦烦烦烦烦烦方法灌灌灌灌灌灌灌灌灌灌灌灌灌红红火火恍恍惚惚</p>'
+//        test: '<p>ffffff烦烦test烦烦烦烦烦烦烦方法灌灌灌灌灌灌灌灌灌灌灌灌灌红红火火恍恍惚惚</p><img src="http://tpc.googlesyndication.com/simgad/5843493769827749134" alt=""><span>nihao你好</span>'
       }
     },
 
@@ -489,8 +487,8 @@
     .dtl-main {
       text-indent: 2em;
       margin-top: 5px;
-      font-size: 14px;
-      line-height: 20px;
+      font-size: 16px;
+      line-height: 25px;
       padding-top: 5px;
 
       /deep/ * {
@@ -500,9 +498,15 @@
       /deep/ img {
         max-width: 100%;
       }
-      /deep/ p,span {
-        font-size: 14px;
-        line-height: 20px;
+      /deep/ p {
+        font-size: 16px;
+        /*line-height: 20px;*/
+        font-family: "Microsoft Yahei", Arial, sans-serif;
+
+      }
+      /deep/ span {
+        font-size: 16px;
+        /*line-height: 24px;*/
         font-family: "Microsoft Yahei", Arial, sans-serif;
 
       }

@@ -117,7 +117,7 @@ function PlacePointView(theMap) {
     // debugger
     // console.log(theItem)
     if (theItem.length < 4) {
-      console.error("数据不对:" + theItem);
+      console.warn("数据不对:" + theItem);
     }
     var theData = {
       "一级分类": theItem[0],

@@ -512,6 +512,113 @@ PageViewBase.prototype.initExtend = function () {
 
     layer.render();
 }*/
+PageViewBase.prototype.drawRoad=function(path){
+    var pathArray = path.map(function (item) {
+        return new AMap.LngLat(parseFloat(item[0]), parseFloat(item[1]))
+    });
+
+    var theStartPoint = path[0];
+    var theEndPoint = path[path.length - 1];
+
+    // debugger;
+    var RoadPath = new AMap.Polyline({
+        path: pathArray,
+        strokeColor: "#0d305d",
+        strokeOpacity: "0.6",
+        strokeWeight: "6",
+        strokeStyle: "solid",
+        zIndex: 1000,
+        strokeDasharray: [10, 5]
+    });
+    // debugger
+    this.theMap.add(RoadPath);
+    return RoadPath;
+}
+PageViewBase.prototype.getRandomPoints=function(bounds,value,max){
+    var thePorints = bounds;
+    max=max||1000;
+    var theValidPoints = [];
+    var lngs = thePorints.map(function (item) {
+        return item[0];
+    });
+    var lats = thePorints.map(function (item) {
+        return item[1];
+    });
+    var minLngs = lngs.min();
+    var maxLngs = lngs.max();
+    var minLats = lats.min();
+    var maxLats = lats.max();
+
+    for (var i = 0; i < max; i++) {
+        var thePoint = Math.RandomPoint(minLngs, maxLngs, minLats, maxLats);
+        if (AMap.GeometryUtil.isPointInRing(thePoint, thePorints)) {
+            theValidPoints.push(thePoint);
+        }
+    }
+    var theCurrentValue=value;
+    var theShowList=[];
+    var theMinValue=Math.ceil(value/max);
+    var list = theValidPoints.map(function (item) {
+        var theTempValue = 0;
+        if (theCurrentValue <= 10) {
+            theTempValue = theCurrentValue;
+        }
+        else {
+            theTempValue = Math.floor(Math.RandomRange(theMinValue, theMinValue*2));
+        }
+        theCurrentValue -= theTempValue;
+        if (theTempValue > 0) {
+            theShowList.push({
+                coordinate: [item[0], item[1]],
+                count: Math.floor(theTempValue)
+            });
+        }
+
+    })
+    return theShowList;
+}
+PageViewBase.prototype.drawRelis=function(reliDatas,r){
+    if (!this.heartLayer) {
+        var map = Loca.create(this.theMap);
+        this.heartLayer = Loca.visualLayer({
+            container: map,
+            type: 'heatmap',
+            // 基本热力图
+            shape: 'normal',
+            zIndex:1000
+        });
+    }
+    var theShowList=[];
+    if(reliDatas&&reliDatas.length>0){
+        for(var i=0;i<reliDatas.length;i++){
+            var theItem=reliDatas[i];
+            var theBounds=theItem.bounds;
+            var theData=theItem.data;
+            var theMaxPoint=theItem.max||1000;
+            theShowList=  theShowList.concat(this.getRandomPoints(theBounds,theData,theMaxPoint));
+        }
+    }
+    this.heartLayer.setData(theShowList, {
+        lnglat: 'coordinate',
+        value: 'count'
+    });
+
+    this.heartLayer.setOptions({
+        style: {
+            radius: r||10,
+            color: {
+                0.5: '#2c7bb6',
+                0.65: '#abd9e9',
+                0.7: '#ffffbf',
+                0.9: '#fde468',
+                1.0: '#d7191c'
+            }
+        }
+    });
+    //this.heartLayer.setZIndex(1000);
+    this.heartLayer.render();
+
+}
 PageViewBase.prototype.drawReli = function (bounds, data) {
     //var theAreaPath =bounds;
     //this.CreateHeartLayer();
@@ -623,7 +730,7 @@ PageViewBase.prototype.initMap = function (id) {
             //center:[110.322391,20.146053 ],//琼州海峡 //lat: 20.146053  lng: 110.322391
 
             //center: [113.275824, 22.994826],
-            features: ['bg', 'building', 'point', 'road'],//['all'],// ['bg', 'building','point'],
+            features: ['bg'],//, 'building', 'point', 'road'],//['all'],// ['bg', 'building','point'],
             zoom: id == 1 ? 11 : 11.5,// 11.78,
             zooms: [10, 20],
             keyboardEnable: false,
@@ -649,15 +756,15 @@ PageViewBase.prototype.initMap = function (id) {
     theMap.on('complete', function () {
         var bounds = theMap.getBounds();
         theMap.setLimitBounds(bounds);
-        console.log("地图加载完成!");
+       // console.log("地图加载完成!");
     });
     //监听放大缩小事件
     theMap.on('zoom', function (arg) {
         var theZoom = theMap.getZoom();
         if (theZoom >= 12) {
-            console.log("显示点");
-            theMap.setFeatures(['bg', 'road']);// 'building', 'point'
-            theInnerLayer && theInnerLayer.setzIndex(1000);
+           // console.log("显示点");
+            //theMap.setFeatures(['bg', 'road']);// 'building', 'point'
+            //theInnerLayer && theInnerLayer.setzIndex(1000);
             //theMap.add(satellite);
             //theMap.setMapStyle("normal");
 

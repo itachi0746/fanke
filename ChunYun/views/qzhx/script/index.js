@@ -710,6 +710,8 @@ $(function () {
 
             var theX1 = [];
             var theX2 = [];
+            var theX1Obj={};
+            var theX2Obj={};
             var theX = [];
             /*res = {
                 "data": [[{
@@ -750,15 +752,17 @@ $(function () {
                 if (res.data.length > 1) {
                     var theItems = res.data[0];
                     for (var i = 0; i < theItems.length; i++) {
-                        theData1.push(theItems[i].allPeople);
-                        theX1.push(theItems[i].statDate);
+                        //theData1.push((theItems[i].allPeople/10000).toFixed(1));
+                       theX1.push(theItems[i].statTime);
+                        theX1Obj[theItems[i].statTime]=(theItems[i].allPeople/10000).toFixed(1);
                     }
                 }
                 if (res.data.length >= 2) {
                     var theItems = res.data[1];
                     for (var i = 0; i < theItems.length; i++) {
-                        theData2.push(theItems[i].allPeople);
-                        theX2.push(theItems[i].statDate);
+                        //theData2.push((theItems[i].allPeople/10000).toFixed(1));
+                        theX2.push(theItems[i].statTime);
+                        theX2Obj[theItems[i].statTime]=(theItems[i].allPeople/10000).toFixed(1);
                     }
                 }
             }
@@ -769,8 +773,11 @@ $(function () {
                 if(!theHash[theTmpArray[i]]){
                     theHash[theTmpArray[i]]=true;
                     theX.push(theTmpArray[i]);
+                    theData1.push(theX1Obj[theTmpArray[i]]||0);
+                    theData2.push(theX2Obj[theTmpArray[i]]||0);
                 }
             }
+            //debugger;
             me.loadChart1(theX, theData1, theData2);
         });
     }
@@ -819,7 +826,7 @@ $(function () {
                     theXArray.push(theItem.statDate);
                 }
             }
-            debugger;
+            //debugger;
             me.loadChart2(theXArray, theDataAll);
             me.loadChart3(theXArray, theDataIn);
             me.loadChart4(theXArray, theDataOut);
@@ -836,12 +843,14 @@ $(function () {
         //粤海铁路北港码头0:110.130713,20.226732
         //海安新港0:110.216824,20.267225
         this.addMarker("粤海铁路北港", 110.130713, 20.226732);
+        var yhbgBounds=[[110.13105,20.225806],[110.129529,20.226263],[110.129431,20.233007],[110.123572,20.232898],[110.131067,20.234793]];
+        var haianBounds=[[110.218008,20.26316],[110.215798,20.26669],[110.215341,20.267565],[110.216824,20.268225],[110.224952,20.27459],[110.235985,20.26588],[110.234317,20.266659],[110.233084,20.265605],[110.227222,20.268448],[110.220356,20.268853],[110.217824,20.267225]];
         // this.addInfoWindow("粤海铁路北港",110.130713,20.226732);
         this.addMarker("海安两港", 110.221102, 20.270894);
         // this.addInfoWindow("海安新港",110.216824,20.267225);
         this.load(theCallUrl, theParamter, function (res) {
             var theData = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-            res = {
+            /*res = {
                 "data": {
                     "id": 1,
                     "pepValue": 1200000,
@@ -850,12 +859,34 @@ $(function () {
                     "statDate": "2018-12-12",
                     "statTime": "12:00"
                 }, "isSuccess": true, "msg": "success"
-            };
+            };*/
             //粤海铁路北港码头0:110.130713,20.226732
             //海安新港0:110.216824,20.267225
+            var theReliArrays=[];
             if (res && res.isSuccess && res.data) {
-                me.addMarker("海安两港", 110.221102, 20.270894, ((res.data.pepValue || 0) / 10000).toFixed(1));
+                for(var i=0;i<res.data.length;i++){
+                    var theItem=res.data[i];
+
+                    if(theItem.postionName=="海安两港"||"淮安两港"==theItem.postionName){
+                        me.addMarker("海安两港", 110.221102, 20.270894, ((theItem.pepValue || 0) / 10000).toFixed(1));
+                        theReliArrays.push({
+                            bounds:haianBounds,
+                            data:theItem.pepValue || 0,
+                            max:10000,
+                        });
+                    }
+                    if(theItem.postionName=="粤海铁路北港"||"铁路北港"==theItem.postionName){
+                        me.addMarker("粤海铁路北港", 110.221102, 20.270894, ((theItem.pepValue || 0) / 10000).toFixed(1));
+                        theReliArrays.push({
+                            bounds:yhbgBounds,
+                            data:theItem.pepValue || 0,
+                            max:10000,
+                        });
+                    }
+                }
+
             }
+            me.drawRelis(theReliArrays);
         });
     }
 
@@ -992,11 +1023,12 @@ $(function () {
                     var theItme = res.data[i];
                     var theTempalte = '<li>\n' +
                         '                                        <span class="guishu-icon">' + theIndex + '</span>\n' +
-                        '                                        <span class="guishu-cuntry">' + theItme.qzBelongArea + '</span>\n' +
+                        '                                        <span class="guishu-cuntry">' + theItme.qzBelong + '</span>\n' +
                         '                                        <span class="guishu-line"></span>\n' +
                         '                                        <span class="guishu-num">' + formateNum(theItme.qzNum) + '</span>人\n' +
                         '                                    </li>';
                     $('.guishu-content ul').append(theTempalte);
+                    theIndex++;
                 }
 
             }

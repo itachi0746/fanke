@@ -258,11 +258,11 @@
           </div>
           <div class="emp-data-box">
             <p>
-              <label for="">值班人:</label>
+              <label>值班人:</label>
               <span></span>
             </p>
             <p>
-              <label for="">预警电话:</label>
+              <label>预警电话:</label>
               <span></span>
             </p>
           </div>
@@ -319,9 +319,51 @@
             </p>
           </div>
         </div>
+        <!--宝安机场 要显示的内容-->
+        <div class="header2 dn" id="bao-an">
+          <div>
+            <p class="title-name">实时到达航班</p>
+            <p>
+              <label class="arrive"></label>
+            </p>
+          </div>
+          <div>
+            <p class="title-name">实时发送航班</p>
+            <p>
+              <label class="send"></label>
+            </p>
+          </div>
+          <div>
+            <p class="title-name">实时延误航班</p>
+            <p>
+              <label class="delay"></label>
+            </p>
+          </div>
+        </div>
+        <!--铁路场站 要显示的内容-->
+        <div class="header2 dn" id="tie-lu">
+          <div>
+            <p class="title-name">实时到达列车</p>
+            <p>
+              <label class="arrive"></label>
+            </p>
+          </div>
+          <div>
+            <p class="title-name">实时发送列车</p>
+            <p>
+              <label class="send"></label>
+            </p>
+          </div>
+          <div>
+            <p class="title-name">实时中转列车</p>
+            <p>
+              <label class="transfer"></label>
+            </p>
+          </div>
+        </div>
         <div class="chart-box">
           <!--<div class="header">-->
-            <!--<label for="">实时客流趋势</label>-->
+            <!--<label>实时客流趋势</label>-->
           <!--</div>-->
           <div class="SSKL-cld-box" id="SSKL-cld-box">
             <input type="text" id="tab2-li2-cld" class="tab-li2-cld">
@@ -333,19 +375,36 @@
         </div>
         <div class="chart-box2">
           <div class="ZLSC1" id="ZLSC1"></div>
-          <!--<div class="header">-->
-
-          <!--<div class="KLHX-box">-->
-            <!--<div class="hm man">-->
-              <!--<span>12%</span>-->
-            <!--</div>-->
-            <!--<div class="hm woman">-->
-              <!--<span>12%</span>-->
-            <!--</div>-->
-            <!--<div class="KLHX" id="KLHX">-->
-
-            <!--</div>-->
-          <!--</div>-->
+        </div>
+        <!--客运站 要显示的内容-->
+        <div class="keyunzhan-data dn" id="keyunzhan">
+          <div class="hour-send">
+            <label>小时发送旅客</label><span>222</span><i>人</i>
+          </div>
+          <div class="list-container">
+            <div class="province-in">
+              <section>省内top5</section>
+              <ul>
+                <li>
+                  <i class="index">1</i>
+                  <label title="">美国</label>
+                  <i class="line"></i>
+                  <span class="num" title="">234人</span>
+                </li>
+              </ul>
+            </div>
+            <div class="province-out">
+              <section>省外top5</section>
+              <ul>
+                <li>
+                  <i class="index">1</i>
+                  <label title="">美国</label>
+                  <i class="line"></i>
+                  <span class="num" title="">234人</span>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </li>
@@ -383,9 +442,7 @@
               </div>
 
             </header>
-            <div class="chart-box1 ZLSC" id="ZLSC">
-
-            </div>
+            <div class="chart-box1 ZLSC" id="ZLSC"></div>
 
             <div class="KLHX-box">
               <div class="hm man">
@@ -517,11 +574,11 @@
           </div>
           <div class="emp-data-box">
             <p>
-              <label for="">值班人:</label>
+              <label>值班人:</label>
               <span></span>
             </p>
             <p>
-              <label for="">预警电话:</label>
+              <label>预警电话:</label>
               <span></span>
             </p>
           </div>
@@ -725,11 +782,11 @@
           </div>
           <div class="emp-data-box">
             <p>
-              <label for="">值班人:</label>
+              <label>值班人:</label>
               <span></span>
             </p>
             <p>
-              <label for="">预警电话:</label>
+              <label>预警电话:</label>
               <span></span>
             </p>
           </div>
@@ -902,11 +959,11 @@
           </div>
           <div class="emp-data-box">
             <p>
-              <label for="">值班人:</label>
+              <label>值班人:</label>
               <span></span>
             </p>
             <p>
-              <label for="">预警电话:</label>
+              <label>预警电话:</label>
               <span></span>
             </p>
           </div>
@@ -1053,9 +1110,8 @@
   </div>
 </div>
 
-<div id="DivButton" style="position:fixed;top:0px;right:0px;">
-
-</div>
+<!--楼层按钮-->
+<div id="DivButton" style="position:fixed;top:0px;right:0px;"></div>
 
 
 <script src="lib/jquery-1.8.2.min.js"></script>

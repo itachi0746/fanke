@@ -157,7 +157,7 @@ function judgeDirection(angle) {
   }
   console.log('angle',angle);
   var dir = '----';
-  if (angle >= 0 && angle < 45) {
+  if (angle >= -45 && angle < 45) {
     dir = '由西向东'
   }
   if (angle >= 45 && angle < 135) {
@@ -166,10 +166,10 @@ function judgeDirection(angle) {
   if (angle >= 135 && angle <= 180) {
     dir = '由东向西'
   }
-
-  if (angle >= -45 && angle < 0) {
-    dir = '由西向东'
-  }
+  //
+  // if (angle >= -45 && angle < 0) {
+  //   dir = '由西向东'
+  // }
   if (angle >= -135 && angle < -45) {
     dir = '由北向南'
   }
