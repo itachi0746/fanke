@@ -190,7 +190,7 @@ html,body{
   position: absolute;
   top: 20px;
   right: 65px;
-  z-index: 9;
+  z-index: 20;
   //display: none;
 
   .p-name {
@@ -1536,16 +1536,20 @@ html,body{
   }
   header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     padding-bottom: 10px;
 
     div {
-      //flex: 1;
+      flex: 1;
       width: 200px;
       text-align: center;
+      display: flex;
+      justify-content: center;
       .title-name {
-        font-size: 16px;
+        font-size: 24px;
         color: rgb(221,243,255);
+        margin-right: 10px;
+        line-height: 45px;
       }
       p {
         font-size: 16px;
@@ -2304,3 +2308,106 @@ input:focus {
   position: relative;
   background-image: url('../img/sharp.png');
 }
+
+//天气
+.left-weather{
+  width: 1070px;
+  height: 90px;
+  background-image: url("../img/bg_weather.png");
+  position: absolute;
+  top: 154px;
+  right: 65px;
+  z-index: 15;
+  color: #ddf3ff;
+  display: none;
+}
+.weather-content{
+  width: 1070px;
+  height: 618px;
+  background-image: url("../img/bg_weather_long.png");
+  position: absolute;
+  z-index: 15;
+  top: 154px;
+  right: 65px;
+  color: #ddf3ff;
+  display: none;
+  /*padding-top: 90px;*/
+}
+.left-weather>div,.weather-content>ul>li>div{
+  float: left;
+  width: 172px;
+  padding-top:20px;
+  text-align: center;
+}
+.weather-content>ul>li{
+
+  width: 100%;
+  height: 88px;
+}
+.weather-content .middletext .weather-2{
+  padding-top:0;
+  line-height: 88px;
+}
+
+
+.weather-content .weather-1{
+  /*position: absolute;*/
+  width: 182px;padding-top:36px;
+  margin-left: 20px;
+}
+.left-weather>div .weather-litop,.weather-content>ul>li>div .weather-litop{
+  display: block;
+  font-size: 20px;
+  letter-spacing: 2px;
+}
+.weather-icon{
+  float: left;
+  margin-left:16px;
+  /*margin-right:16px;*/
+}
+/*.w2-right{*/
+/*float: left;*/
+/*width: 50%;*/
+/*}*/
+.w2-right-top{
+  float: left;
+  width: 50%;
+}
+.weather-7day{
+  margin-left: 10px;
+}
+.left-weather .weather-up{
+  width: 66px;margin-top: -15px
+}
+.weather-up{
+  width: 18px;
+  /*height: 18px;*/
+}
+.left-weather .weather-1{
+  width: 202px;
+  /*height: 100%;*/
+
+}
+.weather-close{
+  line-height: 20px;
+  margin-top: 8px;
+}
+.left-weather .weather-1 .firstline,.weather-content .weather-1 .firstline{
+  font-size: 24px;
+  display: block;
+  /*margin-top: 20px;*/
+  color:#d9f1ff;
+  line-height: 24px;
+}
+.left-weather .weather-1 .secondline,.weather-content .weather-1 .secondline{
+  display: block;
+  margin-top: 12px;
+  font-size: 18px;
+  color:#d9f1ff;
+  line-height: 18px;
+}
+
+#weather-close:hover,#weather-open:hover,.guishu .tab-item:hover{
+  cursor: pointer
+}
+

@@ -43,9 +43,9 @@ $(function () {
     // 点击标题
     title.on('click',function () {
       toDefaultView();
-
     });
     backDivBandClick();
+    weatherClick();
 
     // 点击搜索按钮
     $('#search-btn').on('click',function () {
@@ -147,7 +147,30 @@ $(function () {
     pointControl.showPoints('客运站,铁路,机场,港口');
     // console.log('theDataObject:',pointControl.markes)
     markerBindClick();
+  }
 
+  /**
+   * 查看天气的点击i
+   */
+  function weatherClick() {
+    $('#weather-open').click(function () {
+      $('.left-weather').hide();
+      $('.weather-content').show()
+    });
+    $('#weather-close').click(function () {
+      $('.weather-content').hide();
+      $('.left-weather').show()
+    });
+  }
+
+  function showWeather() {
+    $('.weather-content').hide();
+    $('.left-weather').show()
+  }
+
+  function hideWeather() {
+    $('.weather-content').hide();
+    $('.left-weather').hide()
   }
 
   // 添加交通枢纽
@@ -308,7 +331,7 @@ $(function () {
     //   console.log(2)
     //   mapbase.restoreDefaultStyle();
     // }
-
+    hideWeather();
     showTabs();
     hideCurLocaction();
     hideTab2();
@@ -386,25 +409,25 @@ $(function () {
         }
       }
     }
-    if(clickTarget['枢纽类别']==='客运站') {
-      for (var j = 0; j < gongluArr.length; j++) {
-        var gonglu = gongluArr[j];
-        if(!gonglu) {
-          console.log('客运站名字不对:',gonglu);
-          return
-        }
-        if(name===gonglu) {
-          console.log('点击客运站:',name)
-          // debugger
-          $('#keyunzhan').removeClass('dn');
-          return
-
-        } else {
-          $('#keyunzhan').addClass('dn');
-
-        }
-      }
-    }
+    // if(clickTarget['枢纽类别']==='客运站') {
+    //   for (var j = 0; j < gongluArr.length; j++) {
+    //     var gonglu = gongluArr[j];
+    //     if(!gonglu) {
+    //       console.log('客运站名字不对:',gonglu);
+    //       return
+    //     }
+    //     if(name===gonglu) {
+    //       console.log('点击客运站:',name)
+    //       // debugger
+    //       $('#keyunzhan').removeClass('dn');
+    //       return
+    //
+    //     } else {
+    //       $('#keyunzhan').addClass('dn');
+    //
+    //     }
+    //   }
+    // }
 
   }
 
@@ -1290,16 +1313,16 @@ $(function () {
       tab4Li4InitEchart2();
     }
 
-    if(nowTab===tabArr[3]&&tab2Name==='实时客流') {  // 高速路段
-      getRealTimeFlowDataT4();
-      tab5Li2initEchart1();
-      tab5Li2initEchart2();
-    }
-    if(nowTab===tabArr[3]&&tab2Name==='旅客趋势') {
-      tab5Li3InitEchart1();
-      tab5Li3InitEchart2();
-      tab5Li3initEchart3();
-    }
+    // if(nowTab===tabArr[3]&&tab2Name==='实时客流') {  // 高速路段
+    //   getRealTimeFlowDataT4();
+    //   tab5Li2initEchart1();
+    //   tab5Li2initEchart2();
+    // }
+    // if(nowTab===tabArr[3]&&tab2Name==='旅客趋势') {
+    //   tab5Li3InitEchart1();
+    //   tab5Li3InitEchart2();
+    //   tab5Li3initEchart3();
+    // }
 
   }
 
@@ -1687,8 +1710,8 @@ $(function () {
       if(data.data&&data.isSuccess) {
         // console.log(data);
         $('#tab4 .qtkl-num').html(toWan(data.data[0].allPeople));
-        $('#tab4 .qtcl-in').html(toWan(data.data[0].inValue));
-        $('#tab4 .qtcl-out').html(toWan(data.data[0].outValue))
+        // $('#tab4 .qtcl-in').html(toWan(data.data[0].inValue));
+        // $('#tab4 .qtcl-out').html(toWan(data.data[0].outValue))
       }
     });
 
@@ -2108,7 +2131,8 @@ $(function () {
         //   goToPointByName(theName)
         // }
         goToPointByName(theName);
-        hideTabs(theName)
+        hideTabs(theName);
+        showWeather();
       })
     }
   }

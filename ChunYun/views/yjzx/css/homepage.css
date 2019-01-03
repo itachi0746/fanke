@@ -17,9 +17,13 @@ body, div, span, header, footer, nav, section, aside, article, ul, dl, dt, dd, l
 
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
 input[type="button"], input[type="submit"], input[type="search"], input[type="reset"] {
+  appearance: none;
+  -moz-appearance: none;
   -webkit-appearance: none; }
 
 textarea {
+  appearance: none;
+  -moz-appearance: none;
   -webkit-appearance: none; }
 
 html, body {
@@ -250,7 +254,7 @@ html, body {
   position: absolute;
   top: 20px;
   right: 65px;
-  z-index: 9; }
+  z-index: 20; }
   .top3 .p-name {
     width: 132px; }
   .top3 .list li {
@@ -1469,16 +1473,27 @@ html, body {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-            justify-content: space-between;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
     padding-bottom: 10px; }
     .tab-box4 .tab-box2-li4 header div {
+      -webkit-box-flex: 1;
+          -ms-flex: 1;
+              flex: 1;
       width: 200px;
-      text-align: center; }
+      text-align: center;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+          -ms-flex-pack: center;
+              justify-content: center; }
       .tab-box4 .tab-box2-li4 header div .title-name {
-        font-size: 16px;
-        color: #ddf3ff; }
+        font-size: 24px;
+        color: #ddf3ff;
+        margin-right: 10px;
+        line-height: 45px; }
       .tab-box4 .tab-box2-li4 header div p {
         font-size: 16px;
         color: #ddf3ff; }
@@ -2057,5 +2072,102 @@ input:focus {
   width: 30px;
   position: relative;
   background-image: url("../img/sharp.png"); }
+
+.left-weather {
+  width: 1070px;
+  height: 90px;
+  background-image: url("../img/bg_weather.png");
+  position: absolute;
+  top: 154px;
+  right: 65px;
+  z-index: 15;
+  color: #ddf3ff;
+  display: none; }
+
+.weather-content {
+  width: 1070px;
+  height: 618px;
+  background-image: url("../img/bg_weather_long.png");
+  position: absolute;
+  z-index: 15;
+  top: 154px;
+  right: 65px;
+  color: #ddf3ff;
+  display: none;
+  /*padding-top: 90px;*/ }
+
+.left-weather > div, .weather-content > ul > li > div {
+  float: left;
+  width: 172px;
+  padding-top: 20px;
+  text-align: center; }
+
+.weather-content > ul > li {
+  width: 100%;
+  height: 88px; }
+
+.weather-content .middletext .weather-2 {
+  padding-top: 0;
+  line-height: 88px; }
+
+.weather-content .weather-1 {
+  /*position: absolute;*/
+  width: 182px;
+  padding-top: 36px;
+  margin-left: 20px; }
+
+.left-weather > div .weather-litop, .weather-content > ul > li > div .weather-litop {
+  display: block;
+  font-size: 20px;
+  letter-spacing: 2px; }
+
+.weather-icon {
+  float: left;
+  margin-left: 16px;
+  /*margin-right:16px;*/ }
+
+/*.w2-right{*/
+/*float: left;*/
+/*width: 50%;*/
+/*}*/
+.w2-right-top {
+  float: left;
+  width: 50%; }
+
+.weather-7day {
+  margin-left: 10px; }
+
+.left-weather .weather-up {
+  width: 66px;
+  margin-top: -15px; }
+
+.weather-up {
+  width: 18px;
+  /*height: 18px;*/ }
+
+.left-weather .weather-1 {
+  width: 202px;
+  /*height: 100%;*/ }
+
+.weather-close {
+  line-height: 20px;
+  margin-top: 8px; }
+
+.left-weather .weather-1 .firstline, .weather-content .weather-1 .firstline {
+  font-size: 24px;
+  display: block;
+  /*margin-top: 20px;*/
+  color: #d9f1ff;
+  line-height: 24px; }
+
+.left-weather .weather-1 .secondline, .weather-content .weather-1 .secondline {
+  display: block;
+  margin-top: 12px;
+  font-size: 18px;
+  color: #d9f1ff;
+  line-height: 18px; }
+
+#weather-close:hover, #weather-open:hover, .guishu .tab-item:hover {
+  cursor: pointer; }
 
 /*# sourceMappingURL=homepage.css.map */
