@@ -74,6 +74,19 @@ function strDelZero(str) {
 }
 
 /**
+ * 格式化小数成百分比
+ * @param decimal 小数
+ */
+function formatDecimal(decimal) {
+  if(typeof decimal !== "number") {
+    console.log('参数类型不对')
+  }
+  decimal = decimal * 100;
+  decimal = decimal.toFixed(0) + '%';
+  return decimal
+}
+
+/**
  * 返回点击中的日期的前一周
  * @param date 日期字符串
  * @returns {{start: (string|*), end: *}|*}
@@ -155,7 +168,7 @@ function judgeDirection(angle) {
     console.log('参数类型不正确',angle);
     return
   }
-  console.log('angle',angle);
+  // console.log('angle',angle);
   var dir = '----';
   if (angle >= -45 && angle < 45) {
     dir = '由西向东'

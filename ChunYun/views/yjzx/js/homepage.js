@@ -1,7 +1,7 @@
 var pointControl,traffic;
 $(function () {
   var hourArr = ['0-1', '1-2','2-3', '3-4', '4-5', '5-6', '6-7', '7-8','8-24'];
-  var tabArr = ['客运站,铁路,机场,港口','服务区','收费站','高速','高速路网'];
+  var tabArr = ['客运站,铁路,机场,港口','服务区','收费站','高速','高速监测'];
   var tieluArr,gongluArr;
   var tabDomNameArr = ['#tab2','#tab3','#tab4','#tab5','#tab6'];
   var newTabArr = tabArr.map(function (item,index) {
@@ -10,6 +10,9 @@ $(function () {
       class: tabDomNameArr[index]
     }
   });
+  // 记录日历的日期
+  var tab2Li3Date,tab3Li3Date;
+
   var nowTab = tabArr[0];
   //postionType-位置类别：1场站，2服务区，3收费站
   var positionType = 1;
@@ -477,6 +480,9 @@ $(function () {
           ,show: true //直接显示
           ,closeStop: '#tab2-li4-cld-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
           ,done: function(value, date, endDate){
+            initDongchaTab();
+            tab2Li3Date = value;
+            getPassengerData(value);
             tab2Li3Echart1reqData(value);
             tab2Li3Echart2ReqData(value);
             tab2Li3Echart3ReqData(value);
@@ -529,6 +535,7 @@ $(function () {
         });
       });
 
+      // 服务区 旅客洞察日历
       $('#tab-li4-cld2').val(returnDate(1));
       lay('#tab-li4-cld2-box').on('click',function (e) {
         laydate.render({
@@ -537,6 +544,8 @@ $(function () {
           ,show: true //直接显示
           ,closeStop: '#tab-li4-cld2-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
           ,done: function(value, date, endDate){
+            initDongchaTab2();
+            tab3Li3Date = value;
             tab3Li3Echart1reqData(value);
             tab3Li3Echart2ReqData(value);
             guishufenxiReqData(value);
@@ -628,7 +637,7 @@ $(function () {
             var dateObj = calDate(value);
             $('#tab4-big-cld').val(dateObj.start+" - "+dateObj.end);
             tab4Li4EchartReqData(dateObj);
-            tab4Li4Echart2ReqData(dateObj);
+            // tab4Li4Echart2ReqData(dateObj);
           }
         });
       })
@@ -717,9 +726,11 @@ $(function () {
   function refreshTime() {
     var curDate = $('#curDate');
     var curTime = $('#curTime');
+    var curWeek = $('#curWeek');
     function changeFont() {
-      curDate.text(moment().format('LL dddd'));
+      curDate.text(moment().format('LL'));
       curTime.text(moment().format('h:mm:ss'));
+      curWeek.text(moment().format('dddd'));
     }
     changeFont();
     timer = setInterval(changeFont,1000)
@@ -780,12 +791,13 @@ $(function () {
       positionType = 1;  // 场站type
       clearInterval(timer);
       $('#top3').show();
-      $('#luwang-box').hide();
+      // $('#luwang-box').hide();
       $('#container2').show();
       mapbase.isGaoSuLuDuan = false;
       mapbase.restoreDefaultStyle();
       mapbase.setBg();
       traffic.removePaths();  // 清除高速路段的线
+      $('#gaosujiance').hide();
 
     }
 
@@ -794,12 +806,13 @@ $(function () {
       addStation2();
       clearInterval(timer);
       $('#top3').show();
-      $('#luwang-box').hide();
+      // $('#luwang-box').hide();
       $('#container2').show();
       mapbase.isGaoSuLuDuan = false;
       mapbase.restoreDefaultStyle();
       mapbase.setBg();
       traffic.removePaths();  // 清除高速路段的线
+      $('#gaosujiance').hide();
 
     }
     if (nowTab === tabArr[2]) {
@@ -807,34 +820,37 @@ $(function () {
       addStation2();
       clearInterval(timer);
       $('#top3').show();
-      $('#luwang-box').hide();
+      // $('#luwang-box').hide();
       $('#container2').show();
       mapbase.isGaoSuLuDuan = false;
       mapbase.restoreDefaultStyle();
       mapbase.setBg();
       traffic.removePaths();  // 清除高速路段的线
+      $('#gaosujiance').hide();
 
     }
-    if (nowTab === '高速') {
-      positionType = 4;  // 高速路段type
-      mapbase.setLuDuanStyle();
-      addStation2();
-      clearInterval(timer);
-      $('#top3').show();
-      $('#luwang-box').hide();
-      $('#container2').show();
-      DrawLuDuan();
-    }
-    if (nowTab === '高速路网') {
+    // if (nowTab === tabArr[3]) {
+    //   positionType = 4;  // 高速路段type
+    //   mapbase.setLuDuanStyle();
+    //   addStation2();
+    //   clearInterval(timer);
+    //   $('#top3').show();
+    //   // $('#luwang-box').hide();
+    //   $('#container2').show();
+    //   DrawLuDuan();
+    // }
+    if (nowTab === tabArr[4]) {  // 高速监测
       mapbase.isGaoSuLuDuan = false;
       refreshTime();
       $('#top3').hide();
-      $('#luwang-box').show();
+      // $('#luwang-box').show();
       mapbase.setTrafficStyle();
       // reqLuWangDtlData()
       reqJamList();
+      reqKeyRoadData();
       // jamRankLiClick();
-      $('#container2').hide()
+      $('#container2').hide();
+      $('#gaosujiance').show();
       traffic.removePaths();  // 清除高速路段的线
 
     }
@@ -943,7 +959,7 @@ $(function () {
   var mList = [];
 
   /**
-   * 查询高速拥堵事件列表
+   * 查询高速拥堵top10事件列表
    */
   function reqJamList() {
     var url = 'highSpeed/selectGsCongestionAndDetails.do';
@@ -959,11 +975,14 @@ $(function () {
         // }
         // console.log('jamList:',jamList);
         var idx = 0;
-        var jamRankUl = $('#jam-rank');
+        var jamRankUl = $('#jiance-top10-ul');
 
         for (var j = 0; j < jamList.length; j++) {
           // debugger
           idx++;
+          if(idx>10) {  // 要前10
+            break
+          }
           var liData = jamList[j];
           var liDetailsArray = liData.congestionDetailsArray;
           // debugger
@@ -974,19 +993,26 @@ $(function () {
           var angle = calcAngle(startLngLat,endLngLat);  // 角度
           var dir = judgeDirection(angle);  // 方向 todo 方向不准确
           // debugger
-          var liStr = '<li>\n' +
-            '<div class="idx">\n' +
-            '<span>'+idx+'</span>\n' +
-            '</div>\n' +
-            '<div class="road-profile">\n' +
-            '<p>'+liData.roadName+'</p>\n' +
-            '<p>'+dir+'</p>\n' +
-            '</div>\n' +
-            '<div class="jam-data">\n' +
-            '<p>'+toKM(liData.jamDist)+'</p>\n' +
-            '<p>'+liData.jamSpeed+'km/h</p>\n' +
-            '</div>\n' +
-            '</li>';
+          // var liStr = '<li>\n' +
+          //   '<div class="idx">\n' +
+          //   '<span>'+idx+'</span>\n' +
+          //   '</div>\n' +
+          //   '<div class="road-profile">\n' +
+          //   '<p>'+liData.roadName+'</p>\n' +
+          //   '<p>'+dir+'</p>\n' +
+          //   '</div>\n' +
+          //   '<div class="jam-data">\n' +
+          //   '<p>'+toKM(liData.jamDist)+'</p>\n' +
+          //   '<p>'+liData.jamSpeed+'km/h</p>\n' +
+          //   '</div>\n' +
+          //   '</li>';
+
+          var liStr = '          <li>\n' +
+            '            <section><span class="idx">'+idx+'</span></section>\n' +
+            '            <section>'+liData.roadName + ' (' + dir +')</section>\n' +
+            '            <section>'+toKM(liData.jamDist)+'</section>\n' +
+            '            <section>'+liData.jamSpeed+'km/h</section>\n' +
+            '          </li>';
 
           var liDom = $(liStr);
           liDom[0].dataset.eventId = liData.eventId;
@@ -1065,6 +1091,55 @@ $(function () {
     })
   }
 
+  /**
+   * 查询高速重点路段数据
+   */
+  function reqKeyRoadData() {
+    var resultArr = [];
+    var rem =  {};
+    var url = 'http://gdjtapi.televehicle.com/gd_traffic/api/highWayKpi/RoadsDirTpi';
+
+    for (var i = 0; i < LuDuanDataArr.length; i++) {
+      var roadObj = LuDuanDataArr[i];
+      var data = {
+        "auth": {
+          "opCode": "SJT",
+          "opPass": "XQWPwai8XOTW",
+          "signature": "A2A65DED49FF531B4A38A5C8E21AA19C",
+          "timeStamp": "20151203220306"
+        },
+        "roadCodes": roadObj['roadCode']
+      };
+      var dataStr = JSON.stringify(data);
+      // console.log(this)
+      $.ajax({
+        type: "POST",
+        url: url,
+        data: dataStr,
+        roadId: roadObj.roadId,
+        success: function(data){
+          // console.log(this.roadId)
+          // console.log('reqKeyRoadData',data)
+          if(data.returnMsg==='操作成功'&&data.data) {
+            for (var j = 0; j < data.data.length; j++) {
+              var dataObj = data.data[j];
+              console.log(dataObj.roadId,this.roadId)
+              if(dataObj.roadId===this.roadId) {
+                resultArr.push(dataObj);
+                console.log(resultArr)
+                break
+              }
+              // debugger
+            }
+          } else {
+            console.log('请求高速路段出行指数失败!',data.returnMsg)
+          }
+        }
+      });
+    }
+    console.log(resultArr)
+
+  }
 
   var luWangMarker = null;  // 路网  路中心点
   /**
@@ -1286,8 +1361,9 @@ $(function () {
       // initCalendar();
     }
     if(nowTab===tabArr[0]&&tab2Name==='旅客洞察') {
+      initDongchaTab();
       getPassengerData();
-      getAreaData($(tabDomNameArr[0]),'省外',returnDate(1))  // 默认省外
+      getAreaData($(tabDomNameArr[0]),'省外',returnDate(1));  // 默认省外
 
       tab2Li3InitEchart1();
       tab2Li3InitEchart2();
@@ -1306,6 +1382,7 @@ $(function () {
       tab3Li2InitEchart2();
     }
     if(nowTab===tabArr[1]&&tab2Name==='旅客洞察') {
+      initDongchaTab2();
       getAreaData2($(tabDomNameArr[1]),'境外',returnDate(1));  // 默认省外
       tab3Li3InitEchart();
       tab3Li3InitKLHX2();
@@ -1328,7 +1405,7 @@ $(function () {
     }
     if(nowTab===tabArr[2]&&tab2Name==='旅客趋势') {
       tab4Li4InitEchart1();
-      tab4Li4InitEchart2();
+      // tab4Li4InitEchart2();
     }
 
     // if(nowTab===tabArr[3]&&tab2Name==='实时客流') {  // 高速路段
@@ -1931,7 +2008,7 @@ $(function () {
   }
 
   /**
-   * 请求省内省外境外来源去向洞察数据
+   * 枢纽-洞察 请求省内省外境外来源去向洞察数据
    * @param dom   当前所在主tab
    * @param area  区域:省内 省外 境外
    * @param date  日期:yyyy-mm-dd
@@ -2044,7 +2121,29 @@ $(function () {
   }
 
   /**
-   * 旅客洞察点击
+   * 初始化 枢纽-旅客洞察的top5-tab
+   */
+  function initDongchaTab() {
+    var dongchaTab = $('#tab2 .dongcha-tab');
+    for (var i = 0; i < dongchaTab.length; i++) {
+      var tab = dongchaTab[i];
+      $(tab).removeClass('active');
+    }
+    $(dongchaTab[0]).addClass('active');
+  }
+  /**
+   * 初始化 服务区-旅客洞察的top5-tab
+   */
+  function initDongchaTab2() {
+    var dongchaTab = $('#tab3 .dongcha-tab');
+    for (var i = 0; i < dongchaTab.length; i++) {
+      var tab = dongchaTab[i];
+      $(tab).removeClass('active');
+    }
+    $(dongchaTab[0]).addClass('active');
+  }
+  /**
+   * 枢纽-旅客洞察点击
    */
   function dongchaTabBindClick() {
     // 枢纽 洞察点击i
@@ -2062,8 +2161,7 @@ $(function () {
         area = $(this).text().trim();
         dom = $('#tab2');
         // console.log('area:',area);
-        getAreaData(dom,area)
-
+        getAreaData(dom,area,tab2Li3Date)
       })
     }
 
@@ -2080,7 +2178,7 @@ $(function () {
         area = this.dataset.name;
         dom = $('#tab3');
         // debugger
-        getAreaData2(dom,area)
+        getAreaData2(dom,area,tab3Li3Date)
       })
     }
   }
@@ -2184,7 +2282,7 @@ $(function () {
       tooltip: {  // 提示框样式
         trigger: 'axis',
         // formatter: "{a} <br/>{b}: {c} ({d}%)"
-        formatter: "{c}万",
+        formatter: "{c}人",
         backgroundColor: '#065f89',
         padding: 10,
         borderColor: '#28eefb',
@@ -2213,7 +2311,7 @@ $(function () {
       yAxis: {
         boundaryGap: [0, '50%'],
         type: 'value',
-        name: '人数/万',
+        name: '人',
         // 轴 样式
         axisLine: {
           onZero: false,
@@ -2528,7 +2626,7 @@ $(function () {
       yAxis: {
         boundaryGap: [0, '50%'],
         type: 'value',
-        name: '人数/万',
+        name: '人数',
         // 轴 样式
         axisLine: {
           onZero: false,
@@ -3056,7 +3154,7 @@ $(function () {
         // debugger
         dataArr.push({
           name: ageObj[obj.ageGroup],
-          value: obj.ageZb
+          value: formatDecimal(obj.ageZb)
         })
       }
       // console.log('dataArr:',dataArr);
@@ -3076,9 +3174,9 @@ $(function () {
       for (var j = 0; j < data.data.terminalSexList.length; j++) {
         var obj1 = data.data.terminalSexList[j];
         if(obj1.sex===1) {
-          dom.find('.hm.man span').text(obj1.manZb+'%')
+          dom.find('.hm.man span').text(formatDecimal(obj1.manZb))
         } else {
-          dom.find('.hm.woman span').text(obj1.manZb+'%')
+          dom.find('.hm.woman span').text(formatDecimal(obj1.manZb))
         }
       }
 
@@ -3470,7 +3568,7 @@ $(function () {
         trigger: 'axis',
         // formatter: "{a} <br/>{b}: {c} ({d}%)"
         formatter: function (params) {
-          return params[params.length - 1].data + '万';
+          return params[params.length - 1].data + '人';
         },
         backgroundColor: '#065f89',
         padding: 10,
@@ -3515,7 +3613,7 @@ $(function () {
       },
       yAxis: {
         type: 'value',
-        name: '(人数/万)',
+        name: '人',
         splitLine: {show: false},
         axisLine: {
           lineStyle: {
@@ -3857,7 +3955,7 @@ $(function () {
         // debugger
         dataArr.push({
           name: ageObj[obj.ageGroup],
-          value: obj.ageZb
+          value: formatDecimal(obj.ageZb)
         })
       }
       // console.log('dataArr:',dataArr);
@@ -3875,9 +3973,9 @@ $(function () {
       for (var j = 0; j < data.data.serviceSexList.length; j++) {
         var obj1 = data.data.serviceSexList[j];
         if(obj1.sex===1) {
-          dom.find('.hm.man span').text(obj1.manZb+'%')
+          dom.find('.hm.man span').text(formatDecimal(obj1.manZb))
         } else {
-          dom.find('.hm.woman span').text(obj1.manZb+'%')
+          dom.find('.hm.woman span').text(formatDecimal(obj1.manZb))
         }
       }
 
@@ -3920,7 +4018,7 @@ $(function () {
       },
       yAxis: {
         type: 'value',
-        name: '人数/万',
+        name: '人',
         axisLine: {
           onZero: false,
           lineStyle: {
@@ -4034,7 +4132,7 @@ $(function () {
       yAxis: {
         boundaryGap: [0, '50%'],
         type: 'value',
-        name: '人数/万',
+        name: '人数',
         // 轴 样式
         axisLine: {
           onZero: false,
@@ -4401,7 +4499,7 @@ $(function () {
         trigger: 'axis',
         // formatter: "{a} <br/>{b}: {c} ({d}%)"
         formatter: function (params) {
-          return params[params.length - 1].data + '万';
+          return params[params.length - 1].data + '人';
         },
         backgroundColor: '#065f89',
         padding: 10,
@@ -4431,7 +4529,7 @@ $(function () {
       yAxis: {
         boundaryGap: [0, '50%'],
         type: 'value',
-        name: '人数/万',
+        name: '人数',
         // 轴 样式
         axisLine: {
           onZero: false,
@@ -4695,7 +4793,7 @@ $(function () {
         // debugger
         dataArr.push({
           name: ageObj[obj.ageGroup],
-          value: obj.ageZb
+          value: formatDecimal(obj.ageZb)
         })
       }
       // console.log('dataArr:',dataArr);
@@ -4713,9 +4811,9 @@ $(function () {
       for (var j = 0; j < data.data.tollSexList.length; j++) {
         var obj1 = data.data.tollSexList[j];
         if(obj1.sex===1) {
-          dom.find('.hm.man span').text(obj1.manZb+'%')
+          dom.find('.hm.man span').text(formatDecimal(obj1.manZb))
         } else {
-          dom.find('.hm.woman span').text(obj1.manZb+'%')
+          dom.find('.hm.woman span').text(formatDecimal(obj1.manZb))
         }
       }
     })
@@ -4757,7 +4855,7 @@ $(function () {
       },
       yAxis: {
         type: 'value',
-        name: '人数/万',
+        name: '人数',
         axisLine: {
           onZero: false,
           lineStyle: {
@@ -5136,7 +5234,7 @@ $(function () {
       yAxis: {
         boundaryGap: [0, '50%'],
         type: 'value',
-        name: '人数/万',
+        name: '人数',
         // 轴 样式
         axisLine: {
           onZero: false,
@@ -5415,7 +5513,7 @@ $(function () {
         trigger: 'axis',
         // formatter: "{a} <br/>{b}: {c} ({d}%)"
         formatter: function (params) {
-          return params[params.length - 1].data + '万';
+          return params[params.length - 1].data + '人';
         },
         backgroundColor: '#065f89',
         padding: 10,
@@ -5445,7 +5543,7 @@ $(function () {
       yAxis: {
         boundaryGap: [0, '50%'],
         type: 'value',
-        name: '人数/万',
+        name: '人数',
         // 轴 样式
         axisLine: {
           onZero: false,
@@ -5616,7 +5714,7 @@ $(function () {
         trigger: 'axis',
         // formatter: "{a} <br/>{b}: {c} ({d}%)"
         formatter: function (params) {
-          return params[params.length - 1].data + '万';
+          return params[params.length - 1].data + '人';
         },
         backgroundColor: '#065f89',
         padding: 10,
@@ -5836,7 +5934,7 @@ $(function () {
       yAxis: {
         boundaryGap: [0, '50%'],
         type: 'value',
-        name: '人数/万',
+        name: '人数',
         // 轴 样式
         axisLine: {
           onZero: false,
@@ -6215,7 +6313,7 @@ $(function () {
       yAxis: {
         boundaryGap: [0, '50%'],
         type: 'value',
-        name: '人数/万',
+        name: '人数',
         // 轴 样式
         axisLine: {
           onZero: false,

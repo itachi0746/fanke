@@ -81,9 +81,9 @@ $(function () {
     var formateDate = function () {
         if (!theCurrentDate) {
             var theDate = new Date();
-            return theDate.getFullYear() + "-" + (theDate.getMonth() + 1) + "-" + theDate.getDate();
+            return theDate.getFullYear() + "-" + FormateDateNum(theDate.getMonth() + 1) + "-" + FormateDateNum(theDate.getDate());
         }
-        return theCurrentDate.year + '-' + theCurrentDate.month + '-' + theCurrentDate.date;//
+        return theCurrentDate.year + '-' + FormateDateNum(theCurrentDate.month) + '-' + FormateDateNum(theCurrentDate.date);//
     }
 
     function PageViewModel() {
@@ -93,6 +93,9 @@ $(function () {
     }
 
     PageViewModel.prototype = new PageViewBase();
+    PageViewModel.prototype.onTimer = function () {
+        console.log("开始刷新数据!");
+    }
     /**
      * 得到当前的视图格式
      * @returns {number}

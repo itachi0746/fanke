@@ -291,10 +291,10 @@ $(function () {
         console.log("隐藏点");
         if (me.isGaoSuLuWang || me.isGaoSuLuDuan) {
           theMap.setFeatures(['bg']);
-          console.log(1)
+          // console.log(1)
 
         } else {
-          console.log(2)
+          // console.log(2)
           theMap.setFeatures(['bg']);
 
         }

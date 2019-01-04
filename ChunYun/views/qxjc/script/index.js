@@ -11,9 +11,10 @@ $(function () {
     var theAreaNmae = "";
 
     var theXData = [];
-    for (var i = 1; i <= 24; i++) {
+    for (var i = 1; i <= 24*12; i++) {
         theXData.push(i);
     }
+    //debugger;
     /*一类图表基本设置*/
     var option1 = {
         /*title: {
@@ -30,9 +31,9 @@ $(function () {
             left: 0,
             right: 5,
             top: 30,
-            bottom: 5,
+            bottom: 10,
             width: 510,
-            height: 75,
+            height: 70,
             containLabel: true
         },
         /*toolbox: {
@@ -44,11 +45,14 @@ $(function () {
             type: 'category',
             name: '(时点)',
             nameLocation: 'end',
-            splitNumber: 5,
+            splitNumber: 24,
             axisLabel: {
                 formatter: function (value, idx) {
-                    if (value % 4 == 0) {
-                        return value;
+                    console.log(value);
+                    if (value % (12*4) == 0) {
+                        //console.log('x2:'+value/12);
+                        //console.log('x:'+value/(60/5));
+                        return value/12;
                     }
                     else {
                         return "";
@@ -140,7 +144,7 @@ $(function () {
      * 定时任务开始
      */
     PageViewModel.prototype.onTimer = function () {
-
+        console.log("开始刷新数据!");
     }
     PageViewModel.prototype.initEvent = function () {
         $('.topbutton').click(function () {
@@ -266,12 +270,12 @@ $(function () {
                 }],*/
                 //鼠标移入是否显示省份/城市
                 label: {
-                    position:'top',
-                    distance:10,
+                    position: 'top',
+                    distance: 10,
                     show: true,
                     color: 'white',
                     fontSize: 12,
-                   emphasis: {
+                    emphasis: {
                         color: 'white',
                         fontSize: 20,
                         show: false
@@ -367,9 +371,9 @@ $(function () {
                                         }
                                     },
                                     tooltip: {
-                                        show:false
+                                        show: false
                                     },
-                                    symbolOffset:[0,'100%'],
+                                    symbolOffset: [0, '100%'],
                                     data: [{
                                         name: theAreaNmae,
                                         value: theCityPos,
@@ -420,10 +424,12 @@ $(function () {
         if (!this.Chart1) {
             this.Chart1 = echarts.init(document.getElementById('chart1'));
         }
-        var theXData = [];
+       /* var theXData = [];
         for (var i = 0; i <= 24; i++) {
             theXData.push(i);
-        }
+        }*/
+        data1=data1||[];
+        data2=data2||[];
         var theCurrentOption = {};
         $.extend(theCurrentOption, option1);
         theCurrentOption.series = [
@@ -433,7 +439,9 @@ $(function () {
                 type: 'line',
                 //stack: '总量',
                 smooth: true,
-                data: data1 || [820, 932, 901, 934, 1290, 1330],
+                data: data1.map(function (item) {
+                  return (item/10000).toFixed(1);
+                }) ,
                 areaStyle: {
                     normal: {
                         color: {
@@ -472,7 +480,9 @@ $(function () {
                 },
                 smooth: true,
                 //stack: '总量',
-                data: data2 || [820, 932, 901, 934, 1290, 1330, 1320]
+                data: data2.map(function (item) {
+                    return (item/10000).toFixed(1)
+                })
             }
         ]
         this.Chart1.setOption(theCurrentOption);
@@ -481,6 +491,8 @@ $(function () {
         if (!this.Chart2) {
             this.Chart2 = echarts.init(document.getElementById('chart2'));
         }
+        data1=data1||[];
+        data2=data2||[];
         var theCurrentOption = {};
         $.extend(theCurrentOption, option1);
         theCurrentOption.series = [
@@ -490,7 +502,9 @@ $(function () {
                 type: 'line',
                 //stack: '总量',
                 smooth: true,
-                data: data1 || [820, 932, 901, 934, 1290, 1330],
+                data: data1.map(function (item) {
+                    return (item/10000).toFixed(1);
+                }),
                 lineStyle: {
                     normal: {
                         color: '#4293f2' //rgba(66,147,242
@@ -529,7 +543,9 @@ $(function () {
                 },
                 smooth: true,
                 //stack: '总量',
-                data: data2 || [820, 932, 901, 934, 1290, 1330, 1320]
+                data:  data2.map(function (item) {
+                    return (item/10000).toFixed(1)
+                })
             }
         ];
 
@@ -540,6 +556,8 @@ $(function () {
         if (!this.Chart3) {
             this.Chart3 = echarts.init(document.getElementById('chart3'));
         }
+        data1=data1||[];
+        data2=data2||[];
         var theCurrentOption = {};
         $.extend(theCurrentOption, option1);
         theCurrentOption.series = [
@@ -548,7 +566,9 @@ $(function () {
                 type: 'line',
                 //stack: '总量',
                 smooth: true,
-                data: data1 || [820, 932, 901, 934, 1290, 1330],
+                data: data1.map(function (item) {
+                    return (item/10000).toFixed(1);
+                }),
                 lineStyle: {
                     normal: {
                         color: '#32ff4b'//rgba(50,255,75
@@ -588,7 +608,9 @@ $(function () {
                 },
                 smooth: true,
                 //stack: '总量',
-                data: data2 || [820, 932, 901, 934, 1290, 1330, 1320]
+                data:  data2.map(function (item) {
+                    return (item/10000).toFixed(1)
+                })
             }
         ];
         this.Chart3.setOption(theCurrentOption);
@@ -899,7 +921,7 @@ $(function () {
     PageViewModel.prototype.loadCurrent = function () {
         var theCallUrl = "migrant/current.do";
         var theCallAreaName = theAreaNmae;
-        var theCallAreaId = this.getAreaCode(theCallAreaName)||'全省';
+        var theCallAreaId = this.getAreaCode(theCallAreaName) || '全省';
         var theCallArgument = {cityCode: theCallAreaId};
         var me = this;
         // debugger;
@@ -912,12 +934,12 @@ $(function () {
                     var theResultData = theResultDatas[0];
                     //可能出现空值 加入判断
                     //debugger;
-                    if(theResultData){
+                    if (theResultData) {
                         $.extend(theViewData, theResultData);
                     }
-                    theViewData.populationGd = (theViewData.populationGd||0 )/ 10000;
-                    theViewData.populationIn = (theViewData.populationIn||0 )/ 10000;
-                    theViewData.populationOut = (theViewData.populationOut||0) / 10000;
+                    theViewData.populationGd = (theViewData.populationGd || 0) / 10000;
+                    theViewData.populationIn = (theViewData.populationIn || 0) / 10000;
+                    theViewData.populationOut = (theViewData.populationOut || 0) / 10000;
                     theViewData['populationGd'] = formateNum1(theViewData.populationGd);
                 }
                 me.bind('.numpart', theViewData);
@@ -933,7 +955,7 @@ $(function () {
     PageViewModel.prototype.loadHistoricalTrend = function () {
         var theCallUrl = "migrant/historicalTrend.do ";
         var theCallAreaName = theAreaNmae;
-        var theCallAreaId = this.getAreaCode(theCallAreaName)||'全省';
+        var theCallAreaId = this.getAreaCode(theCallAreaName) || '全省';
         var theCallArgument = {
             cityCode: theCallAreaId
         };
@@ -977,14 +999,14 @@ $(function () {
     PageViewModel.prototype.loadPredict = function () {
         var theCallUrl = "migrant/predict.do ";
         var theCallAreaName = theAreaNmae;
-        var theCallAreaId = this.getAreaCode(theCallAreaName)||'全省';
+        var theCallAreaId = this.getAreaCode(theCallAreaName) || '全省';
 
         var theCallArgument = {
             cityCode: theCallAreaId,
             date: ''
         };
         if (theCurrentDate) {
-            theCallArgument.date = theCurrentDate.year + '-' + theCurrentDate.month + '-' + theCurrentDate.date;//  'YYYY-mm-dd'
+            theCallArgument.date = theCurrentDate.year + '-' + FormateDateNum(theCurrentDate.month) + '-' + FormateDateNum(theCurrentDate.date);//  'YYYY-mm-dd'
         }
 
         var me = this;
