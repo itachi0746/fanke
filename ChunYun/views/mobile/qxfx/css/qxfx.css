@@ -89,7 +89,35 @@ textarea {
   -webkit-animation: backOpacity 2s ease-in-out infinite;
           animation: backOpacity 2s ease-in-out infinite; }
 
-.a {
-  color: #000; }
+.main {
+  padding: 20px; }
+
+.header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 50px; }
+  .header .title {
+    -webkit-box-flex: 2;
+        -ms-flex: 2;
+            flex: 2; }
+  .header .cal-box {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
+
+.tab-box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+  .tab-box div {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    text-align: center; }
+
+.inner-page {
+  width: 100%;
+  border: none; }
 
 /*# sourceMappingURL=qxfx.css.map */

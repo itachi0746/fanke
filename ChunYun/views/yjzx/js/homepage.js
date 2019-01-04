@@ -30,6 +30,24 @@ $(function () {
   pointControl = new PlacePointView(theMap);
   traffic = new TrafficView(theMap);
   init();
+  MapBase.IsFloorVisible=function(){
+    var theName=['深圳北站','广州南站','广州白云国际机场','深圳宝安国际机场','广州站'];
+    //debugger;
+    for(var i =0;i<theName.length;i++){
+      if(curPosition==theName[i]){
+        return true;
+      }
+    }
+    return false;
+  }
+  MapBase.OnFloorClick=function(name){
+    //debugger;
+    if(curPosition=='广州南站'&&name=='2F'){
+      mapbase.hideReli();
+      return;
+    }
+    mapbase.drawReli(curPosition,2000,name);
+  };
   // console.log(pointControl.PlacePoints)
 
   /**

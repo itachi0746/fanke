@@ -177,7 +177,7 @@ $(function () {
   var theChartMap = null;
   var theMapId = "province";
   var theAreaNmae = null;
-  var theGdData = GdGeoJson;
+  // var theGdData = GdGeoJson;
 
   function initChartMap() {
     if (!theChartMap) {
@@ -477,11 +477,19 @@ $(function () {
     })
   }
 
+  function tabClick() {
+    $('#domestic').on('click',function () {
+      $('#inner-page').attr('src','h5_country.html')
+    });
+    $('#province').on('click',function () {
+      $('#inner-page').attr('src','h5_province.html')
+    })
 
+  }
 
   $('#document').ready(function () {
     // getEchartsC();
-    initChartMap();
-
+    // initChartMap();
+    tabClick()
   });
 })

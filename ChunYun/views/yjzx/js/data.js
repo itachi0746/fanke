@@ -192,6 +192,8 @@ PlacePointView.prototype.showMarkers = function () {
 
 PlacePointView.prototype.MoveToPoint = function (lntlat, maxZoom) {
   console.log("开始导航到指定点!");
+  $('#DivButton').empty();
+
   // console.log(lntlat, maxZoom)
   var theZoom = this.theMap.getZoom();
   var thePitchTimer = window.setInterval(function () {
