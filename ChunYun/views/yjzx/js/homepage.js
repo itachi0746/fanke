@@ -407,29 +407,29 @@ $(function () {
       isDefaultView = false;
       mapbase.drawReli(name,2000);
     }
-    if(clickTarget['枢纽类别']==='机场') {
-      if(name==='深圳宝安国际机场') {
-        $('#bao-an').removeClass('dn');
-      } else {
-        $('#bao-an').addClass('dn');
-      }
-    }
-    if(clickTarget['枢纽类别']==='铁路') {
-      for (var i = 0; i < tieluArr.length; i++) {
-        var tielu = tieluArr[i];
-        if(!tielu) {
-          console.log('铁路名字不对:',tielu);
-          return
-        }
-        if(name===tielu) {
-          console.log('点击铁路场站:',name)
-          $('#tie-lu').removeClass('dn');
-          return
-        } else {
-          $('#tie-lu').addClass('dn');
-        }
-      }
-    }
+    // if(clickTarget['枢纽类别']==='机场') {
+    //   if(name==='深圳宝安国际机场') {
+    //     $('#bao-an').removeClass('dn');
+    //   } else {
+    //     $('#bao-an').addClass('dn');
+    //   }
+    // }
+    // if(clickTarget['枢纽类别']==='铁路') {
+    //   for (var i = 0; i < tieluArr.length; i++) {
+    //     var tielu = tieluArr[i];
+    //     if(!tielu) {
+    //       console.log('铁路名字不对:',tielu);
+    //       return
+    //     }
+    //     if(name===tielu) {
+    //       console.log('点击铁路场站:',name)
+    //       $('#tie-lu').removeClass('dn');
+    //       return
+    //     } else {
+    //       $('#tie-lu').addClass('dn');
+    //     }
+    //   }
+    // }
     // if(clickTarget['枢纽类别']==='客运站') {
     //   for (var j = 0; j < gongluArr.length; j++) {
     //     var gonglu = gongluArr[j];
@@ -1091,54 +1091,180 @@ $(function () {
     })
   }
 
+  var keyRoadDataArr = [],pageOneNum = 6;
+
   /**
    * 查询高速重点路段数据
    */
   function reqKeyRoadData() {
-    var resultArr = [];
-    var rem =  {};
-    var url = 'http://gdjtapi.televehicle.com/gd_traffic/api/highWayKpi/RoadsDirTpi';
-
-    for (var i = 0; i < LuDuanDataArr.length; i++) {
-      var roadObj = LuDuanDataArr[i];
-      var data = {
-        "auth": {
-          "opCode": "SJT",
-          "opPass": "XQWPwai8XOTW",
-          "signature": "A2A65DED49FF531B4A38A5C8E21AA19C",
-          "timeStamp": "20151203220306"
-        },
-        "roadCodes": roadObj['roadCode']
-      };
-      var dataStr = JSON.stringify(data);
-      // console.log(this)
-      $.ajax({
-        type: "POST",
-        url: url,
-        data: dataStr,
-        roadId: roadObj.roadId,
-        success: function(data){
-          // console.log(this.roadId)
-          // console.log('reqKeyRoadData',data)
-          if(data.returnMsg==='操作成功'&&data.data) {
-            for (var j = 0; j < data.data.length; j++) {
-              var dataObj = data.data[j];
-              console.log(dataObj.roadId,this.roadId)
-              if(dataObj.roadId===this.roadId) {
-                resultArr.push(dataObj);
-                console.log(resultArr)
-                break
-              }
-              // debugger
-            }
-          } else {
-            console.log('请求高速路段出行指数失败!',data.returnMsg)
-          }
-        }
-      });
+    var pagination = $('#pagination').find('span');
+    for (var i = 0; i < pagination.length; i++) {
+      var p = pagination[i];
+      $(p).removeClass('active');
     }
-    console.log(resultArr)
+    $(pagination[0]).addClass('active');
+    // var resultArr = [];
+    var url = 'http://gdjtapi.televehicle.com/gd_traffic/api/highWayKpi/AllRoadsDirTpi';
 
+    var data = {
+      "auth": {
+        "opCode": "SJT",
+        "opPass": "XQWPwai8XOTW",
+        "signature": "A2A65DED49FF531B4A38A5C8E21AA19C",
+        "timeStamp": "20151203220306"
+      }
+    };
+    var dataStr = JSON.stringify(data);
+    // console.log(this)
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: dataStr,
+      success: function(data){
+        keyRoadDataArr = [];
+        // console.log(this.roadId)
+        console.log('reqKeyRoadData',data);
+        if(data.returnMsg==='操作成功'&&data.data) {
+          var theId;
+          for (var j = 0; j < LuDuanDataArr.length; j++) {
+            var roadObj = LuDuanDataArr[j];
+            for (var i = 0; i < data.data.length; i++) {
+              var dataObj = data.data[i];
+              // theId = roadObj.roadId;
+              if(roadObj.roadId===dataObj.roadId) {
+                dataObj.name = roadObj.name;
+                var newObj = {},theAvgSpeed,temp=0;
+
+                for (var key in dataObj) {
+                  newObj[key] = dataObj[key]
+                }
+                for (var k = 0; k < newObj.dirs.length; k++) {
+                  var dir = newObj.dirs[k];
+                  temp += parseFloat(dir.speed)
+                }
+                var theSpeed = temp/2;
+                newObj['avgSpeed'] = theSpeed.toFixed(0);
+                keyRoadDataArr.push(newObj);
+                break;
+              }
+            }
+            // debugger
+          }
+          // console.log(resultArr);
+
+          handleKeyRoadArr();
+        } else {
+          console.log('请求高速路段出行指数失败!',data.returnMsg)
+        }
+      }
+    });
+
+    // console.log(resultArr)
+
+  }
+
+  /**
+   * 处理重点路段数据
+   */
+  function handleKeyRoadArr() {
+    // if(!dataArr) {
+    //   console.log('参数不正确!');
+    //   return
+    // }
+    keyRoadDataArr = _.sortBy(keyRoadDataArr, function(item) {
+      return -item.tpi;
+    });
+    // debugger
+    var theUl = $('#jiance-key-ul');
+    theUl.empty();
+    for (var i = 0; i < keyRoadDataArr.length; i++) {
+      if(i>pageOneNum) {
+        break
+      }
+      var dataObj = keyRoadDataArr[i];
+      var theStatusClass = tpiToClass(dataObj.tpi);
+      var liStr = '          <li>\n' +
+        '            <section>'+dataObj.name+'</section>\n' +
+        '            <section>'+dataObj.tpi+'</section>\n' +
+        '            <section>\n' +
+        '              <div class="tips-font '+theStatusClass+'">'+dataObj.status+'</div>\n' +
+        '            </section>\n' +
+        '            <section>'+dataObj.avgSpeed+'km/h</section>\n' +
+        '          </li>';
+
+      theUl.append($(liStr))
+    }
+
+    paginationClick();
+    // console.log(keyRoadDataArr)
+    // debugger
+    // for (var i = 0; i < theRepeatItem.length; i++) {
+    //   var repeatObj = theRepeatItem[i];
+    //   for (var j = 0; j < keyRoadDataArr.length; j++) {
+    //     var dataObj = keyRoadDataArr[j];
+    //     // console.log(i,j)
+    //     // debugger
+    //     if(dataObj.roadId===repeatObj.roadId) {
+    //       var newObj = {};
+    //       dataObj.name = repeatObj.name;
+    //       for (var key in dataObj) {
+    //         newObj[key] = dataObj[key]
+    //       }
+    //
+    //       console.log(newObj)
+    //       keyRoadDataArr[j] = newObj;
+    //       debugger
+    //       break
+    //     }
+    //   }
+    // }
+    console.log('new',keyRoadDataArr)
+    // debugger
+  }
+
+  /**
+   * 高速路段分页点击
+   */
+  function paginationClick() {
+    // console.log(1111)
+    var theUl = $('#jiance-key-ul');
+    var theShowList,midIdx=7;  // 要显示的列表,第一页要显示7条
+    var PgnArr = $('#pagination').find('span');
+    // debugger
+    for (var i = 0; i < PgnArr.length; i++) {
+      var pgn = PgnArr[i];
+      $(pgn).on('click',function () {
+        for (var j = 0; j < PgnArr.length; j++) {
+          var p = PgnArr[j];
+          $(p).removeClass('active');
+        }
+        $(this).addClass('active');
+
+        theUl.empty();
+        var num = $(this).text();
+        // debugger
+        if(num=='1') {
+          theShowList = keyRoadDataArr.slice(0,midIdx)
+        } else {
+          theShowList = keyRoadDataArr.slice(midIdx)
+        }
+
+        for (var i = 0; i < theShowList.length; i++) {
+          var dataObj = theShowList[i];
+          var liStr = '          <li>\n' +
+            '            <section>'+dataObj.name+'</section>\n' +
+            '            <section>'+dataObj.tpi+'</section>\n' +
+            '            <section>\n' +
+            '              <div class="tips-font">'+dataObj.status+'</div>\n' +
+            '            </section>\n' +
+            '            <section>'+dataObj.avgSpeed+'km/h</section>\n' +
+            '          </li>';
+
+          theUl.append($(liStr))
+        }
+
+      })
+    }
   }
 
   var luWangMarker = null;  // 路网  路中心点
@@ -1436,16 +1562,19 @@ $(function () {
   }
 
   var ageObj = {
-    0: '6-11岁',
-    1: '12-15岁',
-    2: '16-18岁',
+    0: '',
+    1: '0-12岁',
+    2: '13-18岁',
     3: '19-22岁',
     4: '23-25岁',
-    5: '26-35岁',
-    6: '36-45岁',
-    7: '46-55岁',
-    8: '56-65岁',
-    9: '66岁以上'
+    5: '26-30岁',
+    6: '31-35岁',
+    7: '36-40岁',
+    8: '41-45岁',
+    9: '46-50岁',
+    10: '51-55岁',
+    11: '56-60岁',
+    12: '>60岁'
   };
 
 
@@ -2014,6 +2143,112 @@ $(function () {
    * @param date  日期:yyyy-mm-dd
    */
   function getAreaData(dom,area,date) {
+    var AreaMap = [
+      {
+        "name": "广州",
+        "code": "GZ",
+      },
+      {
+        "name": "深圳",
+        "code": "SZ",
+
+      },
+      {
+        "name": "珠海",
+        "code": "ZH",
+
+      },
+      {
+        "name": "汕头",
+        "code": "ST",
+
+      },
+      {
+        "name": "韶关",
+        "code": "SG",
+
+      },
+      {
+        "name": "佛山",
+        "code": "FS",
+
+      },
+      {
+        "name": "江门",
+        "code": "JM",
+
+      },
+      {
+        "name": "湛江",
+        "code": "ZJ",
+
+      },
+      {
+        "name": "茂名",
+        "code": "MM",
+
+      },
+      {
+        "name": "肇庆",
+        "code": "ZQ",
+
+      },
+      {
+        "name": "惠州",
+        "code": "HZ",
+
+      },
+      {
+        "name": "梅州",
+        "code": "MZ",
+
+      },
+      {
+        "name": "汕尾",
+        "code": "SW",
+
+      },
+      {
+        "name": "河源",
+        "code": "HY",
+
+      },
+      {
+        "name": "阳江",
+        "code": "YJ",
+
+      },
+      {
+        "name": "清远",
+        "code": "QY",
+
+      },
+      {
+        "name": "东莞",
+        "code": "DG",
+
+      },
+      {
+        "name": "中山",
+        "code": "ZS",
+
+      },
+      {
+        "name": "潮州",
+        "code": "CZ",
+
+      },
+      {
+        "name": "揭阳",
+        "code": "JY",
+
+      },
+      {
+        "name": "云浮",
+        "code": "YF",
+
+      }
+    ];
 
     var d = date?date:returnDate(1);
     var url = 'terminal/selectTerminalOriginAndLeaveTop.do?postionType='+positionType+'&postionName='+curPosition+'&area='+area+'&countDate='+d;
@@ -2036,6 +2271,26 @@ $(function () {
         toArr = _.sortBy(data.data.listInProvinceLeave, function(item) {
           return -item.travelerValue;
         });
+        for (var i = 0; i < oriArr.length; i++) {
+          var oriObj = oriArr[i];
+          for (var j = 0; j < AreaMap.length; j++) {
+            var areaObj = AreaMap[j];
+            if(areaObj.code==oriObj.originAreaName) {
+              oriObj.originAreaName = areaObj.name;
+              break
+            }
+          }
+        }
+        for (var k = 0; k < toArr.length; k++) {
+          var toObj = toArr[k];
+          for (var g = 0; g < AreaMap.length; g++) {
+            var areaObj2 = AreaMap[g];
+            if(areaObj2.code==toObj.toAreaName) {
+              toObj.toAreaName = areaObj2.name;
+              break
+            }
+          }
+        }
       }
       if(area==='境外') {
         oriArr = _.sortBy(data.data.listForgeinOrigin, function(item) {
@@ -2248,7 +2503,7 @@ $(function () {
         // }
         goToPointByName(theName);
         hideTabs(theName);
-        showWeather();
+        // showWeather();
       })
     }
   }
@@ -2282,7 +2537,11 @@ $(function () {
       tooltip: {  // 提示框样式
         trigger: 'axis',
         // formatter: "{a} <br/>{b}: {c} ({d}%)"
-        formatter: "{c}人",
+        // formatter: "{c}人",
+        formatter: function (params) {
+          console.log(params)
+          return params[params.length - 1].data[1] + '人';
+        },
         backgroundColor: '#065f89',
         padding: 10,
         borderColor: '#28eefb',
@@ -2361,22 +2620,22 @@ $(function () {
           },
           data: [],
         },
-        {
-          name: '客流预测',
-          type: 'line',
-          smooth: true,
-          symbol: 'none',
-          stack: 'a',
-          // areaStyle: {
-          //   normal: {
-          //   }
-          // },
-          lineStyle: {
-            type: 'dotted',
-            color: 'rgb(62,139,230)',
-          },
-          data: []
-        }
+        // {
+        //   name: '客流预测',
+        //   type: 'line',
+        //   smooth: true,
+        //   symbol: 'none',
+        //   stack: 'a',
+        //   // areaStyle: {
+        //   //   normal: {
+        //   //   }
+        //   // },
+        //   lineStyle: {
+        //     type: 'dotted',
+        //     color: 'rgb(62,139,230)',
+        //   },
+        //   data: []
+        // }
       ]
     };
 
@@ -3060,12 +3319,13 @@ $(function () {
         {
           name: '客流画像',
           type: 'pie',
-          radius: ['50%', '70%'],
-          avoidLabelOverlap: false,
+          radius: ['50%', '65%'],
+          avoidLabelOverlap: true,
           animation: false,
           itemStyle: {
             color:'rgb(104,228,255)',
             borderColor:'#0a214b',
+            // borderColor:'rgba(10, 33, 75, 0.9)',
             borderWidth:15
           },
           label: {
@@ -3152,18 +3412,21 @@ $(function () {
       for (var i = 0; i < data.data.terminalAgeList.length; i++) {
         var obj = data.data.terminalAgeList[i];
         // debugger
+        if(obj.ageGroup==0) {
+          continue
+        }
         dataArr.push({
           name: ageObj[obj.ageGroup],
           value: formatDecimal(obj.ageZb)
         })
       }
-      // console.log('dataArr:',dataArr);
+      console.log('111dataArr:',dataArr);
 
       tab2Li3Echart2.hideLoading();    //隐藏加载动画
       tab2Li3Echart2.setOption({
         series: [
           {
-            name: '人数',
+            name: '客流画像',
             data: dataArr
           }
         ]
@@ -3174,9 +3437,9 @@ $(function () {
       for (var j = 0; j < data.data.terminalSexList.length; j++) {
         var obj1 = data.data.terminalSexList[j];
         if(obj1.sex===1) {
-          dom.find('.hm.man span').text(formatDecimal(obj1.manZb))
+          dom.find('.hm.man span').text(formatDecimal(obj1.manZb)+'%')
         } else {
-          dom.find('.hm.woman span').text(formatDecimal(obj1.manZb))
+          dom.find('.hm.woman span').text(formatDecimal(obj1.manZb)+'%')
         }
       }
 
@@ -3204,6 +3467,7 @@ $(function () {
         }
       },
       tooltip: {
+        show:false,
         trigger: 'item',
         formatter: "{a} <br/>{b}: {c} ({d}%)"
       },
@@ -3220,17 +3484,22 @@ $(function () {
         {
           name: '来源洞察',
           type: 'pie',
-          radius: ['50%', '70%'],
-          avoidLabelOverlap: false,
+          radius: ['40%', '60%'],
+          avoidLabelOverlap: true,
+          animation: false,
           label: {
             normal: {
-              show: false,
-              position: 'center'
+              show: true,
+              // position: 'center',
+              formatter: '{c}%',
+              padding: [0, -30],
+              fontSize: '20'
+
             },
             emphasis: {
               show: true,
               textStyle: {
-                fontSize: '30',
+                fontSize: '20',
                 fontWeight: 'bold'
               }
             }
@@ -3287,7 +3556,7 @@ $(function () {
         }
         dataArr.push({
           name: name,
-          value: obj.value.travelerZb,
+          value: formatDecimal(obj.value.travelerZb),
           itemStyle: {
             color: colors[i]
           }
@@ -3332,6 +3601,7 @@ $(function () {
         }
       },
       tooltip: {
+        show: false,
         trigger: 'item',
         formatter: "{a} <br/>{b}: {c} ({d}%)"
       },
@@ -3348,17 +3618,22 @@ $(function () {
         {
           name: '去向洞察',
           type: 'pie',
-          radius: ['50%', '70%'],
-          avoidLabelOverlap: false,
+          radius: ['40%', '60%'],
+          avoidLabelOverlap: true,
+          animation: false,
           label: {
             normal: {
-              show: false,
-              position: 'center'
+              show: true,
+              // position: 'center',
+              formatter: '{c}%',
+              padding: [0, -30],
+              fontSize: '20'
+
             },
             emphasis: {
               show: true,
               textStyle: {
-                fontSize: '30',
+                fontSize: '20',
                 fontWeight: 'bold'
               }
             }
@@ -3568,8 +3843,10 @@ $(function () {
         trigger: 'axis',
         // formatter: "{a} <br/>{b}: {c} ({d}%)"
         formatter: function (params) {
-          return params[params.length - 1].data + '人';
+          // console.log(params)
+          return params[params.length - 1].data[1] + '人';
         },
+        // formatter: "{c}人",
         backgroundColor: '#065f89',
         padding: 10,
         borderColor: '#28eefb',
@@ -3773,7 +4050,7 @@ $(function () {
     //       name: '客流画像',
     //       type: 'pie',
     //       radius: ['50%', '70%'],
-    //       avoidLabelOverlap: false,
+    //       avoidLabelOverlap: true,
     //       animation: false,
     //       itemStyle: {
     //         color:'rgb(104,228,255)',
@@ -3862,8 +4139,8 @@ $(function () {
         {
           name: '客流画像',
           type: 'pie',
-          radius: ['50%', '70%'],
-          avoidLabelOverlap: false,
+          radius: ['50%', '65%'],
+          avoidLabelOverlap: true,
           animation: false,
           itemStyle: {
             color:'rgb(104,228,255)',
@@ -3953,13 +4230,16 @@ $(function () {
       for (var i = 0; i < data.data.serviceAgeList.length; i++) {
         var obj = data.data.serviceAgeList[i];
         // debugger
+        if(obj.ageGroup==0) {
+          continue
+        }
         dataArr.push({
           name: ageObj[obj.ageGroup],
           value: formatDecimal(obj.ageZb)
         })
       }
-      // console.log('dataArr:',dataArr);
-
+      console.log('dataArr:',dataArr);
+      // debugger
       tab3Li3Echart2.hideLoading();    //隐藏加载动画
       tab3Li3Echart2.setOption({
         series: [
@@ -3973,9 +4253,9 @@ $(function () {
       for (var j = 0; j < data.data.serviceSexList.length; j++) {
         var obj1 = data.data.serviceSexList[j];
         if(obj1.sex===1) {
-          dom.find('.hm.man span').text(formatDecimal(obj1.manZb))
+          dom.find('.hm.man span').text(formatDecimal(obj1.manZb)+'%')
         } else {
-          dom.find('.hm.woman span').text(formatDecimal(obj1.manZb))
+          dom.find('.hm.woman span').text(formatDecimal(obj1.manZb)+'%')
         }
       }
 
@@ -4252,6 +4532,7 @@ $(function () {
         }
       },
       tooltip: {
+        show: false,
         trigger: 'item',
         formatter: "{a} <br/>{b}: {c} ({d}%)"
       },
@@ -4268,17 +4549,22 @@ $(function () {
         {
           name: '归属分析',
           type: 'pie',
-          radius: ['50%', '70%'],
-          avoidLabelOverlap: false,
+          radius: ['40%', '60%'],
+          avoidLabelOverlap: true,
+          animation: false,
           label: {
             normal: {
-              show: false,
-              position: 'center'
+              show: true,
+              // position: 'center',
+              formatter: '{c}%',
+              padding: [0, -30],
+              fontSize: '20'
+
             },
             emphasis: {
               show: true,
               textStyle: {
-                fontSize: '30',
+                fontSize: '20',
                 fontWeight: 'bold'
               }
             }
@@ -4499,8 +4785,10 @@ $(function () {
         trigger: 'axis',
         // formatter: "{a} <br/>{b}: {c} ({d}%)"
         formatter: function (params) {
-          return params[params.length - 1].data + '人';
+          // console.log(params)
+          return params[params.length - 1].data[1] + '人';
         },
+        // formatter: "{c}人",
         backgroundColor: '#065f89',
         padding: 10,
         borderColor: '#28eefb',
@@ -4698,8 +4986,8 @@ $(function () {
         {
           name: '客流画像',
           type: 'pie',
-          radius: ['50%', '70%'],
-          avoidLabelOverlap: false,
+          radius: ['50%', '65%'],
+          avoidLabelOverlap: true,
           animation: false,
           itemStyle: {
             color:'rgb(104,228,255)',
@@ -4791,6 +5079,9 @@ $(function () {
       for (var i = 0; i < data.data.tollAgeList.length; i++) {
         var obj = data.data.tollAgeList[i];
         // debugger
+        if(obj.ageGroup==0) {
+          continue
+        }
         dataArr.push({
           name: ageObj[obj.ageGroup],
           value: formatDecimal(obj.ageZb)
@@ -4811,9 +5102,9 @@ $(function () {
       for (var j = 0; j < data.data.tollSexList.length; j++) {
         var obj1 = data.data.tollSexList[j];
         if(obj1.sex===1) {
-          dom.find('.hm.man span').text(formatDecimal(obj1.manZb))
+          dom.find('.hm.man span').text(formatDecimal(obj1.manZb)+'%')
         } else {
-          dom.find('.hm.woman span').text(formatDecimal(obj1.manZb))
+          dom.find('.hm.woman span').text(formatDecimal(obj1.manZb)+'%')
         }
       }
     })
@@ -5513,8 +5804,10 @@ $(function () {
         trigger: 'axis',
         // formatter: "{a} <br/>{b}: {c} ({d}%)"
         formatter: function (params) {
-          return params[params.length - 1].data + '人';
+          // console.log(params)
+          return params[params.length - 1].data[1] + '人';
         },
+        // formatter: "{c}人",
         backgroundColor: '#065f89',
         padding: 10,
         borderColor: '#28eefb',

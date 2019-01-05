@@ -208,6 +208,16 @@ html, body {
   top: 20px;
   right: 36px;
   z-index: 20; }
+  .jiance-key-box .status1 {
+    background-color: #52b566 !important; }
+  .jiance-key-box .status2 {
+    background-color: #65d942 !important; }
+  .jiance-key-box .status3 {
+    background-color: #f7de4b !important; }
+  .jiance-key-box .status4 {
+    background-color: #ee8632 !important; }
+  .jiance-key-box .status5 {
+    background-color: #e93323 !important; }
   .jiance-key-box .inner-box {
     padding: 0 18px; }
   .jiance-key-box .key-box-name {
@@ -1042,11 +1052,11 @@ html, body {
 
 .man {
   background: url("../img/icon_man.png") no-repeat;
-  left: 45%; }
+  left: 44%; }
 
 .woman {
   background: url("../img/icon_woman.png") no-repeat;
-  left: 56%; }
+  left: 54.5%; }
 
 .line-box {
   padding: 0 20px; }

@@ -82,7 +82,7 @@ function formatDecimal(decimal) {
     console.log('参数类型不对')
   }
   decimal = decimal * 100;
-  decimal = decimal.toFixed(0) + '%';
+  decimal = decimal.toFixed(0);
   return decimal
 }
 
@@ -206,3 +206,34 @@ function judgeDirection(angle) {
   // }
   return dir
 }
+
+/**
+ * 根据交通指数,返回不同的颜色
+ * @param tpi
+ */
+function tpiToClass(tpi) {
+  // if(!tpi){
+  //   console.log('参数不对!');
+  //   return
+  // }
+  var theClassArr = ['status1','status2','status3','status4','status5'];
+  var theClass;
+  tpi = parseFloat(tpi);
+  if(tpi>=0 && tpi<2) {
+    theClass = theClassArr[0]
+  }
+  if(tpi>=2 && tpi<4) {
+    theClass = theClassArr[1]
+  }
+  if(tpi>=4 && tpi<6) {
+    theClass = theClassArr[2]
+  }
+  if(tpi>=6 && tpi<8) {
+    theClass = theClassArr[3]
+  }
+  if(tpi>=8 && tpi<=10) {
+    theClass = theClassArr[4]
+  }
+  return theClass
+}
+
