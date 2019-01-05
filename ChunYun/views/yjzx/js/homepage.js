@@ -549,7 +549,7 @@ $(function () {
             tab3Li3Echart1reqData(value);
             tab3Li3Echart2ReqData(value);
             guishufenxiReqData(value);
-            getAreaData2($('#tab3'),'省外',value)
+            getAreaData2($('#tab3'),'境外',value)
           }
         });
       });
@@ -595,6 +595,7 @@ $(function () {
           ,show: true //直接显示
           ,closeStop: '#tab4-m-cld-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
           ,done: function(value, date, endDate){
+            getDayCarFlowT3(value);
             tab4Li3Echart1reqData(value);
             tab4Li3Echart2reqData(value);
           }
@@ -1841,8 +1842,8 @@ $(function () {
 
     $.axpost(url,{},function (data) {
 
-      if(data.data&&data.isSuccess) {
-        // console.log('getPassengerData:',data);
+      if(data.data.length&&data.isSuccess) {
+        console.log('getPassengerData:',data);
 
         $('#tab2 .scroll-box .total-psg').html(toWan(data.data[0].travelers));
         $('#tab2 .scroll-box .arrival-psg').html(toWan(data.data[0].arrivalValue));
@@ -3408,40 +3409,55 @@ $(function () {
     var url = 'terminal/selectTerminalSexAge.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
       // console.log('tab2Li3Echart2',data);
-      var dataArr = [];
-      for (var i = 0; i < data.data.terminalAgeList.length; i++) {
-        var obj = data.data.terminalAgeList[i];
-        // debugger
-        if(obj.ageGroup==0) {
-          continue
-        }
-        dataArr.push({
-          name: ageObj[obj.ageGroup],
-          value: formatDecimal(obj.ageZb)
-        })
-      }
-      console.log('111dataArr:',dataArr);
-
-      tab2Li3Echart2.hideLoading();    //隐藏加载动画
-      tab2Li3Echart2.setOption({
-        series: [
-          {
-            name: '客流画像',
-            data: dataArr
+      if(data.isSuccess&&data.data) {
+        var dataArr = [];
+        for (var i = 0; i < data.data.terminalAgeList.length; i++) {
+          var obj = data.data.terminalAgeList[i];
+          // debugger
+          if(obj.ageGroup==0) {
+            continue
           }
-        ]
-      })
-
-
-      var dom = $("#KLHX").parent();
-      for (var j = 0; j < data.data.terminalSexList.length; j++) {
-        var obj1 = data.data.terminalSexList[j];
-        if(obj1.sex===1) {
-          dom.find('.hm.man span').text(formatDecimal(obj1.manZb)+'%')
-        } else {
-          dom.find('.hm.woman span').text(formatDecimal(obj1.manZb)+'%')
+          dataArr.push({
+            name: ageObj[obj.ageGroup],
+            value: formatDecimal(obj.ageZb)
+          })
         }
+        // console.log('111dataArr:',dataArr);
+
+        tab2Li3Echart2.hideLoading();    //隐藏加载动画
+        tab2Li3Echart2.setOption({
+          series: [
+            {
+              name: '客流画像',
+              data: dataArr
+            }
+          ]
+        });
+        var dom = $("#KLHX").parent();
+        if(data.data.terminalSexList.length) {
+          for (var j = 0; j < data.data.terminalSexList.length; j++) {
+            var obj1 = data.data.terminalSexList[j];
+            if(obj1.sex===1) {
+              dom.find('.hm.man span').text(formatDecimal(obj1.manZb)+'%')
+            }
+            if (obj1.sex===2) {
+              dom.find('.hm.woman span').text(formatDecimal(obj1.manZb)+'%')
+            }
+            dom.find('.hm.man span').show();
+            dom.find('.hm.woman span').show();
+          }
+        } else {
+          // tab2Li3Echart2.hideLoading();    //隐藏加载动画
+          dom.find('.hm.man span').hide();
+          dom.find('.hm.woman span').hide();
+        }
+
+      } else {
+        // debugger
+
+
       }
+
 
     })
   }
@@ -3691,7 +3707,7 @@ $(function () {
         }
         dataArr.push({
           name: name,
-          value: obj.value.travelerZb,
+          value: formatDecimal(obj.value.travelerZb),
           itemStyle: {
             color: colors[i]
           }
@@ -4226,37 +4242,50 @@ $(function () {
     var url = 'serviceArea/selectServiceSexAge.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
       // console.log('tab3Li3Echart2',data);
-      var dataArr = [];
-      for (var i = 0; i < data.data.serviceAgeList.length; i++) {
-        var obj = data.data.serviceAgeList[i];
-        // debugger
-        if(obj.ageGroup==0) {
-          continue
-        }
-        dataArr.push({
-          name: ageObj[obj.ageGroup],
-          value: formatDecimal(obj.ageZb)
-        })
-      }
-      console.log('dataArr:',dataArr);
-      // debugger
-      tab3Li3Echart2.hideLoading();    //隐藏加载动画
-      tab3Li3Echart2.setOption({
-        series: [
-          {
-            name: '客流画像',
-            data: dataArr
+      if(data.isSuccess&&data.data) {
+        var dataArr = [];
+        for (var i = 0; i < data.data.serviceAgeList.length; i++) {
+          var obj = data.data.serviceAgeList[i];
+          // debugger
+          if(obj.ageGroup==0) {
+            continue
           }
-        ]
-      })
-      var dom = $("#KLHX2").parent();
-      for (var j = 0; j < data.data.serviceSexList.length; j++) {
-        var obj1 = data.data.serviceSexList[j];
-        if(obj1.sex===1) {
-          dom.find('.hm.man span').text(formatDecimal(obj1.manZb)+'%')
-        } else {
-          dom.find('.hm.woman span').text(formatDecimal(obj1.manZb)+'%')
+          dataArr.push({
+            name: ageObj[obj.ageGroup],
+            value: formatDecimal(obj.ageZb)
+          })
         }
+        console.log('dataArr:',dataArr);
+        // debugger
+        tab3Li3Echart2.hideLoading();    //隐藏加载动画
+        tab3Li3Echart2.setOption({
+          series: [
+            {
+              name: '客流画像',
+              data: dataArr
+            }
+          ]
+        });
+        var dom = $("#KLHX2").parent();
+        if(data.data.serviceSexList.length) {
+          for (var j = 0; j < data.data.serviceSexList.length; j++) {
+            var obj1 = data.data.serviceSexList[j];
+            if(obj1.sex===1) {
+              dom.find('.hm.man span').text(formatDecimal(obj1.manZb)+'%')
+            }
+            if(obj1.sex===2) {
+              dom.find('.hm.woman span').text(formatDecimal(obj1.manZb)+'%')
+            }
+            dom.find('.hm.man span').show();
+            dom.find('.hm.woman span').show();
+          }
+        } else {
+          dom.find('.hm.man span').hide();
+          dom.find('.hm.woman span').hide();
+        }
+
+      } else {
+
       }
 
     })
@@ -4600,7 +4629,7 @@ $(function () {
         var obj = data.data[i];
         dataArr.push({
           name: obj.categoryName,
-          value: obj.travelerValue,
+          value: formatDecimal(obj.travelerZb),
           itemStyle: {
             color: colors[i]
           }
@@ -5099,14 +5128,23 @@ $(function () {
         ]
       });
       var dom = $("#tab4-klhx").parent();
-      for (var j = 0; j < data.data.tollSexList.length; j++) {
-        var obj1 = data.data.tollSexList[j];
-        if(obj1.sex===1) {
-          dom.find('.hm.man span').text(formatDecimal(obj1.manZb)+'%')
-        } else {
-          dom.find('.hm.woman span').text(formatDecimal(obj1.manZb)+'%')
+      if(data.data.tollSexList.length) {
+        for (var j = 0; j < data.data.tollSexList.length; j++) {
+          var obj1 = data.data.tollSexList[j];
+          if(obj1.sex===1) {
+            dom.find('.hm.man span').text(formatDecimal(obj1.manZb)+'%')
+          }
+          if(obj1.sex===2) {
+            dom.find('.hm.woman span').text(formatDecimal(obj1.manZb)+'%')
+          }
         }
+        dom.find('.hm.man span').show();
+        dom.find('.hm.woman span').show();
+      } else {
+        dom.find('.hm.man span').hide();
+        dom.find('.hm.woman span').hide();
       }
+
     })
   }
 
