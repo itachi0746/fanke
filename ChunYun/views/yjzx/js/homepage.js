@@ -806,7 +806,7 @@ $(function () {
       mapbase.setBg();
       traffic.removePaths();  // 清除高速路段的线
       $('#gaosujiance').hide();
-
+      getYJData();
     }
 
     if (nowTab === tabArr[1]) {
@@ -821,6 +821,7 @@ $(function () {
       mapbase.setBg();
       traffic.removePaths();  // 清除高速路段的线
       $('#gaosujiance').hide();
+      getYJData();
 
     }
     if (nowTab === tabArr[2]) {
@@ -835,6 +836,7 @@ $(function () {
       mapbase.setBg();
       traffic.removePaths();  // 清除高速路段的线
       $('#gaosujiance').hide();
+      getYJData();
 
     }
     // if (nowTab === tabArr[3]) {
@@ -1268,6 +1270,10 @@ $(function () {
             '            <section>'+dataObj.avgSpeed+'km/h</section>\n' +
             '          </li>';
           var theLiDom = $(liStr);
+          theLiDom.data('theName',dataObj.name);
+          theLiDom.data('theStatus',dataObj.status);
+          theLiDom.data('theSpeed',dataObj.avgSpeed);
+          keyRoadClick(theLiDom);
           theUl.append(theLiDom)
         }
 
@@ -1683,13 +1689,31 @@ $(function () {
    * 获取3级预警数据
    */
   function getYJData() {
-    var url = 'terminal/getTerminalWarningList.do';
-    var data = {
+    var url,keyName,theNumKey;
+    if(nowTab===tabArr[0]) {
+      url = 'terminal/getTerminalWarningList.do';
+      keyName = 'listTerminal';
+      theNumKey = 'userCnt'
+    }
+    if(nowTab===tabArr[1]) {
+      url = 'serviceArea/getServiceAreaWarningList.do';
+      keyName = 'listServiceArea';
+      theNumKey = 'userCnt'
+    }
+    if(nowTab===tabArr[2]) {
+      url = 'toll/getTollWarningList.do';
+      keyName = 'listToll';
+      theNumKey = 'pepValue'
+    }
 
-    };
+    var data = {};
     $.axpost(url,data,function (data) {
       // console.log(data);
-
+      var theUlArr = $('#top3 ul');
+      for (var i = 0; i < theUlArr.length; i++) {
+        var ulDom = theUlArr[i];
+        $(ulDom).empty();
+      }
       if(data && data.isSuccess) {
         var yongji = $('#yongji');
         var shizhong = $('#shizhong');
@@ -1698,19 +1722,20 @@ $(function () {
           name: '舒适',
           dom: shushi,
           icon: 'top3-icon3',
-          data: data.data.listTerminal_ss
+          data: data.data[keyName+'_ss'],
         };
         var sz = {
           name: '适中',
           dom: shizhong,
           icon: 'top3-icon2',
-          data: data.data.listTerminal_sz
+          data: data.data[keyName+'_sz'],
+
         };
         var yj = {
           name: '拥挤',
           dom: yongji,
           icon: 'top3-icon1',
-          data: data.data.listTerminal_yj
+          data: data.data[keyName+'_yj']
         };
 
         var dataArr = [ss,sz,yj];
@@ -1724,7 +1749,7 @@ $(function () {
               // num = temp.userCnt.toString();
               // num = num.slice(0, num.length - 4);
               // temp.userCnt = parseInt(num);
-              temp.userCnt = toWan2(temp.userCnt);
+              temp.userCnt = toWan2(temp[theNumKey]);
             // }
           }
 
