@@ -108,7 +108,7 @@ TrafficView.prototype.drawKeyRoad = function (paramters) {
     strokeDasharray: [10, 5]
   });
 
-  this.TheMap.add(RoadPath);
+  // this.TheMap.add(RoadPath);  // 不画线
   this.RoadPaths.push(RoadPath);
   this.showRoads();
 };
@@ -163,7 +163,7 @@ TrafficView.prototype.drawRoad = function (paramter) {
 
   // if (this.nowTab === '高速') {
   // console.log(1111)
-  this.TheMap.add(RoadPath);
+  // this.TheMap.add(RoadPath);
   // }
 
   //this.RoadPath.setPath(path);

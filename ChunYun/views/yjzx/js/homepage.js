@@ -73,7 +73,12 @@ $(function () {
       var v = $('#search').val();
       console.log('搜索值为:',v);
     });
-
+    // console.log($('input[type="text"]'));
+    var theInputArr = $('input[type="text"]');
+    for (var i = 0; i < theInputArr.length; i++) {
+      var inputDom = theInputArr[i];
+      $(inputDom).attr("readonly","readonly")//将input元素设置为readonly
+    }
     // 搜索框oninput事件
     // $('#search')[0].oninput = function () {
     //   console.log(this.value);
@@ -732,7 +737,7 @@ $(function () {
     var curWeek = $('#curWeek');
     function changeFont() {
       curDate.text(moment().format('LL'));
-      curTime.text(moment().format('h:mm:ss'));
+      curTime.text(moment().format('H:mm:ss'));
       curWeek.text(moment().format('dddd'));
     }
     changeFont();
@@ -1028,8 +1033,8 @@ $(function () {
             var me = this;
             var theData = {
               name: me.dataset.roadName,
-              jamDist: me.dataset.jamDist,
-              dir: me.dataset.dir
+              data1: '拥堵长度: ' + me.dataset.jamDist,
+              data2: '方向: ' + me.dataset.dir
             }
             clearCenterMarker();
             // console.log(this.dataset);
@@ -1192,6 +1197,8 @@ $(function () {
         '          </li>';
       var theLiDom = $(liStr);
       theLiDom.data('theName',dataObj.name);
+      theLiDom.data('theStatus',dataObj.status);
+      theLiDom.data('theSpeed',dataObj.avgSpeed);
       keyRoadClick(theLiDom);
       theUl.append(theLiDom)
     }
@@ -1276,12 +1283,22 @@ $(function () {
     liDom.on('click',function () {
       window['nowTab'] = nowTab;
       // debugger
-      console.log($(this).data('theName'));
+      // console.log($(this).data('theName'));
       var theName = $(this).data('theName');
+      var theSpeed = $(this).data('theSpeed');
+      var theStatus = $(this).data('theStatus');
+      var theData = {
+        name: theName,
+        data1: '平均车速: ' + theSpeed + 'km/h',
+        data2: '拥堵状态: ' + theStatus
+      };
       for (var i = 0; i < LuDuanDataArr.length; i++) {
         var roadObj = LuDuanDataArr[i];
         if(theName===roadObj.name) {
           drawKeyRoadLine(roadObj.xys);
+          var xysArr = roadObj.xys.split(';');
+          var theMiddlePointArr = xysArr[parseInt(xysArr.length/2)].split(',');
+          addLuWangMarker(theMiddlePointArr,theData);
           break
         }
       }
@@ -1305,6 +1322,7 @@ $(function () {
    * @param dataObj 目标数据数组
    */
   function addLuWangMarker(lnglatArr,dataObj) {
+    // debugger
     clearCenterMarker();
     var theArr = lnglatArr.map(function (t) {
       return parseFloat(t)
@@ -1351,7 +1369,8 @@ $(function () {
     titleD.className = 'infoTitle';
     titleD.innerHTML = title;
     p.className = 'infoContent';
-    p.innerHTML = '方向:' + content.dir + ' ' + '长度:' + content.jamDist;
+    // p.innerHTML = '方向:' + content.dir + ' ' + '长度:' + content.jamDist;
+    p.innerHTML = content.data1 + ' ' + content.data2;
     closeX.className = 'amap-info-close';
     closeX.href = 'javascript: void(0)';
     closeX.innerHTML = 'x';
@@ -1701,11 +1720,12 @@ $(function () {
           for (var j = 0; j < item.data.length; j++) {
             var temp = item.data[j];
             var num;
-            if(temp.userCnt>=10000) {
-              num = temp.userCnt.toString();
-              num = num.slice(0, num.length - 4);
-              temp.userCnt = parseInt(num);
-            }
+            // if(temp.userCnt>=10000) {
+              // num = temp.userCnt.toString();
+              // num = num.slice(0, num.length - 4);
+              // temp.userCnt = parseInt(num);
+              temp.userCnt = toWan2(temp.userCnt);
+            // }
           }
 
           addYjLi(item)
@@ -2026,26 +2046,37 @@ $(function () {
   /**
    * 客流画像-男女占比
    * @param domObj dom对象
-   * @param KeyName 键值str
+   * @param keyName 键值str
    * @param arrName 数据数组
    */
-  function addSexNum(domObj, KeyName, arrName) {
-    var manNum;
-    for (var j = 0; j < arrName[KeyName].length; j++) {
-      var obj1 = arrName[KeyName][j];
+  function addSexNum(domObj, keyName, arrName) {
+    // debugger
+    if(arrName[keyName].length) {
+      var manNum;
+      for (var j = 0; j < arrName[keyName].length; j++) {
+        var obj1 = arrName[keyName][j];
+        // debugger
+        if(obj1.sex===1) {
+          manNum = formatSexDecimal(obj1.manZb);
+          // dom.find('.hm.man span').text(formatDecimal(obj1.manZb)+'%')
+          domObj.find('.hm.man span').text(manNum+'%')
+        }
+        if(obj1.sex===2) {
+          // dom.find('.hm.woman span').text(formatDecimal(obj1.manZb)+'%')
+          var womenNum = 100-parseInt(manNum);
+          // debugger
+          domObj.find('.hm.woman span').text(womenNum+'%')
+        }
+      }
+      domObj.find('.hm.man span').show();
+      domObj.find('.hm.woman span').show();
+    } else {
       // debugger
-      if(obj1.sex===1) {
-        manNum = formatDecimal(obj1.manZb);
-        // dom.find('.hm.man span').text(formatDecimal(obj1.manZb)+'%')
-        domObj.find('.hm.man span').text(manNum+'%')
-      }
-      if(obj1.sex===2) {
-        // dom.find('.hm.woman span').text(formatDecimal(obj1.manZb)+'%')
-        domObj.find('.hm.woman span').text(100-parseFloat(manNum)+'%')
-      }
+      domObj.find('.hm.man span').hide();
+      domObj.find('.hm.woman span').hide();
     }
-    domObj.find('.hm.man span').show();
-    domObj.find('.hm.woman span').show();
+
+
   }
 
   /**
@@ -2732,15 +2763,18 @@ $(function () {
     var url = 'terminal/selectTerminalFlowTrend.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+date;
     var url2 = 'terminal/selectTerminalFlowPredict.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+date;
     $.axpost(url,{},function (data) {
-      if(data.isSuccess&&data.data.length) {
+      // if(data.isSuccess&&data.data.length) {
+      if(data.isSuccess) {
         // console.log('tab2Li2InitEchart',data);
         var d = [];
-        for (var i = 0; i < data.data.length; i++) {
-          var obj = data.data[i];
-          var tempArr = obj.countTime.split('-');
-          var hour = strDelZero(tempArr[tempArr.length-1]);
-          var objArr = [hour,obj.userCnt];
-          d.push(objArr);
+        if(data.data.length) {
+          for (var i = 0; i < data.data.length; i++) {
+            var obj = data.data[i];
+            var tempArr = obj.countTime.split('-');
+            var hour = strDelZero(tempArr[tempArr.length-1]);
+            var objArr = [hour,obj.userCnt];
+            d.push(objArr);
+          }
         }
         // console.log(d);
 
@@ -2891,13 +2925,16 @@ $(function () {
     tab2Li2Echart2.showLoading();    //加载动画
     var url = 'terminal/selectTerminalFlowLinger.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+date;
     $.axpost(url,{},function (data) {
-      if(data.isSuccess&&data.data.length) {
+      // if(data.isSuccess&&data.data.length) {
+      if(data.isSuccess) {
         // console.log('tab2Li2Echart2',data);
         var d = [];
-        for (var i = 0; i < data.data.length; i++) {
-          var obj = data.data[i];
-          // d.push(obj.timeZb);
-          d[parseInt(obj.timeGroup)] = obj.timeZb;
+        if(data.data.length) {
+          for (var i = 0; i < data.data.length; i++) {
+            var obj = data.data[i];
+            // d.push(obj.timeZb);
+            d[parseInt(obj.timeGroup)] = obj.timeZb;
+          }
         }
         // debugger
 
@@ -3045,15 +3082,19 @@ $(function () {
     tab2Li4Echart.showLoading();    //加载动画
     var url = 'terminal/selectTerminalPassengerTrend.do?postionType='+ positionType +'&postionName='+ curPosition +'&startDate='+d.start + '&endDate='+d.end;
     $.axpost(url,{},function (data) {
-      if(data.isSuccess&&data.data.listTerminalPassengerTrend.length) {
+      // if(data.isSuccess&&data.data.listTerminalPassengerTrend.length) {
+      if(data.isSuccess) {
         // console.log('tab2Li4Echart',data);
         var dayArr = [];
         var dataArr = [];
-        for (var i = 0; i < data.data.listTerminalPassengerTrend.length; i++) {
-          var obj = data.data.listTerminalPassengerTrend[i];
-          dayArr.push(obj.statDate);
-          dataArr.push(obj.travelers);
+        if(data.data.listTerminalPassengerTrend.length) {
+          for (var i = 0; i < data.data.listTerminalPassengerTrend.length; i++) {
+            var obj = data.data.listTerminalPassengerTrend[i];
+            dayArr.push(obj.statDate);
+            dataArr.push(obj.travelers);
+          }
         }
+
         // debugger
         tab2Li4Echart.hideLoading();    //隐藏加载动画
         tab2Li4Echart.setOption({
@@ -3202,16 +3243,19 @@ $(function () {
     tab2Li4Echart2.showLoading();    //加载动画
     var url = 'terminal/selectTerminalPassengerTrend.do?postionType='+ positionType +'&postionName='+ curPosition +'&startDate='+d.start + '&endDate='+d.end;
     $.axpost(url,{},function (data) {
-      if(data.isSuccess&&data.data.listTerminalPassengerTrend.length) {
+      // if(data.isSuccess&&data.data.listTerminalPassengerTrend.length) {
+      if(data.isSuccess) {
         // console.log('tab2Li4Echart2',data);
         var dayArr = [];
         var ariArr = [];
         var leaArr = [];
-        for (var i = 0; i < data.data.listTerminalPassengerTrend.length; i++) {
-          var obj = data.data.listTerminalPassengerTrend[i];
-          dayArr.push(obj.statDate);
-          ariArr.push(obj.arrivalValue);
-          leaArr.push(obj.leaveValue);
+        if(data.data.listTerminalPassengerTrend.length) {
+          for (var i = 0; i < data.data.listTerminalPassengerTrend.length; i++) {
+            var obj = data.data.listTerminalPassengerTrend[i];
+            dayArr.push(obj.statDate);
+            ariArr.push(obj.arrivalValue);
+            leaArr.push(obj.leaveValue);
+          }
         }
         // debugger
 
@@ -3351,13 +3395,16 @@ $(function () {
     d = date?date:returnDate(1);
     var url = 'terminal/selectTerminalLinger.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
-      if(data.isSuccess&&data.data.length) {
+      // if(data.isSuccess&&data.data.length) {
+      if(data.isSuccess) {
         // console.log('tab2Li3Echart1',data);
         var dataArr = [];
-        for (var i = 0; i < data.data.length; i++) {
-          var obj = data.data[i];
-          // debugger
-          dataArr[parseInt(obj.timeGroup)] = obj.timeValue;
+        if(data.data.length) {
+          for (var i = 0; i < data.data.length; i++) {
+            var obj = data.data[i];
+            // debugger
+            dataArr[parseInt(obj.timeGroup)] = obj.timeValue;
+          }
         }
 
         tab2Li3Echart1.hideLoading();    //隐藏加载动画
@@ -3496,18 +3543,22 @@ $(function () {
     var url = 'terminal/selectTerminalSexAge.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
       // console.log('tab2Li3Echart2',data);
-      if(data.isSuccess&&data.data.terminalAgeList.length&&data.data.terminalSexList.length) {
+      // if(data.isSuccess&&data.data.terminalAgeList.length&&data.data.terminalSexList.length) {
+      if(data.isSuccess) {
         var dataArr = [];
-        for (var i = 0; i < data.data.terminalAgeList.length; i++) {
-          var obj = data.data.terminalAgeList[i];
-          // debugger
-          if(obj.ageGroup==0) {
-            continue
+        if(data.data.terminalAgeList.length) {
+          for (var i = 0; i < data.data.terminalAgeList.length; i++) {
+            var obj = data.data.terminalAgeList[i];
+            // debugger
+            if(obj.ageGroup==0) {
+              continue
+            }
+            dataArr.push({
+              name: ageObj[obj.ageGroup],
+              value: formatDecimal(obj.ageZb)
+            })
           }
-          dataArr.push({
-            name: ageObj[obj.ageGroup],
-            value: formatDecimal(obj.ageZb)
-          })
+
         }
         // console.log('111dataArr:',dataArr);
 
@@ -3520,26 +3571,11 @@ $(function () {
             }
           ]
         });
-        var dom = $("#KLHX").parent();
-        addSexNum(dom,'terminalSexList',data.data)
-        // for (var j = 0; j < data.data.terminalSexList.length; j++) {
-        //   var obj1 = data.data.terminalSexList[j];
-        //   // if(obj1.sex===1) {
-        //   //   dom.find('.hm.man span').text(formatDecimal(obj1.manZb)+'%')
-        //   // }
-        //   // if (obj1.sex===2) {
-        //   //   dom.find('.hm.woman span').text(formatDecimal(obj1.manZb)+'%')
-        //   // }
-        //   var manNum = formatDecimal(obj1.manZb);
-        //   if(obj1.sex===1) {
-        //     dom.find('.hm.man span').text(manNum+'%')
-        //   }
-        //   if(obj1.sex===2) {
-        //     dom.find('.hm.woman span').text((100-parseFloat(manNum))+'%')
-        //   }
+        // if(data.data.terminalSexList.length) {
+          var dom = $("#KLHX").parent();
+          addSexNum(dom,'terminalSexList',data.data)
         // }
-        // dom.find('.hm.man span').show();
-        // dom.find('.hm.woman span').show();
+
       } else {
         // debugger
 
@@ -3637,37 +3673,41 @@ $(function () {
     d = date?date:returnDate(1);
     var url = 'terminal/selectTerminalOriginAndLeave.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
-      if(data.isSuccess&&!isEmptyObject(data.data.originMap)) {
+      // if(data.isSuccess&&!isEmptyObject(data.data.originMap)) {
+      if(data.isSuccess) {
         // console.log('tab2Li3Echart3', data);
         var tempArr = [];
         var dataArr = [];
         var name;
-        for(var key in data.data.originMap) {
-          tempArr.push({
-            type: key,
-            value: data.data.originMap[key]
-          })
-        }
-        for (var i = 0; i < tempArr.length; i++) {
-          var obj = tempArr[i];
-          if(obj.type==='inProvinceOrigin') {
-            name = '省内'
+        if(!isEmptyObject(data.data.originMap)) {
+          for(var key in data.data.originMap) {
+            tempArr.push({
+              type: key,
+              value: data.data.originMap[key]
+            })
           }
-          if(obj.type==='outProvinceOrigin') {
-            name = '省外'
-          }
-          if(obj.type==='forgeinOrigin') {
-            name = '境外'
-          }
-          dataArr.push({
-            name: name,
-            value: formatDecimal(obj.value.travelerZb),
-            itemStyle: {
-              color: colors[i]
+          for (var i = 0; i < tempArr.length; i++) {
+            var obj = tempArr[i];
+            if(obj.type==='inProvinceOrigin') {
+              name = '省内'
             }
-          })
+            if(obj.type==='outProvinceOrigin') {
+              name = '省外'
+            }
+            if(obj.type==='forgeinOrigin') {
+              name = '境外'
+            }
+            dataArr.push({
+              name: name,
+              value: formatDecimal(obj.value.travelerZb),
+              itemStyle: {
+                color: colors[i]
+              }
+            })
+          }
+          // console.log('tempArr:', dataArr,tempArr);
+
         }
-        // console.log('tempArr:', dataArr,tempArr);
 
         tab2Li3Echart3.hideLoading();    //隐藏加载动画
         tab2Li3Echart3.setOption({
@@ -3774,37 +3814,39 @@ $(function () {
     d = date?date:returnDate(1);
     var url = 'terminal/selectTerminalOriginAndLeave.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
-      if(data.isSuccess&&!isEmptyObject(data.data.leaveMap)) {
+      if(data.isSuccess) {
         // console.log('tab2Li3Echart4', data);
         var tempArr = [];
         var dataArr = [];
         var name;
-        for(var key in data.data.leaveMap) {
-          tempArr.push({
-            type: key,
-            value: data.data.leaveMap[key]
-          })
-        }
-        for (var i = 0; i < tempArr.length; i++) {
-          var obj = tempArr[i];
-          if(obj.type==='inProvinceLeave') {
-            name = '省内'
+        if(!isEmptyObject(data.data.leaveMap)) {
+          for(var key in data.data.leaveMap) {
+            tempArr.push({
+              type: key,
+              value: data.data.leaveMap[key]
+            })
           }
-          if(obj.type==='outProvinceLeave') {
-            name = '省外'
-          }
-          if(obj.type==='forgeinLeave') {
-            name = '境外'
-          }
-          dataArr.push({
-            name: name,
-            value: formatDecimal(obj.value.travelerZb),
-            itemStyle: {
-              color: colors[i]
+          for (var i = 0; i < tempArr.length; i++) {
+            var obj = tempArr[i];
+            if(obj.type==='inProvinceLeave') {
+              name = '省内'
             }
-          })
+            if(obj.type==='outProvinceLeave') {
+              name = '省外'
+            }
+            if(obj.type==='forgeinLeave') {
+              name = '境外'
+            }
+            dataArr.push({
+              name: name,
+              value: formatDecimal(obj.value.travelerZb),
+              itemStyle: {
+                color: colors[i]
+              }
+            })
+          }
+          // console.log('tempArr:', dataArr,tempArr);
         }
-        // console.log('tempArr:', dataArr,tempArr);
 
         tab2Li3Echart4.hideLoading();    //隐藏加载动画
         tab2Li3Echart4.setOption({
@@ -3905,13 +3947,16 @@ $(function () {
     tab3Li2Echart2.showLoading();    //加载动画
     var url = 'serviceArea/selectServiceLingerRealtime.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
-      if(data.isSuccess&&data.data.length) {
+      // if(data.isSuccess&&data.data.length) {
+      if(data.isSuccess) {
         // console.log('tab3Li2Echart2',data);
         var d = [];
-        for (var i = 0; i < data.data.length; i++) {
-          var obj = data.data[i];
-          // d.push(obj.timeZb);
-          d[parseInt(obj.timeGroup)] = obj.timeZb;
+        if(data.data.length) {
+          for (var i = 0; i < data.data.length; i++) {
+            var obj = data.data[i];
+            // d.push(obj.timeZb);
+            d[parseInt(obj.timeGroup)] = obj.timeZb;
+          }
         }
         // debugger
 
@@ -4078,17 +4123,21 @@ $(function () {
     var url2 = 'serviceArea/selectServiceFlowPredict.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
 
     $.axpost(url,{},function (data) {
-      if(data.isSuccess&&data.data.length) {
+      // if(data.isSuccess&&data.data.length) {
+      if(data.isSuccess) {
         // console.log('tab2Li2InitEchart',data);
         var dataArr = [];
         // d = data.data;
-        for (var i = 0; i < data.data.length; i++) {
-          var obj = data.data[i];
-          var tempArr = obj.countTime.split('-');
-          var hour = strDelZero(tempArr[tempArr.length-1]);
-          var objArr = [hour,obj.userCnt];
-          dataArr.push(objArr);
+        if(data.data.length) {
+          for (var i = 0; i < data.data.length; i++) {
+            var obj = data.data[i];
+            var tempArr = obj.countTime.split('-');
+            var hour = strDelZero(tempArr[tempArr.length-1]);
+            var objArr = [hour,obj.userCnt];
+            dataArr.push(objArr);
+          }
         }
+
         // debugger
         $('#tab3-cld1-box').show();
         tab3Li2Echart1.hideLoading();    //隐藏加载动画
@@ -4106,29 +4155,29 @@ $(function () {
       }
     });
 
-    $.axpost(url2,{},function (data) {
-      // console.log('tab2Li2InitEchart',data);
-      var dataArr = [];
-      // d = data.data;
-      for (var i = 0; i < data.data.length; i++) {
-        var obj = data.data[i];
-        var tempArr = obj.countTime.split('-');
-        var hour = strDelZero(tempArr[tempArr.length-1]);
-        var objArr = [hour,obj.preUserCnt];
-        dataArr.push(objArr);
-      }
-      // debugger
-      $('#tab3-cld1-box').show();
-      tab3Li2Echart1.hideLoading();    //隐藏加载动画
-      tab3Li2Echart1.setOption({
-        series: [
-          {
-            name: '预测客流量',
-            data: dataArr
-          }
-        ]
-      })
-    })
+    // $.axpost(url2,{},function (data) {
+    //   // console.log('tab2Li2InitEchart',data);
+    //   var dataArr = [];
+    //   // d = data.data;
+    //   for (var i = 0; i < data.data.length; i++) {
+    //     var obj = data.data[i];
+    //     var tempArr = obj.countTime.split('-');
+    //     var hour = strDelZero(tempArr[tempArr.length-1]);
+    //     var objArr = [hour,obj.preUserCnt];
+    //     dataArr.push(objArr);
+    //   }
+    //   // debugger
+    //   $('#tab3-cld1-box').show();
+    //   tab3Li2Echart1.hideLoading();    //隐藏加载动画
+    //   tab3Li2Echart1.setOption({
+    //     series: [
+    //       {
+    //         name: '预测客流量',
+    //         data: dataArr
+    //       }
+    //     ]
+    //   })
+    // })
   }
 
   var tab3Li3Echart2;
@@ -4252,20 +4301,24 @@ $(function () {
     var url = 'serviceArea/selectServiceSexAge.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
       // console.log('tab3Li3Echart2',data);
-      if(data.isSuccess&&data.data.serviceAgeList.length&&data.data.serviceSexList.length) {
+      // if(data.isSuccess&&data.data.serviceAgeList.length&&data.data.serviceSexList.length) {
+      if(data.isSuccess) {
         var dataArr = [];
-        for (var i = 0; i < data.data.serviceAgeList.length; i++) {
-          var obj = data.data.serviceAgeList[i];
-          // debugger
-          if(obj.ageGroup==0) {
-            continue
+        if(data.data.serviceAgeList.length) {
+          for (var i = 0; i < data.data.serviceAgeList.length; i++) {
+            var obj = data.data.serviceAgeList[i];
+            // debugger
+            if(obj.ageGroup==0) {
+              continue
+            }
+            dataArr.push({
+              name: ageObj[obj.ageGroup],
+              value: formatDecimal(obj.ageZb)
+            })
           }
-          dataArr.push({
-            name: ageObj[obj.ageGroup],
-            value: formatDecimal(obj.ageZb)
-          })
+          console.log('dataArr:',dataArr);
         }
-        console.log('dataArr:',dataArr);
+
         // debugger
         tab3Li3Echart2.hideLoading();    //隐藏加载动画
         tab3Li3Echart2.setOption({
@@ -4276,8 +4329,11 @@ $(function () {
             }
           ]
         });
-        var dom = $("#KLHX2").parent();
-        addSexNum(dom,'serviceSexList',data.data)
+        // if(data.data.serviceSexList.length) {
+          var dom = $("#KLHX2").parent();
+          addSexNum(dom,'serviceSexList',data.data)
+        // }
+
         // for (var j = 0; j < data.data.serviceSexList.length; j++) {
         //   var obj1 = data.data.serviceSexList[j];
         //   // if(obj1.sex===1) {
@@ -4382,13 +4438,16 @@ $(function () {
     d = date?date:returnDate();
     var url = 'serviceArea/selectServiceLinger.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
-      if(data.isSuccess&&data.data.length) {
+      // if(data.isSuccess&&data.data.length) {
+      if(data.isSuccess) {
         // console.log('tab3Li3Echart1',data);
         var dataArr = [];
-        for (var i = 0; i < data.data.length; i++) {
-          var obj = data.data[i];
-          // debugger
-          dataArr[parseInt(obj.timeGroup)] = obj.timeValue;
+        if(data.data.length) {
+          for (var i = 0; i < data.data.length; i++) {
+            var obj = data.data[i];
+            // debugger
+            dataArr[parseInt(obj.timeGroup)] = obj.timeValue;
+          }
         }
 
         tab3Li3Echart1.hideLoading();    //隐藏加载动画
@@ -4528,14 +4587,17 @@ $(function () {
     tab3Li4Echart1.showLoading();    //加载动画
     var url = 'serviceArea/selectServicePassengerTrend.do?postionType='+ positionType +'&postionName='+ curPosition +'&startDate='+d.start + '&endDate='+d.end;
     $.axpost(url,{},function (data) {
-      if(data.isSuccess&&data.data.listServiceFlowTrend.length) {
+      // if(data.isSuccess&&data.data.listServiceFlowTrend.length) {
+      if(data.isSuccess) {
         // console.log('tab3Li4Echart1',data);
         var dayArr = [];
         var dataArr = [];
-        for (var i = 0; i < data.data.listServiceFlowTrend.length; i++) {
-          var obj = data.data.listServiceFlowTrend[i];
-          dayArr.push(obj.statDate);
-          dataArr.push(obj.userCnt);
+        if(data.data.listServiceFlowTrend.length) {
+          for (var i = 0; i < data.data.listServiceFlowTrend.length; i++) {
+            var obj = data.data.listServiceFlowTrend[i];
+            dayArr.push(obj.statDate);
+            dataArr.push(obj.userCnt);
+          }
         }
         // debugger
 
@@ -4642,17 +4704,20 @@ $(function () {
     d = date?date:returnDate(1);  // 默认访问昨天
     var url = 'serviceArea/selectServiceAscription.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
-      if(data.isSuccess&&data.data.length) {
+      // if(data.isSuccess&&data.data.length) {
+      if(data.isSuccess) {
         var dataArr = [];
-        for (var i = 0; i < data.data.length; i++) {
-          var obj = data.data[i];
-          dataArr.push({
-            name: obj.categoryName,
-            value: formatDecimal(obj.travelerZb),
-            itemStyle: {
-              color: colors[i]
-            }
-          })
+        if(data.data.length) {
+          for (var i = 0; i < data.data.length; i++) {
+            var obj = data.data[i];
+            dataArr.push({
+              name: obj.categoryName,
+              value: formatDecimal(obj.travelerZb),
+              itemStyle: {
+                color: colors[i]
+              }
+            })
+          }
         }
         // console.log('tempArr:', dataArr,tempArr);
 
@@ -4778,13 +4843,16 @@ $(function () {
     tab4Li2Echart1.showLoading();    //加载动画
     var url = 'toll/selectTollLingerRealtime.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
-      if(data.isSuccess&&data.data.length) {
+      // if(data.isSuccess&&data.data.length) {
+      if(data.isSuccess) {
         // console.log('tab4Li2Echart1',data);
         var dataArr = [];
-        for (var i = 0; i < data.data.length; i++) {
-          var obj = data.data[i];
-          // d.push(obj.timeZb);
-          dataArr[parseInt(obj.timeGroup)] = obj.timeZb;
+        if(data.data.length) {
+          for (var i = 0; i < data.data.length; i++) {
+            var obj = data.data[i];
+            // d.push(obj.timeZb);
+            dataArr[parseInt(obj.timeGroup)] = obj.timeZb;
+          }
         }
         // debugger
         tab4Li2Echart1.hideLoading();    //隐藏加载动画
@@ -4959,19 +5027,23 @@ $(function () {
     var url = 'toll/selectTollFlowTrend.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     var url2 = 'toll/selectTollFlowPredict.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
-      if(data.isSuccess&&data.data.length) {
+      // if(data.isSuccess&&data.data.length) {
+      if(data.isSuccess) {
         // console.log('tab2Li2InitEchart',data);
         var dataArr = [];
-        for (var i = 0; i < data.data.length; i++) {
-          // var obj = data.data[i];
-          // dataArr.push(obj.pepValue);
+        if(data.data.length) {
+          for (var i = 0; i < data.data.length; i++) {
+            // var obj = data.data[i];
+            // dataArr.push(obj.pepValue);
 
-          var obj = data.data[i];
-          var tempArr = obj.countTime.split('-');
-          var hour = strDelZero(tempArr[tempArr.length-1]);
-          var objArr = [hour,obj.pepValue];
-          dataArr.push(objArr);
+            var obj = data.data[i];
+            var tempArr = obj.countTime.split('-');
+            var hour = strDelZero(tempArr[tempArr.length-1]);
+            var objArr = [hour,obj.pepValue];
+            dataArr.push(objArr);
+          }
         }
+
         // debugger
         $('#tab4-klqs-cld2-box').show();
         tab4Li2Echart2.hideLoading();    //隐藏加载动画
@@ -4989,31 +5061,31 @@ $(function () {
       }
 
     })
-    $.axpost(url2,{},function (data) {
-      // console.log('tab2Li2InitEchart',data);
-      var dataArr = [];
-      for (var i = 0; i < data.data.length; i++) {
-        // var obj = data.data[i];
-        // dataArr.push(obj.pepValue);
-
-        var obj = data.data[i];
-        var tempArr = obj.countTime.split('-');
-        var hour = strDelZero(tempArr[tempArr.length-1]);
-        var objArr = [hour,obj.preUserCnt];
-        dataArr.push(objArr);
-      }
-      // debugger
-      $('#tab4-klqs-cld2-box').show();
-      tab4Li2Echart2.hideLoading();    //隐藏加载动画
-      tab4Li2Echart2.setOption({
-        series: [
-          {
-            name: '预测客流趋势',
-            data: dataArr
-          }
-        ]
-      })
-    })
+    // $.axpost(url2,{},function (data) {
+    //   // console.log('tab2Li2InitEchart',data);
+    //   var dataArr = [];
+    //   for (var i = 0; i < data.data.length; i++) {
+    //     // var obj = data.data[i];
+    //     // dataArr.push(obj.pepValue);
+    //
+    //     var obj = data.data[i];
+    //     var tempArr = obj.countTime.split('-');
+    //     var hour = strDelZero(tempArr[tempArr.length-1]);
+    //     var objArr = [hour,obj.preUserCnt];
+    //     dataArr.push(objArr);
+    //   }
+    //   // debugger
+    //   $('#tab4-klqs-cld2-box').show();
+    //   tab4Li2Echart2.hideLoading();    //隐藏加载动画
+    //   tab4Li2Echart2.setOption({
+    //     series: [
+    //       {
+    //         name: '预测客流趋势',
+    //         data: dataArr
+    //       }
+    //     ]
+    //   })
+    // })
   }
 
   var tab4Li2Echart3;
@@ -5063,7 +5135,7 @@ $(function () {
               // \n\n可让文字居于牵引线上方，很关键
               //  {b}  代表显示的内容标题
               // {c}代表数据
-              formatter: '{b}\n{c} ',
+              formatter: '{b}\n{c}%',
               fontSize:  20,
 
               // textAlign: 'left',//'left'、 'center'、 'right'，
@@ -5133,20 +5205,24 @@ $(function () {
     d = date?date:returnDate(1);
     var url = 'toll/selectTollSexAge.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
-      if(data.isSuccess&&data.data.tollAgeList.length&&data.data.tollSexList.length) {
+      // if(data.isSuccess&&data.data.tollAgeList.length&&data.data.tollSexList.length) {
+      if(data.isSuccess) {
         // console.log('tab4Li2Echart3',data);
         var dataArr = [];
-        for (var i = 0; i < data.data.tollAgeList.length; i++) {
-          var obj = data.data.tollAgeList[i];
-          // debugger
-          if(obj.ageGroup==0) {
-            continue
+        if(data.data.tollAgeList.length) {
+          for (var i = 0; i < data.data.tollAgeList.length; i++) {
+            var obj = data.data.tollAgeList[i];
+            // debugger
+            if(obj.ageGroup==0) {
+              continue
+            }
+            dataArr.push({
+              name: ageObj[obj.ageGroup],
+              value: formatDecimal(obj.ageZb)
+            })
           }
-          dataArr.push({
-            name: ageObj[obj.ageGroup],
-            value: formatDecimal(obj.ageZb)
-          })
         }
+
         // console.log('dataArr:',dataArr);
 
         tab4Li2Echart3.hideLoading();    //隐藏加载动画
@@ -5158,9 +5234,11 @@ $(function () {
             }
           ]
         });
-        var dom = $("#tab4-klhx").parent();
+        // if(data.data.tollAgeList.length) {
+          var dom = $("#tab4-klhx").parent();
+          addSexNum(dom,'tollSexList',data.data)
+        // }
 
-        addSexNum(dom,'tollSexList',data.data)
         // var manNum;
         // for (var j = 0; j < data.data.tollSexList.length; j++) {
         //   var obj1 = data.data.tollSexList[j];
@@ -5261,14 +5339,18 @@ $(function () {
     tab4Li3Echart1.showLoading();    //加载动画
     var url = 'toll/selectTollLinger.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
-      if(data.isSuccess&&data.data.length) {
+      // if(data.isSuccess&&data.data.length) {
+      if(data.isSuccess) {
         // console.log('tab4Li3Echart1',data);
         var dataArr = [];
-        for (var i = 0; i < data.data.length; i++) {
-          var obj = data.data[i];
-          // d.push(obj.timeZb);
-          dataArr[parseInt(obj.timeGroup)] = obj.timeValue;
+        if(data.data.length) {
+          for (var i = 0; i < data.data.length; i++) {
+            var obj = data.data[i];
+            // d.push(obj.timeZb);
+            dataArr[parseInt(obj.timeGroup)] = obj.timeValue;
+          }
         }
+
         // debugger
 
         tab4Li3Echart1.hideLoading();    //隐藏加载动画
@@ -5371,57 +5453,7 @@ $(function () {
       },
       // series: handleOption()
       series: []
-      // series: [
-        // {
-        //   name: '搜索引擎',
-        //   type: 'line',
-        //   z: 2,
-        //   //stack: '总量',
-        //   smooth: true,
-        //   data: [],
-        //   lineStyle: {
-        //     normal: {
-        //       color: 'rgb(70,158,228)'//rgba(55,255,75
-        //     }
-        //   },
-        //   areaStyle: {
-        //     normal: {
-        //       color: {
-        //         type: 'linear',
-        //         x: 0,
-        //         y: 0,
-        //         x2: 0,
-        //         y2: 1,
-        //         colorStops: [{
-        //           offset: 0, color: 'rgba(70,158,228,0.3)'
-        //         }, {
-        //           offset: 0.5, color: 'rgba(70,158,228,0.15)'
-        //         }, {
-        //           offset: 1, color: 'rgba(70,158,228,0)'
-        //         }]
-        //       }
-        //     }
-        //   },
-        // },
-        // {
-        //   name: '搜索引擎',
-        //   symbol: 'none',
-        //   z: 3,
-        //   type: 'line',
-        //   itemStyle: {
-        //     normal: {
-        //       lineStyle: {
-        //         width: 2,
-        //         color: 'rgb(70,158,228)',
-        //         type: 'dotted'  //'dotted'虚线 'solid'实线
-        //       }
-        //     }
-        //   },
-        //   smooth: true,
-        //   //stack: '总量',
-        //   data: [820, 932, 901, 934, 1290, 1330, 1320]
-        // },
-      // ]
+
     };
     tab4Li3Echart2reqData();
     tab4Li3Echart2.setOption(option);
@@ -5433,118 +5465,124 @@ $(function () {
     var url = 'toll/selectTollLingerDay.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     var url2 = 'toll/selectTollLingerPredict.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
-      var dataArr = [];
-      var index = 0;
-      for (var key in data.data) {
-        var newArr = [];
-        for (var i = 0; i < data.data[key].length; i++) {
-          var obj = data.data[key][i];
-          newArr.push(obj.timeValue)
-        }
-        dataArr.push({
-          name: hourArr[index],
-          data: newArr,
-          type: 'line',
-          z: 2,
-          stack: 'a',
-          smooth: true,
-          symbol: 'none',
-          lineStyle: {
-            normal: {
-              color: 'rgb(70,158,228)'//rgba(55,255,75
+      if(data.isSuccess) {
+        var dataArr = [];
+        var index = 0;
+        if(!isEmptyObject(data.data)) {
+          for (var key in data.data) {
+            var newArr = [];
+            for (var i = 0; i < data.data[key].length; i++) {
+              var obj = data.data[key][i];
+              newArr.push(obj.timeValue)
             }
-          },
-          label: {
-            normal: {
-              show: false
-            }
-          },
-          areaStyle: {
-            normal: {
-              color: {
-                type: 'linear',
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [{
-                  offset: 0, color: 'rgba(70,158,228,0.3)'
-                }, {
-                  offset: 0.5, color: 'rgba(70,158,228,0.15)'
-                }, {
-                  offset: 1, color: 'rgba(70,158,228,0)'
-                }]
-              }
-            }
-          },
-        });
-        index++;
-      }
-      // console.log('dataArr',dataArr);
-      // debugger
-      tab4Li3Echart2.hideLoading();    //隐藏加载动画
-      tab4Li3Echart2.setOption({
-        series: dataArr,
-        legend: {
-          data: hourArr
-        }
-      })
-    })
-
-    $.axpost(url2,{},function (data) {
-      var dataArr = [];
-      var index = 0;
-      for (var key in data.data) {
-        var newArr = [];
-        for (var i = 0; i < data.data[key].length; i++) {
-          var obj = data.data[key][i];
-          // debugger
-          // console.log(i);
-          
-          // newArr.push(obj.timeValue)
-
-          var tempArr = obj.countTime.split('-');
-          var hour = strDelZero(tempArr[tempArr.length-1]);
-          var objArr = [hour,obj.preUserCnt];
-          newArr.push(objArr);
-        }
-        console.log('newArr:',newArr);
-
-        dataArr.push(
-          {
-            name: hourArr[index] + '预测',
-            type: 'line',
-            smooth: true,
-            symbol: 'none',
-            // stack: 'a',
-            // areaStyle: {
-            //   normal: {
-            //   }
-            // },
-            itemStyle: {
-              normal: {
-                lineStyle: {
-                  width: 1,
-                  color: 'rgb(70,158,228)',
-                  type: 'solid'  //'dotted'虚线 'solid'实线
+            dataArr.push({
+              name: hourArr[index],
+              data: newArr,
+              type: 'line',
+              z: 2,
+              stack: 'a',
+              smooth: true,
+              symbol: 'none',
+              lineStyle: {
+                normal: {
+                  color: 'rgb(70,158,228)'//rgba(55,255,75
                 }
-              }
-            },
-            data: newArr
+              },
+              label: {
+                normal: {
+                  show: false
+                }
+              },
+              areaStyle: {
+                normal: {
+                  color: {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [{
+                      offset: 0, color: 'rgba(70,158,228,0.3)'
+                    }, {
+                      offset: 0.5, color: 'rgba(70,158,228,0.15)'
+                    }, {
+                      offset: 1, color: 'rgba(70,158,228,0)'
+                    }]
+                  }
+                }
+              },
+            });
+            index++;
           }
-        );
-        index++;
-      }
-      console.log('dataArr',dataArr);
-      // debugger
-      tab4Li3Echart2.hideLoading();    //隐藏加载动画
-      tab4Li3Echart2.setOption({
-        series: dataArr,
-        legend: {
-          data: hourArr
         }
-      })
+
+        // console.log('dataArr',dataArr);
+        // debugger
+        tab4Li3Echart2.hideLoading();    //隐藏加载动画
+        tab4Li3Echart2.setOption({
+          series: dataArr,
+          legend: {
+            data: hourArr
+          }
+        })
+      }
+
     })
+
+    // $.axpost(url2,{},function (data) {
+    //   var dataArr = [];
+    //   var index = 0;
+    //   for (var key in data.data) {
+    //     var newArr = [];
+    //     for (var i = 0; i < data.data[key].length; i++) {
+    //       var obj = data.data[key][i];
+    //       // debugger
+    //       // console.log(i);
+    //
+    //       // newArr.push(obj.timeValue)
+    //
+    //       var tempArr = obj.countTime.split('-');
+    //       var hour = strDelZero(tempArr[tempArr.length-1]);
+    //       var objArr = [hour,obj.preUserCnt];
+    //       newArr.push(objArr);
+    //     }
+    //     console.log('newArr:',newArr);
+    //
+    //     dataArr.push(
+    //       {
+    //         name: hourArr[index] + '预测',
+    //         type: 'line',
+    //         smooth: true,
+    //         symbol: 'none',
+    //         // stack: 'a',
+    //         // areaStyle: {
+    //         //   normal: {
+    //         //   }
+    //         // },
+    //         itemStyle: {
+    //           normal: {
+    //             lineStyle: {
+    //               width: 1,
+    //               color: 'rgb(70,158,228)',
+    //               type: 'solid'  //'dotted'虚线 'solid'实线
+    //             }
+    //           }
+    //         },
+    //         data: newArr
+    //       }
+    //     );
+    //     index++;
+    //   }
+    //   console.log('dataArr',dataArr);
+    //   // debugger
+    //   tab4Li3Echart2.hideLoading();    //隐藏加载动画
+    //   tab4Li3Echart2.setOption({
+    //     series: dataArr,
+    //     legend: {
+    //       data: hourArr
+    //     }
+    //   })
+    // })
 
   }
 
@@ -5671,14 +5709,17 @@ $(function () {
     tab4Li4Echart1.showLoading();    //加载动画
     var url = 'toll/selectTollDayflowTrend.do?postionType='+ positionType +'&postionName='+ curPosition +'&startDate='+d.start + '&endDate='+d.end;
     $.axpost(url,{},function (data) {
-      if(data.isSuccess&&data.data.listTollDayFlow.length) {
+      // if(data.isSuccess&&data.data.listTollDayFlow.length) {
+      if(data.isSuccess) {
         // console.log('tab4Li4Echart1',data);
         var dayArr = [];
         var dataArr = [];
-        for (var i = 0; i < data.data.listTollDayFlow.length; i++) {
-          var obj = data.data.listTollDayFlow[i];
-          dayArr.push(obj.statDate);
-          dataArr.push(obj.allPeople);
+        if(data.data.listTollDayFlow.length) {
+          for (var i = 0; i < data.data.listTollDayFlow.length; i++) {
+            var obj = data.data.listTollDayFlow[i];
+            dayArr.push(obj.statDate);
+            dataArr.push(obj.allPeople);
+          }
         }
         // debugger
 
@@ -5853,1002 +5894,1002 @@ $(function () {
   }
 
   // 高速路段图表
-  var tab5Li2Echart1;
-  function tab5Li2initEchart1() {
-    var dom = $('#tab5-klqs');
-    if(!tab5Li2Echart1) {
-      tab5Li2Echart1 = echarts.init(dom[0]);
-    }
-
-    option = null;
-    var date = [];
-
-    for (var i = 0; i < 25; i++) {  // 时间(小时)
-      date.push(i);
-    }
-
-    option = {
-      title: {
-        text: '实时客流趋势',
-        textStyle: {
-          color: 'rgb(221,243,255)',
-          fontSize: 18,
-          fontFamily: 'Microsoft YaHei',
-          // fontWeight:400
-        }
-      },
-      tooltip: {  // 提示框样式
-        trigger: 'axis',
-        // formatter: "{a} <br/>{b}: {c} ({d}%)"
-        formatter: function (params) {
-          // console.log(params)
-          return params[params.length - 1].data[1] + '人';
-        },
-        // formatter: "{c}人",
-        backgroundColor: '#065f89',
-        padding: 10,
-        borderColor: '#28eefb',
-        borderWidth: 1,
-        axisPointer: {  // 指示线
-          lineStyle: {
-            color: '#68e5ff'
-          }
-        }
-      },
-      xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        name: '时点',
-        data: date,
-        axisLine: {
-          onZero: false,
-          lineStyle: {
-            color: 'rgb(133,168,184)'
-          }
-        },
-        axisLabel: {
-          interval: 3
-        },
-      },
-      yAxis: {
-        boundaryGap: [0, '50%'],
-        type: 'value',
-        name: '人数',
-        // 轴 样式
-        axisLine: {
-          onZero: false,
-          lineStyle: {
-            color: 'rgb(133,168,184)'
-          }
-        },
-        // 分割线
-        splitLine: {
-          show: false
-        }
-      },
-      series: [
-        {
-          name: '实时客流趋势',
-          type: 'line',
-          smooth: true,
-          symbol: 'none',
-          stack: 'a',
-          label: {
-            normal: {
-              show: false
-            }
-          },
-          // 填充区域样式
-          areaStyle: {
-            normal: {
-              // color: 'rgb(62,139,230)',
-              // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
-              color: {
-                type: 'linear',
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [{
-                  offset: 0, color: '#183d74' // 0% 处的颜色
-                }, {
-                  offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
-                }],
-                globalCoord: false // 缺省为 false
-              }
-            }
-          },
-          lineStyle: {
-            color: 'rgb(62,139,230)',
-          },
-          data: [],
-
-        },
-        {
-          name: '预测客流趋势',
-          type: 'line',
-          smooth: true,
-          symbol: 'none',
-          // stack: 'a',
-          // areaStyle: {
-          //   normal: {
-          //   }
-          // },
-          itemStyle: {
-            normal: {
-              lineStyle: {
-                width: 1,
-                color: 'rgb(70,158,228)',
-                type: 'dotted'  //'dotted'虚线 'solid'实线
-              }
-            }
-          },
-          data: []
-        }
-      ]
-    };
-    tab5Li2Echart1reqData();
-    if (option && typeof option === "object") {
-      tab5Li2Echart1.setOption(option, true);
-    }
-
-  }
-
-  function tab5Li2Echart1reqData(date) {
-    var d = date?date:returnDate();
-    var str = '虎门大桥';
-    $('#tab5-cld1').hide();
-    tab5Li2Echart1.showLoading();    //加载动画
-    // var url = 'highSpeed/selectGsFlowTrend.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
-    var url = 'highSpeed/selectGsFlowTrend.do?postionType='+ positionType +'&postionName='+ str +'&countDate='+d;
-    var url2 = 'highSpeed/selectGsFlowPredict.do?postionType='+ positionType +'&postionName='+ str +'&countDate='+d;
-    $.axpost(url,{},function (data) {
-      // console.log('tab2Li2InitEchart',data);
-      var dataArr = [];
-      for (var i = 0; i < data.data.length; i++) {
-        var obj = data.data[i];
-        // dataArr.push(obj.peopleNum);
-
-        var tempArr = obj.countTime.split('-');
-        var hour = strDelZero(tempArr[tempArr.length-1]);
-        var objArr = [hour,obj.peopleNum];
-        dataArr.push(objArr);
-      }
-      // console.log('dataArr:',dataArr);
-
-      // debugger
-      $('#tab5-cld1').show();
-      tab5Li2Echart1.hideLoading();    //隐藏加载动画
-      tab5Li2Echart1.setOption({
-        series: [
-          {
-            name: '实时客流趋势',
-            data: dataArr
-          }
-        ]
-      })
-    })
-
-    $.axpost(url2,{},function (data) {
-      // console.log('tab2Li2InitEchart',data);
-      var dataArr = [];
-      for (var i = 0; i < data.data.length; i++) {
-        var obj = data.data[i];
-        // dataArr.push(obj.peopleNum);
-
-        var tempArr = obj.countTime.split('-');
-        var hour = strDelZero(tempArr[tempArr.length-1]);
-        var objArr = [hour,obj.preUserCnt];
-        dataArr.push(objArr);
-      }
-      // debugger
-      $('#tab5-cld1').show();
-      tab5Li2Echart1.hideLoading();    //隐藏加载动画
-      tab5Li2Echart1.setOption({
-        series: [
-          {
-            name: '预测客流趋势',
-            data: dataArr
-          }
-        ]
-      })
-    })
-
-  }
-
-  var tab5Li2Echart2;
-  function tab5Li2initEchart2() {
-    var dom = $('#tab5-yxsd');
-    if(!tab5Li2Echart2) {
-      tab5Li2Echart2 = echarts.init(dom[0]);
-    }
-
-    option = null;
-    var date = [];
-
-    for (var i = 0; i < 25; i++) {  // 时间(小时)
-      date.push(i);
-    }
-
-    option = {
-      title: {
-        text: '实时平均通行速度',
-        textStyle: {
-          color: 'rgb(221,243,255)',
-          fontSize: 18,
-          fontFamily: 'Microsoft YaHei',
-          // fontWeight:400
-        }
-      },
-      tooltip: {  // 提示框样式
-        trigger: 'axis',
-        // formatter: "{a} <br/>{b}: {c} ({d}%)"
-        formatter: function (params) {
-          return params[params.length - 1].data + '人';
-        },
-        backgroundColor: '#065f89',
-        padding: 10,
-        borderColor: '#28eefb',
-        borderWidth: 1,
-        axisPointer: {  // 指示线
-          lineStyle: {
-            color: '#68e5ff'
-          }
-        }
-      },
-      xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        name: '时点',
-        data: date,
-        axisLine: {
-          onZero: false,
-          lineStyle: {
-            color: 'rgb(133,168,184)'
-          }
-        },
-        axisLabel: {
-          interval: 3
-        },
-      },
-      yAxis: {
-        boundaryGap: [0, '50%'],
-        type: 'value',
-        name: '(km/h)',
-        // 轴 样式
-        axisLine: {
-          onZero: false,
-          lineStyle: {
-            color: 'rgb(133,168,184)'
-          }
-        },
-        // 分割线
-        splitLine: {
-          show: false
-        }
-      },
-      series: [
-        {
-          name: '实时平均通行速度',
-          type: 'line',
-          smooth: true,
-          symbol: 'none',
-          stack: 'a',
-          label: {
-            normal: {
-              show: false
-            }
-          },
-          // 填充区域样式
-          areaStyle: {
-            normal: {
-              // color: 'rgb(62,139,230)',
-              // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
-              color: {
-                type: 'linear',
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [{
-                  offset: 0, color: '#15ad64' // 0% 处的颜色
-                }, {
-                  offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
-                }],
-                globalCoord: false // 缺省为 false
-              }
-            }
-          },
-          lineStyle: {
-            color: '#15ad64'
-          },
-          data: [],
-
-        },
-        {
-          name: '预测平均通行速度',
-          type: 'line',
-          smooth: true,
-          symbol: 'none',
-          stack: 'a',
-          // areaStyle: {
-          //   normal: {
-          //   }
-          // },
-          lineStyle: {
-            type: 'dotted',
-            color: '#15ad64'
-
-          },
-          data: []
-        }
-      ]
-    };
-    tab5Li2Echart2reqData();
-    if (option && typeof option === "object") {
-      tab5Li2Echart2.setOption(option, true);
-    }
-
-  }
-
-  function tab5Li2Echart2reqData(date) {
-    var d = date?date:returnDate();
-    var str = '虎门大桥';
-    $('#tab5-cld2').hide();
-    tab5Li2Echart2.showLoading();    //加载动画
-    // var url = 'highSpeed/selectGsAveSpeed.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
-    var url = 'highSpeed/selectGsAveSpeed.do?postionType='+ positionType +'&postionName='+ str +'&countDate='+d;
-    var url2 = 'highSpeed/selectGsAveSpeedPredict.do?postionType='+ positionType +'&postionName='+ str +'&countDate='+d;
-    $.axpost(url,{},function (data) {
-      // console.log('tab2Li2InitEchart',data);
-      var dataArr = [];
-      for (var i = 0; i < data.data.length; i++) {
-        var obj = data.data[i];
-        // dataArr.push(obj.avgSpeed);
-
-        var tempArr = obj.countTime.split('-');
-        var hour = strDelZero(tempArr[tempArr.length-1]);
-        var objArr = [hour,obj.avgSpeed];
-        dataArr.push(objArr);
-      }
-      console.log('dataArr:',dataArr);
-
-      // debugger
-      $('#tab5-cld2').show();
-      tab5Li2Echart2.hideLoading();    //隐藏加载动画
-      tab5Li2Echart2.setOption({
-        series: [
-          {
-            name: '实时平均通行速度',
-            data: dataArr
-          }
-        ]
-      })
-    })
-
-    $.axpost(url2,{},function (data) {
-      // console.log('tab2Li2InitEchart',data);
-      var dataArr = [];
-      for (var i = 0; i < data.data.length; i++) {
-        var obj = data.data[i];
-        // dataArr.push(obj.avgSpeed);
-
-        var tempArr = obj.countTime.split('-');
-        var hour = strDelZero(tempArr[tempArr.length-1]);
-        var objArr = [hour,obj.preAvgSpeed];
-        dataArr.push(objArr);
-      }
-      // debugger
-      $('#tab5-cld2').show();
-      tab5Li2Echart2.hideLoading();    //隐藏加载动画
-      tab5Li2Echart2.setOption({
-        series: [
-          {
-            name: '预测平均通行速度',
-            data: dataArr
-          }
-        ]
-      })
-    })
-
-  }
-
-  var tab5Li3Echart1;
-  function tab5Li3InitEchart1() {
-    var dom = $('#tab5-klqs-week');
-    if(!tab5Li3Echart1) {
-      tab5Li3Echart1 = echarts.init(dom[0]);
-    }
-    option = null;
-
-    option = {
-      title: {
-        text: '每周总客流趋势',
-        textStyle: {
-          color: 'rgb(221,243,255)',
-          fontSize: 18,
-          fontFamily: 'Microsoft YaHei',
-          // fontWeight:400
-        }
-      },
-      tooltip: {
-        trigger: 'axis',
-        // formatter: "{a} <br/>{b}: {c} ({d}%)"
-      },
-      xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        name: '日期',
-        data: [],
-        axisLine: {
-          onZero: false,
-          lineStyle: {
-            color: 'rgb(133,168,184)'
-          }
-        },
-        // 分割线
-        splitLine: {
-          show: false
-        },
-        axisLabel: {
-          interval: 0,
-          rotate: 45,
-          //倾斜度 -90 至 90 默认为0
-          margin: 10,
-          textStyle: {
-            // fontWeight: "bolder",
-            // color: "#000000"
-          }
-        },
-      },
-      yAxis: {
-        boundaryGap: [0, '50%'],
-        type: 'value',
-        name: '人数',
-        // 轴 样式
-        axisLine: {
-          onZero: false,
-          lineStyle: {
-            color: 'rgb(133,168,184)'
-          }
-        },
-        // 分割线
-        splitLine: {
-          show: false
-        }
-      },
-      series: [
-        {
-          name: '每周总客流趋势',
-          type: 'line',
-          smooth: true,
-          symbol: 'none',
-          stack: 'a',
-          label: {
-            normal: {
-              show: false
-            }
-          },
-          // 填充区域样式
-          areaStyle: {
-            normal: {
-              // color: 'rgb(62,139,230)',
-              // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
-              color: {
-                type: 'linear',
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [{
-                  offset: 0, color: '#ad9955' // 0% 处的颜色
-                }, {
-                  offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
-                }],
-                globalCoord: false // 缺省为 false
-              }
-            }
-          },
-          lineStyle: {
-            color: 'rgb(255,215,93)'
-          },
-          data: []
-        }
-      ]
-    };
-    tab5Li3Echart1ReqData();
-    if (option && typeof option === "object") {
-      tab5Li3Echart1.setOption(option, true);
-    }
-  }
-
-  function tab5Li3Echart1ReqData(date) {
-    var str = '虎门大桥'
-    var d;
-    if(date) {
-      d = date;
-    } else {
-      d = {
-        start: returnDate(7),
-        end: returnDate(1)
-      };
-      // console.log('d',d);
-    }
-    tab5Li3Echart1.showLoading();    //加载动画
-    // var url = 'highSpeed/selectGsPeopleAndCarTrend.do?postionType='+ positionType +'&postionName='+ curPosition +'&startDate='+d.start + '&endDate='+d.end;
-    var url = 'highSpeed/selectGsPeopleAndCarTrend.do?postionType='+ positionType +'&postionName='+ str +'&startDate='+d.start + '&endDate='+d.end;
-    $.axpost(url,{},function (data) {
-      // console.log('tab5Li3Echart1',data);
-      var dayArr = [];
-      var dataArr = [];
-      for (var i = 0; i < data.data.listGsTrendDayFlowDAO.length; i++) {
-        var obj = data.data.listGsTrendDayFlowDAO[i];
-        dayArr.push(obj.statDate);
-        dataArr.push(obj.peopleNum);
-      }
-      // debugger
-
-      tab5Li3Echart1.hideLoading();    //隐藏加载动画
-      tab5Li3Echart1.setOption({
-        xAxis: {
-          data: dayArr
-        },
-        series: [
-          {
-            name: '每周总客流趋势',
-            data: dataArr
-          }
-        ]
-      })
-    })
-  }
-
-  var tab5Li3Echart2;
-  function tab5Li3InitEchart2() {
-    var dom = $('#tab5-clqs-week');
-    if(!tab5Li3Echart2) {
-      tab5Li3Echart2 = echarts.init(dom[0]);
-    }
-    option = null;
-
-    option = {
-      title: {
-        text: '每周总车流量趋势',
-        textStyle: {
-          color: 'rgb(221,243,255)',
-          fontSize: 18,
-          fontFamily: 'Microsoft YaHei',
-          // fontWeight:400
-        }
-      },
-      tooltip: {
-        trigger: 'axis',
-        // formatter: "{a} <br/>{b}: {c} ({d}%)"
-      },
-      xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        name: '日期',
-        data: [],
-        axisLine: {
-          onZero: false,
-          lineStyle: {
-            color: 'rgb(133,168,184)'
-          }
-        },
-        // 分割线
-        splitLine: {
-          show: false
-        },
-        axisLabel: {
-          interval: 0,
-          rotate: 45,
-          //倾斜度 -90 至 90 默认为0
-          margin: 10,
-          textStyle: {
-            // fontWeight: "bolder",
-            // color: "#000000"
-          }
-        },
-      },
-      yAxis: {
-        boundaryGap: [0, '50%'],
-        type: 'value',
-        name: '辆',
-        // 轴 样式
-        axisLine: {
-          onZero: false,
-          lineStyle: {
-            color: 'rgb(133,168,184)'
-          }
-        },
-        // 分割线
-        splitLine: {
-          show: false
-        }
-      },
-      series: [
-        {
-          name: '每周总车流量趋势',
-          type: 'line',
-          smooth: true,
-          symbol: 'none',
-          stack: 'a',
-          label: {
-            normal: {
-              show: false
-            }
-          },
-          // 填充区域样式
-          areaStyle: {
-            normal: {
-              // color: 'rgb(62,139,230)',
-              // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
-              color: {
-                type: 'linear',
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [{
-                  offset: 0, color: '#15e1d8' // 0% 处的颜色
-                }, {
-                  offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
-                }],
-                globalCoord: false // 缺省为 false
-              }
-            }
-          },
-          lineStyle: {
-            color: '#15e1d8'
-          },
-          data: []
-        }
-      ]
-    };
-    tab5Li3Echart2ReqData();
-    if (option && typeof option === "object") {
-      tab5Li3Echart2.setOption(option, true);
-    }
-  }
-
-  function tab5Li3Echart2ReqData(date) {
-    var str = '虎门大桥'
-    var d;
-    if(date) {
-      d = date;
-    } else {
-      d = {
-        start: returnDate(7),
-        end: returnDate(1)
-      };
-      // console.log('d',d);
-    }
-    tab5Li3Echart2.showLoading();    //加载动画
-    // var url = 'toll/selectTollDayflowTrend.do?postionType='+ positionType +'&postionName='+ curPosition +'&startDate='+d.start + '&endDate='+d.end;
-    var url = 'highSpeed/selectGsPeopleAndCarTrend.do?postionType='+ positionType +'&postionName='+ str +'&startDate='+d.start + '&endDate='+d.end;
-    $.axpost(url,{},function (data) {
-      // console.log('tab5Li3Echart2',data);
-      var dayArr = [];
-      var dataArr = [];
-      for (var i = 0; i < data.data.listGsTrendDayFlowDAO.length; i++) {
-        var obj = data.data.listGsTrendDayFlowDAO[i];
-        dayArr.push(obj.statDate);
-        dataArr.push(obj.carNum);
-      }
-      // debugger
-
-      tab5Li3Echart2.hideLoading();    //隐藏加载动画
-      tab5Li3Echart2.setOption({
-        xAxis: {
-          data: dayArr
-        },
-        series: [
-          {
-            name: '每周总车流量趋势',
-            data: dataArr
-          }
-        ]
-      })
-    })
-  }
-
-  var tab5Li3Echart3;
-  function tab5Li3initEchart3() {
-    var carArr = [''];
-    var dom = $('#tab5-clfb-week');
-    if(!tab5Li3Echart3) {
-      tab5Li3Echart3 = echarts.init(dom[0]);
-    }
-
-    function handleOption() {
-      var result = [];
-      // for (var key in dataObj) {
-      //   result.push({
-      //     name: key,
-      //     data: dataObj[key]
-      //   })
-      // }
-      for (var i = 0; i < hourArr.length; i++) {
-        var d = hourArr[i];
-        result.push(
-          {
-            name: '实时',
-            type: 'line',
-            smooth: true,
-            symbol: 'none',
-            stack: 'a',
-            label: {
-              normal: {
-                show: true
-              }
-            },
-            // 填充区域样式
-            areaStyle: {
-              normal: {
-                // color: 'rgb(62,139,230)',
-                // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
-                color: {
-                  type: 'linear',
-                  x: 0,
-                  y: 0,
-                  x2: 0,
-                  y2: 1,
-                  colorStops: [{
-                    offset: 0, color: '#183d74' // 0% 处的颜色
-                  }, {
-                    offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
-                  }],
-                  globalCoord: false // 缺省为 false
-                }
-              }
-            },
-            lineStyle: {
-              color: 'rgb(62,139,230)',
-            },
-            data: data,
-
-          }
-          // {
-          //   name: '预测',
-          //   type: 'line',
-          //   smooth: true,
-          //   symbol: 'none',
-          //   stack: 'a',
-          //   // areaStyle: {
-          //   //   normal: {
-          //   //   }
-          //   // },
-          //   lineStyle: {
-          //     type: 'dotted'
-          //   },
-          //   data: data2
-          // }
-
-      )
-      }
-      return result
-    }
-
-    option = null;
-
-    option = {
-      title: {
-        text: '每周车辆类型分布',
-        textStyle: {
-          color: 'rgb(221,243,255)',
-          fontSize: 18,
-          fontFamily: 'Microsoft YaHei',
-          // fontWeight:400
-        }
-      },
-
-      legend: {
-        show:true,
-        textStyle: {
-          color: '#557398'
-        },
-        data: [],
-        width: 300,
-        height: 50,
-        right: 10,
-        top: 10
-      },
-      tooltip: {
-        trigger: 'axis',
-        // formatter: "{a} <br/>{b}: {c} ({d}%)"
-      },
-      xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        name: '时点',
-        data: [],
-        axisLine: {
-          onZero: false,
-          lineStyle: {
-            color: 'rgb(133,168,184)'
-          }
-        },
-        axisLabel: {
-          interval: 0,
-          rotate: 45,
-          //倾斜度 -90 至 90 默认为0
-          margin: 10,
-          textStyle: {
-            // fontWeight: "bolder",
-            // color: "#000000"
-          }
-        },
-      },
-      yAxis: {
-        boundaryGap: [0, '50%'],
-        type: 'value',
-        name: '人数',
-        // 轴 样式
-        axisLine: {
-          onZero: false,
-          lineStyle: {
-            color: 'rgb(133,168,184)'
-          }
-        },
-        // 分割线
-        splitLine: {
-          show: false
-        }
-      },
-      series: [
-        // {
-        //   name: '实时',
-        //   type: 'line',
-        //   smooth: true,
-        //   symbol: 'none',
-        //   stack: 'a',
-        //   label: {
-        //     normal: {
-        //       show: true
-        //     }
-        //   },
-        //   // 填充区域样式
-        //   areaStyle: {
-        //     normal: {
-        //       // color: 'rgb(62,139,230)',
-        //       // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
-        //       color: {
-        //         type: 'linear',
-        //         x: 0,
-        //         y: 0,
-        //         x2: 0,
-        //         y2: 1,
-        //         colorStops: [{
-        //           offset: 0, color: '#183d74' // 0% 处的颜色
-        //         }, {
-        //           offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
-        //         }],
-        //         globalCoord: false // 缺省为 false
-        //       }
-        //     }
-        //   },
-        //   lineStyle: {
-        //     color: 'rgb(62,139,230)',
-        //   },
-        //   data: [],
-        //
-        // },
-        // {
-        //   name: '预测',
-        //   type: 'line',
-        //   smooth: true,
-        //   symbol: 'none',
-        //   stack: 'a',
-        //   // areaStyle: {
-        //   //   normal: {
-        //   //   }
-        //   // },
-        //   lineStyle: {
-        //     type: 'dotted'
-        //   },
-        //   data: data2
-        // }
-      ]
-    };
-    tab5Li3Echart3reqData();
-    if (option && typeof option === "object") {
-      tab5Li3Echart3.setOption(option, true);
-    }
-
-  }
-
-  function tab5Li3Echart3reqData(date) {
-    var str = '虎门大桥'
-    var d;
-    if(date) {
-      d = date;
-    } else {
-      d = {
-        start: returnDate(7),
-        end: returnDate(1)
-      };
-      // console.log('d',d);
-    }
-    tab5Li3Echart3.showLoading();    //加载动画
-    // var url = 'highSpeed/selectGsCarType.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+date;
-    // var url = 'highSpeed/selectGsCarType.do?postionType='+ positionType +'&postionName='+ str +'&countDate='+date;
-    var url = 'highSpeed/selectGsCarType.do?postionType='+ positionType +'&postionName='+ str +'&startDate='+d.start + '&endDate='+d.end;
-
-    $.axpost(url,{},function (data) {
-
-      var dataArr = [];
-      var lgdArr = [];
-      var xArr = [];
-
-      var index = 0;
-      for (var key in data.data) {
-        lgdArr.push(key);
-        var newArr = [];
-        for (var i = 0; i < data.data[key].length; i++) {
-          var obj = data.data[key][i];
-          newArr.push(obj.peopleNum);
-          if(xArr.length<7) {
-            xArr.push(obj.statDate)
-          }
-        }
-        dataArr.push(
-          {
-            name: lgdArr[index],
-            data: newArr,
-            type: 'line',
-            smooth: true,
-            symbol: 'none',
-            stack: 'a',
-            label: {
-              // normal: {
-              //   show: true
-              // }
-              show: false
-            },
-            // 填充区域样式
-            areaStyle: {
-              normal: {
-                // color: 'rgb(62,139,230)',
-                // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
-                color: {
-                  type: 'linear',
-                  x: 0,
-                  y: 0,
-                  x2: 0,
-                  y2: 1,
-                  colorStops: [{
-                    offset: 0, color: '#183d74' // 0% 处的颜色
-                  }, {
-                    offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
-                  }],
-                  globalCoord: false // 缺省为 false
-                }
-              }
-            },
-            lineStyle: {
-              color: 'rgb(62,139,230)'
-            }
-          }
-        );
-        index++;
-      }
-      console.log('dataArr',dataArr,xArr);
-
-
-      // debugger
-      tab5Li3Echart3.hideLoading();    //隐藏加载动画
-      tab5Li3Echart3.setOption({
-        series: dataArr,
-        legend: {
-          data: lgdArr
-        },
-        xAxis: {
-          data: xArr
-        }
-      })
-    })
-
-  }
+  // var tab5Li2Echart1;
+  // function tab5Li2initEchart1() {
+  //   var dom = $('#tab5-klqs');
+  //   if(!tab5Li2Echart1) {
+  //     tab5Li2Echart1 = echarts.init(dom[0]);
+  //   }
+  //
+  //   option = null;
+  //   var date = [];
+  //
+  //   for (var i = 0; i < 25; i++) {  // 时间(小时)
+  //     date.push(i);
+  //   }
+  //
+  //   option = {
+  //     title: {
+  //       text: '实时客流趋势',
+  //       textStyle: {
+  //         color: 'rgb(221,243,255)',
+  //         fontSize: 18,
+  //         fontFamily: 'Microsoft YaHei',
+  //         // fontWeight:400
+  //       }
+  //     },
+  //     tooltip: {  // 提示框样式
+  //       trigger: 'axis',
+  //       // formatter: "{a} <br/>{b}: {c} ({d}%)"
+  //       formatter: function (params) {
+  //         // console.log(params)
+  //         return params[params.length - 1].data[1] + '人';
+  //       },
+  //       // formatter: "{c}人",
+  //       backgroundColor: '#065f89',
+  //       padding: 10,
+  //       borderColor: '#28eefb',
+  //       borderWidth: 1,
+  //       axisPointer: {  // 指示线
+  //         lineStyle: {
+  //           color: '#68e5ff'
+  //         }
+  //       }
+  //     },
+  //     xAxis: {
+  //       type: 'category',
+  //       boundaryGap: false,
+  //       name: '时点',
+  //       data: date,
+  //       axisLine: {
+  //         onZero: false,
+  //         lineStyle: {
+  //           color: 'rgb(133,168,184)'
+  //         }
+  //       },
+  //       axisLabel: {
+  //         interval: 3
+  //       },
+  //     },
+  //     yAxis: {
+  //       boundaryGap: [0, '50%'],
+  //       type: 'value',
+  //       name: '人数',
+  //       // 轴 样式
+  //       axisLine: {
+  //         onZero: false,
+  //         lineStyle: {
+  //           color: 'rgb(133,168,184)'
+  //         }
+  //       },
+  //       // 分割线
+  //       splitLine: {
+  //         show: false
+  //       }
+  //     },
+  //     series: [
+  //       {
+  //         name: '实时客流趋势',
+  //         type: 'line',
+  //         smooth: true,
+  //         symbol: 'none',
+  //         stack: 'a',
+  //         label: {
+  //           normal: {
+  //             show: false
+  //           }
+  //         },
+  //         // 填充区域样式
+  //         areaStyle: {
+  //           normal: {
+  //             // color: 'rgb(62,139,230)',
+  //             // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
+  //             color: {
+  //               type: 'linear',
+  //               x: 0,
+  //               y: 0,
+  //               x2: 0,
+  //               y2: 1,
+  //               colorStops: [{
+  //                 offset: 0, color: '#183d74' // 0% 处的颜色
+  //               }, {
+  //                 offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
+  //               }],
+  //               globalCoord: false // 缺省为 false
+  //             }
+  //           }
+  //         },
+  //         lineStyle: {
+  //           color: 'rgb(62,139,230)',
+  //         },
+  //         data: [],
+  //
+  //       },
+  //       {
+  //         name: '预测客流趋势',
+  //         type: 'line',
+  //         smooth: true,
+  //         symbol: 'none',
+  //         // stack: 'a',
+  //         // areaStyle: {
+  //         //   normal: {
+  //         //   }
+  //         // },
+  //         itemStyle: {
+  //           normal: {
+  //             lineStyle: {
+  //               width: 1,
+  //               color: 'rgb(70,158,228)',
+  //               type: 'dotted'  //'dotted'虚线 'solid'实线
+  //             }
+  //           }
+  //         },
+  //         data: []
+  //       }
+  //     ]
+  //   };
+  //   tab5Li2Echart1reqData();
+  //   if (option && typeof option === "object") {
+  //     tab5Li2Echart1.setOption(option, true);
+  //   }
+  //
+  // }
+  //
+  // function tab5Li2Echart1reqData(date) {
+  //   var d = date?date:returnDate();
+  //   var str = '虎门大桥';
+  //   $('#tab5-cld1').hide();
+  //   tab5Li2Echart1.showLoading();    //加载动画
+  //   // var url = 'highSpeed/selectGsFlowTrend.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
+  //   var url = 'highSpeed/selectGsFlowTrend.do?postionType='+ positionType +'&postionName='+ str +'&countDate='+d;
+  //   var url2 = 'highSpeed/selectGsFlowPredict.do?postionType='+ positionType +'&postionName='+ str +'&countDate='+d;
+  //   $.axpost(url,{},function (data) {
+  //     // console.log('tab2Li2InitEchart',data);
+  //     var dataArr = [];
+  //     for (var i = 0; i < data.data.length; i++) {
+  //       var obj = data.data[i];
+  //       // dataArr.push(obj.peopleNum);
+  //
+  //       var tempArr = obj.countTime.split('-');
+  //       var hour = strDelZero(tempArr[tempArr.length-1]);
+  //       var objArr = [hour,obj.peopleNum];
+  //       dataArr.push(objArr);
+  //     }
+  //     // console.log('dataArr:',dataArr);
+  //
+  //     // debugger
+  //     $('#tab5-cld1').show();
+  //     tab5Li2Echart1.hideLoading();    //隐藏加载动画
+  //     tab5Li2Echart1.setOption({
+  //       series: [
+  //         {
+  //           name: '实时客流趋势',
+  //           data: dataArr
+  //         }
+  //       ]
+  //     })
+  //   })
+  //
+  //   $.axpost(url2,{},function (data) {
+  //     // console.log('tab2Li2InitEchart',data);
+  //     var dataArr = [];
+  //     for (var i = 0; i < data.data.length; i++) {
+  //       var obj = data.data[i];
+  //       // dataArr.push(obj.peopleNum);
+  //
+  //       var tempArr = obj.countTime.split('-');
+  //       var hour = strDelZero(tempArr[tempArr.length-1]);
+  //       var objArr = [hour,obj.preUserCnt];
+  //       dataArr.push(objArr);
+  //     }
+  //     // debugger
+  //     $('#tab5-cld1').show();
+  //     tab5Li2Echart1.hideLoading();    //隐藏加载动画
+  //     tab5Li2Echart1.setOption({
+  //       series: [
+  //         {
+  //           name: '预测客流趋势',
+  //           data: dataArr
+  //         }
+  //       ]
+  //     })
+  //   })
+  //
+  // }
+  //
+  // var tab5Li2Echart2;
+  // function tab5Li2initEchart2() {
+  //   var dom = $('#tab5-yxsd');
+  //   if(!tab5Li2Echart2) {
+  //     tab5Li2Echart2 = echarts.init(dom[0]);
+  //   }
+  //
+  //   option = null;
+  //   var date = [];
+  //
+  //   for (var i = 0; i < 25; i++) {  // 时间(小时)
+  //     date.push(i);
+  //   }
+  //
+  //   option = {
+  //     title: {
+  //       text: '实时平均通行速度',
+  //       textStyle: {
+  //         color: 'rgb(221,243,255)',
+  //         fontSize: 18,
+  //         fontFamily: 'Microsoft YaHei',
+  //         // fontWeight:400
+  //       }
+  //     },
+  //     tooltip: {  // 提示框样式
+  //       trigger: 'axis',
+  //       // formatter: "{a} <br/>{b}: {c} ({d}%)"
+  //       formatter: function (params) {
+  //         return params[params.length - 1].data + '人';
+  //       },
+  //       backgroundColor: '#065f89',
+  //       padding: 10,
+  //       borderColor: '#28eefb',
+  //       borderWidth: 1,
+  //       axisPointer: {  // 指示线
+  //         lineStyle: {
+  //           color: '#68e5ff'
+  //         }
+  //       }
+  //     },
+  //     xAxis: {
+  //       type: 'category',
+  //       boundaryGap: false,
+  //       name: '时点',
+  //       data: date,
+  //       axisLine: {
+  //         onZero: false,
+  //         lineStyle: {
+  //           color: 'rgb(133,168,184)'
+  //         }
+  //       },
+  //       axisLabel: {
+  //         interval: 3
+  //       },
+  //     },
+  //     yAxis: {
+  //       boundaryGap: [0, '50%'],
+  //       type: 'value',
+  //       name: '(km/h)',
+  //       // 轴 样式
+  //       axisLine: {
+  //         onZero: false,
+  //         lineStyle: {
+  //           color: 'rgb(133,168,184)'
+  //         }
+  //       },
+  //       // 分割线
+  //       splitLine: {
+  //         show: false
+  //       }
+  //     },
+  //     series: [
+  //       {
+  //         name: '实时平均通行速度',
+  //         type: 'line',
+  //         smooth: true,
+  //         symbol: 'none',
+  //         stack: 'a',
+  //         label: {
+  //           normal: {
+  //             show: false
+  //           }
+  //         },
+  //         // 填充区域样式
+  //         areaStyle: {
+  //           normal: {
+  //             // color: 'rgb(62,139,230)',
+  //             // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
+  //             color: {
+  //               type: 'linear',
+  //               x: 0,
+  //               y: 0,
+  //               x2: 0,
+  //               y2: 1,
+  //               colorStops: [{
+  //                 offset: 0, color: '#15ad64' // 0% 处的颜色
+  //               }, {
+  //                 offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
+  //               }],
+  //               globalCoord: false // 缺省为 false
+  //             }
+  //           }
+  //         },
+  //         lineStyle: {
+  //           color: '#15ad64'
+  //         },
+  //         data: [],
+  //
+  //       },
+  //       {
+  //         name: '预测平均通行速度',
+  //         type: 'line',
+  //         smooth: true,
+  //         symbol: 'none',
+  //         stack: 'a',
+  //         // areaStyle: {
+  //         //   normal: {
+  //         //   }
+  //         // },
+  //         lineStyle: {
+  //           type: 'dotted',
+  //           color: '#15ad64'
+  //
+  //         },
+  //         data: []
+  //       }
+  //     ]
+  //   };
+  //   tab5Li2Echart2reqData();
+  //   if (option && typeof option === "object") {
+  //     tab5Li2Echart2.setOption(option, true);
+  //   }
+  //
+  // }
+  //
+  // function tab5Li2Echart2reqData(date) {
+  //   var d = date?date:returnDate();
+  //   var str = '虎门大桥';
+  //   $('#tab5-cld2').hide();
+  //   tab5Li2Echart2.showLoading();    //加载动画
+  //   // var url = 'highSpeed/selectGsAveSpeed.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
+  //   var url = 'highSpeed/selectGsAveSpeed.do?postionType='+ positionType +'&postionName='+ str +'&countDate='+d;
+  //   var url2 = 'highSpeed/selectGsAveSpeedPredict.do?postionType='+ positionType +'&postionName='+ str +'&countDate='+d;
+  //   $.axpost(url,{},function (data) {
+  //     // console.log('tab2Li2InitEchart',data);
+  //     var dataArr = [];
+  //     for (var i = 0; i < data.data.length; i++) {
+  //       var obj = data.data[i];
+  //       // dataArr.push(obj.avgSpeed);
+  //
+  //       var tempArr = obj.countTime.split('-');
+  //       var hour = strDelZero(tempArr[tempArr.length-1]);
+  //       var objArr = [hour,obj.avgSpeed];
+  //       dataArr.push(objArr);
+  //     }
+  //     console.log('dataArr:',dataArr);
+  //
+  //     // debugger
+  //     $('#tab5-cld2').show();
+  //     tab5Li2Echart2.hideLoading();    //隐藏加载动画
+  //     tab5Li2Echart2.setOption({
+  //       series: [
+  //         {
+  //           name: '实时平均通行速度',
+  //           data: dataArr
+  //         }
+  //       ]
+  //     })
+  //   })
+  //
+  //   $.axpost(url2,{},function (data) {
+  //     // console.log('tab2Li2InitEchart',data);
+  //     var dataArr = [];
+  //     for (var i = 0; i < data.data.length; i++) {
+  //       var obj = data.data[i];
+  //       // dataArr.push(obj.avgSpeed);
+  //
+  //       var tempArr = obj.countTime.split('-');
+  //       var hour = strDelZero(tempArr[tempArr.length-1]);
+  //       var objArr = [hour,obj.preAvgSpeed];
+  //       dataArr.push(objArr);
+  //     }
+  //     // debugger
+  //     $('#tab5-cld2').show();
+  //     tab5Li2Echart2.hideLoading();    //隐藏加载动画
+  //     tab5Li2Echart2.setOption({
+  //       series: [
+  //         {
+  //           name: '预测平均通行速度',
+  //           data: dataArr
+  //         }
+  //       ]
+  //     })
+  //   })
+  //
+  // }
+  //
+  // var tab5Li3Echart1;
+  // function tab5Li3InitEchart1() {
+  //   var dom = $('#tab5-klqs-week');
+  //   if(!tab5Li3Echart1) {
+  //     tab5Li3Echart1 = echarts.init(dom[0]);
+  //   }
+  //   option = null;
+  //
+  //   option = {
+  //     title: {
+  //       text: '每周总客流趋势',
+  //       textStyle: {
+  //         color: 'rgb(221,243,255)',
+  //         fontSize: 18,
+  //         fontFamily: 'Microsoft YaHei',
+  //         // fontWeight:400
+  //       }
+  //     },
+  //     tooltip: {
+  //       trigger: 'axis',
+  //       // formatter: "{a} <br/>{b}: {c} ({d}%)"
+  //     },
+  //     xAxis: {
+  //       type: 'category',
+  //       boundaryGap: false,
+  //       name: '日期',
+  //       data: [],
+  //       axisLine: {
+  //         onZero: false,
+  //         lineStyle: {
+  //           color: 'rgb(133,168,184)'
+  //         }
+  //       },
+  //       // 分割线
+  //       splitLine: {
+  //         show: false
+  //       },
+  //       axisLabel: {
+  //         interval: 0,
+  //         rotate: 45,
+  //         //倾斜度 -90 至 90 默认为0
+  //         margin: 10,
+  //         textStyle: {
+  //           // fontWeight: "bolder",
+  //           // color: "#000000"
+  //         }
+  //       },
+  //     },
+  //     yAxis: {
+  //       boundaryGap: [0, '50%'],
+  //       type: 'value',
+  //       name: '人数',
+  //       // 轴 样式
+  //       axisLine: {
+  //         onZero: false,
+  //         lineStyle: {
+  //           color: 'rgb(133,168,184)'
+  //         }
+  //       },
+  //       // 分割线
+  //       splitLine: {
+  //         show: false
+  //       }
+  //     },
+  //     series: [
+  //       {
+  //         name: '每周总客流趋势',
+  //         type: 'line',
+  //         smooth: true,
+  //         symbol: 'none',
+  //         stack: 'a',
+  //         label: {
+  //           normal: {
+  //             show: false
+  //           }
+  //         },
+  //         // 填充区域样式
+  //         areaStyle: {
+  //           normal: {
+  //             // color: 'rgb(62,139,230)',
+  //             // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
+  //             color: {
+  //               type: 'linear',
+  //               x: 0,
+  //               y: 0,
+  //               x2: 0,
+  //               y2: 1,
+  //               colorStops: [{
+  //                 offset: 0, color: '#ad9955' // 0% 处的颜色
+  //               }, {
+  //                 offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
+  //               }],
+  //               globalCoord: false // 缺省为 false
+  //             }
+  //           }
+  //         },
+  //         lineStyle: {
+  //           color: 'rgb(255,215,93)'
+  //         },
+  //         data: []
+  //       }
+  //     ]
+  //   };
+  //   tab5Li3Echart1ReqData();
+  //   if (option && typeof option === "object") {
+  //     tab5Li3Echart1.setOption(option, true);
+  //   }
+  // }
+  //
+  // function tab5Li3Echart1ReqData(date) {
+  //   var str = '虎门大桥'
+  //   var d;
+  //   if(date) {
+  //     d = date;
+  //   } else {
+  //     d = {
+  //       start: returnDate(7),
+  //       end: returnDate(1)
+  //     };
+  //     // console.log('d',d);
+  //   }
+  //   tab5Li3Echart1.showLoading();    //加载动画
+  //   // var url = 'highSpeed/selectGsPeopleAndCarTrend.do?postionType='+ positionType +'&postionName='+ curPosition +'&startDate='+d.start + '&endDate='+d.end;
+  //   var url = 'highSpeed/selectGsPeopleAndCarTrend.do?postionType='+ positionType +'&postionName='+ str +'&startDate='+d.start + '&endDate='+d.end;
+  //   $.axpost(url,{},function (data) {
+  //     // console.log('tab5Li3Echart1',data);
+  //     var dayArr = [];
+  //     var dataArr = [];
+  //     for (var i = 0; i < data.data.listGsTrendDayFlowDAO.length; i++) {
+  //       var obj = data.data.listGsTrendDayFlowDAO[i];
+  //       dayArr.push(obj.statDate);
+  //       dataArr.push(obj.peopleNum);
+  //     }
+  //     // debugger
+  //
+  //     tab5Li3Echart1.hideLoading();    //隐藏加载动画
+  //     tab5Li3Echart1.setOption({
+  //       xAxis: {
+  //         data: dayArr
+  //       },
+  //       series: [
+  //         {
+  //           name: '每周总客流趋势',
+  //           data: dataArr
+  //         }
+  //       ]
+  //     })
+  //   })
+  // }
+  //
+  // var tab5Li3Echart2;
+  // function tab5Li3InitEchart2() {
+  //   var dom = $('#tab5-clqs-week');
+  //   if(!tab5Li3Echart2) {
+  //     tab5Li3Echart2 = echarts.init(dom[0]);
+  //   }
+  //   option = null;
+  //
+  //   option = {
+  //     title: {
+  //       text: '每周总车流量趋势',
+  //       textStyle: {
+  //         color: 'rgb(221,243,255)',
+  //         fontSize: 18,
+  //         fontFamily: 'Microsoft YaHei',
+  //         // fontWeight:400
+  //       }
+  //     },
+  //     tooltip: {
+  //       trigger: 'axis',
+  //       // formatter: "{a} <br/>{b}: {c} ({d}%)"
+  //     },
+  //     xAxis: {
+  //       type: 'category',
+  //       boundaryGap: false,
+  //       name: '日期',
+  //       data: [],
+  //       axisLine: {
+  //         onZero: false,
+  //         lineStyle: {
+  //           color: 'rgb(133,168,184)'
+  //         }
+  //       },
+  //       // 分割线
+  //       splitLine: {
+  //         show: false
+  //       },
+  //       axisLabel: {
+  //         interval: 0,
+  //         rotate: 45,
+  //         //倾斜度 -90 至 90 默认为0
+  //         margin: 10,
+  //         textStyle: {
+  //           // fontWeight: "bolder",
+  //           // color: "#000000"
+  //         }
+  //       },
+  //     },
+  //     yAxis: {
+  //       boundaryGap: [0, '50%'],
+  //       type: 'value',
+  //       name: '辆',
+  //       // 轴 样式
+  //       axisLine: {
+  //         onZero: false,
+  //         lineStyle: {
+  //           color: 'rgb(133,168,184)'
+  //         }
+  //       },
+  //       // 分割线
+  //       splitLine: {
+  //         show: false
+  //       }
+  //     },
+  //     series: [
+  //       {
+  //         name: '每周总车流量趋势',
+  //         type: 'line',
+  //         smooth: true,
+  //         symbol: 'none',
+  //         stack: 'a',
+  //         label: {
+  //           normal: {
+  //             show: false
+  //           }
+  //         },
+  //         // 填充区域样式
+  //         areaStyle: {
+  //           normal: {
+  //             // color: 'rgb(62,139,230)',
+  //             // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
+  //             color: {
+  //               type: 'linear',
+  //               x: 0,
+  //               y: 0,
+  //               x2: 0,
+  //               y2: 1,
+  //               colorStops: [{
+  //                 offset: 0, color: '#15e1d8' // 0% 处的颜色
+  //               }, {
+  //                 offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
+  //               }],
+  //               globalCoord: false // 缺省为 false
+  //             }
+  //           }
+  //         },
+  //         lineStyle: {
+  //           color: '#15e1d8'
+  //         },
+  //         data: []
+  //       }
+  //     ]
+  //   };
+  //   tab5Li3Echart2ReqData();
+  //   if (option && typeof option === "object") {
+  //     tab5Li3Echart2.setOption(option, true);
+  //   }
+  // }
+  //
+  // function tab5Li3Echart2ReqData(date) {
+  //   var str = '虎门大桥'
+  //   var d;
+  //   if(date) {
+  //     d = date;
+  //   } else {
+  //     d = {
+  //       start: returnDate(7),
+  //       end: returnDate(1)
+  //     };
+  //     // console.log('d',d);
+  //   }
+  //   tab5Li3Echart2.showLoading();    //加载动画
+  //   // var url = 'toll/selectTollDayflowTrend.do?postionType='+ positionType +'&postionName='+ curPosition +'&startDate='+d.start + '&endDate='+d.end;
+  //   var url = 'highSpeed/selectGsPeopleAndCarTrend.do?postionType='+ positionType +'&postionName='+ str +'&startDate='+d.start + '&endDate='+d.end;
+  //   $.axpost(url,{},function (data) {
+  //     // console.log('tab5Li3Echart2',data);
+  //     var dayArr = [];
+  //     var dataArr = [];
+  //     for (var i = 0; i < data.data.listGsTrendDayFlowDAO.length; i++) {
+  //       var obj = data.data.listGsTrendDayFlowDAO[i];
+  //       dayArr.push(obj.statDate);
+  //       dataArr.push(obj.carNum);
+  //     }
+  //     // debugger
+  //
+  //     tab5Li3Echart2.hideLoading();    //隐藏加载动画
+  //     tab5Li3Echart2.setOption({
+  //       xAxis: {
+  //         data: dayArr
+  //       },
+  //       series: [
+  //         {
+  //           name: '每周总车流量趋势',
+  //           data: dataArr
+  //         }
+  //       ]
+  //     })
+  //   })
+  // }
+  //
+  // var tab5Li3Echart3;
+  // function tab5Li3initEchart3() {
+  //   var carArr = [''];
+  //   var dom = $('#tab5-clfb-week');
+  //   if(!tab5Li3Echart3) {
+  //     tab5Li3Echart3 = echarts.init(dom[0]);
+  //   }
+  //
+  //   function handleOption() {
+  //     var result = [];
+  //     // for (var key in dataObj) {
+  //     //   result.push({
+  //     //     name: key,
+  //     //     data: dataObj[key]
+  //     //   })
+  //     // }
+  //     for (var i = 0; i < hourArr.length; i++) {
+  //       var d = hourArr[i];
+  //       result.push(
+  //         {
+  //           name: '实时',
+  //           type: 'line',
+  //           smooth: true,
+  //           symbol: 'none',
+  //           stack: 'a',
+  //           label: {
+  //             normal: {
+  //               show: true
+  //             }
+  //           },
+  //           // 填充区域样式
+  //           areaStyle: {
+  //             normal: {
+  //               // color: 'rgb(62,139,230)',
+  //               // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
+  //               color: {
+  //                 type: 'linear',
+  //                 x: 0,
+  //                 y: 0,
+  //                 x2: 0,
+  //                 y2: 1,
+  //                 colorStops: [{
+  //                   offset: 0, color: '#183d74' // 0% 处的颜色
+  //                 }, {
+  //                   offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
+  //                 }],
+  //                 globalCoord: false // 缺省为 false
+  //               }
+  //             }
+  //           },
+  //           lineStyle: {
+  //             color: 'rgb(62,139,230)',
+  //           },
+  //           data: data,
+  //
+  //         }
+  //         // {
+  //         //   name: '预测',
+  //         //   type: 'line',
+  //         //   smooth: true,
+  //         //   symbol: 'none',
+  //         //   stack: 'a',
+  //         //   // areaStyle: {
+  //         //   //   normal: {
+  //         //   //   }
+  //         //   // },
+  //         //   lineStyle: {
+  //         //     type: 'dotted'
+  //         //   },
+  //         //   data: data2
+  //         // }
+  //
+  //     )
+  //     }
+  //     return result
+  //   }
+  //
+  //   option = null;
+  //
+  //   option = {
+  //     title: {
+  //       text: '每周车辆类型分布',
+  //       textStyle: {
+  //         color: 'rgb(221,243,255)',
+  //         fontSize: 18,
+  //         fontFamily: 'Microsoft YaHei',
+  //         // fontWeight:400
+  //       }
+  //     },
+  //
+  //     legend: {
+  //       show:true,
+  //       textStyle: {
+  //         color: '#557398'
+  //       },
+  //       data: [],
+  //       width: 300,
+  //       height: 50,
+  //       right: 10,
+  //       top: 10
+  //     },
+  //     tooltip: {
+  //       trigger: 'axis',
+  //       // formatter: "{a} <br/>{b}: {c} ({d}%)"
+  //     },
+  //     xAxis: {
+  //       type: 'category',
+  //       boundaryGap: false,
+  //       name: '时点',
+  //       data: [],
+  //       axisLine: {
+  //         onZero: false,
+  //         lineStyle: {
+  //           color: 'rgb(133,168,184)'
+  //         }
+  //       },
+  //       axisLabel: {
+  //         interval: 0,
+  //         rotate: 45,
+  //         //倾斜度 -90 至 90 默认为0
+  //         margin: 10,
+  //         textStyle: {
+  //           // fontWeight: "bolder",
+  //           // color: "#000000"
+  //         }
+  //       },
+  //     },
+  //     yAxis: {
+  //       boundaryGap: [0, '50%'],
+  //       type: 'value',
+  //       name: '人数',
+  //       // 轴 样式
+  //       axisLine: {
+  //         onZero: false,
+  //         lineStyle: {
+  //           color: 'rgb(133,168,184)'
+  //         }
+  //       },
+  //       // 分割线
+  //       splitLine: {
+  //         show: false
+  //       }
+  //     },
+  //     series: [
+  //       // {
+  //       //   name: '实时',
+  //       //   type: 'line',
+  //       //   smooth: true,
+  //       //   symbol: 'none',
+  //       //   stack: 'a',
+  //       //   label: {
+  //       //     normal: {
+  //       //       show: true
+  //       //     }
+  //       //   },
+  //       //   // 填充区域样式
+  //       //   areaStyle: {
+  //       //     normal: {
+  //       //       // color: 'rgb(62,139,230)',
+  //       //       // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
+  //       //       color: {
+  //       //         type: 'linear',
+  //       //         x: 0,
+  //       //         y: 0,
+  //       //         x2: 0,
+  //       //         y2: 1,
+  //       //         colorStops: [{
+  //       //           offset: 0, color: '#183d74' // 0% 处的颜色
+  //       //         }, {
+  //       //           offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
+  //       //         }],
+  //       //         globalCoord: false // 缺省为 false
+  //       //       }
+  //       //     }
+  //       //   },
+  //       //   lineStyle: {
+  //       //     color: 'rgb(62,139,230)',
+  //       //   },
+  //       //   data: [],
+  //       //
+  //       // },
+  //       // {
+  //       //   name: '预测',
+  //       //   type: 'line',
+  //       //   smooth: true,
+  //       //   symbol: 'none',
+  //       //   stack: 'a',
+  //       //   // areaStyle: {
+  //       //   //   normal: {
+  //       //   //   }
+  //       //   // },
+  //       //   lineStyle: {
+  //       //     type: 'dotted'
+  //       //   },
+  //       //   data: data2
+  //       // }
+  //     ]
+  //   };
+  //   tab5Li3Echart3reqData();
+  //   if (option && typeof option === "object") {
+  //     tab5Li3Echart3.setOption(option, true);
+  //   }
+  //
+  // }
+  //
+  // function tab5Li3Echart3reqData(date) {
+  //   var str = '虎门大桥'
+  //   var d;
+  //   if(date) {
+  //     d = date;
+  //   } else {
+  //     d = {
+  //       start: returnDate(7),
+  //       end: returnDate(1)
+  //     };
+  //     // console.log('d',d);
+  //   }
+  //   tab5Li3Echart3.showLoading();    //加载动画
+  //   // var url = 'highSpeed/selectGsCarType.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+date;
+  //   // var url = 'highSpeed/selectGsCarType.do?postionType='+ positionType +'&postionName='+ str +'&countDate='+date;
+  //   var url = 'highSpeed/selectGsCarType.do?postionType='+ positionType +'&postionName='+ str +'&startDate='+d.start + '&endDate='+d.end;
+  //
+  //   $.axpost(url,{},function (data) {
+  //
+  //     var dataArr = [];
+  //     var lgdArr = [];
+  //     var xArr = [];
+  //
+  //     var index = 0;
+  //     for (var key in data.data) {
+  //       lgdArr.push(key);
+  //       var newArr = [];
+  //       for (var i = 0; i < data.data[key].length; i++) {
+  //         var obj = data.data[key][i];
+  //         newArr.push(obj.peopleNum);
+  //         if(xArr.length<7) {
+  //           xArr.push(obj.statDate)
+  //         }
+  //       }
+  //       dataArr.push(
+  //         {
+  //           name: lgdArr[index],
+  //           data: newArr,
+  //           type: 'line',
+  //           smooth: true,
+  //           symbol: 'none',
+  //           stack: 'a',
+  //           label: {
+  //             // normal: {
+  //             //   show: true
+  //             // }
+  //             show: false
+  //           },
+  //           // 填充区域样式
+  //           areaStyle: {
+  //             normal: {
+  //               // color: 'rgb(62,139,230)',
+  //               // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
+  //               color: {
+  //                 type: 'linear',
+  //                 x: 0,
+  //                 y: 0,
+  //                 x2: 0,
+  //                 y2: 1,
+  //                 colorStops: [{
+  //                   offset: 0, color: '#183d74' // 0% 处的颜色
+  //                 }, {
+  //                   offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
+  //                 }],
+  //                 globalCoord: false // 缺省为 false
+  //               }
+  //             }
+  //           },
+  //           lineStyle: {
+  //             color: 'rgb(62,139,230)'
+  //           }
+  //         }
+  //       );
+  //       index++;
+  //     }
+  //     console.log('dataArr',dataArr,xArr);
+  //
+  //
+  //     // debugger
+  //     tab5Li3Echart3.hideLoading();    //隐藏加载动画
+  //     tab5Li3Echart3.setOption({
+  //       series: dataArr,
+  //       legend: {
+  //         data: lgdArr
+  //       },
+  //       xAxis: {
+  //         data: xArr
+  //       }
+  //     })
+  //   })
+  //
+  // }
 
 });

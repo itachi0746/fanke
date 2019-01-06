@@ -263,7 +263,7 @@ $(function () {
       if (theZoom >= 14) {
         $('#container2').hide()
       } else {
-        console.log(window.nowTab);
+        // console.log(window.nowTab);
         if(window.nowTab!=='高速监测') {
           $('#container2').show()
         }

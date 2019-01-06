@@ -32,6 +32,17 @@ function toWan(num) {
   // result = val>=10000?Math.round(val/10000):val;
   return num + spanDom
 }
+function toWan2(num) {
+  if (!num) {
+    console.log('toWan2:参数不正确');
+    return
+  }
+  if (num >= 1000) {
+    num = (num / 10000).toFixed(1);
+  }
+  // result = val>=10000?Math.round(val/10000):val;
+  return num
+}
 
 /**
  * 返回今天或者指定日期
@@ -42,16 +53,19 @@ function returnDate(detract) {
   var myDate = new Date();
   var y, m, d;
   if (!detract) {
-    y = myDate.getFullYear();
-    m = myDate.getMonth() + 1;
-    d = myDate.getDate();
-    return y + '-' + m + '-' + d;
+    // y = myDate.getFullYear();
+    // m = myDate.getMonth() + 1;
+    // d = myDate.getDate();
+    // return y + '-' + m + '-' + d;
+    return moment().format('YYYY-MM-DD')
   } else {
     var sec = 24 * 60 * 60 * 1000 * detract;
     var theDate = new Date(myDate.getTime() - sec);
     y = theDate.getFullYear();
     m = theDate.getMonth() + 1;
     d = theDate.getDate();
+    m=m<10?'0'+m:m;
+    d=d<10?'0'+d:d;
     return y + '-' + m + '-' + d;
   }
 }
@@ -78,6 +92,14 @@ function strDelZero(str) {
  * @param decimal 小数
  */
 function formatDecimal(decimal) {
+  if(typeof decimal !== "number") {
+    console.log('参数类型不对')
+  }
+  decimal = decimal * 100;
+  decimal = decimal.toFixed(1);
+  return decimal
+}
+function formatSexDecimal(decimal) {
   if(typeof decimal !== "number") {
     console.log('参数类型不对')
   }
