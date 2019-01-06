@@ -263,8 +263,10 @@ $(function () {
       if (theZoom >= 14) {
         $('#container2').hide()
       } else {
-        $('#container2').show()
-
+        console.log(window.nowTab);
+        if(window.nowTab!=='高速监测') {
+          $('#container2').show()
+        }
       }
       if (theZoom >= 12) {
         // console.log("显示点");

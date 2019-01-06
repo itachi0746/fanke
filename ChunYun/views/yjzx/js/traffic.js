@@ -79,6 +79,40 @@ TrafficView.prototype.drawRoads = function (paramters, nowTab) {
   this.showRoads();
 }
 
+TrafficView.prototype.drawKeyRoad = function (paramters) {
+  for (var i = 0; i < this.RoadPaths.length; i++) {
+    this.TheMap.remove(this.RoadPaths[i]);
+  }
+  this.RoadPaths = [];
+  // debugger
+  var pathArray = [];
+  for (var i = 0; i < paramters.length; i++) {
+    var p = paramters[i].split(',');
+    if (p.length < 2) {
+      console.log('数据不对', p)
+      continue
+    }
+    // console.log(p)
+    var a = new AMap.LngLat(parseFloat(p[0]), parseFloat(p[1]));
+    pathArray.push(a);
+  }
+
+  // debugger;
+  var RoadPath = new AMap.Polyline({
+    path: pathArray,
+    strokeColor: "#a61dff",
+    strokeOpacity: "0.6",
+    strokeWeight: "6",
+    strokeStyle: "solid",
+    zIndex: 1000,
+    strokeDasharray: [10, 5]
+  });
+
+  this.TheMap.add(RoadPath);
+  this.RoadPaths.push(RoadPath);
+  this.showRoads();
+};
+
 TrafficView.prototype.drawLuDuan = function (paramter) {
   // debugger
   var theRoad = this.drawRoad(paramter);
@@ -109,24 +143,6 @@ TrafficView.prototype.drawRoad = function (paramter) {
     var a = new AMap.LngLat(parseFloat(p[0]), parseFloat(p[1]));
     pathArray.push(a);
   }
-  //   var pathArray = path.map(function (item) {
-  //       // debugger
-  //       var temp = item.split(',');
-  //       // console.log(temp)
-  //       if(temp.length===2) {
-  //           return new AMap.LngLat(parseFloat(temp[0]), parseFloat(temp[1]))
-  //
-  //       }
-  //       // debugger
-  //   });
-  // debugger
-  //   console.log('pathArr:',pathArray);
-  //   pathArray.map(function (i) {
-  //     me.pArr.push(i)
-  //   })
-  // console.log('parr',pArr)
-  var theStartPoint = path[0];
-  var theEndPoint = path[path.length - 1];
 
   // debugger;
   var RoadPath = new AMap.Polyline({
@@ -145,10 +161,10 @@ TrafficView.prototype.drawRoad = function (paramter) {
   // idx++;
   // console.log(idx)
 
-  if (this.nowTab === '高速') {
-    // console.log(1111)
-    this.TheMap.add(RoadPath);
-  }
+  // if (this.nowTab === '高速') {
+  // console.log(1111)
+  this.TheMap.add(RoadPath);
+  // }
 
   //this.RoadPath.setPath(path);
   // this.drawStart(theStartPoint);
