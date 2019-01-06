@@ -237,3 +237,14 @@ function tpiToClass(tpi) {
   return theClass
 }
 
+/**
+ * 判断是空对象
+ * @param obj 对象
+ * @returns {boolean}
+ */
+function isEmptyObject(obj){
+  for(var key in obj){
+    return false
+  }
+  return true
+}

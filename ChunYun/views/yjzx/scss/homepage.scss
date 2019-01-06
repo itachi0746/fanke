@@ -1503,8 +1503,9 @@ html,body{
 
   .li-tab-box {
     width: 600px;
-    height: 950px;
-    top: -340px;
+    //height: 950px;
+    top: -200px;
+    padding-bottom: 20px;
   }
   .calendar-box {
     width: 130px;
@@ -1901,8 +1902,9 @@ html,body{
   background: url("../img/4icon_left_3_nor.png") no-repeat;
 
   .li-tab-box {
-    height: 650px;
-    top: -220px;
+    height: 870px;
+    top: -450px;
+    padding-bottom: 20px;
   }
   header {
     display: flex;

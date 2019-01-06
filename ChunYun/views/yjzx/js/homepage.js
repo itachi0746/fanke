@@ -598,6 +598,7 @@ $(function () {
             getDayCarFlowT3(value);
             tab4Li3Echart1reqData(value);
             tab4Li3Echart2reqData(value);
+            tab4Li2Echart3ReqData(value);
           }
         })
       });
@@ -1523,12 +1524,12 @@ $(function () {
       getRealTimeFlowDataT3();
       tab4Li2initEchart();
       tab4Li2initEchart2();
-      tab4Li2InitEchart3();
     }
     if(nowTab===tabArr[2]&&tab2Name==='旅客洞察') {
       getDayCarFlowT3(returnDate(1));
       tab4Li3InitEchart1();
       tab4Li3InitEchart2();
+      tab4Li2InitEchart3();  // 客流画像
     }
     if(nowTab===tabArr[2]&&tab2Name==='旅客趋势') {
       tab4Li4InitEchart1();
@@ -1806,25 +1807,25 @@ $(function () {
 
     };
     $.axpost(url,data,function (data) {
-      if(data.data&&data.isSuccess) {
+      if(data.isSuccess&&!isEmptyObject(data.data)) {
         // console.log(data);
         $('#tab2 .sskl-num').html(toMoney(data.data.userCnt))
       }
     });
     $.axpost(url2,data,function (data) {
-      if(data.data&&data.isSuccess) {
+      if(data.isSuccess&&!isEmptyObject(data.data)) {
         // console.log(data);
         $('#tab2 .sskl-in').html(toWan(data.data.userIn))
       }
     });
     $.axpost(url3,data,function (data) {
-      if(data.data&&data.isSuccess) {
+      if(data.isSuccess&&!isEmptyObject(data.data)) {
         // console.log(data);
         $('#tab2 .sskl-out').html(toWan(data.data.userOut));
       }
     });
     $.axpost(url4,data,function (data) {
-      if(data.data&&data.isSuccess) {
+      if(data.isSuccess&&!isEmptyObject(data.data)) {
         // console.log(data);
         $('#tab2 .sskl-hour-add').html(toWan(data.data.userPerhourAdd));
       }
@@ -1842,8 +1843,8 @@ $(function () {
 
     $.axpost(url,{},function (data) {
 
-      if(data.data.length&&data.isSuccess) {
-        console.log('getPassengerData:',data);
+      if(data.isSuccess&&data.data.length) {
+        // console.log('getPassengerData:',data);
 
         $('#tab2 .scroll-box .total-psg').html(toWan(data.data[0].travelers));
         $('#tab2 .scroll-box .arrival-psg').html(toWan(data.data[0].arrivalValue));
@@ -1865,25 +1866,25 @@ $(function () {
 
     };
     $.axpost(url,data,function (data) {
-      if(data.data&&data.isSuccess) {
+      if(data.isSuccess&&!isEmptyObject(data.data)) {
         // console.log(data);
         $('#tab3 .sskl-num').text(toMoney(data.data.userCnt))
       }
     });
     $.axpost(url2,data,function (data) {
-      if(data.data&&data.isSuccess) {
+      if(data.isSuccess&&!isEmptyObject(data.data)) {
         // console.log(data);
         $('#tab3 .sskl-in').html(toWan(data.data.userIn))
       }
     });
     $.axpost(url3,data,function (data) {
-      if(data.data&&data.isSuccess) {
+      if(data.isSuccess&&!isEmptyObject(data.data)) {
         // console.log(data);
         $('#tab3 .sskl-out').html(toWan(data.data.userOut))
       }
     });
     $.axpost(url4,data,function (data) {
-      if(data.data&&data.isSuccess) {
+      if(data.isSuccess&&!isEmptyObject(data.data)) {
         // console.log(data);
         $('#tab3 .sskl-hour-add').html(toWan(data.data.userPerhourAdd))
       }
@@ -1896,30 +1897,31 @@ $(function () {
    */
   function getRealTimeFlowDataT3() {
     var url = 'toll/selectTollFlowRealtime.do?'+'postionType='+positionType+'&postionName='+curPosition;
-    var url2 = 'toll/selectTollIn.do?'+'postionType='+positionType+'&postionName='+curPosition;
-    var url3 = 'toll/selectTollOut.do?'+'postionType='+positionType+'&postionName='+curPosition;
+    // var url2 = 'toll/selectTollIn.do?'+'postionType='+positionType+'&postionName='+curPosition;
+    // var url3 = 'toll/selectTollOut.do?'+'postionType='+positionType+'&postionName='+curPosition;
 
     var data = {
 
     };
     $.axpost(url,data,function (data) {
-      if(data.data&&data.isSuccess) {
-        // console.log(data);
+      if(!isEmptyObject(data.data)&&data.isSuccess) {
+        console.log(data);
+        // debugger
         $('#tab4 .sskl-num').html(toWan(data.data.pepValue))
       }
     });
-    $.axpost(url2,data,function (data) {
-      if(data.data&&data.isSuccess) {
-        // console.log(data);
-        $('#tab4 .sskl-in').html(toWan(data.data.carIn))
-      }
-    });
-    $.axpost(url3,data,function (data) {
-      if(data.data&&data.isSuccess) {
-        // console.log(data);
-        $('#tab4 .sskl-out').html(toWan(data.data.carOut))
-      }
-    });
+    // $.axpost(url2,data,function (data) {
+    //   if(data.data&&data.isSuccess) {
+    //     // console.log(data);
+    //     $('#tab4 .sskl-in').html(toWan(data.data.carIn))
+    //   }
+    // });
+    // $.axpost(url3,data,function (data) {
+    //   if(data.data&&data.isSuccess) {
+    //     // console.log(data);
+    //     $('#tab4 .sskl-out').html(toWan(data.data.carOut))
+    //   }
+    // });
 
   }
 
@@ -1932,7 +1934,7 @@ $(function () {
 
     };
     $.axpost(url,data,function (data) {
-      if(data.data&&data.isSuccess) {
+      if(data.data.length&&data.isSuccess) {
         // console.log(data);
         $('#tab4 .qtkl-num').html(toWan(data.data[0].allPeople));
         // $('#tab4 .qtcl-in').html(toWan(data.data[0].inValue));
@@ -2250,87 +2252,100 @@ $(function () {
 
       }
     ];
-
+    var apiName;
+    if(area==='省外') {
+      apiName = 'listOutProvinceOrigin'
+    }
+    if(area==='省内') {
+      apiName = 'listInProvinceOrigin'
+    }
+    if(area==='境外') {
+      apiName = 'listForgeinOrigin'
+    }
+    dom.find('.from-chart ul.body').empty();
+    dom.find('.to-chart ul.body').empty();
     var d = date?date:returnDate(1);
     var url = 'terminal/selectTerminalOriginAndLeaveTop.do?postionType='+positionType+'&postionName='+curPosition+'&area='+area+'&countDate='+d;
     $.axpost(url,{},function (data) {
-      dom.find('.from-chart ul.body').empty();
-      dom.find('.to-chart ul.body').empty();
-      var oriArr,toArr;
-      if(area==='省外') {
-        oriArr = _.sortBy(data.data.listOutProvinceOrigin, function(item) {
-          return -item.travelerValue;
-        });
-        toArr = _.sortBy(data.data.listOutProvinceLeave, function(item) {
-          return -item.travelerValue;
-        });
-      }
-      if(area==='省内') {
-        oriArr = _.sortBy(data.data.listInProvinceOrigin, function(item) {
-          return -item.travelerValue;
-        });
-        toArr = _.sortBy(data.data.listInProvinceLeave, function(item) {
-          return -item.travelerValue;
-        });
+      if(data.isSuccess&&data.data[apiName].length&&data.data[apiName].length) {
+        // dom.find('.from-chart ul.body').empty();
+        // dom.find('.to-chart ul.body').empty();
+        var oriArr,toArr;
+        if(area==='省外') {
+          oriArr = _.sortBy(data.data.listOutProvinceOrigin, function(item) {
+            return -item.travelerValue;
+          });
+          toArr = _.sortBy(data.data.listOutProvinceLeave, function(item) {
+            return -item.travelerValue;
+          });
+        }
+        if(area==='省内') {
+          oriArr = _.sortBy(data.data.listInProvinceOrigin, function(item) {
+            return -item.travelerValue;
+          });
+          toArr = _.sortBy(data.data.listInProvinceLeave, function(item) {
+            return -item.travelerValue;
+          });
+          for (var i = 0; i < oriArr.length; i++) {
+            var oriObj = oriArr[i];
+            for (var j = 0; j < AreaMap.length; j++) {
+              var areaObj = AreaMap[j];
+              if(areaObj.code==oriObj.originAreaName) {
+                oriObj.originAreaName = areaObj.name;
+                break
+              }
+            }
+          }
+          for (var k = 0; k < toArr.length; k++) {
+            var toObj = toArr[k];
+            for (var g = 0; g < AreaMap.length; g++) {
+              var areaObj2 = AreaMap[g];
+              if(areaObj2.code==toObj.toAreaName) {
+                toObj.toAreaName = areaObj2.name;
+                break
+              }
+            }
+          }
+        }
+        if(area==='境外') {
+          oriArr = _.sortBy(data.data.listForgeinOrigin, function(item) {
+            return -item.travelerValue;
+          });
+          toArr = _.sortBy(data.data.listForgeinLeave, function(item) {
+            return -item.travelerValue;
+          });
+        }
+        var num = 0;
         for (var i = 0; i < oriArr.length; i++) {
-          var oriObj = oriArr[i];
-          for (var j = 0; j < AreaMap.length; j++) {
-            var areaObj = AreaMap[j];
-            if(areaObj.code==oriObj.originAreaName) {
-              oriObj.originAreaName = areaObj.name;
-              break
-            }
-          }
-        }
-        for (var k = 0; k < toArr.length; k++) {
-          var toObj = toArr[k];
-          for (var g = 0; g < AreaMap.length; g++) {
-            var areaObj2 = AreaMap[g];
-            if(areaObj2.code==toObj.toAreaName) {
-              toObj.toAreaName = areaObj2.name;
-              break
-            }
-          }
-        }
-      }
-      if(area==='境外') {
-        oriArr = _.sortBy(data.data.listForgeinOrigin, function(item) {
-          return -item.travelerValue;
-        });
-        toArr = _.sortBy(data.data.listForgeinLeave, function(item) {
-          return -item.travelerValue;
-        });
-      }
-      var num = 0;
-      for (var i = 0; i < oriArr.length; i++) {
-        var obj = oriArr[i];
-        // var val = formatVal(obj.travelerValue);
-        var val = toMoney(obj.travelerValue);
-        // console.log('val:',val);
+          var obj = oriArr[i];
+          // var val = formatVal(obj.travelerValue);
+          var val = toMoney(obj.travelerValue);
+          // console.log('val:',val);
 
-        num++;
-        var str = '<li>\n' +
-          '<i class="index">'+ num +'</i>\n' +
-          '<label>'+ obj.originAreaName +'</label>\n' +
-          '<i class="line"></i>\n' +
-          '<span class="num">' + val +'人</span>\n' +
-          '</li>';
-        var li = $(str);
-        dom.find('.from-chart ul.body').append(li)
-      }
+          num++;
+          var str = '<li>\n' +
+            '<i class="index">'+ num +'</i>\n' +
+            '<label>'+ obj.originAreaName +'</label>\n' +
+            '<i class="line"></i>\n' +
+            '<span class="num">' + val +'人</span>\n' +
+            '</li>';
+          var li = $(str);
+          dom.find('.from-chart ul.body').append(li)
+        }
 
-      var num2 = 0;
-      for (var j = 0; j < toArr.length; j++) {
-        var obj2 = toArr[j];
-        num2++;
-        var str2 = '<li>\n' +
-          '<i class="index">'+ num2 +'</i>\n' +
-          '<label>'+ obj2.toAreaName +'</label>\n' +
-          '<i class="line"></i>\n' +
-          '<span class="num">' + obj2.travelerValue +'人</span>\n' +
-          '</li>';
-        var li2 = $(str2);
-        dom.find('.to-chart ul.body').append(li2)
+        var num2 = 0;
+        for (var j = 0; j < toArr.length; j++) {
+          var obj2 = toArr[j];
+          num2++;
+          var str2 = '<li>\n' +
+            '<i class="index">'+ num2 +'</i>\n' +
+            '<label>'+ obj2.toAreaName +'</label>\n' +
+            '<i class="line"></i>\n' +
+            '<span class="num">' + obj2.travelerValue +'人</span>\n' +
+            '</li>';
+          var li2 = $(str2);
+          dom.find('.to-chart ul.body').append(li2)
+        }
       }
     })
   }
@@ -2653,29 +2668,30 @@ $(function () {
     var url = 'terminal/selectTerminalFlowTrend.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+date;
     var url2 = 'terminal/selectTerminalFlowPredict.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+date;
     $.axpost(url,{},function (data) {
-      console.log('tab2Li2InitEchart',data);
-      var d = [];
-      // d = data.data;
-      for (var i = 0; i < data.data.length; i++) {
-        var obj = data.data[i];
-        var tempArr = obj.countTime.split('-');
-        var hour = strDelZero(tempArr[tempArr.length-1]);
-        var objArr = [hour,obj.userCnt];
-        d.push(objArr);
+      if(data.isSuccess&&data.data.length) {
+        // console.log('tab2Li2InitEchart',data);
+        var d = [];
+        for (var i = 0; i < data.data.length; i++) {
+          var obj = data.data[i];
+          var tempArr = obj.countTime.split('-');
+          var hour = strDelZero(tempArr[tempArr.length-1]);
+          var objArr = [hour,obj.userCnt];
+          d.push(objArr);
+        }
+        // console.log(d);
+
+        // debugger
+        $('#SSKL-cld-box').show();
+        tab2Li2Echart1.hideLoading();    //隐藏加载动画
+        tab2Li2Echart1.setOption({
+          series: [
+            {
+              name: '实时客流',
+              data: d
+            }
+          ]
+        })
       }
-      // console.log(d);
-      
-      // debugger
-      $('#SSKL-cld-box').show();
-      tab2Li2Echart1.hideLoading();    //隐藏加载动画
-      tab2Li2Echart1.setOption({
-        series: [
-          {
-            name: '实时客流',
-            data: d
-          }
-        ]
-      })
     });
 
     $.axpost(url2,{},function (data) {
@@ -2811,25 +2827,27 @@ $(function () {
     tab2Li2Echart2.showLoading();    //加载动画
     var url = 'terminal/selectTerminalFlowLinger.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+date;
     $.axpost(url,{},function (data) {
-      // console.log('tab2Li2Echart2',data);
-      var d = [];
-      for (var i = 0; i < data.data.length; i++) {
-        var obj = data.data[i];
-        // d.push(obj.timeZb);
-        d[parseInt(obj.timeGroup)] = obj.timeZb;
+      if(data.isSuccess&&data.data.length) {
+        // console.log('tab2Li2Echart2',data);
+        var d = [];
+        for (var i = 0; i < data.data.length; i++) {
+          var obj = data.data[i];
+          // d.push(obj.timeZb);
+          d[parseInt(obj.timeGroup)] = obj.timeZb;
+        }
+        // debugger
+
+        tab2Li2Echart2.hideLoading();    //隐藏加载动画
+
+        tab2Li2Echart2.setOption({
+          series: [
+            {
+              name: '占比',
+              data: d
+            }
+          ]
+        })
       }
-      // debugger
-
-      tab2Li2Echart2.hideLoading();    //隐藏加载动画
-
-      tab2Li2Echart2.setOption({
-        series: [
-          {
-            name: '占比',
-            data: d
-          }
-        ]
-      })
     })
 
   }
@@ -3266,23 +3284,25 @@ $(function () {
     d = date?date:returnDate(1);
     var url = 'terminal/selectTerminalLinger.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
-      // console.log('tab2Li3Echart1',data);
-      var dataArr = [];
-      for (var i = 0; i < data.data.length; i++) {
-        var obj = data.data[i];
-        // debugger
-        dataArr[parseInt(obj.timeGroup)] = obj.timeValue;
-      }
+      if(data.isSuccess&&data.data.length) {
+        // console.log('tab2Li3Echart1',data);
+        var dataArr = [];
+        for (var i = 0; i < data.data.length; i++) {
+          var obj = data.data[i];
+          // debugger
+          dataArr[parseInt(obj.timeGroup)] = obj.timeValue;
+        }
 
-      tab2Li3Echart1.hideLoading();    //隐藏加载动画
-      tab2Li3Echart1.setOption({
-        series: [
-          {
-            name: '人数',
-            data: dataArr
-          }
-        ]
-      })
+        tab2Li3Echart1.hideLoading();    //隐藏加载动画
+        tab2Li3Echart1.setOption({
+          series: [
+            {
+              name: '人数',
+              data: dataArr
+            }
+          ]
+        })
+      }
     })
   }
 
@@ -3409,7 +3429,7 @@ $(function () {
     var url = 'terminal/selectTerminalSexAge.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
       // console.log('tab2Li3Echart2',data);
-      if(data.isSuccess&&data.data) {
+      if(data.isSuccess&&data.data.terminalAgeList.length&&data.data.terminalSexList.length) {
         var dataArr = [];
         for (var i = 0; i < data.data.terminalAgeList.length; i++) {
           var obj = data.data.terminalAgeList[i];
@@ -3434,22 +3454,16 @@ $(function () {
           ]
         });
         var dom = $("#KLHX").parent();
-        if(data.data.terminalSexList.length) {
-          for (var j = 0; j < data.data.terminalSexList.length; j++) {
-            var obj1 = data.data.terminalSexList[j];
-            if(obj1.sex===1) {
-              dom.find('.hm.man span').text(formatDecimal(obj1.manZb)+'%')
-            }
-            if (obj1.sex===2) {
-              dom.find('.hm.woman span').text(formatDecimal(obj1.manZb)+'%')
-            }
-            dom.find('.hm.man span').show();
-            dom.find('.hm.woman span').show();
+        for (var j = 0; j < data.data.terminalSexList.length; j++) {
+          var obj1 = data.data.terminalSexList[j];
+          if(obj1.sex===1) {
+            dom.find('.hm.man span').text(formatDecimal(obj1.manZb)+'%')
           }
-        } else {
-          // tab2Li3Echart2.hideLoading();    //隐藏加载动画
-          dom.find('.hm.man span').hide();
-          dom.find('.hm.woman span').hide();
+          if (obj1.sex===2) {
+            dom.find('.hm.woman span').text(formatDecimal(obj1.manZb)+'%')
+          }
+          dom.find('.hm.man span').show();
+          dom.find('.hm.woman span').show();
         }
 
       } else {
@@ -3549,49 +3563,51 @@ $(function () {
     d = date?date:returnDate(1);
     var url = 'terminal/selectTerminalOriginAndLeave.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
-      // console.log('tab2Li3Echart3', data);
-      var tempArr = [];
-      var dataArr = [];
-      var name;
-      for(var key in data.data.originMap) {
-        tempArr.push({
-          type: key,
-          value: data.data.originMap[key]
-        })
-      }
-      for (var i = 0; i < tempArr.length; i++) {
-        var obj = tempArr[i];
-        if(obj.type==='inProvinceOrigin') {
-          name = '省内'
+      if(data.isSuccess&&!isEmptyObject(data.data.originMap)) {
+        // console.log('tab2Li3Echart3', data);
+        var tempArr = [];
+        var dataArr = [];
+        var name;
+        for(var key in data.data.originMap) {
+          tempArr.push({
+            type: key,
+            value: data.data.originMap[key]
+          })
         }
-        if(obj.type==='outProvinceOrigin') {
-          name = '省外'
-        }
-        if(obj.type==='forgeinOrigin') {
-          name = '境外'
-        }
-        dataArr.push({
-          name: name,
-          value: formatDecimal(obj.value.travelerZb),
-          itemStyle: {
-            color: colors[i]
+        for (var i = 0; i < tempArr.length; i++) {
+          var obj = tempArr[i];
+          if(obj.type==='inProvinceOrigin') {
+            name = '省内'
           }
-        })
-      }
-      // console.log('tempArr:', dataArr,tempArr);
+          if(obj.type==='outProvinceOrigin') {
+            name = '省外'
+          }
+          if(obj.type==='forgeinOrigin') {
+            name = '境外'
+          }
+          dataArr.push({
+            name: name,
+            value: formatDecimal(obj.value.travelerZb),
+            itemStyle: {
+              color: colors[i]
+            }
+          })
+        }
+        // console.log('tempArr:', dataArr,tempArr);
 
-      tab2Li3Echart3.hideLoading();    //隐藏加载动画
-      tab2Li3Echart3.setOption({
-        series: [
-          {
-            name: '来源洞察',
-            data: dataArr
+        tab2Li3Echart3.hideLoading();    //隐藏加载动画
+        tab2Li3Echart3.setOption({
+          series: [
+            {
+              name: '来源洞察',
+              data: dataArr
+            }
+          ],
+          legend: {
+            data: ['境外', '省内', '省外']
           }
-        ],
-        legend: {
-          data: ['境外', '省内', '省外']
-        }
-      })
+        })
+      }
     })
   }
 
@@ -3684,49 +3700,51 @@ $(function () {
     d = date?date:returnDate(1);
     var url = 'terminal/selectTerminalOriginAndLeave.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
-      // console.log('tab2Li3Echart4', data);
-      var tempArr = [];
-      var dataArr = [];
-      var name;
-      for(var key in data.data.leaveMap) {
-        tempArr.push({
-          type: key,
-          value: data.data.leaveMap[key]
-        })
-      }
-      for (var i = 0; i < tempArr.length; i++) {
-        var obj = tempArr[i];
-        if(obj.type==='inProvinceLeave') {
-          name = '省内'
+      if(data.isSuccess&&!isEmptyObject(data.data.leaveMap)) {
+        // console.log('tab2Li3Echart4', data);
+        var tempArr = [];
+        var dataArr = [];
+        var name;
+        for(var key in data.data.leaveMap) {
+          tempArr.push({
+            type: key,
+            value: data.data.leaveMap[key]
+          })
         }
-        if(obj.type==='outProvinceLeave') {
-          name = '省外'
-        }
-        if(obj.type==='forgeinLeave') {
-          name = '境外'
-        }
-        dataArr.push({
-          name: name,
-          value: formatDecimal(obj.value.travelerZb),
-          itemStyle: {
-            color: colors[i]
+        for (var i = 0; i < tempArr.length; i++) {
+          var obj = tempArr[i];
+          if(obj.type==='inProvinceLeave') {
+            name = '省内'
           }
-        })
-      }
-      // console.log('tempArr:', dataArr,tempArr);
+          if(obj.type==='outProvinceLeave') {
+            name = '省外'
+          }
+          if(obj.type==='forgeinLeave') {
+            name = '境外'
+          }
+          dataArr.push({
+            name: name,
+            value: formatDecimal(obj.value.travelerZb),
+            itemStyle: {
+              color: colors[i]
+            }
+          })
+        }
+        // console.log('tempArr:', dataArr,tempArr);
 
-      tab2Li3Echart4.hideLoading();    //隐藏加载动画
-      tab2Li3Echart4.setOption({
-        legend: {
-          data: ['境外', '省内', '省外']
-        },
-        series: [
-          {
-            name: '去向洞察',
-            data: dataArr
-          }
-        ]
-      })
+        tab2Li3Echart4.hideLoading();    //隐藏加载动画
+        tab2Li3Echart4.setOption({
+          legend: {
+            data: ['境外', '省内', '省外']
+          },
+          series: [
+            {
+              name: '去向洞察',
+              data: dataArr
+            }
+          ]
+        })
+      }
     })
   }
 
@@ -5100,7 +5118,7 @@ $(function () {
   function tab4Li2Echart3ReqData(date) {
     tab4Li2Echart3.showLoading();    //加载动画
     var d;
-    d = date?date:returnDate();
+    d = date?date:returnDate(1);
     var url = 'toll/selectTollSexAge.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
       // console.log('tab4Li2Echart3',data);
