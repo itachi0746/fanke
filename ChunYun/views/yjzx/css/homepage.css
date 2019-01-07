@@ -375,12 +375,6 @@ html, body {
     width: 100%; }
     .jiance-top10-box ul li:nth-child(10) {
       border: none; }
-    .jiance-top10-box ul li:nth-child(1) span {
-      background-color: #e93323; }
-    .jiance-top10-box ul li:nth-child(2) span {
-      background-color: #ee8632; }
-    .jiance-top10-box ul li:nth-child(3) span {
-      background-color: #f7de4b; }
   .jiance-top10-box li {
     height: 40px;
     border-bottom: 2px solid #153e5f;

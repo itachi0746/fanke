@@ -330,6 +330,7 @@ $(function () {
       $('#station-box-3').find('ul').append(stationDom3);
     }
     $('#station-box-3').find('header').text('机场、港口');
+    $('#station-box-2').find('header').text('客运站');
   }
 
   /**
@@ -410,9 +411,11 @@ $(function () {
       // debugger
       pointControl.MoveToPoint(arg,18);
       isDefaultView = false;
-      mapbase.drawReli(name,2000);
+      mapbase.drawReli(name,1000);
       window['nowTab'] = nowTab;
+      drawServiceAndToll(name);
     }
+
     // if(clickTarget['枢纽类别']==='机场') {
     //   if(name==='深圳宝安国际机场') {
     //     $('#bao-an').removeClass('dn');
@@ -455,7 +458,22 @@ $(function () {
     //     }
     //   }
     // }
+  }
 
+  /**
+   * 服务区,消费站画线
+   * @param name 地点名称
+   */
+  function drawServiceAndToll(name) {
+    for (var key in serviceAndTollData) {
+      if(name===key) {
+        console.log(key);
+        var theLngLatArr = serviceAndTollData[key];
+        // debugger
+        traffic.drawServiceAndToll(theLngLatArr);
+        return
+      }
+    }
   }
 
   /**
@@ -924,48 +942,6 @@ $(function () {
     $('#jiance-top10-ul').empty();
   }
 
-  /**
-   * 查询高速路网拥堵事件详细信息
-   */
-  function reqLuWangDtlData() {
-    var url = 'highSpeed/selectGsCongestionDetails.do'
-    var data = {
-      sid: 60004,
-      reqData: {"province":"330000","eventId":"4201144185235417","type":"1","insertTime":"2015-09-10 10:38:34"},
-      serviceKey: '2746555197B6CD66C5E00DA88C8cd5BF'
-    };
-    $.axpost(url,data,function (data) {
-      console.log(data)
-      // if(data.isSuccess && data.data) {
-        // console.log()
-        // var rows = data.data.rows;
-        // console.log('row',rows)
-        //   var theRows=[];
-        // for (var i = 0; i < rows.length; i++) {
-        //   var r = rows[i].xys.split(';');
-        //   // console.log('r',r);
-        //     theRows.push(r);
-        // }
-        // traffic.drawRoads(theRows)
-      // }
-    })
-    // debugger
-
-        // var rows = def.data.rows;
-        // console.log('row',rows)
-        //   var theRows=[];
-        // for (var i = 0; i < rows.length; i++) {
-        //   var r = rows[i].xys.split(';');
-        //   // console.log('r',r);
-        //     theRows.push(r);
-        // }
-        // // setTimeout(function () {
-        //   traffic.drawRoads(theRows)
-
-        // },1000)
-
-  }
-
   var mList = [];
 
   /**
@@ -1049,7 +1025,7 @@ $(function () {
               insertTime: theInsertTime
             };
             $.axpost(url,data,function (data) {
-              console.log('dtlData:',data);
+              // console.log('dtlData:',data);
               var rows = data.data.rows;
               var eve = data.data.event;
               // console.log('row',rows)
@@ -1075,6 +1051,7 @@ $(function () {
 
               traffic.drawRoads(theRows,nowTab);
               var theMiddlePointArr = pointArr[parseInt(pointArr.length/2)];
+              // debugger
               addLuWangMarker(theMiddlePointArr,theData);
 
               // theMap.remove(mList);
@@ -1348,7 +1325,7 @@ $(function () {
     var infoWindow = new AMap.InfoWindow({
       isCustom: true,  //使用自定义窗体
       content: createInfoWindow(title, dataObj),
-      offset: new AMap.Pixel(0, -20),
+      offset: new AMap.Pixel(11, 0),
       position: luWangMarker.getPosition()
     });
 
@@ -1766,7 +1743,7 @@ $(function () {
         index++;
         var liDom = '<li class="top3-li" title="'+ liData.postionName +'">\n' +
           '<i class="'+ item.icon +'">'+ index +'</i>\n' +
-          '<p><label class="p-name ellipsis">' + liData.postionName + '</label> <span>当前客流 <i class="num">'+liData.userCnt +'</i>万人</span></p>\n' +
+          '<p><label class="p-name ellipsis">' + liData.postionName + '</label> <span>当前客流 <i class="num">'+liData.userCnt +'</i>人</span></p>\n' +
           '</li>';
         var temp = $(liDom);
 
@@ -1802,7 +1779,7 @@ $(function () {
    * @param posName 地名 String
    */
   function changePosText(posName) {
-    console.log(posName);
+    // console.log(posName);
     
     initCenterBG();
     if(posName.length>4) {
@@ -5393,7 +5370,8 @@ $(function () {
   }
 
 
-  var tab4Li3Echart2;
+  var tab4Li3Echart2,
+  colorArr = ['#4472C5','#ED7C30','#80FF80','#FF8096','#800080','#d147e2','#7d7c80','#d4d00b','#3ee4e4'];
   function tab4Li3InitEchart2() {
     if(!tab4Li3Echart2) {
       tab4Li3Echart2 = echarts.init(document.getElementById('tab4-zlsc2'));
@@ -5430,7 +5408,7 @@ $(function () {
         //   return params[params.length - 1].data;
         // }
       },
-
+      color: colorArr,
       legend: {
         show:true,
         textStyle: {
@@ -5503,6 +5481,7 @@ $(function () {
             dataArr.push({
               name: hourArr[index],
               data: newArr,
+              data: newArr,
               type: 'line',
               z: 2,
               stack: 'a',
@@ -5510,7 +5489,8 @@ $(function () {
               symbol: 'none',
               lineStyle: {
                 normal: {
-                  color: 'rgb(70,158,228)'//rgba(55,255,75
+                  // color: 'rgb(70,158,228)'//rgba(55,255,75
+                  color: colorArr[i]//rgba(55,255,75
                 }
               },
               label: {

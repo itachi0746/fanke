@@ -38,7 +38,7 @@ function toWan2(num) {
     return
   }
   if (num >= 1000) {
-    num = (num / 10000).toFixed(1);
+    num = (num / 10000).toFixed(1) + '万';
   }
   // result = val>=10000?Math.round(val/10000):val;
   return num

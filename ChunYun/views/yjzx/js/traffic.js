@@ -79,6 +79,10 @@ TrafficView.prototype.drawRoads = function (paramters, nowTab) {
   this.showRoads();
 }
 
+/**
+ * 重点路段
+ * @param paramters
+ */
 TrafficView.prototype.drawKeyRoad = function (paramters) {
   for (var i = 0; i < this.RoadPaths.length; i++) {
     this.TheMap.remove(this.RoadPaths[i]);
@@ -111,6 +115,55 @@ TrafficView.prototype.drawKeyRoad = function (paramters) {
   // this.TheMap.add(RoadPath);  // 不画线
   this.RoadPaths.push(RoadPath);
   this.showRoads();
+};
+
+TrafficView.prototype.drawLuDuan = function (paramter) {
+  // debugger
+  var theRoad = this.drawRoad(paramter);
+  this.RoadPaths.push(theRoad);
+  this.showRoads();
+
+};
+
+/**
+ * 画服务区,收费站
+ * @param paramters
+ */
+TrafficView.prototype.drawServiceAndToll = function (paramters) {
+  for (var i = 0; i < this.RoadPaths.length; i++) {
+    this.TheMap.remove(this.RoadPaths[i]);
+  }
+  this.RoadPaths = [];
+  // debugger
+  var pathArray = [];
+  for (var i = 0; i < paramters.length; i++) {
+    var p = paramters[i];
+    if (p.length < 2) {
+      console.log('数据不对', p);
+      continue
+    }
+    // console.log(p)
+    var a = new AMap.LngLat(p[0], p[1]);
+    pathArray.push(a);
+  }
+
+  // debugger;
+  var RoadPath = new AMap.Polygon ({
+    path: pathArray,
+    fillColor: '#4fbefc', // 多边形填充颜色
+    strokeWeight: 10, // 线条宽度，默认为 1
+    strokeColor: '#fcf8fc', // 线条颜色
+    fillOpacity: 0,
+    zIndex: 1000,
+    strokeDasharray: [10, 5]
+
+  });
+  RoadPath.setMap(theMap);
+  // 缩放地图到合适的视野级别
+  theMap.setFitView([ RoadPath ]);
+  // this.TheMap.add(RoadPath);  // 不画线
+  this.RoadPaths.push(RoadPath);
+  // this.showRoads();
 };
 
 TrafficView.prototype.drawLuDuan = function (paramter) {
