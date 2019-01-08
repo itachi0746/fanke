@@ -45,13 +45,13 @@ function toWan2(num) {
 }
 
 /**
- * 返回今天或者指定日期
+ * 返回今天或者指定日期,利用了moment.js
  * @param detract 减去的天数
  * @returns {string}
  */
 function returnDate(detract) {
-  var myDate = new Date();
-  var y, m, d;
+  // var myDate = new Date();
+  // var y, m, d;
   if (!detract) {
     // y = myDate.getFullYear();
     // m = myDate.getMonth() + 1;
@@ -59,14 +59,15 @@ function returnDate(detract) {
     // return y + '-' + m + '-' + d;
     return moment().format('YYYY-MM-DD')
   } else {
-    var sec = 24 * 60 * 60 * 1000 * detract;
-    var theDate = new Date(myDate.getTime() - sec);
-    y = theDate.getFullYear();
-    m = theDate.getMonth() + 1;
-    d = theDate.getDate();
-    m=m<10?'0'+m:m;
-    d=d<10?'0'+d:d;
-    return y + '-' + m + '-' + d;
+    // var sec = 24 * 60 * 60 * 1000 * detract;
+    // var theDate = new Date(myDate.getTime() - sec);
+    // y = theDate.getFullYear();
+    // m = theDate.getMonth() + 1;
+    // d = theDate.getDate();
+    // m=m<10?'0'+m:m;
+    // d=d<10?'0'+d:d;
+    // return y + '-' + m + '-' + d;
+    return moment().subtract('days', detract).format('YYYY-MM-DD');
   }
 }
 

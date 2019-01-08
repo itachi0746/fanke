@@ -146,17 +146,19 @@ TrafficView.prototype.drawServiceAndToll = function (paramters) {
     var a = new AMap.LngLat(p[0], p[1]);
     pathArray.push(a);
   }
-
+  console.log('开始画线');
   // debugger;
   var RoadPath = new AMap.Polygon ({
     path: pathArray,
     fillColor: '#4fbefc', // 多边形填充颜色
     strokeWeight: 10, // 线条宽度，默认为 1
-    strokeColor: '#fcf8fc', // 线条颜色
+    strokeColor: '#fff', // 线条颜色
+    strokeOpacity: 1, // 线条透明度
     fillOpacity: 0,
-    zIndex: 1000,
-    strokeDasharray: [10, 5]
-
+    zIndex: 10010,
+    // strokeDasharray: [10, 5]
+    isOutline: true,
+    borderWeight: 3,
   });
   RoadPath.setMap(theMap);
   // 缩放地图到合适的视野级别

@@ -2,7 +2,7 @@ function PlacePointView(theMap) {
   var theStr = "公路|客运站|福田汽车客运站CBG|福田汽车客运站CBG:114.013401,22.532431;\n" +
     "公路|客运站|龙岗长途汽车客运站|龙岗长途汽车客运站:114.271555,22.724456;\n" +
     "公路|客运站|罗湖汽车站|罗湖汽车站:114.119196,22.530169;\n" +
-    "民航|机场|深圳宝安国际机场|深圳宝安国际机场0:113.813494,22.624474;\n" +
+    "民航|机场|深圳宝安国际机场|深圳宝安国际机场0:113.810358,22.629992;\n" +
     "铁路|铁路|深圳北站|深圳北站0:114.029177,22.609334;\n" +
     "\"公路|客运站|深圳汽车站|\n" +
     "深圳汽车站0:114.08951,22.568788;\"\n" +
@@ -235,16 +235,11 @@ PlacePointView.prototype.MoveToPoint = function (lntlat, maxZoom) {
   }, 10);
 }
 //结束导航到指定点
-PlacePointView.prototype.ReturnDefualt = function (defaultZoom) {
+PlacePointView.prototype.ReturnDefualt = function (defaultZoom, lntlat) {
   console.log("开始导航到该蓝图!");
   var theZoom = this.theMap.getZoom();
   defaultZoom = defaultZoom || 8;  // 默认放大等级
-  var lntlat;
-  if(window.nowTab!=='高速监测') {
-    lntlat = new AMap.LngLat(113.275824, 22.994826);
-  } else {
-    lntlat = new AMap.LngLat(114.231635, 22.999883);
-  }
+  var lntlat = lntlat || new AMap.LngLat(113.275824, 22.994826)
   var thePitchTimer = window.setInterval(function () {
     if (theZoom < defaultZoom || theZoom <= 1) {
       window.clearInterval(thePitchTimer);

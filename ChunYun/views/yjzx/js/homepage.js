@@ -12,8 +12,9 @@ $(function () {
   });
   // 记录日历的日期
   var tab2Li3Date,tab3Li3Date;
-
+  var tab2Li2DefaultDate,tab3Li2DefaultDate,tab4Li2DefaultDate;  // 枢纽,服务区,收费站-洞察部分,默认日期
   var nowTab = tabArr[0];
+  window.nowTab = nowTab;
   //postionType-位置类别：1场站，2服务区，3收费站
   var positionType = 1;
   var curPosition;  // 目前位置 点击marker 预警 变化
@@ -49,7 +50,18 @@ $(function () {
       mapbase.hideReli();
       return;
     }
-    mapbase.drawReli(curPosition,2000,name);
+    if(nowTab===tabArr[0]) {
+      if(name.indexOf('-')==-1) {
+        // var fNum = name.split('F');
+        if(name.indexOf('F')==0) {
+          var theArr = name.split('F');
+          var theNum = theArr[1];
+          name = theNum + 'F';
+        }
+      }
+      var fullName = curPosition + name;
+      reqReliData(fullName);
+    }
   };
   // console.log(pointControl.PlacePoints)
 
@@ -59,7 +71,10 @@ $(function () {
   function init() {
     moment.locale('zh-cn');
     console.log('切换到:',nowTab);
-    // initCalendar();
+    // 设置洞察部分默认日期
+    tab2Li2DefaultDate = returnDate(4);  // 枢纽
+    tab3Li2DefaultDate = returnDate(1);  // 服务区
+    tab4Li2DefaultDate = returnDate(1);  // 场站
 
     // 点击标题
     title.on('click',function () {
@@ -68,7 +83,7 @@ $(function () {
     backDivBandClick();
     weatherClick();
 
-    // 点击搜索按钮
+    // 点击搜索按钮  todo
     $('#search-btn').on('click',function () {
       var v = $('#search').val();
       console.log('搜索值为:',v);
@@ -84,6 +99,8 @@ $(function () {
     //   console.log(this.value);
     //
     // }
+
+    // 监听搜索input输入
     $('#search').on('input',function () {
       // console.log($(this).val());
       var resultList = $('#result-list');
@@ -173,6 +190,29 @@ $(function () {
     pointControl.showPoints('客运站,铁路,机场,港口');
     // console.log('theDataObject:',pointControl.markes)
     markerBindClick();
+  }
+
+  /**
+   * 请求热力数据
+   * @param name
+   */
+  function reqReliData(name) {
+    // debugger
+    var url;
+    if(nowTab===tabArr[0]) {
+      url = 'terminal/selectTerminalFlowRealtime.do?'+'postionType='+positionType+'&postionName='+name;
+    }
+    if(nowTab===tabArr[1]) {
+      url = 'serviceArea/selectServiceFlowRealtime.do?'+'postionType='+positionType+'&postionName='+name;
+    }
+    $.axpost(url,{},function (data) {
+      // console.log(data);
+      // debugger
+      if(data.isSuccess&&!isEmptyObject(data.data)) {
+        var pepNum = data.data.userCnt;
+        mapbase.drawReli(name,pepNum);
+      }
+    })
   }
 
   /**
@@ -380,7 +420,7 @@ $(function () {
   }
 
   /**
-   * 隐藏特定的数据
+   * 隐藏特定场站的数据
    */
   function hideSpecialData() {
     $('#bao-an').addClass('dn');
@@ -393,9 +433,15 @@ $(function () {
    * @param name 地点名称
    */
   function goToPointByName(name) {
+    curPosition = name;
+
     hideSpecialData();
 
     var clickTarget = pointControl.findPointByName(name);
+    if(!clickTarget) {
+      console.log('没有匹配的地点:',clickTarget);
+      return
+    }
     // debugger
     if(clickTarget) {
       var lng = clickTarget['地址'][0].lnglat.split(',')[0];
@@ -407,57 +453,17 @@ $(function () {
         lng: lng
       };
       // console.log(clickTarget['地址'][0].lnglat)
-
       // debugger
       pointControl.MoveToPoint(arg,18);
       isDefaultView = false;
-      mapbase.drawReli(name,1000);
-      window['nowTab'] = nowTab;
-      drawServiceAndToll(name);
+      if(nowTab===tabArr[0] || nowTab===tabArr[1] || nowTab===tabArr[2]) {
+        drawServiceAndToll(name);
+      }
+      if(nowTab===tabArr[0] || nowTab===tabArr[1]) {
+        // debugger
+        reqReliData(name);
+      }
     }
-
-    // if(clickTarget['枢纽类别']==='机场') {
-    //   if(name==='深圳宝安国际机场') {
-    //     $('#bao-an').removeClass('dn');
-    //   } else {
-    //     $('#bao-an').addClass('dn');
-    //   }
-    // }
-    // if(clickTarget['枢纽类别']==='铁路') {
-    //   for (var i = 0; i < tieluArr.length; i++) {
-    //     var tielu = tieluArr[i];
-    //     if(!tielu) {
-    //       console.log('铁路名字不对:',tielu);
-    //       return
-    //     }
-    //     if(name===tielu) {
-    //       console.log('点击铁路场站:',name)
-    //       $('#tie-lu').removeClass('dn');
-    //       return
-    //     } else {
-    //       $('#tie-lu').addClass('dn');
-    //     }
-    //   }
-    // }
-    // if(clickTarget['枢纽类别']==='客运站') {
-    //   for (var j = 0; j < gongluArr.length; j++) {
-    //     var gonglu = gongluArr[j];
-    //     if(!gonglu) {
-    //       console.log('客运站名字不对:',gonglu);
-    //       return
-    //     }
-    //     if(name===gonglu) {
-    //       console.log('点击客运站:',name)
-    //       // debugger
-    //       $('#keyunzhan').removeClass('dn');
-    //       return
-    //
-    //     } else {
-    //       $('#keyunzhan').addClass('dn');
-    //
-    //     }
-    //   }
-    // }
   }
 
   /**
@@ -467,7 +473,7 @@ $(function () {
   function drawServiceAndToll(name) {
     for (var key in serviceAndTollData) {
       if(name===key) {
-        console.log(key);
+        // console.log(key);
         var theLngLatArr = serviceAndTollData[key];
         // debugger
         traffic.drawServiceAndToll(theLngLatArr);
@@ -487,7 +493,7 @@ $(function () {
       lay('#SSKL-cld-box').on('click', function(e){ //假设 test1 是一个按钮
         laydate.render({
           elem: '#tab2-li2-cld'
-          // ,value: returnDate()
+          ,max: 0 //禁止选未来日期
           ,show: true //直接显示
           ,closeStop: '#SSKL-cld-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
           ,done: function(value, date, endDate){
@@ -496,12 +502,13 @@ $(function () {
         });
       });
       // 交通枢纽 旅客洞察
-      $('#tab2-li4-cld').val(returnDate(1));
+      $('#tab2-li4-cld').val(returnDate(4));
       lay('#tab2-li4-cld-box').on('click',function (e) {
         laydate.render({
           elem:'#tab2-li4-cld'
           // ,value: returnDate(1)
           ,show: true //直接显示
+          ,max: 0 //禁止选未来日期
           ,closeStop: '#tab2-li4-cld-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
           ,done: function(value, date, endDate){
             initDongchaTab();
@@ -524,7 +531,7 @@ $(function () {
           // ,range: true
           // ,value: returnDate(7) + ' - ' + returnDate(1)
           // ,min: -8 //7天前
-          // ,max: 0 //7天后
+          ,max: 0 //禁止选未来日期
           ,show: true //直接显示
           ,closeStop: '#tab2-li3-cld-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
           ,done: function(value, date, endDate){
@@ -547,7 +554,7 @@ $(function () {
           // ,range: true
           // ,value: returnDate(7) + ' - ' + returnDate(1)
           // ,min: -8 //7天前
-          // ,max: 0 //7天后
+          ,max: 0 //禁止选未来日期
           ,show: true //直接显示
           ,closeStop: '#tab3-li3-cld2-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
           ,done: function(value, date, endDate){
@@ -564,7 +571,7 @@ $(function () {
       lay('#tab-li4-cld2-box').on('click',function (e) {
         laydate.render({
           elem:'#tab-li4-cld2'
-          // ,value: returnDate(1)
+          ,max: 0 //禁止选未来日期
           ,show: true //直接显示
           ,closeStop: '#tab-li4-cld2-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
           ,done: function(value, date, endDate){
@@ -583,7 +590,7 @@ $(function () {
       lay('#tab3-cld1-box').on('click',function (e) {
         laydate.render({
           elem:'#sskl-cld2'
-          // ,value: returnDate()
+          ,max: 0 //禁止选未来日期
           ,show: true //直接显示
           ,closeStop: '#tab3-cld1-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
           ,done: function(value, date, endDate){
@@ -600,7 +607,7 @@ $(function () {
       lay('#tab4-klqs-cld2-box').on('click',function (e) {
         laydate.render({
           elem:'#tab4-klqs-cld2'
-          // ,value: returnDate()
+          ,max: 0 //禁止选未来日期
           ,show: true //直接显示
           ,closeStop: '#tab4-klqs-cld2-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
           ,done: function(value, date, endDate){
@@ -615,7 +622,7 @@ $(function () {
           elem:'#tab4-m-cld'
           ,type:'date'//默认为date
           ,trigger:'click'//默认为click，即点击后出现日历框
-          // ,value: returnDate(1)
+          ,max: 0 //禁止选未来日期
           ,show: true //直接显示
           ,closeStop: '#tab4-m-cld-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
           ,done: function(value, date, endDate){
@@ -655,7 +662,7 @@ $(function () {
           // ,range: true
           // ,value: returnDate(7) + ' - ' + returnDate(1)
           // ,min: -8 //7天前
-          // ,max: 0 //7天后
+          ,max: 0 //禁止选未来日期
           ,show: true //直接显示
           ,closeStop: '#tab4-big-cld-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
           ,done: function(value, date, endDate){
@@ -669,80 +676,58 @@ $(function () {
       })
 
     }
-    if(nowTab===tabArr[3]) {
-      // 高速路段
-      $('#tab5-klqs-cld').val(returnDate());
-      lay('#tab5-cld1').on('click',function (e) {
-        laydate.render({
-          elem:'#tab5-klqs-cld'
-          // ,value: returnDate()
-          ,show: true //直接显示
-          ,closeStop: '#tab5-cld1' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
-          ,done: function(value, date, endDate){
-            tab5Li2Echart1reqData(value);
-          }
-        })
-      })
-
-      $('#tab5-klqs-cld2').val(returnDate());
-      lay('#tab5-cld2').on('click',function (e) {
-        laydate.render({
-          elem:'#tab5-klqs-cld2'
-          ,show: true //直接显示
-          ,closeStop: '#tab5-cld2' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
-          ,done: function(value, date, endDate){
-            tab5Li2Echart2reqData(value);
-          }
-        })
-      })
-
-      // laydate.render({
-      //   elem:'#tab5-big-cld'
-      //   ,type:'date'//默认为date
-      //   ,trigger:'click'//默认为click，即点击后出现日历框
-      //   ,range: true
-      //   // ,value: '2018-12-01 - 2018-12-07'
-      //   ,value: returnDate(7) + ' - ' + returnDate(1)
-      //   ,done: function(value, date, endDate){
-      //     if(date) {
-      //       var dateObj = {
-      //         start: date.year+'-'+date.month+'-'+date.date,
-      //         end: endDate.year+'-'+endDate.month+'-'+endDate.date,
-      //       };
-      //       // console.log(dateObj)
-      //       tab5Li3Echart1ReqData(dateObj);
-      //       tab5Li3Echart2ReqData(dateObj);
-      //       tab5Li3Echart3reqData(dateObj);
-      //     } else {
-      //       console.log('date不能为空');
-      //     }
-      //   }
-      // })
-
-      $('#tab5-big-cld').val(returnDate(7) + ' - ' + returnDate(1));
-      lay('#tab5-big-cld-box').on('click').on('click',function (e) {
-        laydate.render({
-          elem:'#tab5-big-cld-1'
-          ,type:'date'//默认为date
-          ,trigger:'click'//默认为click，即点击后出现日历框
-          // ,range: true
-          // ,value: returnDate(7) + ' - ' + returnDate(1)
-          // ,min: -8 //7天前
-          // ,max: 0 //7天后
-          ,show: true //直接显示
-          ,closeStop: '#tab5-big-cld-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
-          ,done: function(value, date, endDate){
-            // console.log(value,date,endDate);
-            var dateObj = calDate(value);
-            $('#tab5-big-cld').val(dateObj.start+" - "+dateObj.end);
-            tab5Li3Echart1ReqData(dateObj);
-            tab5Li3Echart2ReqData(dateObj);
-            tab5Li3Echart3reqData(dateObj);
-          }
-        });
-      })
-
-    }
+    // if(nowTab===tabArr[3]) {
+    //   // 高速路段
+    //   $('#tab5-klqs-cld').val(returnDate());
+    //   lay('#tab5-cld1').on('click',function (e) {
+    //     laydate.render({
+    //       elem:'#tab5-klqs-cld'
+    //       ,max: 0 //禁止选未来日期
+    //       ,show: true //直接显示
+    //       ,closeStop: '#tab5-cld1' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
+    //       ,done: function(value, date, endDate){
+    //         tab5Li2Echart1reqData(value);
+    //       }
+    //     })
+    //   });
+    //
+    //   $('#tab5-klqs-cld2').val(returnDate());
+    //   lay('#tab5-cld2').on('click',function (e) {
+    //     laydate.render({
+    //       elem:'#tab5-klqs-cld2'
+    //       ,show: true //直接显示
+    //       ,max: 0 //禁止选未来日期
+    //       ,closeStop: '#tab5-cld2' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
+    //       ,done: function(value, date, endDate){
+    //         tab5Li2Echart2reqData(value);
+    //       }
+    //     })
+    //   });
+    //
+    //   $('#tab5-big-cld').val(returnDate(7) + ' - ' + returnDate(1));
+    //   lay('#tab5-big-cld-box').on('click').on('click',function (e) {
+    //     laydate.render({
+    //       elem:'#tab5-big-cld-1'
+    //       ,type:'date'//默认为date
+    //       ,trigger:'click'//默认为click，即点击后出现日历框
+    //       // ,range: true
+    //       // ,value: returnDate(7) + ' - ' + returnDate(1)
+    //       // ,min: -8 //7天前
+    //       ,max: 0 //禁止选未来日期
+    //       ,show: true //直接显示
+    //       ,closeStop: '#tab5-big-cld-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
+    //       ,done: function(value, date, endDate){
+    //         // console.log(value,date,endDate);
+    //         var dateObj = calDate(value);
+    //         $('#tab5-big-cld').val(dateObj.start+" - "+dateObj.end);
+    //         tab5Li3Echart1ReqData(dateObj);
+    //         tab5Li3Echart2ReqData(dateObj);
+    //         tab5Li3Echart3reqData(dateObj);
+    //       }
+    //     });
+    //   })
+    //
+    // }
   }
 
   var timer;
@@ -774,12 +759,12 @@ $(function () {
     if(nowTab==='收费站') {
       temp = $('#tab4');
     }
-    if(nowTab==='高速') {
-      temp = $('#tab5');
-    }
-    if(nowTab==='高速路网') {
-      // temp = $('#tab3');
-    }
+    // if(nowTab==='高速') {
+    //   temp = $('#tab5');
+    // }
+    // if(nowTab==='高速路网') {
+    //   // temp = $('#tab3');
+    // }
 
     temp.addClass('vh');
     var tabs = temp.find('.tab-box2-li');
@@ -806,8 +791,9 @@ $(function () {
 
     var t = $(this).data('name');
     nowTab = t;
+    window.nowTab = nowTab;
     console.log('切换到:', t);
-
+    moveTheMap();
     pointControl.ReturnDefualt();
     pointControl.showPoints(t);  // 放大点
     markerBindClick();
@@ -880,59 +866,8 @@ $(function () {
       $('#container2').hide();
       $('#gaosujiance').show();
       traffic.removePaths();  // 清除高速路段的线
-
     }
 
-    // if (nowTab === tabArr[0]) {
-    //   addStation();
-    //   positionType = 1;  // 场站type
-    // }
-    // else {
-    //   addStation2();
-    // }
-    // if (nowTab === tabArr[1]) {
-    //   positionType = 2;  // 服务区type
-    //
-    // }
-    // if (nowTab === tabArr[2]) {
-    //   positionType = 3;  // 收费站type
-    //
-    // }
-    // if (nowTab === '高速') {
-    //   positionType = 4;  // 高速路段type
-    //   mapbase.setLuDuanStyle();
-    //   // console.log(111)
-    // }
-    // if (nowTab === '高速路网') {
-    //   refreshTime();
-    //   $('#top3').hide();
-    //   $('#luwang-box').show();
-    //   // reqJamList();
-    //   mapbase.setTrafficStyle();
-    //   // reqLuWangDtlData()
-    //   reqJamList();
-    //   // jamRankLiClick();
-    //   $('#container2').hide()
-    // }
-    // else {
-    //   // console.log(222)
-    //   clearInterval(timer);
-    //   clearJamList();
-    //   $('#top3').show();
-    //   $('#luwang-box').hide();
-    //   $('#container2').show();
-    //   mapbase.isGaoSuLuDuan = false;
-    //
-    //   if(nowTab === '高速') {
-    //     mapbase.isGaoSuLuDuan = true;
-    //     mapbase.isGaoSuLuWang = false;
-    //   } else  {
-    //     mapbase.restoreDefaultStyle();
-    //   }
-    // }
-
-    // console.log('theDataObject:', pointControl.markes)
-    // addStation2()
   }
 
   /**
@@ -940,6 +875,19 @@ $(function () {
    */
   function clearJamList() {
     $('#jiance-top10-ul').empty();
+  }
+
+  /**
+   * 高速监测要向左平移地图,其他不用
+   */
+  function moveTheMap() {
+    var lnglat;
+    if(nowTab!==tabArr[3]) {
+      lntlat = new AMap.LngLat(113.275824, 22.994826);
+    } else {
+      lntlat = new AMap.LngLat(114.231635, 22.999883);
+    }
+    theMap.setCenter(lnglat)
   }
 
   var mList = [];
@@ -1264,7 +1212,7 @@ $(function () {
    */
   function keyRoadClick(liDom) {
     liDom.on('click',function () {
-      window['nowTab'] = nowTab;
+      // window['nowTab'] = nowTab;
       // debugger
       // console.log($(this).data('theName'));
       var theName = $(this).data('theName');
@@ -1437,6 +1385,7 @@ $(function () {
       var stationDom = $('<li>'+ m.C.extData['枢纽名称'] +'</li>');
       stationDom.on('click',function () {
         var name = $(this).text();
+        goToPointByName(name);
         curPosition = name;
         var curPosDataBox = $('#cur-pos-data-box');
         var tabBoxCur = $('#tab-box-cur');
@@ -1446,7 +1395,6 @@ $(function () {
 
         curPosDataBox.hide(300);
         isHideStation = true;
-        goToPointByName(name);
         // console.log('m',m.C.extData['枢纽名称']);
         changePosText(name);
       });
@@ -1512,7 +1460,7 @@ $(function () {
     if(nowTab===tabArr[0]&&tab2Name==='旅客洞察') {
       initDongchaTab();
       getPassengerData();
-      getAreaData($(tabDomNameArr[0]),'省外',returnDate(1));  // 默认省外
+      getAreaData($(tabDomNameArr[0]),'省外',tab2Li2DefaultDate);  // 默认省外
 
       tab2Li3InitEchart1();
       tab2Li3InitEchart2();
@@ -1532,7 +1480,7 @@ $(function () {
     }
     if(nowTab===tabArr[1]&&tab2Name==='旅客洞察') {
       initDongchaTab2();
-      getAreaData2($(tabDomNameArr[1]),'境外',returnDate(1));  // 默认省外
+      getAreaData2($(tabDomNameArr[1]),'境外',tab3Li2DefaultDate);  // 默认省外
       tab3Li3InitEchart();
       tab3Li3InitKLHX2();
       guishufenxiChart();
@@ -1547,7 +1495,7 @@ $(function () {
       tab4Li2initEchart2();
     }
     if(nowTab===tabArr[2]&&tab2Name==='旅客洞察') {
-      getDayCarFlowT3(returnDate(1));
+      getDayCarFlowT3(tab4Li2DefaultDate);
       tab4Li3InitEchart1();
       tab4Li3InitEchart2();
       tab4Li2InitEchart3();  // 客流画像
@@ -1750,6 +1698,7 @@ $(function () {
         temp.on('click',function () {
           // debugger
           var name = $(this).find('.p-name').text();
+          curPosition = name;
           goToPointByName(name);
           changePosText(name);
           hideTabs(name);
@@ -1879,7 +1828,8 @@ $(function () {
    */
   function getPassengerData(date) {
     var d;
-    d = date?date:returnDate(1);
+    d = date?date:returnDate(4);
+    // d = date?date:returnDate(1);
     var url = 'terminal/selectTerminalPassenger.do?'+'postionType='+positionType+'&postionName='+curPosition+'&countDate='+d;
 
     $.axpost(url,{},function (data) {
@@ -2351,7 +2301,7 @@ $(function () {
     }
     dom.find('.from-chart ul.body').empty();
     dom.find('.to-chart ul.body').empty();
-    var d = date?date:returnDate(1);
+    var d = date?date:returnDate(4);
     var url = 'terminal/selectTerminalOriginAndLeaveTop.do?postionType='+positionType+'&postionName='+curPosition+'&area='+area+'&countDate='+d;
     $.axpost(url,{},function (data) {
       if(data.isSuccess&&data.data[apiName].length&&data.data[apiName].length) {
@@ -2609,14 +2559,10 @@ $(function () {
         // console.log(this.C.extData['枢纽名称']);
         var theName = this.C.extData['枢纽名称'];
         // debugger
-        // if(nowTab===tabArr[3]) {
-        //   reqRoadData(theName)
-        // } else {
-        //   goToPointByName(theName)
-        // }
         goToPointByName(theName);
         hideTabs(theName);
-        // showWeather();
+
+        showWeather();
       })
     }
   }
@@ -3384,7 +3330,7 @@ $(function () {
       ]
     };
 
-    tab2Li3Echart1reqData();
+    tab2Li3Echart1reqData(tab2Li2DefaultDate);
 
     if (option && typeof option === "object") {
       tab2Li3Echart1.setOption(option, true);
@@ -3394,7 +3340,7 @@ $(function () {
   function tab2Li3Echart1reqData(date) {
     tab2Li3Echart1.showLoading();    //加载动画
     var d;
-    d = date?date:returnDate(1);
+    d = date?date:returnDate(4);
     var url = 'terminal/selectTerminalLinger.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
       // if(data.isSuccess&&data.data.length) {
@@ -3531,7 +3477,7 @@ $(function () {
       ]
     };
 
-    tab2Li3Echart2ReqData();
+    tab2Li3Echart2ReqData(tab2Li2DefaultDate);
 
     if (option && typeof option === "object") {
       tab2Li3Echart2.setOption(option, true);
@@ -3541,7 +3487,7 @@ $(function () {
   function tab2Li3Echart2ReqData(date) {
     tab2Li3Echart2.showLoading();    //加载动画
     var d;
-    d = date?date:returnDate(1);
+    d = date?date:returnDate(4);
     var url = 'terminal/selectTerminalSexAge.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
       // console.log('tab2Li3Echart2',data);
@@ -3660,7 +3606,7 @@ $(function () {
       ]
     };
 
-    tab2Li3Echart3ReqData();
+    tab2Li3Echart3ReqData(tab2Li2DefaultDate);
 
     if (option && typeof option === "object") {
       tab2Li3Echart3.setOption(option, true);
@@ -3672,7 +3618,7 @@ $(function () {
     var colors = ['rgb(252,162,34)','rgb(152,113,253)','rgb(38,229,225)'];
     tab2Li3Echart3.showLoading();    //加载动画
     var d;
-    d = date?date:returnDate(1);
+    d = date?date:returnDate(4);
     var url = 'terminal/selectTerminalOriginAndLeave.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
       // if(data.isSuccess&&!isEmptyObject(data.data.originMap)) {
@@ -3801,7 +3747,7 @@ $(function () {
       ]
     };
 
-    tab2Li3Echart4ReqData();
+    tab2Li3Echart4ReqData(tab2Li2DefaultDate);
 
     if (option && typeof option === "object") {
       tab2Li3Echart4.setOption(option, true);
@@ -3813,7 +3759,7 @@ $(function () {
     var colors = ['rgb(252,162,34)','rgb(152,113,253)','rgb(38,229,225)'];
     tab2Li3Echart4.showLoading();    //加载动画
     var d;
-    d = date?date:returnDate(1);
+    d = date?date:returnDate(4);
     var url = 'terminal/selectTerminalOriginAndLeave.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
       if(data.isSuccess) {
@@ -4290,7 +4236,7 @@ $(function () {
       ]
     };
 
-    tab3Li3Echart2ReqData();
+    tab3Li3Echart2ReqData(tab3Li2DefaultDate);
     if (option && typeof option === "object") {
       tab3Li3Echart2.setOption(option, true);
     }
@@ -4428,7 +4374,7 @@ $(function () {
         barWidth: '50%',
       }]
     };
-    tab3Li3Echart1reqData();
+    tab3Li3Echart1reqData(tab3Li2DefaultDate);
     if (option && typeof option === "object") {
       tab3Li3Echart1.setOption(option, true);
     }
@@ -4437,7 +4383,7 @@ $(function () {
   function tab3Li3Echart1reqData(date) {
     tab3Li3Echart1.showLoading();    //加载动画
     var d;
-    d = date?date:returnDate();
+    d = date?date:returnDate(1);
     var url = 'serviceArea/selectServiceLinger.do?postionType='+ positionType +'&postionName='+ curPosition +'&countDate='+d;
     $.axpost(url,{},function (data) {
       // if(data.isSuccess&&data.data.length) {
@@ -4693,7 +4639,7 @@ $(function () {
         }
       ]
     };
-    guishufenxiReqData();
+    guishufenxiReqData(tab3Li2DefaultDate);
     if (option && typeof option === "object") {
       guishufenxi.setOption(option, true);
     }
@@ -5192,7 +5138,7 @@ $(function () {
         }
       ]
     };
-    tab4Li2Echart3ReqData();
+    tab4Li2Echart3ReqData(tab4Li2DefaultDate);
 
     if (option && typeof option === "object") {
       tab4Li2Echart3.setOption(option, true);
@@ -5329,7 +5275,7 @@ $(function () {
         barWidth: '50%',
       }]
     };
-    tab4Li3Echart1reqData();
+    tab4Li3Echart1reqData(tab4Li2DefaultDate);
 
     if (option && typeof option === "object") {
       tab4Li3Echart1.setOption(option, true);
@@ -5458,7 +5404,7 @@ $(function () {
       series: []
 
     };
-    tab4Li3Echart2reqData();
+    tab4Li3Echart2reqData(tab4Li2DefaultDate);
     tab4Li3Echart2.setOption(option);
   }
 
@@ -5481,10 +5427,9 @@ $(function () {
             dataArr.push({
               name: hourArr[index],
               data: newArr,
-              data: newArr,
               type: 'line',
               z: 2,
-              stack: 'a',
+              // stack: 'a',
               smooth: true,
               symbol: 'none',
               lineStyle: {

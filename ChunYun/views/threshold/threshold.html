@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>阈值设置</title>
+  <style>
+    .box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate(-50%,-50%);
+      -moz-transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+      -o-transform: translate(-50%,-50%);
+      transform: translate(-50%,-50%);
+      font-size: 20px;
+      width: 450px;
+      height: 300px;
+    }
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    body {
+      overflow: hidden;
+    }
+    input {
+      /*margin-left: 10px;*/
+      position: relative;
+      left: 20px;
+      height: 100%;
+      font-size: 20px;
+    }
+    .box2 {
+      height: 30px;
+      line-height: 30px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+    .box2 span {
+      display: inline-block;
+      width: 135px;
+    }
+    .btn-box {
+      height: 50px;
+      overflow: hidden;
+    }
+    .btn-box input {
+      width: 100px;
+      float: right;
+      position: relative;
+      left: 0;
+    }
+    .result-list {
+      position: absolute;
+      top: 34px;
+      right: 42px;
+      /*background-color: #000000;*/
+      width: 247px;
+      height: 34px;
+      z-index: 10;
+      display: none;
+    }
+    li {
+      list-style: none;
+      background-color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+
+    <form action="form_action.asp" method="get">
+      <div class="box2">
+        <span>地点名字</span>
+        <input type="text" name="position_name" id="search">
+        <ul id="result-list" class="result-list">
+          <!--<li>www</li>-->
+        </ul>
+      </div>
+      <div class="box2">
+        <span>发生时间</span>
+        <input type="text" name="date_time" readonly id="calender">
+      </div>
+      <div class="box2">
+        <span>最大人流量</span>
+        <input type="text" name="position_max">
+      </div>
+      <div class="box2">
+        <span>预设低-中阈值</span>
+        <input type="text" name="warning_low">
+      </div>
+      <div class="box2">
+        <span>预设中-高阈值</span>
+        <input type="text" name="warning_high">
+      </div>
+
+      <div class="btn-box">
+        <input type="submit" value="提交" id="submit">
+      </div>
+    </form>
+  </div>
+
+
+  <script src="./jquery-1.8.2.min.js"></script>
+  <script src="laydate.js"></script>
+  <script src="./data.js"></script>
+  <script>
+    $(function () {
+      var pointControl = new PlacePointView();
+//  console.log(pointControl.PlacePoints);
+      laydate.render({
+        elem: '#calender' //指定元素
+      });
+      $('#search').on('input',function () {
+        // console.log($(this).val());
+        var resultList = $('#result-list');
+        resultList.empty();
+        var v = $(this).val().trim();
+        console.log(v);
+
+        if(!v) {
+          console.log('搜索值不能为空');
+          resultList.hide();
+          return
+        }
+        var markerArr = pointControl.PlacePoints;
+        var resultArr = [];
+        for (var i = 0; i < markerArr.length; i++) {
+          var m = markerArr[i];
+//        debugger
+          if(m['枢纽名称']) {
+            if(v===m['枢纽名称'].substr(0,v.length)) {
+              console.log(m['枢纽名称']);
+              resultArr.push(m['枢纽名称'])
+              // debugger
+            }
+          }
+
+        }
+        // console.log(resultArr);
+
+        // debugger
+        if(!resultArr) {
+          console.log('没符合条件的值');
+          resultList.hide();
+          return
+        }
+        for (var j = 0; j < resultArr.length; j++) {
+          // console.log(j);
+
+          var r = resultArr[j];
+          var theLi = $('<li>'+ r +'</li>');
+          var that = this;
+          theLi.on('click',function () {
+            $(that).val('');
+            resultList.empty();
+            resultList.hide();
+            var name = $(this).text();
+            $('#search').val(name)
+          });
+          // debugger
+          // console.log(resultList);
+
+          resultList.append(theLi)
+          resultList.show()
+        }
+      });
+    })
+
+
+  </script>
+</body>
+</html>

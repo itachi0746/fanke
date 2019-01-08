@@ -1,5 +1,4 @@
 var serviceBase = "http://localhost/gdcnymot";  // 基地址
-
 if(window.location.hostname==='localhost') {
     serviceBase = "http://localhost/gdcnymot/";///gdcnymot/";
 } else {
