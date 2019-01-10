@@ -25,7 +25,17 @@ $(function () {
             trigger: 'axis',
             backgroundColor: 'transparent',
             formatter: function (params) {
-                return params[params.length - 1].data;
+               var theDatas=[];
+               if(params.length>1){
+                   for(var i=0;i<params.length;i++){
+                       theDatas.push(params[i].seriesName+':'+params[i].data+"万");
+                   }
+               }else{
+                   for(var i=0;i<params.length;i++){
+                       theDatas.push(params[i].data+"万");
+                   }
+               }
+                return theDatas.join('<br />');
             }
         },
         grid: {
@@ -56,6 +66,22 @@ $(function () {
                     color: '#557398'
                 }
             },
+            axisPointer: {
+                label: {
+                    show:true,
+                    color: '#05cffa',
+                    formatter: function (arg) {
+                        return arg.value;
+                    }
+                },
+                lineStyle: {
+                    color: '#05cffa',
+                    shadowBlur: {
+                        shadowColor: '#05cffa',
+                        shadowBlur: 10
+                    }
+                }
+            },
             data: ['0', '12-28', '12-29', '12-30', '1-01', '1-02', '1-03', '1-04']
             //data: theXData
         },
@@ -79,9 +105,7 @@ $(function () {
     //获取当前的日期数据
     var formateDate = function () {
         if (!theCurrentDate) {
-            var theDate = GetYesterdayDate();
-            ///theDate.setDate(theDate.getDate()-1);
-            return theDate.getFullYear() + "-" + FormateDateNum(theDate.getMonth() + 1) + "-" + FormateDateNum(theDate.getDate());
+            return GetTodayDate().before(2).formate();
         }
         return theCurrentDate.year + '-' + FormateDateNum(theCurrentDate.month) + '-' + FormateDateNum(theCurrentDate.date);//
     }
@@ -137,7 +161,8 @@ $(function () {
         laydate.render({
             elem: '#date-input', //指定元素
             trigger: 'click',
-            value: formateDate(),
+            max:GetTodayDate().formate(),
+            value:  formateDate(),
             done: function (value, date, endDate) {
                 //debugger;
                 console.log('日期变化:' + value); //得到日期生成的值，如：2017-08-18
@@ -155,6 +180,7 @@ $(function () {
             trigger: 'click',
             range: true,//范围选择
             value: formateDate1(),
+            max:GetTodayDate().formate(),
             done: function (value, date, endDate) {
                 //debugger;
                 //debugger;
@@ -244,7 +270,7 @@ $(function () {
         //注意修改数据
         this.loadSelectNewOne();
         this.loadzFlow();
-        this.loadWeather();
+        this.loadWeather('湛江/徐闻');
     }
     PageViewModel.prototype.loadChart1 = function (xData, data1, data2) {
         if (!this.Chart1) {
@@ -253,7 +279,7 @@ $(function () {
         //debugger;
         var theCurrentOption = {};
         $.extend(true, theCurrentOption, option1);
-        theCurrentOption.grid.height = 80;
+        theCurrentOption.grid.height = 100;
         theCurrentOption.grid.bottom = 10;
         var theXData = [];
         //var theTodayDate=new Date();
@@ -281,6 +307,22 @@ $(function () {
                     }
                 }
             },
+            axisPointer: {
+                label: {
+                    show:true,
+                    color: '#05cffa',
+                    formatter: function (arg) {
+                        return arg.value;
+                    }
+                },
+                lineStyle: {
+                    color: '#05cffa',
+                    shadowBlur: {
+                        shadowColor: '#05cffa',
+                        shadowBlur: 10
+                    }
+                }
+            },
             boundaryGap: false,
             axisLine: {
                 lineStyle: {
@@ -291,7 +333,14 @@ $(function () {
         };
         //theCurrentOption.xAxis.data = xData || theCurrentOption.xAxis.data;
         theCurrentOption.legend = {
-            data: [{name: '粤海铁路北港', textStyle: {color: "#85a8b8"}}, {name: '海安港', textStyle: {color: "#85a8b8"}}],
+            data: [{name: '粤海铁路北港',
+                textStyle: {color: "#d1b96b"}
+//                textStyle: {color: "#85a8b8"}
+                },
+                {name: '海安港',
+                    textStyle: {color: "#357acb"}
+                    //textStyle: {color: "#85a8b8"}
+                }],
             x: 'right',
             y: 'top'
         };
@@ -1152,7 +1201,7 @@ $(function () {
             //debugger;
             var inPeople = ((theData['inPeople']) || 0);
             var outPeople = ((theData['outPeople']) || 0);
-            var allPeople = (inPeople - outPeople);
+            var allPeople = ( outPeople-inPeople);
             var unitText = '万';
             if (inPeople < 1000) {
                 unitText = "";

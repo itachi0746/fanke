@@ -50,7 +50,7 @@ $(function(){
     }
     console.log('开始访问:',url);
     // data = (data==null || data=="" || typeof(data)=="undefined")? {"date": new Date().getTime()} : data;
-    $.ajax({
+    var theAjax = $.ajax({
       type: "post",
       data: data,
       url: serviceBase + url,
@@ -65,6 +65,7 @@ $(function(){
         // errorfn(e);
       }
     });
+    return theAjax
   };
 
   function handleErr(e) {

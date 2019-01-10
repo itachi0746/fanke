@@ -394,7 +394,7 @@ html, body {
           -ms-flex-pack: center;
               justify-content: center;
       line-height: 20px;
-      background-color: #899ffb;
+      background-color: #e93323;
       color: #000;
       border-radius: 5px;
       font-weight: bold; }
@@ -594,11 +594,14 @@ html, body {
         .top3 .yongji .head .head-p span {
           font-weight: bold; }
   .top3 .yongji:hover {
-    height: 200px; }
+    height: 200px;
+    overflow-y: scroll; }
   .top3 .shizhong:hover {
-    height: 200px; }
+    height: 200px;
+    overflow-y: scroll; }
   .top3 .shushi:hover {
-    height: 200px; }
+    height: 200px;
+    overflow-y: scroll; }
   .top3 .shizhong {
     margin-right: 2px; }
   .top3 .shizhong, .top3 .shushi {
@@ -637,6 +640,51 @@ html, body {
     background-color: rgba(232, 175, 53, 0.8); }
   .top3 .shushi {
     background-color: rgba(39, 214, 211, 0.8); }
+  .top3 .yongji::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 10px;
+    /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px; }
+  .top3 .yongji::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: #FF4E90; }
+  .top3 .yongji::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0); }
+  .top3 .shushi::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 10px;
+    /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px; }
+  .top3 .shushi::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: #2DFFFC; }
+  .top3 .shushi::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0); }
+  .top3 .shizhong::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 10px;
+    /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px; }
+  .top3 .shizhong::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: #FFC635; }
+  .top3 .shizhong::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0); }
 
 .keyunzhan-data {
   margin-top: 10px;
@@ -738,6 +786,19 @@ html, body {
   .keyunzhan-data ul {
     font-size: 18px; }
 
+.tab-arrow {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0px;
+  z-index: 9;
+  cursor: pointer;
+  overflow: hidden;
+  display: none;
+  width: 200px; }
+  .tab-arrow img {
+    float: left; }
+
 .tab {
   position: absolute;
   z-index: 11;
@@ -747,10 +808,12 @@ html, body {
     opacity: 0;
     height: 102px;
     position: absolute;
-    top: -102px;
-    left: 0;
+    top: 0px;
+    left: 190px;
     cursor: pointer;
-    z-index: 9; }
+    z-index: 8;
+    -webkit-transition: all .3s;
+    transition: all .3s; }
     .tab .tab-box-cur .bg-div {
       height: 100%;
       width: auto;
@@ -787,6 +850,10 @@ html, body {
       z-index: 11; }
   .tab .tab-box:nth-child(1) {
     top: 0; }
+    .tab .tab-box:nth-child(1) .tab-arrow {
+      left: 190px;
+      display: block;
+      opacity: 1; }
   .tab .tab-box:nth-child(2) {
     top: 102px; }
   .tab .tab-box:nth-child(3) {
@@ -812,6 +879,7 @@ html, body {
   -webkit-transition: all .3s;
   transition: all .3s;
   position: absolute;
+  z-index: 10;
   background: url("../img/icon_left_nor.png") no-repeat; }
   .tab-box span {
     color: #ffffff;
@@ -2091,7 +2159,7 @@ html, body {
 .cur-pos-data-box {
   position: absolute;
   top: 86px;
-  left: -130px;
+  left: -80px;
   z-index: 10;
   background-color: rgba(9, 32, 74, 0.9);
   border: 2px solid #28eefb;
@@ -2352,6 +2420,16 @@ input:focus {
   line-height: 1.4;
   overflow: auto; }
 
+.amap-info-content2 {
+  background: black;
+  color: #00aeef;
+  border-radius: 5px;
+  border: 1px solid #00aeef;
+  padding: 10px 18px 10px 10px;
+  line-height: 1.4;
+  overflow: auto;
+  font-size: 24px; }
+
 .infoTitle {
   margin: 5px 0;
   color: yellow; }
@@ -2383,11 +2461,10 @@ input:focus {
   height: 90px;
   background-image: url("../img/bg_weather.png");
   position: absolute;
-  top: 154px;
+  top: 354px;
   right: 65px;
   z-index: 15;
-  color: #ddf3ff;
-  display: none; }
+  color: #ddf3ff; }
 
 .weather-content {
   width: 1070px;
@@ -2474,5 +2551,71 @@ input:focus {
 
 #weather-close:hover, #weather-open:hover, .guishu .tab-item:hover {
   cursor: pointer; }
+
+.weather-box {
+  width: 1071px;
+  height: 90px;
+  background: url("../img/weather/bg.png");
+  position: absolute;
+  top: 176px;
+  right: 65px;
+  z-index: 15;
+  color: #ddf3ff;
+  display: none;
+  cursor: default; }
+  .weather-box ul {
+    width: 100%;
+    height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    color: #d9f1ff; }
+    .weather-box ul li:nth-child(1) {
+      color: #d9f1ff;
+      display: block; }
+    .weather-box ul .tqfx {
+      width: 100%;
+      height: 100%;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+          -ms-flex-direction: column;
+              flex-direction: column;
+      -webkit-box-pack: center;
+          -ms-flex-pack: center;
+              justify-content: center; }
+      .weather-box ul .tqfx section {
+        width: 100%;
+        text-align: center; }
+  .weather-box li {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 20px;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  .weather-box .temperature {
+    margin-left: 10px;
+    margin-right: 20px; }
+    .weather-box .temperature p:nth-child(1) {
+      text-align: center; }
+    .weather-box .temperature p:nth-child(2) {
+      white-space: nowrap; }
+  .weather-box .wind {
+    margin-left: 15px; }
+    .weather-box .wind p:nth-child(1) {
+      text-align: center; }
+  .weather-box .weather {
+    margin-left: 10px;
+    text-align: center; }
 
 /*# sourceMappingURL=homepage.css.map */

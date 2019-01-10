@@ -42,13 +42,13 @@
     <div class="jiance-header" id="jiance-header">
       <div class="header-time">
         <div class="date" id="curDate">
-        12月23日
+          12月23日
         </div>
         <div class="week" id="curWeek">
           星期日
         </div>
         <div class="led" id="curTime">
-        11:02:12
+          11:02:12
         </div>
       </div>
       <div class="header-tips">
@@ -62,12 +62,12 @@
       </div>
       <div class="tips-num">
         <!--<div class="inner-num-box">-->
-          <span>0</span>
-          <span>2</span>
-          <span>4</span>
-          <span>6</span>
-          <span>8</span>
-          <span>10</span>
+        <span>0</span>
+        <span>2</span>
+        <span>4</span>
+        <span>6</span>
+        <span>8</span>
+        <span>10</span>
         <!--</div>-->
 
       </div>
@@ -86,12 +86,12 @@
         </div>
         <ul id="jiance-key-ul">
           <!--<li>-->
-            <!--<section>111</section>-->
-            <!--<section>2</section>-->
-            <!--<section>-->
-              <!--<div class="tips-font">轻度拥堵</div>-->
-            <!--</section>-->
-            <!--<section>4</section>-->
+          <!--<section>111</section>-->
+          <!--<section>2</section>-->
+          <!--<section>-->
+          <!--<div class="tips-font">轻度拥堵</div>-->
+          <!--</section>-->
+          <!--<section>4</section>-->
           <!--</li>-->
         </ul>
       </div>
@@ -117,16 +117,15 @@
         </div>
         <ul id="jiance-top10-ul">
           <!--<li>-->
-            <!--<section><span>1</span></section>-->
-            <!--<section>2222222</section>-->
-            <!--<section>kmkm</section>-->
-            <!--<section>kkkk</section>-->
+          <!--<section><span>1</span></section>-->
+          <!--<section>2222222</section>-->
+          <!--<section>kmkm</section>-->
+          <!--<section>kkkk</section>-->
           <!--</li>-->
         </ul>
       </div>
     </div>
   </div>
-
 
 
   <!--高速监测模块  结束-->
@@ -193,386 +192,461 @@
   </div>
 
   <!--天气-->
-  <div id="left-weather" class="left-weather">
-    <div class="weather-1">
-      <span class="firstline">天气分析</span>
-      <span class="secondline field" data-field="date">2018年12月28日</span>
-    </div>
-    <div class="weather-2">
-      <img src="./gzadq/img/icon_temperature.png" class="weather-icon" alt=""/>
-      <div class="w2-right w2-right-top">
-        <span class="weather-litop">温度</span>
-        <span class="weather-libottom field" data-field="wendu">25℃</span>
-      </div>
-    </div>
-    <div class="weather-2">
-      <img src="./gzadq/img/icon_wind.png" class="weather-icon" alt=""/>
-      <div class="w2-right w2-right-top">
-        <span class="weather-litop">风力</span>
-        <span class="weather-libottom field" data-field="fengli">东风2级</span>
-      </div>
-    </div>
-    <div class="weather-2">
-      <img src="./gzadq/img/icon_fog.png" class="weather-icon" alt=""/>
-      <div class="w2-right w2-right-top">
-        <span class="weather-litop">可见度</span>
-        <span class="weather-libottom field" data-field="kejiandu">12公里</span>
-      </div>
-    </div>
-    <div class="weather-2">
-      <img src="./gzadq/img/icon_rain.png" class="weather-icon" alt=""/>
-      <div class="w2-right w2-right-top">
-        <span class="weather-litop">降水</span>
-        <span class="weather-libottom field" data-field="jiangshui">0毫米</span>
-      </div>
-    </div>
-    <div class="weather-2" id="weather-open">
-
-      <div class="weather-7day">
-        <span class="weather-litop">未来七天情况</span>
-        <img src="./gzadq/img/icon3.png" class="weather-up" alt=""/>
-      </div>
-    </div>
-  </div>
-  <div id="weather-content" class="weather-content">
+  <div class="weather-box" id="left-weather">
     <ul>
       <li>
-        <div class="weather-1" style="padding-top: 20px;    margin-left: 0;    width: 202px;">
-          <span class="firstline">天气分析</span>
-          <span class="secondline field">2018年12月28日</span>
-        </div>
-        <div class="weather-2">
-          <img src="./gzadq/img/icon_temperature.png" class="weather-icon" alt=""/>
-          <div class="w2-right w2-right-top">
-            <span class="weather-litop">温度</span>
-            <span class="weather-libottom field">25℃</span>
-          </div>
-        </div>
-        <div class="weather-2">
-          <img src="./gzadq/img/icon_wind.png" class="weather-icon" alt=""/>
-          <div class="w2-right w2-right-top">
-            <span class="weather-litop">风力</span>
-            <span class="weather-libottom field">东风2级</span>
-          </div>
-        </div>
-        <div class="weather-2">
-          <img src="./gzadq/img/icon_fog.png" class="weather-icon" alt=""/>
-          <div class="w2-right w2-right-top">
-            <span class="weather-litop">可见度</span>
-            <span class="weather-libottom field">12公里</span>
-          </div>
-        </div>
-        <div class="weather-2">
-          <img src="./gzadq/img/icon_rain.png" class="weather-icon" alt=""/>
-          <div class="w2-right w2-right-top">
-            <span class="weather-litop">降水</span>
-            <span class="weather-libottom field">0毫米</span>
-          </div>
-        </div>
-        <div class="weather-2">
-
-          <div class="weather-7day">
-            <span class="weather-litop">未来七天情况</span>
-            <!--<img src="./gzadq/img/icon3.png" class="weather-up" alt=""/>-->
-          </div>
+        <div class="tqfx">
+          <section>
+            <span>天气分析</span>
+          </section>
+          <section>
+            <p id="weather-date"></p>
+          </section>
         </div>
       </li>
-      <li class="middletext">
-        <div class="weather-1">
-          <span class="secondline field" style="margin-top:0">2018年12月28日</span>
+      <li>
+        <div>
+          <img src="./gzadq/img/icon_temperature.png" alt="">
         </div>
-        <div class="weather-2 ">
-          <!--<img src="./gzadq/img/icon_temperature.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">温度</span>-->
-            <span class="weather-libottom field">25℃</span>
-          </div>
+        <div class="temperature">
+          <p>温度</p>
+          <p id="temperature"></p>
         </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_wind.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">风力</span>-->
-            <span class="weather-libottom field">东风2级</span>
-          </div>
-        </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_fog.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">可见度</span>-->
-            <span class="weather-libottom field">12公里</span>
-          </div>
-        </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_rain.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">降水</span>-->
-            <span class="weather-libottom field">0毫米</span>
-          </div>
-        </div>
-        <!--<div class="weather-2">-->
-
-        <!--<div class="weather-7day">-->
-        <!--<span class="weather-litop">未来七天情况</span>-->
-        <!--<img src="./gzadq/img/icon3.png" class="weather-up" alt=""/>-->
-        <!--</div>-->
-        <!--</div>-->
       </li>
-      <li class="middletext">
-        <div class="weather-1">
-          <span class="secondline field" style="margin-top:0">2018年12月28日</span>
+      <li>
+        <div>
+          <img src="./gzadq/img/icon_wind.png" alt="">
         </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_temperature.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">温度</span>-->
-            <span class="weather-libottom field">25℃</span>
-          </div>
+        <div class="wind">
+          <p>风向</p>
+          <p id="wind"></p>
         </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_wind.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">风力</span>-->
-            <span class="weather-libottom field">东风2级</span>
-          </div>
-        </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_fog.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">可见度</span>-->
-            <span class="weather-libottom field">12公里</span>
-          </div>
-        </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_rain.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">降水</span>-->
-            <span class="weather-libottom field">0毫米</span>
-          </div>
-        </div>
-        <!--<div class="weather-2">-->
-
-        <!--<div class="weather-7day">-->
-        <!--<span class="weather-litop">未来七天情况</span>-->
-        <!--<img src="./gzadq/img/icon3.png" class="weather-up" alt=""/>-->
-        <!--</div>-->
-        <!--</div>-->
       </li>
-      <li class="middletext">
-        <div class="weather-1">
-          <span class="secondline field" style="margin-top:0">2018年12月28日</span>
+      <li>
+        <div>
+          <img src="yjzx/img/weather/icon_fog.png" alt="">
         </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_temperature.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">温度</span>-->
-            <span class="weather-libottom field">25℃</span>
-          </div>
+        <div class="wind">
+          <p>风速</p>
+          <span id="wind-speed"></span>
         </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_wind.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">风力</span>-->
-            <span class="weather-libottom field">东风2级</span>
-          </div>
-        </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_fog.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">可见度</span>-->
-            <span class="weather-libottom field">12公里</span>
-          </div>
-        </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_rain.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">降水</span>-->
-            <span class="weather-libottom field">0毫米</span>
-          </div>
-        </div>
-        <!--<div class="weather-2">-->
-
-        <!--<div class="weather-7day">-->
-        <!--<span class="weather-litop">未来七天情况</span>-->
-        <!--<img src="./gzadq/img/icon3.png" class="weather-up" alt=""/>-->
-        <!--</div>-->
-        <!--</div>-->
       </li>
-      <li class="middletext">
-        <div class="weather-1">
-          <span class="secondline field" style="margin-top:0">2018年12月28日</span>
+      <li>
+        <div>
+          <img id="weather-img" src="yjzx/img/weather/暴雨.png" alt="">
         </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_temperature.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">温度</span>-->
-            <span class="weather-libottom field">25℃</span>
-          </div>
-        </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_wind.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">风力</span>-->
-            <span class="weather-libottom field">东风2级</span>
-          </div>
-        </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_fog.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">可见度</span>-->
-            <span class="weather-libottom field">12公里</span>
-          </div>
-        </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_rain.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">降水</span>-->
-            <span class="weather-libottom field">0毫米</span>
-          </div>
-        </div>
-        <!--<div class="weather-2">-->
-
-        <!--<div class="weather-7day">-->
-        <!--<span class="weather-litop">未来七天情况</span>-->
-        <!--<img src="./gzadq/img/icon3.png" class="weather-up" alt=""/>-->
-        <!--</div>-->
-        <!--</div>-->
-      </li>
-      <li class="middletext">
-        <div class="weather-1">
-          <span class="secondline field" style="margin-top:0">2018年12月28日</span>
-        </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_temperature.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">温度</span>-->
-            <span class="weather-libottom field">25℃</span>
-          </div>
-        </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_wind.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">风力</span>-->
-            <span class="weather-libottom field">东风2级</span>
-          </div>
-        </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_fog.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">可见度</span>-->
-            <span class="weather-libottom field">12公里</span>
-          </div>
-        </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_rain.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">降水</span>-->
-            <span class="weather-libottom field">0毫米</span>
-          </div>
-        </div>
-        <!--<div class="weather-2">-->
-
-        <!--<div class="weather-7day">-->
-        <!--<span class="weather-litop">未来七天情况</span>-->
-        <!--<img src="./gzadq/img/icon3.png" class="weather-up" alt=""/>-->
-        <!--</div>-->
-        <!--</div>-->
-      </li>
-      <li class="middletext">
-        <div class="weather-1">
-          <span class="secondline field" style="margin-top:0">2018年12月28日</span>
-        </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_temperature.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">温度</span>-->
-            <span class="weather-libottom field">25℃</span>
-          </div>
-        </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_wind.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">风力</span>-->
-            <span class="weather-libottom field">东风2级</span>
-          </div>
-        </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_fog.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">可见度</span>-->
-            <span class="weather-libottom field">12公里</span>
-          </div>
-        </div>
-        <div class="weather-2">
-          <!--<img src="./gzadq/img/icon_rain.png" class="weather-icon" alt=""/>-->
-          <div class="w2-right">
-            <!--<span class="weather-litop">降水</span>-->
-            <span class="weather-libottom field">0毫米</span>
-          </div>
-        </div>
-        <div class="weather-2" id="weather-close" style="padding-top: 20px; line-height: 0;">
-
-          <div class="weather-7day ">
-            <img src="./gzadq/img/icon_up.png" class="weather-up" alt=""/>
-            <span class="weather-litop weather-close">收起</span>
-
-          </div>
+        <div class="weather">
+          <p>天气状况</p>
+          <span id="weather"></span>
         </div>
       </li>
     </ul>
   </div>
 
+  <!--<div id="" class="left-weather">-->
+  <!--<div class="weather-1">-->
+  <!--<span class="firstline">天气分析</span>-->
+  <!--<span class="secondline field" data-field="date">2018年12月28日</span>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--<img src="./gzadq/img/icon_temperature.png" class="weather-icon" alt=""/>-->
+  <!--<div class="w2-right w2-right-top">-->
+  <!--<span class="weather-litop">温度</span>-->
+  <!--<span class="weather-libottom field" data-field="wendu">25℃</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--<img src="./gzadq/img/icon_wind.png" class="weather-icon" alt=""/>-->
+  <!--<div class="w2-right w2-right-top">-->
+  <!--<span class="weather-litop">风力</span>-->
+  <!--<span class="weather-libottom field" data-field="fengli">东风2级</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2 dn">-->
+  <!--<img src="./gzadq/img/icon_fog.png" class="weather-icon" alt=""/>-->
+  <!--<div class="w2-right w2-right-top">-->
+  <!--<span class="weather-litop">可见度</span>-->
+  <!--<span class="weather-libottom field" data-field="kejiandu">12公里</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--<img src="./gzadq/img/icon_rain.png" class="weather-icon" alt=""/>-->
+  <!--<div class="w2-right w2-right-top">-->
+  <!--<span class="weather-litop">降水</span>-->
+  <!--<span class="weather-libottom field" data-field="jiangshui">0毫米</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2 dn" id="weather-open">-->
+
+  <!--<div class="weather-7day">-->
+  <!--<span class="weather-litop">未来七天情况</span>-->
+  <!--<img src="./gzadq/img/icon3.png" class="weather-up" alt=""/>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div id="weather-content dn" class="weather-content">-->
+  <!--<ul>-->
+  <!--<li>-->
+  <!--<div class="weather-1" style="padding-top: 20px;    margin-left: 0;    width: 202px;">-->
+  <!--<span class="firstline">天气分析</span>-->
+  <!--<span class="secondline field">2018年12月28日</span>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--<img src="./gzadq/img/icon_temperature.png" class="weather-icon" alt=""/>-->
+  <!--<div class="w2-right w2-right-top">-->
+  <!--<span class="weather-litop">温度</span>-->
+  <!--<span class="weather-libottom field">25℃</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--<img src="./gzadq/img/icon_wind.png" class="weather-icon" alt=""/>-->
+  <!--<div class="w2-right w2-right-top">-->
+  <!--<span class="weather-litop">风力</span>-->
+  <!--<span class="weather-libottom field">东风2级</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--<img src="./gzadq/img/icon_fog.png" class="weather-icon" alt=""/>-->
+  <!--<div class="w2-right w2-right-top">-->
+  <!--<span class="weather-litop">可见度</span>-->
+  <!--<span class="weather-libottom field">12公里</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--<img src="./gzadq/img/icon_rain.png" class="weather-icon" alt=""/>-->
+  <!--<div class="w2-right w2-right-top">-->
+  <!--<span class="weather-litop">降水</span>-->
+  <!--<span class="weather-libottom field">0毫米</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+
+  <!--<div class="weather-7day">-->
+  <!--<span class="weather-litop">未来七天情况</span>-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon3.png" class="weather-up" alt=""/>&ndash;&gt;-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--</li>-->
+  <!--<li class="middletext">-->
+  <!--<div class="weather-1">-->
+  <!--<span class="secondline field" style="margin-top:0">2018年12月28日</span>-->
+  <!--</div>-->
+  <!--<div class="weather-2 ">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_temperature.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">温度</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">25℃</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_wind.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">风力</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">东风2级</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_fog.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">可见度</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">12公里</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_rain.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">降水</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">0毫米</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--&lt;!&ndash;<div class="weather-2">&ndash;&gt;-->
+
+  <!--&lt;!&ndash;<div class="weather-7day">&ndash;&gt;-->
+  <!--&lt;!&ndash;<span class="weather-litop">未来七天情况</span>&ndash;&gt;-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon3.png" class="weather-up" alt=""/>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--</li>-->
+  <!--<li class="middletext">-->
+  <!--<div class="weather-1">-->
+  <!--<span class="secondline field" style="margin-top:0">2018年12月28日</span>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_temperature.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">温度</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">25℃</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_wind.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">风力</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">东风2级</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_fog.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">可见度</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">12公里</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_rain.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">降水</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">0毫米</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--&lt;!&ndash;<div class="weather-2">&ndash;&gt;-->
+
+  <!--&lt;!&ndash;<div class="weather-7day">&ndash;&gt;-->
+  <!--&lt;!&ndash;<span class="weather-litop">未来七天情况</span>&ndash;&gt;-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon3.png" class="weather-up" alt=""/>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--</li>-->
+  <!--<li class="middletext">-->
+  <!--<div class="weather-1">-->
+  <!--<span class="secondline field" style="margin-top:0">2018年12月28日</span>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_temperature.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">温度</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">25℃</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_wind.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">风力</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">东风2级</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_fog.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">可见度</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">12公里</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_rain.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">降水</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">0毫米</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--&lt;!&ndash;<div class="weather-2">&ndash;&gt;-->
+
+  <!--&lt;!&ndash;<div class="weather-7day">&ndash;&gt;-->
+  <!--&lt;!&ndash;<span class="weather-litop">未来七天情况</span>&ndash;&gt;-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon3.png" class="weather-up" alt=""/>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--</li>-->
+  <!--<li class="middletext">-->
+  <!--<div class="weather-1">-->
+  <!--<span class="secondline field" style="margin-top:0">2018年12月28日</span>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_temperature.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">温度</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">25℃</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_wind.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">风力</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">东风2级</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_fog.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">可见度</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">12公里</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_rain.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">降水</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">0毫米</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--&lt;!&ndash;<div class="weather-2">&ndash;&gt;-->
+
+  <!--&lt;!&ndash;<div class="weather-7day">&ndash;&gt;-->
+  <!--&lt;!&ndash;<span class="weather-litop">未来七天情况</span>&ndash;&gt;-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon3.png" class="weather-up" alt=""/>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--</li>-->
+  <!--<li class="middletext">-->
+  <!--<div class="weather-1">-->
+  <!--<span class="secondline field" style="margin-top:0">2018年12月28日</span>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_temperature.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">温度</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">25℃</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_wind.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">风力</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">东风2级</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_fog.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">可见度</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">12公里</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_rain.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">降水</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">0毫米</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--&lt;!&ndash;<div class="weather-2">&ndash;&gt;-->
+
+  <!--&lt;!&ndash;<div class="weather-7day">&ndash;&gt;-->
+  <!--&lt;!&ndash;<span class="weather-litop">未来七天情况</span>&ndash;&gt;-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon3.png" class="weather-up" alt=""/>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--</li>-->
+  <!--<li class="middletext">-->
+  <!--<div class="weather-1">-->
+  <!--<span class="secondline field" style="margin-top:0">2018年12月28日</span>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_temperature.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">温度</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">25℃</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_wind.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">风力</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">东风2级</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_fog.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">可见度</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">12公里</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2">-->
+  <!--&lt;!&ndash;<img src="./gzadq/img/icon_rain.png" class="weather-icon" alt=""/>&ndash;&gt;-->
+  <!--<div class="w2-right">-->
+  <!--&lt;!&ndash;<span class="weather-litop">降水</span>&ndash;&gt;-->
+  <!--<span class="weather-libottom field">0毫米</span>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="weather-2" id="weather-close" style="padding-top: 20px; line-height: 0;">-->
+
+  <!--<div class="weather-7day ">-->
+  <!--<img src="./gzadq/img/icon_up.png" class="weather-up" alt=""/>-->
+  <!--<span class="weather-litop weather-close">收起</span>-->
+
+  <!--</div>-->
+  <!--</div>-->
+  <!--</li>-->
+  <!--</ul>-->
+  <!--</div>-->
+
   <!--高速路网-->
   <!--<div id="road-net" class="road-net">-->
-    <!--<header>-->
-      <!--<div>排名</div>-->
-      <!--<div>道路名称</div>-->
-      <!--<div>拥堵延时指数</div>-->
-      <!--<div>速度(km/h)</div>-->
-      <!--<div>旅行时间(min)</div>-->
-      <!--<div>延迟时间(min)</div>-->
-    <!--</header>-->
-    <!--<ul>-->
-      <!--<li>-->
-        <!--<div>1</div>-->
-        <!--<div>道路名称</div>-->
-        <!--<div>-->
-          <!--<span>6.9</span>-->
-        <!--</div>-->
-        <!--<div>10.4</div>-->
-        <!--<div>100.2</div>-->
-        <!--<div>100.2</div>-->
-      <!--</li>-->
+  <!--<header>-->
+  <!--<div>排名</div>-->
+  <!--<div>道路名称</div>-->
+  <!--<div>拥堵延时指数</div>-->
+  <!--<div>速度(km/h)</div>-->
+  <!--<div>旅行时间(min)</div>-->
+  <!--<div>延迟时间(min)</div>-->
+  <!--</header>-->
+  <!--<ul>-->
+  <!--<li>-->
+  <!--<div>1</div>-->
+  <!--<div>道路名称</div>-->
+  <!--<div>-->
+  <!--<span>6.9</span>-->
+  <!--</div>-->
+  <!--<div>10.4</div>-->
+  <!--<div>100.2</div>-->
+  <!--<div>100.2</div>-->
+  <!--</li>-->
 
-    <!--</ul>-->
+  <!--</ul>-->
   <!--</div>-->
   <!--<div id="road-net-tips" class="road-net-tips">-->
-    <!--<ul>-->
-      <!--<li>严重拥堵</li>-->
-      <!--<li>拥堵</li>-->
-      <!--<li>缓行</li>-->
-      <!--<li>畅通</li>-->
-    <!--</ul>-->
+  <!--<ul>-->
+  <!--<li>严重拥堵</li>-->
+  <!--<li>拥堵</li>-->
+  <!--<li>缓行</li>-->
+  <!--<li>畅通</li>-->
+  <!--</ul>-->
   <!--</div>-->
   <!--tab切换-->
+
   <div id="tab" class="tab">
     <div class="tab-box tab-box-active" data-name="客运站,铁路,机场,港口">
       <span>交通枢纽</span>
+      <div class="tab-arrow moveAndShow">
+        <img src="yjzx/img/menu/icon_lower_left.png" alt="">
+        <img src="yjzx/img/menu/icon_lower_center.png" alt="">
+        <img src="yjzx/img/menu/icon_lower_center.png" alt="">
+        <img class="" src="yjzx/img/menu/icon_lower_right_nor.png" alt="">
+      </div>
     </div>
     <div class="tab-box" data-name="服务区">
       <span>服务区</span>
+      <div class="tab-arrow">
+        <img src="yjzx/img/menu/icon_lower_left.png" alt="">
+        <img src="yjzx/img/menu/icon_lower_center.png" alt="">
+        <img src="yjzx/img/menu/icon_lower_center.png" alt="">
+        <img class="" src="yjzx/img/menu/icon_lower_right_nor.png" alt="">
+      </div>
     </div>
     <div class="tab-box" data-name="收费站">
       <span>收费站</span>
+      <div class="tab-arrow">
+        <img src="yjzx/img/menu/icon_lower_left.png" alt="">
+        <img src="yjzx/img/menu/icon_lower_center.png" alt="">
+        <img src="yjzx/img/menu/icon_lower_center.png" alt="">
+        <img class="" src="yjzx/img/menu/icon_lower_right_nor.png" alt="">
+      </div>
     </div>
     <!--<div class="tab-box" data-name="高速">-->
-      <!--<span>高速路段</span>-->
+    <!--<span>高速路段</span>-->
     <!--</div>-->
     <div class="tab-box" data-name="高速监测">
       <span>高速监测</span>
     </div>
-
+    <div class="tab-box" data-name="两客一危">
+      <span>两客一危</span>
+    </div>
+    <!--<div class="tab-arrow" id="tab-arrow">-->
+    <!--<img class="" src="yjzx/img/menu/icon_lower_right_nor.png" alt="">-->
+    <!--</div>-->
     <!--当前位置-->
-    <div class="tab-box-cur dn" id="tab-box-cur">
+    <div class="tab-box-cur" id="tab-box-cur">
       <div class="bg-div">
         <div>
           <img src="yjzx/img/menu/icon_lower_left.png" alt="">
@@ -587,7 +661,7 @@
           <div id="cur-pos-data-box" class="cur-pos-data-box">
             <!--重点枢纽-->
             <div class="key-pos">
-              <div class="name">重点枢纽：</div>
+              <!--<div class="name">重点枢纽：</div>-->
               <ul>
                 <!--<li>广州南</li>-->
                 <!--<li>广州南</li>-->
@@ -604,7 +678,7 @@
             </div>
 
             <!--场站-->
-            <div class="station-box">
+            <div class="station-box" id="station-box">
               <div class="station-box-1" id="station-box-1">
                 <header>
                   火车站
@@ -634,10 +708,9 @@
         </div>
         <div class="arrow down">
           <img class="" src="yjzx/img/menu/icon_lower_right_nor.png" alt="">
-
         </div>
       </div>
-      <div class="tab-name" id="tab-name">广州南站</div>
+      <div class="tab-name" id="tab-name"></div>
     </div>
   </div>
 
@@ -790,7 +863,7 @@
         </div>
         <div class="chart-box">
           <!--<div class="header">-->
-            <!--<label>实时客流趋势</label>-->
+          <!--<label>实时客流趋势</label>-->
           <!--</div>-->
           <div class="SSKL-cld-box" id="SSKL-cld-box">
             <input type="text" id="tab2-li2-cld" class="tab-li2-cld">
@@ -813,10 +886,10 @@
               <section>省内top5</section>
               <ul>
                 <!--<li>-->
-                  <!--<i class="index">1</i>-->
-                  <!--<label title="">美国</label>-->
-                  <!--<i class="line"></i>-->
-                  <!--<span class="num" title="">234人</span>-->
+                <!--<i class="index">1</i>-->
+                <!--<label title="">美国</label>-->
+                <!--<i class="line"></i>-->
+                <!--<span class="num" title="">234人</span>-->
                 <!--</li>-->
               </ul>
             </div>
@@ -824,10 +897,10 @@
               <section>省外top5</section>
               <ul>
                 <!--<li>-->
-                  <!--<i class="index">1</i>-->
-                  <!--<label title="">美国</label>-->
-                  <!--<i class="line"></i>-->
-                  <!--<span class="num" title="">234人</span>-->
+                <!--<i class="index">1</i>-->
+                <!--<label title="">美国</label>-->
+                <!--<i class="line"></i>-->
+                <!--<span class="num" title="">234人</span>-->
                 <!--</li>-->
               </ul>
             </div>
@@ -1075,14 +1148,14 @@
         </div>
 
         <!--<div class="KLHX-box">-->
-          <!--<div class="KLHX" id="KLHX2">-->
-          <!--</div>-->
-          <!--<div class="hm man">-->
-            <!--<span>12%</span>-->
-          <!--</div>-->
-          <!--<div class="hm woman">-->
-            <!--<span>12%</span>-->
-          <!--</div>-->
+        <!--<div class="KLHX" id="KLHX2">-->
+        <!--</div>-->
+        <!--<div class="hm man">-->
+        <!--<span>12%</span>-->
+        <!--</div>-->
+        <!--<div class="hm woman">-->
+        <!--<span>12%</span>-->
+        <!--</div>-->
         <!--</div>-->
       </div>
     </li>
@@ -1254,16 +1327,16 @@
             </p>
           </div>
           <!--<div>-->
-            <!--<p class="title-name">实时进入车辆</p>-->
-            <!--<p>-->
-              <!--<label class="sskl-in"></label>-->
-            <!--</p>-->
+          <!--<p class="title-name">实时进入车辆</p>-->
+          <!--<p>-->
+          <!--<label class="sskl-in"></label>-->
+          <!--</p>-->
           <!--</div>-->
           <!--<div>-->
-            <!--<p class="title-name">实时离开车辆</p>-->
-            <!--<p>-->
-              <!--<label class="sskl-out"></label>-->
-            <!--</p>-->
+          <!--<p class="title-name">实时离开车辆</p>-->
+          <!--<p>-->
+          <!--<label class="sskl-out"></label>-->
+          <!--</p>-->
           <!--</div>-->
         </div>
         <div class="tab4-zlsc" id="tab4-zlsc"></div>
@@ -1275,13 +1348,13 @@
           <div class="tab4-klqs" id="tab4-klqs"></div>
         </div>
         <!--<div class="tab4-klhx-box">-->
-          <!--<div class="hm man">-->
-            <!--<span></span>-->
-          <!--</div>-->
-          <!--<div class="hm woman">-->
-            <!--<span></span>-->
-          <!--</div>-->
-          <!--<div class="tab4-klhx" id="tab4-klhx"></div>-->
+        <!--<div class="hm man">-->
+        <!--<span></span>-->
+        <!--</div>-->
+        <!--<div class="hm woman">-->
+        <!--<span></span>-->
+        <!--</div>-->
+        <!--<div class="tab4-klhx" id="tab4-klhx"></div>-->
         <!--</div>-->
       </div>
 
@@ -1306,16 +1379,16 @@
               </p>
             </div>
             <!--<div>-->
-              <!--<p class="title-name">全天进入车辆</p>-->
-              <!--<p>-->
-                <!--<label class="qtcl-in"></label>-->
-              <!--</p>-->
+            <!--<p class="title-name">全天进入车辆</p>-->
+            <!--<p>-->
+            <!--<label class="qtcl-in"></label>-->
+            <!--</p>-->
             <!--</div>-->
             <!--<div>-->
-              <!--<p class="title-name">全天离开车辆</p>-->
-              <!--<p>-->
-                <!--<label class="qtcl-out"></label>-->
-              <!--</p>-->
+            <!--<p class="title-name">全天离开车辆</p>-->
+            <!--<p>-->
+            <!--<label class="qtcl-out"></label>-->
+            <!--</p>-->
             <!--</div>-->
 
           </header>
@@ -1355,195 +1428,195 @@
   </ul>
   <!--高速路段-->
   <!--<ul id="tab5" class="tab-box5 vh">-->
-    <!--<li data-name="实时监控" class="tab-box2-li1 tab-box2-li">-->
-      <!--<div class="li-tab-box">-->
-        <!--<div class="video-play-box">-->
-          <!--<div class="add-box"></div>-->
-          <!--<div class="full-screen"></div>-->
-        <!--</div>-->
-        <!--<div class="video-list" id="video-list4">-->
-          <!--<ul>-->
-            <!--<li>-->
-              <!--<div class="footer"></div>-->
-            <!--</li>-->
-            <!--<li>-->
-              <!--<div class="footer"></div>-->
-            <!--</li>-->
-            <!--<li>-->
-              <!--<div class="footer"></div>-->
-            <!--</li>-->
-            <!--<li>-->
-              <!--<div class="footer"></div>-->
-            <!--</li>-->
-            <!--<li>-->
-              <!--<div class="footer"></div>-->
-            <!--</li>-->
-            <!--<li>-->
-              <!--<div class="footer"></div>-->
-            <!--</li>-->
-            <!--<li>-->
-              <!--<div class="footer"></div>-->
-            <!--</li>-->
-          <!--</ul>-->
-        <!--</div>-->
-        <!--<div class="line-box">-->
-          <!--<div class="line" id="line3">-->
-            <!--<div class="tuodong" id="tuodong3"></div>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<div class="emp-box">-->
-          <!--<div class="touxiang">-->
+  <!--<li data-name="实时监控" class="tab-box2-li1 tab-box2-li">-->
+  <!--<div class="li-tab-box">-->
+  <!--<div class="video-play-box">-->
+  <!--<div class="add-box"></div>-->
+  <!--<div class="full-screen"></div>-->
+  <!--</div>-->
+  <!--<div class="video-list" id="video-list4">-->
+  <!--<ul>-->
+  <!--<li>-->
+  <!--<div class="footer"></div>-->
+  <!--</li>-->
+  <!--<li>-->
+  <!--<div class="footer"></div>-->
+  <!--</li>-->
+  <!--<li>-->
+  <!--<div class="footer"></div>-->
+  <!--</li>-->
+  <!--<li>-->
+  <!--<div class="footer"></div>-->
+  <!--</li>-->
+  <!--<li>-->
+  <!--<div class="footer"></div>-->
+  <!--</li>-->
+  <!--<li>-->
+  <!--<div class="footer"></div>-->
+  <!--</li>-->
+  <!--<li>-->
+  <!--<div class="footer"></div>-->
+  <!--</li>-->
+  <!--</ul>-->
+  <!--</div>-->
+  <!--<div class="line-box">-->
+  <!--<div class="line" id="line3">-->
+  <!--<div class="tuodong" id="tuodong3"></div>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="emp-box">-->
+  <!--<div class="touxiang">-->
 
-          <!--</div>-->
-          <!--<div class="emp-data-box">-->
-            <!--<p>-->
-              <!--<label>值班人:</label>-->
-              <!--<span></span>-->
-            <!--</p>-->
-            <!--<p>-->
-              <!--<label>预警电话:</label>-->
-              <!--<span></span>-->
-            <!--</p>-->
-          <!--</div>-->
-          <!--<div class="icon"></div>-->
-        <!--</div>-->
+  <!--</div>-->
+  <!--<div class="emp-data-box">-->
+  <!--<p>-->
+  <!--<label>值班人:</label>-->
+  <!--<span></span>-->
+  <!--</p>-->
+  <!--<p>-->
+  <!--<label>预警电话:</label>-->
+  <!--<span></span>-->
+  <!--</p>-->
+  <!--</div>-->
+  <!--<div class="icon"></div>-->
+  <!--</div>-->
 
-        <!--<div class="video-play-box2">-->
-          <!--<div class="box2-main">-->
-            <!--<span>请选择摄像头</span>-->
-          <!--</div>-->
-          <!--<div class="video-list">-->
-            <!--<ul>-->
-              <!--<li>-->
-                <!--<div class="footer"></div>-->
-              <!--</li>-->
-              <!--<li>-->
-                <!--<div class="footer"></div>-->
-              <!--</li>-->
-            <!--</ul>-->
-          <!--</div>-->
-          <!--<div class="line-box">-->
-            <!--<div class="line">-->
-              <!--<div class="tuodong"></div>-->
-            <!--</div>-->
-          <!--</div>-->
-          <!--<div class="close-icon"></div>-->
-        <!--</div>-->
-      <!--</div>-->
+  <!--<div class="video-play-box2">-->
+  <!--<div class="box2-main">-->
+  <!--<span>请选择摄像头</span>-->
+  <!--</div>-->
+  <!--<div class="video-list">-->
+  <!--<ul>-->
+  <!--<li>-->
+  <!--<div class="footer"></div>-->
+  <!--</li>-->
+  <!--<li>-->
+  <!--<div class="footer"></div>-->
+  <!--</li>-->
+  <!--</ul>-->
+  <!--</div>-->
+  <!--<div class="line-box">-->
+  <!--<div class="line">-->
+  <!--<div class="tuodong"></div>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="close-icon"></div>-->
+  <!--</div>-->
+  <!--</div>-->
 
-    <!--</li>-->
-    <!--<li data-name="实时客流" class="tab-box2-li2 tab-box2-li">-->
-      <!--<div class="li-tab-box">-->
-        <!--<div class="header2">-->
-          <!--<div>-->
-            <!--<p class="title-name">实时客流量</p>-->
-            <!--<p>-->
-              <!--<label class="sskl-num"></label>-->
-            <!--</p>-->
-          <!--</div>-->
-          <!--<div>-->
-            <!--<p class="title-name">实时进入车辆</p>-->
-            <!--<p>-->
-              <!--<label class="sskl-in"></label>-->
-            <!--</p>-->
-          <!--</div>-->
-          <!--<div>-->
-            <!--<p class="title-name">实时离开车辆</p>-->
-            <!--<p>-->
-              <!--<label class="sskl-out"></label>-->
-            <!--</p>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<div class="chart-box">-->
-          <!--<div class="tab5-klqs" id="tab5-klqs"></div>-->
-          <!--<div class="calendar-box" id="tab5-cld1">-->
-            <!--<input type="text" id="tab5-klqs-cld" class="sskl-cld2">-->
-            <!--<div class="arrow"></div>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<div class="chart-box">-->
-          <!--<div class="tab5-yxsd" id="tab5-yxsd"></div>-->
-          <!--<div class="calendar-box"  id="tab5-cld2">-->
-            <!--<input type="text" id="tab5-klqs-cld2" class="sskl-cld2">-->
-            <!--<div class="arrow"></div>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</li>-->
-    <!--<li data-name="旅客趋势" class="tab-box2-li3 tab-box2-li">-->
-      <!--<div class="li-tab-box">-->
-        <!--<div class="calendar-box">-->
-          <!--<input type="text" id="tab5-big-cld" class="tab5-big-cld">-->
-          <!--<div class="calendar" id="tab5-big-cld-box">-->
-            <!--<div class="cld-icon"></div>-->
-            <!--<input type="text" id="tab5-big-cld-1" class="hidden-cld">-->
-            <!--<div class="arrow"></div>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<div class="chart-box" id="tab5-klqs-week">-->
+  <!--</li>-->
+  <!--<li data-name="实时客流" class="tab-box2-li2 tab-box2-li">-->
+  <!--<div class="li-tab-box">-->
+  <!--<div class="header2">-->
+  <!--<div>-->
+  <!--<p class="title-name">实时客流量</p>-->
+  <!--<p>-->
+  <!--<label class="sskl-num"></label>-->
+  <!--</p>-->
+  <!--</div>-->
+  <!--<div>-->
+  <!--<p class="title-name">实时进入车辆</p>-->
+  <!--<p>-->
+  <!--<label class="sskl-in"></label>-->
+  <!--</p>-->
+  <!--</div>-->
+  <!--<div>-->
+  <!--<p class="title-name">实时离开车辆</p>-->
+  <!--<p>-->
+  <!--<label class="sskl-out"></label>-->
+  <!--</p>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="chart-box">-->
+  <!--<div class="tab5-klqs" id="tab5-klqs"></div>-->
+  <!--<div class="calendar-box" id="tab5-cld1">-->
+  <!--<input type="text" id="tab5-klqs-cld" class="sskl-cld2">-->
+  <!--<div class="arrow"></div>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="chart-box">-->
+  <!--<div class="tab5-yxsd" id="tab5-yxsd"></div>-->
+  <!--<div class="calendar-box"  id="tab5-cld2">-->
+  <!--<input type="text" id="tab5-klqs-cld2" class="sskl-cld2">-->
+  <!--<div class="arrow"></div>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--</li>-->
+  <!--<li data-name="旅客趋势" class="tab-box2-li3 tab-box2-li">-->
+  <!--<div class="li-tab-box">-->
+  <!--<div class="calendar-box">-->
+  <!--<input type="text" id="tab5-big-cld" class="tab5-big-cld">-->
+  <!--<div class="calendar" id="tab5-big-cld-box">-->
+  <!--<div class="cld-icon"></div>-->
+  <!--<input type="text" id="tab5-big-cld-1" class="hidden-cld">-->
+  <!--<div class="arrow"></div>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="chart-box" id="tab5-klqs-week">-->
 
-        <!--</div>-->
-        <!--<div class="chart-box" id="tab5-clqs-week">-->
+  <!--</div>-->
+  <!--<div class="chart-box" id="tab5-clqs-week">-->
 
-        <!--</div>-->
-        <!--<div class="chart-box" id="tab5-clfb-week">-->
+  <!--</div>-->
+  <!--<div class="chart-box" id="tab5-clfb-week">-->
 
-        <!--</div>-->
-      <!--</div>-->
-    <!--</li>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--</li>-->
   <!--</ul>-->
   <!--鹰眼-->
   <div id="container2" class="container container2" style="width: 386px;height: 300px;">
-      <div style="width: 200px;height: 100px;" class="yingyan" id="yingyan"></div>
+    <div style="width: 200px;height: 100px;" class="yingyan" id="yingyan"></div>
   </div>
 
   <!--高速监测 排行-->
   <!--<div class="luwang-box" id="luwang-box">-->
-    <!--<div class="container">-->
-      <!--<div class="profile">-->
-        <!--<div class="date" id="curDate">-->
-          <!--&lt;!&ndash;12月23日 星期日&ndash;&gt;-->
-        <!--</div>-->
-        <!--<div class="led" id="curTime">-->
-          <!--&lt;!&ndash;11:02:12&ndash;&gt;-->
-        <!--</div>-->
-      <!--</div>-->
+  <!--<div class="container">-->
+  <!--<div class="profile">-->
+  <!--<div class="date" id="curDate">-->
+  <!--&lt;!&ndash;12月23日 星期日&ndash;&gt;-->
+  <!--</div>-->
+  <!--<div class="led" id="curTime">-->
+  <!--&lt;!&ndash;11:02:12&ndash;&gt;-->
+  <!--</div>-->
+  <!--</div>-->
 
-      <!--<div class="title-lw congest" style="margin-top: 12px;">-->
-        <!--<p>拥堵路段</p>-->
-        <!--<div class="headers">-->
-          <!--<table>-->
-            <!--<tbody>-->
-            <!--<tr>-->
-              <!--<td>排名</td>-->
-              <!--<td>路线名称/桩号</td>-->
-              <!--<td>拥堵长度/速度</td>-->
-            <!--</tr>-->
-            <!--</tbody>-->
-          <!--</table>-->
-        <!--</div>-->
-      <!--</div>-->
-      <!--<div class="multiPanel">-->
-        <!--<div class="container">-->
-          <!--<ul id="jam-rank">-->
-            <!--&lt;!&ndash;<li>&ndash;&gt;-->
-              <!--&lt;!&ndash;<div class="idx">&ndash;&gt;-->
-                <!--&lt;!&ndash;<span>1</span>&ndash;&gt;-->
-              <!--&lt;!&ndash;</div>&ndash;&gt;-->
-              <!--&lt;!&ndash;<div class="road-profile">&ndash;&gt;-->
-                <!--&lt;!&ndash;<p>G4W2清连高速</p>&ndash;&gt;-->
-                <!--&lt;!&ndash;<p>由南向北</p>&ndash;&gt;-->
-              <!--&lt;!&ndash;</div>&ndash;&gt;-->
-              <!--&lt;!&ndash;<div class="jam-data">&ndash;&gt;-->
-                <!--&lt;!&ndash;<p>4.59km</p>&ndash;&gt;-->
-                <!--&lt;!&ndash;<p>15km/h</p>&ndash;&gt;-->
-              <!--&lt;!&ndash;</div>&ndash;&gt;-->
-            <!--&lt;!&ndash;</li>&ndash;&gt;-->
+  <!--<div class="title-lw congest" style="margin-top: 12px;">-->
+  <!--<p>拥堵路段</p>-->
+  <!--<div class="headers">-->
+  <!--<table>-->
+  <!--<tbody>-->
+  <!--<tr>-->
+  <!--<td>排名</td>-->
+  <!--<td>路线名称/桩号</td>-->
+  <!--<td>拥堵长度/速度</td>-->
+  <!--</tr>-->
+  <!--</tbody>-->
+  <!--</table>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--<div class="multiPanel">-->
+  <!--<div class="container">-->
+  <!--<ul id="jam-rank">-->
+  <!--&lt;!&ndash;<li>&ndash;&gt;-->
+  <!--&lt;!&ndash;<div class="idx">&ndash;&gt;-->
+  <!--&lt;!&ndash;<span>1</span>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--&lt;!&ndash;<div class="road-profile">&ndash;&gt;-->
+  <!--&lt;!&ndash;<p>G4W2清连高速</p>&ndash;&gt;-->
+  <!--&lt;!&ndash;<p>由南向北</p>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--&lt;!&ndash;<div class="jam-data">&ndash;&gt;-->
+  <!--&lt;!&ndash;<p>4.59km</p>&ndash;&gt;-->
+  <!--&lt;!&ndash;<p>15km/h</p>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--&lt;!&ndash;</li>&ndash;&gt;-->
 
-          <!--</ul>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
+  <!--</ul>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--</div>-->
 
   <!--</div>-->
 </div>
@@ -1573,73 +1646,73 @@
 
 <!--<script type="text/javascript">-->
 <!--//  标注城市-->
-  <!--var theCitys = {-->
-    <!--"广州市": "113.264385,23.129112",-->
-    <!--"深圳市": "114.085947,22.547",-->
-    <!--"珠海市": "113.553986,22.224979",-->
-    <!--"汕头市": "116.708463,23.37102",-->
-    <!--"佛山市": "113.122717,23.028762",-->
-    <!--"韶关市": "113.597313,24.811094",-->
-    <!--"河源市": "114.697802,23.746266",-->
-    <!--"梅州市": "116.117582,24.299112",-->
-    <!--"惠州市": "114.412599,23.079404",-->
-    <!--"汕尾市": "115.364238,22.774485",-->
-    <!--"东莞市": "113.746262,23.046237",-->
-    <!--"中山市": "113.382391,22.521113",-->
-    <!--"江门市": "113.094942,22.590431",-->
-    <!--"阳江市": "111.982697,21.857415",-->
-    <!--"湛江市": "110.364977,21.274898",-->
-    <!--"茂名市": "110.919229,21.659751",-->
-    <!--"肇庆市": "112.472529,23.051546",-->
-    <!--"清远市": "113.051227,23.685022",-->
-    <!--"潮州市": "116.632301,23.661701",-->
-    <!--"揭阳市": "116.355733,23.543778",-->
-    <!--"云浮市": "112.044439,22.929801"-->
-  <!--};-->
-  <!--for (var theCityName in theCitys) {-->
-    <!--var thelngLat = theCitys[theCityName];-->
-    <!--var thelngLats = thelngLat.split(',');-->
-    <!--var marker = new AMap.Marker({-->
-      <!--position: new AMap.LngLat(parseFloat(thelngLats[0]), parseFloat(thelngLats[1])),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]-->
-      <!--title: theCityName,-->
-      <!--content: '<div style="color:white;width: 3em;font-size:20px;font-weight:bold">' + theCityName + '</div>'-->
-    <!--});-->
-    <!--theMap.add(marker);-->
-  <!--}-->
+<!--var theCitys = {-->
+<!--"广州市": "113.264385,23.129112",-->
+<!--"深圳市": "114.085947,22.547",-->
+<!--"珠海市": "113.553986,22.224979",-->
+<!--"汕头市": "116.708463,23.37102",-->
+<!--"佛山市": "113.122717,23.028762",-->
+<!--"韶关市": "113.597313,24.811094",-->
+<!--"河源市": "114.697802,23.746266",-->
+<!--"梅州市": "116.117582,24.299112",-->
+<!--"惠州市": "114.412599,23.079404",-->
+<!--"汕尾市": "115.364238,22.774485",-->
+<!--"东莞市": "113.746262,23.046237",-->
+<!--"中山市": "113.382391,22.521113",-->
+<!--"江门市": "113.094942,22.590431",-->
+<!--"阳江市": "111.982697,21.857415",-->
+<!--"湛江市": "110.364977,21.274898",-->
+<!--"茂名市": "110.919229,21.659751",-->
+<!--"肇庆市": "112.472529,23.051546",-->
+<!--"清远市": "113.051227,23.685022",-->
+<!--"潮州市": "116.632301,23.661701",-->
+<!--"揭阳市": "116.355733,23.543778",-->
+<!--"云浮市": "112.044439,22.929801"-->
+<!--};-->
+<!--for (var theCityName in theCitys) {-->
+<!--var thelngLat = theCitys[theCityName];-->
+<!--var thelngLats = thelngLat.split(',');-->
+<!--var marker = new AMap.Marker({-->
+<!--position: new AMap.LngLat(parseFloat(thelngLats[0]), parseFloat(thelngLats[1])),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]-->
+<!--title: theCityName,-->
+<!--content: '<div style="color:white;width: 3em;font-size:20px;font-weight:bold">' + theCityName + '</div>'-->
+<!--});-->
+<!--theMap.add(marker);-->
+<!--}-->
 
 
-  <!--var thePoints = {-->
+<!--var thePoints = {-->
 <!--//    "广州南站": {"latitude": 22.9874720000, "longitude": 113.2685860000, "type": "铁路", 'icon': 'tielu3.png'},-->
-    <!--// "深圳火车站": { "latitude": 22.5319900000, "longitude": 114.1176800000 },-->
+<!--// "深圳火车站": { "latitude": 22.5319900000, "longitude": 114.1176800000 },-->
 <!--//    "深圳北站": {"latitude": 22.6097250000, "longitude": 114.0291130000, "type": "铁路", 'icon': 'tielu3.png'},-->
-    <!--//"广州东站": { "latitude": 23.1505660000, "longitude": 113.3249000000 },-->
-    <!--//"广州火车站": { "latitude": 23.1494150000, "longitude": 113.2572910000 },-->
-    <!--//"广州北站": { "latitude": 23.3774050000, "longitude": 113.2037940000 },-->
-    <!--//"深圳西站": { "latitude": 22.5275730000, "longitude": 113.9073060000 },-->
-    <!--//"深圳东站": { "latitude": 22.6019860000, "longitude": 114.1199340000 },-->
+<!--//"广州东站": { "latitude": 23.1505660000, "longitude": 113.3249000000 },-->
+<!--//"广州火车站": { "latitude": 23.1494150000, "longitude": 113.2572910000 },-->
+<!--//"广州北站": { "latitude": 23.3774050000, "longitude": 113.2037940000 },-->
+<!--//"深圳西站": { "latitude": 22.5275730000, "longitude": 113.9073060000 },-->
+<!--//"深圳东站": { "latitude": 22.6019860000, "longitude": 114.1199340000 },-->
 <!--//    "珠海站": {"latitude": 22.2153960000, "longitude": 113.5496410000, "type": "铁路", 'icon': 'tielu3.png'},-->
-    <!--//"白云国际机场": { "latitude": 23.3896270000, "longitude": 113.3076480000 },-->
+<!--//"白云国际机场": { "latitude": 23.3896270000, "longitude": 113.3076480000 },-->
 <!--//    "白云国际机场": {"latitude": 23.396544, "longitude": 113.306199, "type": "民航", 'maxLevel': 17, 'icon': 'feiji3.png'},-->
-    <!--//"宝安国际机场": { "latitude": 22.6333600000, "longitude": 113.8145490000 },-->
+<!--//"宝安国际机场": { "latitude": 22.6333600000, "longitude": 113.8145490000 },-->
 <!--//    "宝安国际机场": {"latitude": 22.62506, "longitude": 113.812809, "type": "民航", 'icon': 'feiji3.png'},-->
-    <!--//"珠海金湾国际机场": { "latitude": 22.0057560000, "longitude": 113.3819450000 },-->
-    <!--//"揭阳潮汕国际机场": { "latitude": 23.5463610000, "longitude": 116.5092740000 }-->
-  <!--};-->
+<!--//"珠海金湾国际机场": { "latitude": 22.0057560000, "longitude": 113.3819450000 },-->
+<!--//"揭阳潮汕国际机场": { "latitude": 23.5463610000, "longitude": 116.5092740000 }-->
+<!--};-->
 
-  <!--for (var theCityName in thePoints) {-->
-    <!--var thelngLat = thePoints[theCityName];-->
+<!--for (var theCityName in thePoints) {-->
+<!--var thelngLat = thePoints[theCityName];-->
 <!--//    debugger;-->
-    <!--var marker = new AMap.Marker({-->
-      <!--position: new AMap.LngLat(thelngLat.longitude, thelngLat.latitude),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]-->
-      <!--title: theCityName,-->
-      <!--content: '<div style="color:white;width: 3em;font-size:14px">' + theCityName + '</div>'-->
-    <!--});-->
-    <!--theMap.add(marker);-->
-  <!--}-->
+<!--var marker = new AMap.Marker({-->
+<!--position: new AMap.LngLat(thelngLat.longitude, thelngLat.latitude),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]-->
+<!--title: theCityName,-->
+<!--content: '<div style="color:white;width: 3em;font-size:14px">' + theCityName + '</div>'-->
+<!--});-->
+<!--theMap.add(marker);-->
+<!--}-->
 <!--</script>-->
 <script src="yjzx/js/data.js"></script>
 <script src="yjzx/js/LuDuanData.js"></script>
-<script src="yjzx/js/serviceAndTollData.js"></script>
+<script src="yjzx/js/rectangleData.js"></script>
 <!--<script src="yjzx/js/tuodong.js"></script>-->
 <script src="lib/underscore-min.js"></script>
 <script src="lib/moment/moment-with-locales.min.js"></script>

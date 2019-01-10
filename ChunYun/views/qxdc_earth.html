@@ -738,7 +738,17 @@
                     }
                 },
                 itemStyle: {
-                    normal: {
+                    borderColor: '#49ffff',// 'rgba(100,149,237,1)',
+                    areaColor: '#3997d3',//'#2b7ecc',
+                    borderWidth: 1,
+                    areaStyle: {
+                        color: '#2b7ecc'
+                    },
+                    label: {
+                        show: true,
+                        color: 'white'
+                    },
+                    /*normal: {
                         //areaColor: '#0040a3',
                         //borderColor: '#49ffff'
                         //areaColor: '#0040a3',
@@ -753,7 +763,7 @@
                             show: true,
                             color: 'white'
                         }
-                    },
+                    },*/
                 },
             },
             boundingCoords: [
@@ -831,7 +841,7 @@
             blendMode: 'lighter',
             lineStyle: {
                 color: '#00c7ff',
-                width: 1
+                width: 2
             },
             data: [],
             silent: false
@@ -879,7 +889,7 @@
         var theData = [];
         var theOptions = mapChart.getOption();
         theOptions.series[0].data=[];
-        var theColors = ['#ff3333', 'orange', 'yellow', 'lime', 'aqua'];
+        var theColors = ['rgb(132, 187, 45)', 'orange', 'yellow', 'lime', 'aqua'];
         for (var i = 0; i < data.length; i++) {
             var theItem = data[i];
             var theFromName = theItem.from;
@@ -893,6 +903,20 @@
                     name: theCountryMap[theToName],
                     itemStyle: {
                         areaColor: theColors[i]
+                    },
+                    label:{
+                        fontSize:20
+                    }
+                });
+            }
+            else{
+                theOptions.series[0].data.push({
+                    name: theCountryMap[theToName],
+                   /* itemStyle: {
+                        areaColor: theColors[i]
+                    },*/
+                    label:{
+                        fontSize:18
                     }
                 });
             }
@@ -904,7 +928,8 @@
                         type == 2 ? theCountryGps[theToName] : theCountryGps['中国'],
 
                     ],
-                    value: theItem.value || theItem.num || 0
+                    value: theItem.value || theItem.num || 0,
+                    lineStyle:{color:theColors[i<5?i:5]}
                 });
         }
         option.series[0].data = theData;

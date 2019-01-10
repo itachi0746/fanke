@@ -80,15 +80,13 @@ $(function () {
     //获取当前的日期数据
     var formateDate = function () {
         if (!theCurrentDate) {
-            var theDate = GetYesterdayDate();// GetFromDate();
-            //theDate.setDate(theDate.getDate()-1);
-            return theDate.getFullYear() + "-" + FormateDateNum(theDate.getMonth() + 1) + "-" + FormateDateNum(theDate.getDate());
+           return GetTodayDate().before(3).formate();
         }
         return theCurrentDate.year + '-' + FormateDateNum(theCurrentDate.month) + '-' + FormateDateNum(theCurrentDate.date);//
     }
     var formateDate1 = function () {
         if (!theCurrentDate) {
-            var theDate = GetYesterdayDate();// GetFromDate();
+            var theDate =GetTodayDate().before(3);// GetFromDate();
             //theDate.setDate(theDate.getDate()-1);
             return theDate.getFullYear() + "年" + FormateDateNum(theDate.getMonth() + 1) + "月" + FormateDateNum(theDate.getDate()) + '日';
         }
@@ -245,6 +243,7 @@ $(function () {
             format: 'yyyy年MM月dd日',
             //range: true,//范围选择
             value: formateDate1(),
+            max:GetTodayDate().formate(),
             done: function (value, date, endDate) {
                 //debugger;
                 console.log('日期变化:' + value); //得到日期生成的值，如：2017-08-18

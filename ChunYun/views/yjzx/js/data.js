@@ -21,7 +21,7 @@ function PlacePointView(theMap) {
     "铁路|铁路|广州站|广州站0:113.257908,23.148532;\n" +
     "公路|客运站|茂名市客运中心站|茂名市客运中心站:110.925976,21.645277;\n" +
     "民航|机场|湛江机场|湛江机场0:110.363507,21.212952;\n" +
-    "水路|港口|湛江徐闻海安港|海安港0:110.235751,20.265909;\n" +
+    // "水路|港口|湛江徐闻海安港|海安港0:110.235751,20.265909;\n" +
     "公路|客运站|香洲长途站|香洲长途站:113.567377,22.279407;\n" +
     "公路|客运站|佛山汽车站|佛山汽车站:113.110902,23.041469;\n" +
     "公路|客运站|河源汽车总站|河源汽车总站:114.692044,23.737577;\n" +
@@ -88,6 +88,9 @@ function PlacePointView(theMap) {
     '\n' +
     ';"\n' +
     '"公路|收费站|佛山罗格收费站|罗格收费站(S5广明高速西向)0:113.011973,22.991334\n' +
+    ';"\n' +
+
+    '"公路|收费站|街口收费站|街口收费站(S16派街高速出口河源方向)0:113.579269,23.520948\n' +
     ';"\n' +
     '公路|高速|莞佛高速虎门大桥|莞佛高速虎门大桥:113.605895,22.784986;\n' +
     '公路|高速|广佛高速沙贝立交|广佛高速沙贝立交:113.185576,23.146178;\n' +
@@ -182,11 +185,15 @@ function PlacePointView(theMap) {
   }
   this.theMap = theMap;
   this.markes = [];
+  this.unMatchYJData = [];
 
   this.findPointByName = function (n) {
     if(nameArr[n]) {
-      // console.log(nameArr[n]);
+      console.log('找到:',nameArr[n]);
       return nameArr[n]
+    } else {
+      console.log('找不到:',nameArr[n]);
+
     }
   }
 }
@@ -203,8 +210,11 @@ PlacePointView.prototype.getPlacePoints = function (pointType) {
 }
 PlacePointView.prototype.removePoints = function () {
   this.theMap.remove(this.markes);
+  // this.theMap.remove(this.unMatchYJMarkers);
+  this.unMatchYJData = [];
   this.markes = [];
 }
+
 PlacePointView.prototype.hideMarkers = function () {
   for (var i = 0; i < this.markes.length; i++) {
     var obj = this.markes[i];
@@ -256,10 +266,16 @@ PlacePointView.prototype.ReturnDefualt = function (defaultZoom) {
   }, 10);
 }
 
-//交通枢纽 客运站,铁路,机场,港口
-PlacePointView.prototype.showPoints = function (pointType) {
+/**
+ * 显示地图点
+ * @param pointType 当前tab类型
+ * @param YJData 预警data
+ */
+PlacePointView.prototype.showPoints = function (pointType,YJData) {
   this.removePoints();
   var thePlaces = [];
+  var theYJData = YJData;
+  // console.log(theYJData);
   var thePointTypes = pointType.split(',');
   for (var i = 0; i < thePointTypes.length; i++) {
     var thePointType = thePointTypes[i];
@@ -274,16 +290,15 @@ PlacePointView.prototype.showPoints = function (pointType) {
   for (var i = 0; i < thePlaces.length; i++) {
     var thePlace = thePlaces[i];
     // debugger
-    // console.log('thePlage:',thePlace)
-    //var theName = thePlace['名称'];
+
     var theNameLntLatStrs = thePlace['地址'];
-    // console.log(theNameLntLatStrs)
     // debugger
     var pointName = thePlace['枢纽名称'];
     // console.log(pointName)
     if (!theNameLntLatStrs || theNameLntLatStrs.length < 0) {
       console.log(theName + "坐标错误!");
     }
+    outer:
     for (var j = 0; j < theNameLntLatStrs.length; j++) {
       var theData = theNameLntLatStrs[j];
       // var theName = theData.name.replace(/[0-9]/ig, "");
@@ -294,38 +309,77 @@ PlacePointView.prototype.showPoints = function (pointType) {
       var theLntLats = theLntLatStr.split(',');
 
       var marker = null;
-      var theValue = Math.round(Math.random() * 10);
+      var theDataObj = null;
       // console.log(theValue)
 
-      // 模拟数据==========  todo 地图点的样式
-      if (theValue >= 8) {
-        marker = new AMap.Marker({
-          position: new AMap.LngLat(theLntLats[0], theLntLats[1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-          title: theName,
-          content: '<div class="point1"><i>' + theName + '</i></div>',
-          extData: thePlace//加入对象信息
-        });
-      }
-      else if (theValue >= 5) {
+      for (var k = 0; k < theYJData.length; k++) {
+        var obj = theYJData[k];
+        var theDataArr = obj.data;
+        var theClassName = obj.pointClass;
         // debugger
-        marker = new AMap.Marker({
-          position: new AMap.LngLat(theLntLats[0], theLntLats[1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-          title: theName,
-          content: '<div class="point2"><i>' + theName + '</i></div>',
-          extData: thePlace//加入对象信息
-        });
+        for (var l = 0; l < theDataArr.length; l++) {
+          theDataObj = theDataArr[l];
+          // debugger
+          if(theName===theDataObj.postionName) {  // 找到对应的名字,添加marker
+            marker = new AMap.Marker({
+              position: new AMap.LngLat(theLntLats[0], theLntLats[1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+              title: theName,
+              content: '<div class="' + theClassName + '"><i>' + theName + '</i></div>',
+              extData: thePlace//加入对象信息
+            });
+            // debugger
+            // console.log(this)
+            this.markes.push(marker);
+            // debugger
+            theMap.add(marker);
+            // console.log(theName,j);
+            break outer
+          }
+        }
       }
-      else {
-        marker = new AMap.Marker({
-          position: new AMap.LngLat(theLntLats[0], theLntLats[1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-          title: theName,
-          content: '<div class="point3"><i>' + theName + '</i></div>',
-          extData: thePlace//加入对象信息
-        });
-      }
+      // console.log(theName)
+
+      // 如果没找到对应名字, 默认添加到舒适状态marker
+      marker = new AMap.Marker({
+        position: new AMap.LngLat(theLntLats[0], theLntLats[1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+        title: theName,
+        content: '<div class="point3"><i>' + theName + '</i></div>',
+        extData: thePlace,//加入对象信息
+        theData: theDataObj
+      });
+
+      // 模拟数据==========  todo 地图点的样式
+      // var theValue = Math.round(Math.random() * 10);
+      // if (theValue >= 8) {
+      //   marker = new AMap.Marker({
+      //     position: new AMap.LngLat(theLntLats[0], theLntLats[1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+      //     title: theName,
+      //     content: '<div class="point1"><i>' + theName + '</i></div>',
+      //     extData: thePlace//加入对象信息
+      //   });
+      // }
+      // else if (theValue >= 5) {
+      //   // debugger
+      //   marker = new AMap.Marker({
+      //     position: new AMap.LngLat(theLntLats[0], theLntLats[1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+      //     title: theName,
+      //     content: '<div class="point2"><i>' + theName + '</i></div>',
+      //     extData: thePlace//加入对象信息
+      //   });
+      // }
+      // else {
+      //   marker = new AMap.Marker({
+      //     position: new AMap.LngLat(theLntLats[0], theLntLats[1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+      //     title: theName,
+      //     content: '<div class="point3"><i>' + theName + '</i></div>',
+      //     extData: thePlace//加入对象信息
+      //   });
+      // }
       // 模拟数据=============
 
-
+      this.unMatchYJData.push(marker);
+      // console.log(this.unMatchYJData)
+      // debugger
       this.markes.push(marker);
       theMap.add(marker);
     }

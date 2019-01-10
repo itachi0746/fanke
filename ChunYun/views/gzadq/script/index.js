@@ -119,7 +119,17 @@ $(function () {
             trigger: 'axis',
             backgroundColor: 'transparent',
             formatter: function (params) {
-                return params[params.length - 1].data;
+                var theDatas=[];
+                if(params.length>1){
+                    for(var i=0;i<params.length;i++){
+                        theDatas.push(params[i].seriesName+':'+params[i].data+'万');
+                    }
+                }else{
+                    for(var i=0;i<params.length;i++){
+                        theDatas.push(params[i].data+'万');
+                    }
+                }
+                return theDatas.join('<br />');
             }
         },
         grid: {
@@ -148,6 +158,22 @@ $(function () {
             axisLine: {
                 lineStyle: {
                     color: '#557398'
+                }
+            },
+            axisPointer: {
+                label: {
+                    show:true,
+                    color: '#05cffa',
+                    formatter: function (arg) {
+                       return arg.value;
+                    }
+                },
+                lineStyle: {
+                    color: '#05cffa',
+                    shadowBlur: {
+                        shadowColor: '#05cffa',
+                        shadowBlur: 10
+                    }
                 }
             },
             data: ['0', '6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00']
@@ -366,6 +392,7 @@ $(function () {
             trigger: 'click',
             //range: true,//范围选择
             //format:'yyyy年MM月dd日',
+            max:GetTodayDate().formate(),
             value: formateDate(),
             done: function (value, date, endDate) {
                 //debugger;
@@ -389,6 +416,7 @@ $(function () {
             //show: true,
             range: true,//范围选择
             value: formateDate1(),
+            max:GetTodayDate().formate(),
             done: function (value, date, endDate) {
                 //debugger;
                 //console.log('日期变化:' + value); //得到日期生成的值，如：2017-08-18
@@ -420,9 +448,10 @@ $(function () {
             this.loadPart2();
         }
         //注意修改参数
-        this.loadWeather();
+        this.loadWeather('珠海/珠海');
         //this.loadBridgeFlow();
         this.loadBridgeRealTimeNumber();
+        this.loadBridgeBus();
     }
 
     PageViewModel.prototype.loadChart1 = function (data) {
@@ -435,6 +464,19 @@ $(function () {
         }
         var theCurrentOption = {};
         $.extend(true, theCurrentOption, option1);
+        theCurrentOption.tooltip.formatter=function (params) {
+            var theDatas=[];
+            if(params.length>1){
+                for(var i=0;i<params.length;i++){
+                    theDatas.push(params[i].seriesName+':'+params[i].data+'分钟');
+                }
+            }else{
+                for(var i=0;i<params.length;i++){
+                    theDatas.push(params[i].data+'分钟');
+                }
+            }
+            return theDatas.join('<br />');
+        };
 
 //debugger;
         theCurrentOption.series = [
@@ -511,15 +553,25 @@ $(function () {
         theCurrentOption.xAxis.data = theXData;
         theCurrentOption.xAxis.axisLabel.rotate = 0;
         theCurrentOption.legend = {
-            data: [{name: '每日客流', textStyle: {color: "#85a8b8"}}, {
+            data: [{name: '每日客流',
+                textStyle: {color: "#d1b96b"}
+                //textStyle: {color: "#85a8b8"}
+                },
+                {
                 name: '香港>>珠海澳门',
-                textStyle: {color: "#85a8b8"}
-            }, {name: '珠海澳门>>香港', textStyle: {color: "#85a8b8"}}
+                    textStyle: {color: "#357acb"}
+                //textStyle: {color: "#85a8b8"}
+            },
+                {name: '珠海澳门>>香港',
+                    textStyle: {color: "#219553"}
+                   // textStyle: {color: "#85a8b8"}
+                }
                 // x:'left',
                 //padding:50,
             ]
         },
-            theCurrentOption.yAxis = [{
+            theCurrentOption.yAxis = [
+                {
                 name: '（人数/万）',
                 type: 'value',
                 nameLocation: 'end',
@@ -655,7 +707,14 @@ $(function () {
             }
         }]
         theCurrentOption.legend = {
-            data: [{name: '每日客流', textStyle: {color: "#85a8b8"}}, {name: '观光客流', textStyle: {color: "#85a8b8"}}]
+            data: [{name: '每日客流',
+                textStyle:{color:'#d1b96b'}
+                //textStyle: {color: "#85a8b8"}
+                },
+                {name: '观光客流',
+                    textStyle:{color:'#357acb'}
+                    //textStyle: {color: "#85a8b8"}
+                }]
         },
             theCurrentOption.series = [
                 {
@@ -726,6 +785,19 @@ $(function () {
         }
         var theCurrentOption = {};
         $.extend(true, theCurrentOption, option1);
+        theCurrentOption.tooltip.formatter=function (params) {
+            var theDatas=[];
+            if(params.length>1){
+                for(var i=0;i<params.length;i++){
+                    theDatas.push(params[i].seriesName+':'+params[i].data+'分钟');
+                }
+            }else{
+                for(var i=0;i<params.length;i++){
+                    theDatas.push(params[i].data+'分钟');
+                }
+            }
+            return theDatas.join('<br />');
+        };
         var theDate1String = formateDate1();
         var datebegin = theDate1String.split(" - ")[0];
         var dateend = theDate1String.split(" - ")[1];
@@ -1131,6 +1203,7 @@ $(function () {
                 bottom: '3%',
                 containLabel: true
             },
+            barWidth:30,
             xAxis: [
                 {
 //                        type : 'category',
@@ -1194,6 +1267,48 @@ $(function () {
 
 
     /***
+     * 穿梭巴士数据
+     */
+    PageViewModel.prototype.loadBridgeBus=function(){
+        var theCallUrl = "bridge/bridgeBus.do";
+
+        /*{
+            "data": {
+            "classCount": "0",
+                "checkCount": "0"
+        },
+            "isSuccess": true,
+            "msg": "success"
+        }*/
+        var me = this;
+        this.load(theCallUrl, {}, function (res) {
+            //debugger;
+            if (res && res.isSuccess && res.data) {
+                var theClassCount=res.data.classCount||0;//巴士数量
+                var theCheckCount=res.data.checkCount||0;//旅客数量
+
+                var unitText = "";
+             /*   if (theClassCount < 1000) {
+                    unitText = "";
+                }
+                else {
+                    unitText = "万";
+                    theClassCount = (theClassCount / 10000).toFixed(2);
+                }*/
+                $('.newcome-num.class').html('<span class="newcome-people">' + theClassCount + '</span>' + unitText);
+                if (theCheckCount < 1000) {
+                    unitText = "";
+                }
+                else {
+                    unitText = "万";
+                    theCheckCount = (theCheckCount / 10000).toFixed(2);
+                }
+                $('.newcome-num.check').html('<span class="newcome-people">' + theCheckCount + '</span>' + unitText);
+            }
+
+        });
+    }
+    /***
      * 实时驻留时长
      */
     PageViewModel.prototype.loadBridgeFlow = function () {
@@ -1204,8 +1319,12 @@ $(function () {
         var bridgeBounds = [[113.730068, 22.278834], [113.711688, 22.274786], [113.695492, 22.264382], [113.678056, 22.251648], [113.643183, 22.240596], [113.63326, 22.23637], [113.594097, 22.20946], [113.591794, 22.211593], [113.636709, 22.24112], [113.669761, 22.252132], [113.685975, 22.259945], [113.701248, 22.273654], [113.714493, 22.279067], [113.728361, 22.28102], [113.755533, 22.28275], [113.787706, 22.280576]];
         var me = this;
         //debugger;
-        me.addMarker2("格力人工岛", 113.581696, 22.203582);
-        me.addMarker2("港珠澳大桥", 113.728361, 22.28002);
+        var theNameMap={
+            "珠海公路口岸":"港珠澳大桥起点（珠澳口岸人工岛）",
+            "港珠澳大桥境内段":"港珠澳大桥终点（桥面）"
+        };
+        me.addMarker2("珠海公路口岸", 113.581696, 22.203582);
+        me.addMarker2("港珠澳大桥境内段", 113.728361, 22.28002);
 
         this.load(theCallUrl, {}, function (res) {
             //debugger;
@@ -1224,8 +1343,8 @@ $(function () {
                 }
                 var theBridgeUser = theData.bridgeUser;//大桥人数
                 var thelandsUser = theData.islandsUser;//人工岛人数
-                me.addMarker2("格力人工岛", 113.581696, 22.203582, ((thelandsUser || 0)));
-                me.addMarker2("港珠澳大桥", 113.728361, 22.28002, ((theBridgeUser || 0)));
+                me.addMarker2("珠海公路口岸", 113.581696, 22.203582, ((thelandsUser || 0)));
+                me.addMarker2("港珠澳大桥境内段", 113.728361, 22.28002, ((theBridgeUser || 0)));
                 var theReliArrays = [];
                 theReliArrays.push({bounds: landsBounds, data: thelandsUser || 0, max: 1000});
                 theReliArrays.push({bounds: bridgeBounds, data: theBridgeUser || 0, max: 1000});

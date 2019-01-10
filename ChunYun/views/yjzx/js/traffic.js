@@ -124,12 +124,12 @@ TrafficView.prototype.drawLuDuan = function (paramter) {
   this.showRoads();
 
 };
-
+var RoadPath;
 /**
- * 画服务区,收费站
+ * 画站点的矩形
  * @param paramters
  */
-TrafficView.prototype.drawServiceAndToll = function (paramters) {
+TrafficView.prototype.drawTheRectangle = function (paramters) {
   for (var i = 0; i < this.RoadPaths.length; i++) {
     this.TheMap.remove(this.RoadPaths[i]);
   }
@@ -148,7 +148,7 @@ TrafficView.prototype.drawServiceAndToll = function (paramters) {
   }
   console.log('开始画线');
   // debugger;
-  var RoadPath = new AMap.Polygon ({
+  RoadPath = new AMap.Polygon ({
     path: pathArray,
     fillColor: '#4fbefc', // 多边形填充颜色
     strokeWeight: 10, // 线条宽度，默认为 1

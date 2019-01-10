@@ -14,6 +14,33 @@ function FormateDateNum(num) {
 }
 
 /*
+得到今天的日期
+*/
+function GetTodayDate() {
+    return new Date();
+}
+
+/*格式化年月日日期*/
+Date.prototype.formate = function () {
+    return this.getFullYear() + "-" + FormateDateNum(this.getMonth() + 1) + "-" + FormateDateNum(this.getDate());
+}
+/*格式化年月日日期中文*/
+Date.prototype.formateCN = function () {
+    return this.getFullYear() + "年" + FormateDateNum(this.getMonth() + 1) + "月" + FormateDateNum(this.getDate()) + '日';
+}
+/*前几天*/
+Date.prototype.before = function (num) {
+    this.setDate(this.getDate() - (num || 0));
+    return this;
+};
+/*
+后几天
+* */
+Date.prototype.next = function (num) {
+    this.setDate(this.getDate() + (num || 0));
+    return this;
+}
+/*
 概况：3号下午跑1号的数据
 * 琼州海峡：3号下午跑1号的数据
 港珠澳大桥：3号2号的数据
@@ -26,17 +53,18 @@ var theDefineDate = {
     "gzadq.html": "2019-01-02",
 };
 var theDefineDateDays = {
-    "qzhx.html": 1,
-    "gzadq.html":0,
+    "qzhx.html": 5,
+    "gzadq.html": 5,
+    "qxdc.html": 3
 }
 
 function GetFromDate() {
     //debugger;
-    var theLocationName=location.pathname;
+    var theLocationName = location.pathname;
     var theDate = new Date();
-    if(theLocationName){
-        var theName=theLocationName.substr(theLocationName.lastIndexOf('/')+1);
-        if(theDefineDateDays[theName]){
+    if (theLocationName) {
+        var theName = theLocationName.substr(theLocationName.lastIndexOf('/') + 1);
+        if (theDefineDateDays[theName]) {
             //return new Date(theDefineDate[theName]);
             theDate.setDate(theDate.getDate() - theDefineDateDays[theName]);
         }
@@ -47,10 +75,9 @@ function GetFromDate() {
 }
 
 
-
 function GetYesterdayDate() {
     //debugger;
-    var theLocationName=location.pathname;
+    var theLocationName = location.pathname;
     /*if(theLocationName){
         var theName=theLocationName.substr(theLocationName.lastIndexOf('/')+1);
         if(theDefineDate[theName]){
@@ -185,6 +212,7 @@ function PageViewBase(frameElement) {
         "insight": "qxdc.html",
         "bridge": "gzadq.html",
         "strait": "qzhx.html",
+        "yxzk": 'yxzk.html'
     };
     $('.date-action,.date-icon').unbind().click(function (e) {
         //debugger;
@@ -203,7 +231,7 @@ function PageViewBase(frameElement) {
             if (hash) {
                 theCls = hash.replace('#', '');
             }
-            $('.topbutton.' + theCls).click();
+            $('.topbutton_new.' + theCls).click();
         };
         window.addEventListener("hashchange", onHashChange);
         //debugger;
@@ -217,11 +245,11 @@ function PageViewBase(frameElement) {
             $(document.body).css('background-image', 'transparent');
         });
     }
-    $('.topbutton').click(function () {
+    $('.topbutton,.topbutton_new').click(function () {
         if ($(this).hasClass('active')) {
             return;
         }
-        $('.topbutton').removeClass('active');
+        $('.topbutton,.topbutton_new').removeClass('active');
         $(this).addClass('active');
         if ($(this).hasClass('test')) {
             if (frameElement) {
@@ -259,6 +287,15 @@ function PageViewBase(frameElement) {
                 location.href = theUrlMap['strait'];
             }
             location.hash = 'strait';
+        }
+        if ($(this).hasClass('yxzk')) {
+            if (frameElement) {
+                $('#' + frameElement).attr('src', theUrlMap['yxzk']);
+            }
+            else {
+                location.href = theUrlMap['yxzk'];
+            }
+            location.hash = 'yxzk';
         }
     });
 
@@ -549,7 +586,18 @@ PageViewBase.prototype.stop = function () {
     }
 }
 PageViewBase.prototype.parserDate = function (dateStr) {
-    return new Date(dateStr);
+    if (!dateStr) {
+        return null;
+    }
+    if (dateStr.indexOf('-') >= 0) {
+        return new Date(dateStr);
+    }
+    if (dateStr.length == 8) {
+        var theDateStr = dateStr.substr(0, 4) + '-' + dateStr.substr(4, 2) + '-' + dateStr.substr(6, 2);
+        return new Date(theDateStr);
+    }
+    return null;
+
 }
 
 /***
@@ -925,10 +973,21 @@ PageViewBase.prototype.load = function (url, argment, callback) {
         return;
     }
     url = this.serviceBase + url;
+    this.loadInner(url, argment, callback);
+}
+
+PageViewBase.prototype.loadInner = function (url, argment, callback) {
+    console.log("访问地址：" + url);
+    console.log("访问参数:" + argment);
+    if (!url) {
+        console.log("访问地址不能为空：");
+        return;
+    }
+    //url = this.serviceBase + url;
     argment = argment || {};
     $.ajax({
         url: url,
-        cache:false,
+        cache: false,
         type: 'post',
         data: argment,
         success: function (r) {
@@ -949,20 +1008,61 @@ PageViewBase.prototype.load = function (url, argment, callback) {
 
     });
 }
-
 /**
  * 加载数据天气
  * @param date
  * @param type
  * @param callback
  */
-PageViewBase.prototype.loadWeather = function (date, type) {
-    var theCallUrl = "/bridge/weather.do";
+PageViewBase.prototype.loadWeather = function (name) {
+    var theCallUrl = hostbase + "/lyzwether/forecast/" + name;
+    //"/lyzwether/forecast/珠海";
     var theCallArgument = {}
     var me = this;
+    /*var data = {
+        "isSuccess": true,
+        "msg": "success",
+        "data": [{
+            "DDATETIME": "2019-01-09 08:00:00.0",
+            "OBTID": "59488",
+            "PREDICTION_TIME": "24",
+            "MAKE_TIME": "2019-01-09 06:45:00.0",
+            "FORECASTER": null,
+            "TEMPERATURE": null,
+            "RELATIVE_HUMIDITY": null,
+            "WIND_DIRECTION": null,
+            "WIND_SPEED": null,
+            "PRESSURE": null,
+            "PRECIPITATION": null,
+            "TOTAL_CLOUD_AMOUNT": null,
+            "LOW_CLOUD_AMOUNT": null,
+            "WEATHER_TYPE": null,
+            "VISIBILITY": null,
+            "MIN_TEMP_24": "17",
+            "MAX_TEMP_24": "19.7",
+            "MIN_HUM_24": null,
+            "MAX_HUM_24": null,
+            "PRECIPITATION_12": null,
+            "PRECIPITATION_24": null,
+            "TOTAL_CLOUD_12": null,
+            "LOW_CLOUD_12": null,
+            "WEATHER_TYPE_12": "阴",
+            "WIND_DIRECTION_12": "微风",
+            "WIND_SPEED_12": "小于3级",
+            "CRTTIME": "2019-01-08 22:59:47.0",
+            "KEYID": null,
+            "SYNC_ROWID": null,
+            "CRTTIME2": null,
+            "V05001": "22.3",
+            "V06001": "113.6",
+            "V_COUNTY": "珠海",
+            "V_CITY": "珠海",
+            "V_PRCODE": "广东",
+            "VF01015_CN": "珠海市气象局"
+        }]
+    };*/
     // debugger;
-    this.load(theCallUrl, theCallArgument, function (data) {
-
+    this.loadInner(theCallUrl, theCallArgument, function (data) {
         if (data && data.isSuccess) {
             me.loadWeatherView(data);
         }
@@ -977,17 +1077,44 @@ PageViewBase.prototype.loadWeather = function (date, type) {
  * @param data
  */
 PageViewBase.prototype.loadWeatherView = function (data) {
-    data = data || [];
+    data = data.data || [];
     var theIndex = 0;
-    $('.left-weather, .weather-content ul li').each(function () {
+    $('.left-weather').each(function () {
         var theFields = $(this).find('.field');
         var theItem = data[theIndex] || {};
-        $(theFields[0]).text(theItem['date'] || '暂无');
-        $(theFields[1]).text(theItem['wendu'] || '暂无');
-        $(theFields[2]).text(theItem['fengli'] || '暂无');
-        $(theFields[3]).text(theItem['kejiandu'] || '暂无');
-        $(theFields[4]).text(theItem['jiangshui'] || '暂无');
+        /*
+        日期 DDATETIME
+最低温度 MIN_TEMP_24
+最高温度 MAX_TEMP_24
+12小时天气现象 WEATHER_TYPE_12
+12小时风向 WIND_DIRECTION_12
+12小时风速 WIND_SPEED_12
+        * */
+        var theIconMap = {
+            "阵雨": "小雨.png"
+        };
+        $(theFields[0]).text(new Date(theItem['DDATETIME']).formateCN() || '暂无');//日期
+        $(theFields[1]).text(theItem['MIN_TEMP_24'] + '℃-' + theItem['MAX_TEMP_24'] + '℃' || '暂无');//温度
+        $(theFields[2]).text(theItem['WIND_DIRECTION_12'] || '暂无');//风力
+        $(theFields[3]).text(theItem['WIND_SPEED_12'] || '暂无');//
+        if (theItem['WEATHER_TYPE_12']) {
+            var theImage = theIconMap[theItem['WEATHER_TYPE_12']];
+            //debugger;
+            if (!theImage) {
+                var theImage = theItem['WEATHER_TYPE_12'];
+                if(theImage.indexOf('-')>0){
+                    theNames=theImage.split('-');
+                    theImage = theNames[theImage.length - 1]
+                }
+                theImage+= '.png';
+                var theImageE=$(this).find('.weather-icon.change');
+                theImageE.attr('src',theImageE.data('base')+theImage);
+            }
+        }
+
+        $(theFields[4]).text(theItem['WEATHER_TYPE_12'] || '暂无');//
         theIndex += 1;
+        //debugger;
     })
 
 
