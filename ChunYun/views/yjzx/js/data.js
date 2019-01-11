@@ -8,7 +8,7 @@ function PlacePointView(theMap) {
     "深圳汽车站0:114.08951,22.568788;\"\n" +
     "铁路|铁路|深圳西站|深圳西站0:113.907746,22.527855;\n" +
     "铁路|铁路|深圳站|深圳站0:114.117235,22.531822;\n" +
-    "民航|机场|白云国际机场二号航站楼|广州白云国际机场T2航站楼0:113.305761,23.396641;\n" +
+    // "民航|机场|白云国际机场二号航站楼|广州白云国际机场T2航站楼0:113.305761,23.396641;\n" +
     "公路|客运站|广东省汽车客运站|广东省汽车客运站:113.252621,23.148364;\n" +
     "\"民航|机场|广州白云国际机场|\n" +
     "广州白云国际机场0:113.302948,23.38648;\"\n" +
@@ -234,16 +234,20 @@ PlacePointView.prototype.MoveToPoint = function (lntlat, maxZoom) {
 
   // console.log(lntlat, maxZoom)
   var theZoom = this.theMap.getZoom();
-  var thePitchTimer = window.setInterval(function () {
-    if (theZoom > maxZoom) {
-      window.clearInterval(thePitchTimer);
-      this.theMap.setPitch(45);
-      console.log("结束导航到指定点!");
-      return;
-    }
-    this.theMap.setZoomAndCenter(theZoom++, lntlat);
-  }, 10);
-}
+  // var thePitchTimer = window.setInterval(function () {
+  //   if (theZoom > maxZoom) {
+  //     window.clearInterval(thePitchTimer);
+  //     this.theMap.setPitch(45);
+  //     console.log("结束导航到指定点!");
+  //     return;
+  //   }
+  //   this.theMap.setZoomAndCenter(theZoom++, lntlat);
+  //   console.log(theZoom,maxZoom)
+  // }, 10);
+  // debugger
+  this.theMap.setZoomAndCenter(maxZoom, lntlat);
+
+};
 //结束导航到指定点
 PlacePointView.prototype.ReturnDefualt = function (defaultZoom) {
   console.log("开始导航到该蓝图!");
@@ -264,6 +268,8 @@ PlacePointView.prototype.ReturnDefualt = function (defaultZoom) {
     }
     this.theMap.setZoomAndCenter(theZoom--, lntlat);
   }, 10);
+    // this.theMap.setZoomAndCenter(defaultZoom, lntlat);
+
 }
 
 /**

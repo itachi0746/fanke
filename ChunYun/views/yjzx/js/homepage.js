@@ -25,6 +25,9 @@ $(function () {
     5: '45-54岁',
     6: '55岁以上'
   };
+  var thePlaceZoomObj = {
+    '深圳西站': 20,
+  }
   var tabArr = ['客运站,铁路,机场,港口', '服务区', '收费站', '高速监测', '两客一危'];
   var tieluArr, gongluArr;
   var tabDomNameArr = ['#tab2', '#tab3', '#tab4', '#tab5', '#tab6'];
@@ -121,11 +124,6 @@ $(function () {
       var inputDom = theInputArr[i];
       $(inputDom).attr("readonly", "readonly")//将input元素设置为readonly
     }
-    // 搜索框oninput事件
-    // $('#search')[0].oninput = function () {
-    //   console.log(this.value);
-    //
-    // }
 
     // 监听搜索input输入
     $('#search').on('input', function () {
@@ -181,12 +179,13 @@ $(function () {
           goToPointByName(name);
           // console.log('m',m.C.extData['枢纽名称']);
           changePosText(name);
+          hideTabs()
           // $('#tab-name').text($(this).text());
         });
         // debugger
         // console.log(resultList);
 
-        resultList.append(theLi)
+        resultList.append(theLi);
         resultList.show()
       }
     });
@@ -210,13 +209,17 @@ $(function () {
     }
     arrowBindClick();
     dongchaTabBindClick();
-    addStation();
+    // addStation();
     getYJData();
 
-    // 先显示枢纽点
-    // pointControl.showPoints(nowTab);
-    // console.log('theDataObject:',pointControl.markes)
-    // markerBindClick();
+  }
+
+  /**
+   * 实时监控-监控中心,调度中心点击 todo
+   */
+  function zhongxinClick() {
+    var sszxArr = $('.jkzx'),ddzxArr = $('.ddzx');
+
   }
 
   /**
@@ -518,6 +521,7 @@ $(function () {
    * 返回默认视角
    */
   function toDefaultView() {
+    isDefaultView = true;
     pointControl.ReturnDefualt();  // 默认视角
     pointControl.showMarkers();  // 显示点标记
     traffic.removePaths();  // 清除高速路段的线
@@ -534,7 +538,7 @@ $(function () {
     $('#floor').addClass('dn');
     $('#tab-name').empty();
     initCenterBG();
-    isDefaultView = true;
+    showTheTabArrow()
   }
 
   /**
@@ -593,20 +597,57 @@ $(function () {
         lat: lat,
         lng: lng
       };
+      var theZoom = thePlaceZoomObj[name] || 18;
       // debugger
-      // var arg = clickTarget
-      // console.log(clickTarget['地址'][0].lnglat)
-      // debugger
-      pointControl.MoveToPoint(arg, 18);
+      pointControl.MoveToPoint(arg, theZoom);
       isDefaultView = false;
       reqWeather(name);
-
+      delDongChaTab();
       if (nowTab === tabArr[0] || nowTab === tabArr[1] || nowTab === tabArr[2]) {
         drawTheRectangle(name);
       }
       if (nowTab === tabArr[0] || nowTab === tabArr[1]) {
         // debugger
         reqReliData(name);
+      }
+    }
+  }
+
+  /**
+   * 显示洞察tab
+   */
+  function showDongChaTab() {
+    var dongchaTab = $('#tab2').find('.data-box').find('.dongcha-tab');
+    for (var i = 0; i < dongchaTab.length; i++) {
+      var tab = dongchaTab[i];
+      $(tab).show();
+    }
+  }
+
+  /**
+   * 铁路-客运站 删除境外tab
+   */
+  function delDongChaTab() {
+    showDongChaTab();
+    var theName = curPosition,theMarkers = pointControl.markes;
+    for (var i = 0; i < theMarkers.length; i++) {
+      var m = theMarkers[i];
+      if(theName === m.C.extData['枢纽名称']) {
+        // console.log(theName)
+        var mType = m.C.extData['枢纽类别'];
+        if(mType === '客运站' || mType === '铁路') {
+          var dongchaTab = $('#tab2').find('.data-box').find('.dongcha-tab');
+          // console.log(dongchaTab)
+          // debugger
+          for (var j = 0; j < dongchaTab.length; j++) {
+            var tab = dongchaTab[j];
+            var theText = $(tab).text().trim();
+            // console.log(theText)
+            if(theText === '境外') {
+              $(tab).hide();
+            }
+          }
+        }
       }
     }
   }
@@ -959,86 +1000,89 @@ $(function () {
    * 主tab点击事件
    */
   function clickTab() {
-    for (var j = 0; j < tabBoxes.length; j++) {
-      var obj = tabBoxes[j];
-      $(obj).removeClass('tab-box-active');
-    }
-    $(this).addClass('tab-box-active');
-
     var t = $(this).data('name');
-    nowTab = t;
-    window.nowTab = nowTab;
-    console.log('切换到:', t);
-    moveTheMap();
-    clearYjUL();
-    getYJData();
-    clearStation();
-    // 测试
-    // moveTheTabArrow();
-    showTheTabArrow();
-    $('#tab-box-cur').hide();
-    hideCurLocaction();
-    pointControl.ReturnDefualt();
-    pointControl.hideMarkers();
-    // pointControl.showPoints(t);
-    // markerBindClick();
-    clearCenterMarker();
-    if (nowTab === tabArr[0]) {
-      // addStation();
-      positionType = 1;  // 场站type
-      clearInterval(timer);
-      $('#top3').show();
-      // $('#luwang-box').hide();
-      $('#container2').show();
-      mapbase.isGaoSuLuDuan = false;
-      mapbase.restoreDefaultStyle();
-      mapbase.setBg();
-      traffic.removePaths();  // 清除高速路段的线
-      $('#gaosujiance').hide();
+    if(t !== nowTab) {
+      for (var j = 0; j < tabBoxes.length; j++) {
+        var obj = tabBoxes[j];
+        $(obj).removeClass('tab-box-active');
+      }
+      $(this).addClass('tab-box-active');
+
+      nowTab = t;
+      window.nowTab = nowTab;
+      console.log('切换到:', t);
+      moveTheMap();
+      clearYjUL();
+      getYJData();
+      clearStation();
+      // 测试
+      // moveTheTabArrow();
+      showTheTabArrow();
+      $('#tab-box-cur').hide();
+      hideCurLocaction();
+      pointControl.ReturnDefualt();
+      pointControl.hideMarkers();
+      // pointControl.showPoints(t);
+      // markerBindClick();
+      clearCenterMarker();
+      if (nowTab === tabArr[0]) {
+        // addStation();
+        positionType = 1;  // 场站type
+        clearInterval(timer);
+        $('#top3').show();
+        // $('#luwang-box').hide();
+        $('#container2').show();
+        mapbase.isGaoSuLuDuan = false;
+        mapbase.restoreDefaultStyle();
+        mapbase.setBg();
+        traffic.removePaths();  // 清除高速路段的线
+        $('#gaosujiance').hide();
+      }
+      if (nowTab === tabArr[1]) {
+        positionType = 2;  // 服务区type
+        clearInterval(timer);
+        $('#top3').show();
+        // $('#luwang-box').hide();
+        $('#container2').show();
+        mapbase.isGaoSuLuDuan = false;
+        mapbase.restoreDefaultStyle();
+        mapbase.setBg();
+        traffic.removePaths();  // 清除高速路段的线
+        $('#gaosujiance').hide();
+
+      }
+      if (nowTab === tabArr[2]) {
+        positionType = 3;  // 收费站type
+        clearInterval(timer);
+        $('#top3').show();
+        // $('#luwang-box').hide();
+        $('#container2').show();
+        mapbase.isGaoSuLuDuan = false;
+        mapbase.restoreDefaultStyle();
+        mapbase.setBg();
+        traffic.removePaths();  // 清除高速路段的线
+        $('#gaosujiance').hide();
+
+      }
+      if (nowTab === tabArr[3]) {  // 高速监测
+        mapbase.isGaoSuLuDuan = false;
+        refreshTime();
+        $('#top3').hide();
+        // $('#luwang-box').show();
+        mapbase.setTrafficStyle();
+        // reqLuWangDtlData()
+        reqJamList();
+        reqKeyRoadData();
+        // jamRankLiClick();
+        $('#container2').hide();
+        $('#gaosujiance').show();
+        traffic.removePaths();  // 清除高速路段的线
+      }
     }
 
-    if (nowTab === tabArr[1]) {
-      positionType = 2;  // 服务区type
-      // addStation2();
-      clearInterval(timer);
-      $('#top3').show();
-      // $('#luwang-box').hide();
-      $('#container2').show();
-      mapbase.isGaoSuLuDuan = false;
-      mapbase.restoreDefaultStyle();
-      mapbase.setBg();
-      traffic.removePaths();  // 清除高速路段的线
-      $('#gaosujiance').hide();
 
-    }
-    if (nowTab === tabArr[2]) {
-      positionType = 3;  // 收费站type
-      // addStation2();
-      clearInterval(timer);
-      $('#top3').show();
-      // $('#luwang-box').hide();
-      $('#container2').show();
-      mapbase.isGaoSuLuDuan = false;
-      mapbase.restoreDefaultStyle();
-      mapbase.setBg();
-      traffic.removePaths();  // 清除高速路段的线
-      $('#gaosujiance').hide();
 
-    }
-    if (nowTab === tabArr[3]) {  // 高速监测
-      mapbase.isGaoSuLuDuan = false;
-      refreshTime();
-      $('#top3').hide();
-      // $('#luwang-box').show();
-      mapbase.setTrafficStyle();
-      // reqLuWangDtlData()
-      reqJamList();
-      reqKeyRoadData();
-      // jamRankLiClick();
-      $('#container2').hide();
-      $('#gaosujiance').show();
-      traffic.removePaths();  // 清除高速路段的线
-    }
+
 
   }
 
@@ -1096,6 +1140,8 @@ $(function () {
     var tab = $('#tab');
     var theActiveTab = tab.find('.tab-box-active');
     var theTabs = tab.find('.tab-box');
+    var tabBoxCur = $('#tab-box-cur');
+    tabBoxCur.hide();
     if (nowTab === tabArr[3] || nowTab === tabArr[4]) {
       for (var i = 0; i < theTabs.length; i++) {
         var tabDom = $(theTabs[i]).find('.tab-arrow');
@@ -1704,7 +1750,7 @@ $(function () {
    * 显示不同tab的筛选地点
    */
   function addStation2() {
-    // clearStation();
+    clearStation();  // 先清空
     showStation();
 
     var tgt;
@@ -1792,7 +1838,6 @@ $(function () {
     $(me).addClass('active');
     $(me).find('.li-tab-box').css('visibility', 'visible')
     // myChart.resize();
-
 
     initTab2(me.dataset.name);
   }
@@ -2469,6 +2514,7 @@ $(function () {
       tabLi.removeClass('vh')
       tabLi.css('top', (dis * i) + 'px')
     }
+
   }
 
   /**

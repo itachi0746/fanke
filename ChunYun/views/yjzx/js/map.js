@@ -575,6 +575,7 @@ $(function () {
 
 //开始导航到指定点
   MapBase.prototype.MoveToPoint = function (lntlat, maxZoom) {
+    // debugger
     console.log("开始导航到指定点!");
     var theZoom = theMap.getZoom();
     var thePitchTimer = window.setInterval(function () {
@@ -870,12 +871,15 @@ $(function () {
       '广州花城服务区-向南':[[113.313542,23.502033],[113.312783,23.501768],[113.31167,23.502035],[113.31198,23.504128],[113.312975,23.504048],[113.314009,23.504811],[113.314603,23.504741],[113.313976,23.502002]],
 
     };
+
     var path;
+    // var theZoom;
     this.CreateHeartLayer();
     var idx = 0;
 
     for (var key in placeArr) {
       idx++;
+      // theZoom = thePlaceZoomObj[key] || 18;
       // console.log(idx);
       // console.log(key.indexOf('机场'))
       if(key.indexOf(name)!==-1) {
@@ -950,16 +954,15 @@ $(function () {
           0.65: '#abd9e9',
           0.7: '#ffffbf',
           0.9: '#fde468',
-          1.0: '#d7191c'
+          1.0: '#d7423f'
         }
       }
     });
 
     layer.render();
-  }
-
+    // theMap.setFitView(layer);
+    // theMap.setZoom(theZoom)
+  };
 
   window.MapBase = MapBase;
-
-
 });
