@@ -1128,7 +1128,7 @@ html,body{
     position: relative;
     .li-tab-box {
       position: absolute;
-      left: 177px;
+      left: 178px;
       z-index: 10;
       //top: 180px;
       background-color: rgba(10,33,75,.9);
@@ -1172,8 +1172,12 @@ html,body{
   background: url("../img/4icon_left_1_nor.png") no-repeat;
 
   .li-tab-box {
-    height: 660px;
+    //width: 581px;
+    //height: 623px;
+    //background: url("../../yjzx/img/link-bg.png");
     top: $tab2Top*1;
+    width: 427px;
+    //height: 234px;
 
     .video-play-box {
       width: 597px;
@@ -2931,5 +2935,61 @@ input:focus {
   .weather {
     margin-left: 10px;
     text-align: center;
+  }
+}
+.link-box {
+  height: 468px;
+  width: 427px;
+  @include center();
+  top: 48.8%;
+  left: 48.5%;
+}
+.zhongxin-box {
+  width: 427px;
+  height: 234px;
+  cursor: pointer;
+  position: relative;
+
+  .zhongxin-name {
+    font-size: 24px;
+    color: #d9f1ff;
+    @include center;
+  }
+}
+.jkzx {
+  background: url("../../yjzx/img/link-1.png") no-repeat;
+  border-bottom: 1px solid #28eefb;
+}
+.ddzx {
+  background: url("../../yjzx/img/link-2.png") no-repeat;
+}
+.jkzx:hover {
+  background: url("../../yjzx/img/link-1-hover.png") no-repeat;
+}
+.ddzx:hover {
+  background: url("../../yjzx/img/link-2-hover.png") no-repeat;
+}
+.tab-box2 .tab-box2-li1 .li-tab-box {
+  width: 427px;
+  top: -100px;
+}
+.tab-box3 .tab-box2-li1 .li-tab-box {
+  width: 427px;
+  top: -100px;
+}
+.tab-box4 .tab-box2-li1 .li-tab-box {
+  width: 427px;
+  top: -100px;
+}
+.btm-part {
+  position: absolute;
+  right: 40px;
+  bottom: 22px;
+  font-size: 18px;
+  color: #d9f1ff;
+  display: flex;
+  align-items: center;
+  img {
+    margin-left: 16px;
   }
 }

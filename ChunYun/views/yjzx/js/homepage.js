@@ -1776,7 +1776,7 @@ $(function () {
       e.stopPropagation()
     });
     if (me.dataset.name === '实时监控') {
-      jiankongEvent(me)
+      // jiankongEvent(me)
     }
 
     if ($(me).hasClass('active')) {  // 如果点击的是已经active的tab
@@ -3934,7 +3934,6 @@ $(function () {
               formatter: '{c}%',
               padding: [0, -30],
               fontSize: '20'
-
             },
             emphasis: {
               show: true,
