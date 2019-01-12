@@ -268,11 +268,8 @@ TrafficView.prototype.showRoads = function () {
     }
     // debugger
     // this.TheMap.setFitView();
-    if (this.nowTab !== '高速') {
-      this.TheMap.setFitView(this.RoadPaths);
-    }
-    // this.TheMap.setFitView(this.RoadPaths);
-    // debugger
+    this.TheMap.setFitView(this.RoadPaths);
+
   }
 
   // map.setFitView([polyline,marker1]);

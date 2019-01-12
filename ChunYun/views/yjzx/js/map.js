@@ -68,6 +68,7 @@ $(function () {
       center: theCenterPoint,
       features: ['bg', 'building', 'point'],//['all'],// ['bg', 'building','point'],
       zoom: 8,
+      // zooms: [8,21],
       keyboardEnable: false,
       layers: [
         //satellite,

@@ -253,7 +253,12 @@
         <div class="flight-data-container">
           <div class="l-part">
             <header>发送航班</header>
-            <div class="time-box"></div>
+            <div class="time-box">
+              <select name="" id="">
+                <option value="10:00-11:00">10:00-11:00</option>
+                <option value="10:00-11:00">11:00-12:00</option>
+              </select>
+            </div>
           </div>
           <div class="r-part">
             <header>
@@ -305,7 +310,12 @@
         <div class="flight-data-container">
           <div class="l-part">
             <header>发送航班</header>
-            <div class="time-box"></div>
+            <div class="time-box">
+              <select name="" id="">
+                <option value="10:00-11:00">10:00-11:00</option>
+                <option value="10:00-11:00">11:00-12:00</option>
+              </select>
+            </div>
           </div>
           <div class="r-part">
             <header>
@@ -479,9 +489,15 @@
     <li data-name="实时监控" class="tab-box2-li1 tab-box2-li">
       <div class="li-tab-box">
         <!--摄像头部分-->
-        <div class="camera-box">
+        <div class="camera-box" id="camera-box">
           <ul>
-            <li onclick="window.location.href='SHWGOIE:http://14.23.164.13:7001/video/cn/?id=1'"></li>
+            <li onclick="window.location.href='SHWGOIE:http://14.23.164.13:7001/video/?vid=44152103041312001198'">
+            <!--<li onclick="window.open('SHWGOIE:http://14.23.164.13:7001/video/?vid=44152103041312001198','newwindow','height=400,width=600,top=100,left=100,scrollbars=no,resizable=no,location=no, status=no')">-->
+              <section>
+                <img src="yjzx/img/cam_nor.png" alt="">
+              </section>
+              <span>广州南站一号摄像头</span>
+            </li>
             <li></li>
             <li></li>
           </ul>
@@ -814,7 +830,7 @@
         </div>
       </div>
     </li>
-    <li data-name="" class="tab-box2-li5 tab-box2-li" onclick="window.open('http://www.baidu.com','newwindow','height=400,width=600,top=100,left=100,scrollbars=no,resizable=no,location=no, status=no')"></li>
+    <li data-name="" class="tab-box2-li5 tab-box2-li" onclick="window.open('http://10.0.64.217','newwindow','height=400,width=600,top=100,left=100,scrollbars=no,resizable=no,location=no, status=no')"></li>
   </ul>
   <!--服务区tab-->
   <ul id="tab3" class="tab-box3 vh">
@@ -1037,6 +1053,8 @@
         <!--<div class="chart2" id="tab3li4-chart2"></div>-->
       </div>
     </li>
+    <li data-name="" class="tab-box2-li5 tab-box2-li" onclick="window.open('http://10.0.64.217','newwindow','height=400,width=600,top=100,left=100,scrollbars=no,resizable=no,location=no, status=no')"></li>
+
   </ul>
   <!--收费站tab-->
   <ul id="tab4" class="tab-box4 vh">
@@ -1239,6 +1257,8 @@
         <!--</div>-->
       </div>
     </li>
+    <li data-name="" class="tab-box2-li5 tab-box2-li" onclick="window.open('http://10.0.64.217','newwindow','height=400,width=600,top=100,left=100,scrollbars=no,resizable=no,location=no, status=no')"></li>
+
   </ul>
   <!--高速路段-->
   <!--<ul id="tab5" class="tab-box5 vh">-->

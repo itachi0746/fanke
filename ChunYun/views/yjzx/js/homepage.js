@@ -1,21 +1,7 @@
 var pointControl, traffic;
 $(function () {
   var hourArr = ['0-1', '1-2', '2-3', '3-4', '4-5', '5-6', '6-7', '7-8', '8-24'];
-  // var ageObj = {  // 年龄组
-  //   0: '',
-  //   1: '0-12岁',
-  //   2: '13-18岁',
-  //   3: '19-22岁',
-  //   4: '23-25岁',
-  //   5: '26-30岁',
-  //   6: '31-35岁',
-  //   7: '36-40岁',
-  //   8: '41-45岁',
-  //   9: '46-50岁',
-  //   10: '51-55岁',
-  //   11: '56-60岁',
-  //   12: '>60岁'
-  // };
+
   var ageObj = {  // 年龄组
     0: '',
     1: '0-17岁',
@@ -99,8 +85,17 @@ $(function () {
    * 初始化应用
    */
   function init() {
+    // theMap.on('zoomend', function () {
+    //   var theZoom = theMap.getZoom();
+    //   if(curPosition==='深圳西站') {
+    //     debugger
+    //     theMap.setZoom(20)
+    //   }
+    // });
+
     moment.locale('zh-cn');
     console.log('切换到:', nowTab);
+    // console.log('map:', theMap);
     // 设置洞察部分默认日期
     tab2Li2DefaultDate = returnDate(4);  // 枢纽
     tab3Li2DefaultDate = returnDate(1);  // 服务区
@@ -219,7 +214,7 @@ $(function () {
    * 实时监控-监控中心,调度中心点击 todo
    */
   function zhongxinClick() {
-    var sszxArr = $('.jkzx'),ddzxArr = $('.ddzx');
+    var sszxArr = $('.jkzx'), ddzxArr = $('.ddzx');
 
   }
 
@@ -632,13 +627,13 @@ $(function () {
    */
   function delDongChaTab() {
     showDongChaTab();
-    var theName = curPosition,theMarkers = pointControl.markes;
+    var theName = curPosition, theMarkers = pointControl.markes;
     for (var i = 0; i < theMarkers.length; i++) {
       var m = theMarkers[i];
-      if(theName === m.C.extData['枢纽名称']) {
+      if (theName === m.C.extData['枢纽名称']) {
         // console.log(theName)
         var mType = m.C.extData['枢纽类别'];
-        if(mType === '客运站' || mType === '铁路') {
+        if (mType === '客运站' || mType === '铁路') {
           var dongchaTab = $('#tab2').find('.data-box').find('.dongcha-tab');
           // console.log(dongchaTab)
           // debugger
@@ -646,7 +641,7 @@ $(function () {
             var tab = dongchaTab[j];
             var theText = $(tab).text().trim();
             // console.log(theText)
-            if(theText === '境外') {
+            if (theText === '境外') {
               $(tab).hide();
             }
           }
@@ -672,13 +667,33 @@ $(function () {
   }
 
   /**
-   * 显示航班,铁路表
+   * 请求航班数据
+   * @param name
+   */
+  function reqFlightData(name) {
+    var sendTime = '07:00-08:00', arrivalTime = '07:00-08:00';
+    var url = 'terminal/selectAirInfo.do?sendTime=07:00-08:00&arrivalTime=23:00-24:00';
+    // var data = {
+    //   sendTime : sendTime,
+    //   arrivalTime : arrivalTime
+    // };
+    // debugger
+    $.axpost(url,{},function (data) {
+      console.log('航班信息:',data)
+    })
+  }
+
+  /**
+   * 显示航班,铁路表,请求数据
    */
   function showFlightDom() {
-    if(curPosition === '广州白云国际机场' || curPosition === '深圳宝安国际机场') {
+    if (curPosition === '广州白云国际机场' || curPosition === '深圳宝安国际机场') {
       $('#flight-box').show();
+      var theName = curPosition;
+      reqFlightData(theName);
     }
   }
+
   function hideFlightDom() {
     $('#flight-box').hide();
   }
@@ -688,13 +703,24 @@ $(function () {
    */
   function flightBindClick() {
     var flightBox = $('#flight-box');
-    $('#flight-trend-tab').on('click',function () {
+    var flightTabArr = flightBox.find('.flight-tab');
+    $('#flight-trend-tab').on('click', function () {
       flightBox.find('.flight-data-box').hide();
       flightBox.find('.flight-data-box2').show();
-    })
-    $('#flight-list-tab').on('click',function () {
+      for (var f = 0; f < flightTabArr.length; f++) {
+        var ftab = flightTabArr[f];
+        $(ftab).removeClass('active')
+      }
+      $(this).addClass('active');
+    });
+    $('#flight-list-tab').on('click', function () {
       flightBox.find('.flight-data-box').show();
       flightBox.find('.flight-data-box2').hide();
+      for (var f = 0; f < flightTabArr.length; f++) {
+        var ftab = flightTabArr[f];
+        $(ftab).removeClass('active')
+      }
+      $(this).addClass('active');
     })
   }
 
@@ -1031,7 +1057,7 @@ $(function () {
    */
   function clickTab() {
     var t = $(this).data('name');
-    if(t !== nowTab) {
+    if (t !== nowTab) {
       for (var j = 0; j < tabBoxes.length; j++) {
         var obj = tabBoxes[j];
         $(obj).removeClass('tab-box-active');
@@ -1109,9 +1135,6 @@ $(function () {
         traffic.removePaths();  // 清除高速路段的线
       }
     }
-
-
-
 
 
   }
@@ -1666,8 +1689,8 @@ $(function () {
   function createInfoWindow2(content) {
     var result = '';
     result = '  <div>\n' +
-      '    <div class="amap-info-content2 amap-info-outer"><h4 class="infoTitle">'+content.name+'</h4>\n' +
-      '      <p class="infoContent">'+content.data1+'</p></div>\n' +
+      '    <div class="amap-info-content2 amap-info-outer"><h4 class="infoTitle">' + content.name + '</h4>\n' +
+      '      <p class="infoContent">' + content.data1 + '</p></div>\n' +
       '    <a class="amap-info-close" href="javascript: void(0)">x</a>\n' +
       '    <div class="amap-info-sharp"></div>\n' +
       '  </div>';
@@ -1719,7 +1742,7 @@ $(function () {
     var stationLiArr = $('#station-box').find('li');
     for (var i = 0; i < stationLiArr.length; i++) {
       var theLi = stationLiArr[i];
-      $(theLi).on('click',function () {
+      $(theLi).on('click', function () {
         var theLiName = $(this).text();
         goToPointByName(theLiName);
         curPosition = theLiName;
@@ -1751,7 +1774,7 @@ $(function () {
     for (var i = 0; i < markerArr.length; i++) {
       var m = markerArr[i];
       var mType = m.C.extData['枢纽类别'];
-      if(mType === '铁路') {
+      if (mType === '铁路') {
         stationDom = $('<li>' + m.C.extData['枢纽名称'] + '</li>');
 
         sb1.find('header').text(m.C.extData['枢纽类别']);
@@ -1788,7 +1811,7 @@ $(function () {
     var sb2 = $('#station-box-2');
     var sb3 = $('#station-box-3');
     var markerArr = pointControl.markes;
-    if(nowTab === tabArr[0]) {  // 枢纽
+    if (nowTab === tabArr[0]) {  // 枢纽
       addTab0Station();
       showStation();
       return
@@ -2033,6 +2056,7 @@ $(function () {
   }
 
   var getYJDataAjax = null;
+
   /**
    * 获取3级预警数据
    */
@@ -2056,7 +2080,7 @@ $(function () {
       return
     }
 
-    if(getYJDataAjax) {
+    if (getYJDataAjax) {
       getYJDataAjax.abort();
     }
     var data = {};
