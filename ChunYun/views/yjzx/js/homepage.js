@@ -110,6 +110,7 @@ $(function () {
     title.on('click', function () {
       toDefaultView();
     });
+    flightBindClick();
     backDivBandClick();
     weatherClick();
     tabArrowClick();
@@ -532,6 +533,7 @@ $(function () {
     //   mapbase.restoreDefaultStyle();
     // }
     hideWeather();
+    hideFlightDom();
     showTabs();
     hideCurLocaction();
     hideTab2();
@@ -602,6 +604,7 @@ $(function () {
       pointControl.MoveToPoint(arg, theZoom);
       isDefaultView = false;
       reqWeather(name);
+      showFlightDom();
       delDongChaTab();
       if (nowTab === tabArr[0] || nowTab === tabArr[1] || nowTab === tabArr[2]) {
         drawTheRectangle(name);
@@ -666,6 +669,33 @@ $(function () {
         return
       }
     }
+  }
+
+  /**
+   * 显示航班,铁路表
+   */
+  function showFlightDom() {
+    if(curPosition === '广州白云国际机场' || curPosition === '深圳宝安国际机场') {
+      $('#flight-box').show();
+    }
+  }
+  function hideFlightDom() {
+    $('#flight-box').hide();
+  }
+
+  /**
+   * 航班,铁路的信息表的点击
+   */
+  function flightBindClick() {
+    var flightBox = $('#flight-box');
+    $('#flight-trend-tab').on('click',function () {
+      flightBox.find('.flight-data-box').hide();
+      flightBox.find('.flight-data-box2').show();
+    })
+    $('#flight-list-tab').on('click',function () {
+      flightBox.find('.flight-data-box').show();
+      flightBox.find('.flight-data-box2').hide();
+    })
   }
 
   /**
