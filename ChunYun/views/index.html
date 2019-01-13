@@ -246,7 +246,7 @@
   <div class="flight-box" id="flight-box">
     <div class="flight-tab-box">
       <div class="flight-tab flight-trend-tab" id="flight-trend-tab">航班趋势</div>
-      <div class="flight-tab flight-list-tab" id="flight-list-tab">航班表</div>
+      <div class="flight-tab flight-list-tab active" id="flight-list-tab">航班表</div>
     </div>
     <div class="flight-data-box">
       <div class="flight-data-container-outer">
@@ -254,9 +254,9 @@
           <div class="l-part">
             <header>发送航班</header>
             <div class="time-box">
-              <select name="" id="">
-                <option value="10:00-11:00">10:00-11:00</option>
-                <option value="10:00-11:00">11:00-12:00</option>
+              <select name="" id="send-time-box">
+                <!--<option value="10:00-11:00">10:00-11:00</option>-->
+                <!--<option value="10:00-11:00">11:00-12:00</option>-->
               </select>
             </div>
           </div>
@@ -270,50 +270,33 @@
               </ul>
             </header>
             <div class="r-list">
-              <ul>
-                <li>
-                  <span>G4444</span>
-                  <span>12:12</span>
-                  <span title="">广州给中</span>
-                  <span>3456</span>
-                </li>
-                <li>
-                  <span>G4444</span>
-                  <span>12:12</span>
-                  <span>广州给中</span>
-                  <span>3456</span>
-                </li>
-                <li>
-                  <span>G4444</span>
-                  <span>12:12</span>
-                  <span>广州给中</span>
-                  <span>3456</span>
-                </li>
-                <li>
-                  <span>G4444</span>
-                  <span>12:12</span>
-                  <span>广州给中</span>
-                  <span>3456</span>
-                </li>
+              <ul id="send-list-ul">
+                <!--<li>-->
+                  <!--<span>G4444</span>-->
+                  <!--<span>12:12</span>-->
+                  <!--<span title="">广州给中</span>-->
+                  <!--<span>3456</span>-->
+                <!--</li>-->
+
               </ul>
             </div>
           </div>
         </div>
         <footer>
-          <div class="paging">
-            <span class="active">1</span>
-            <span>2</span>
+          <div class="paging" id="send-paging">
+            <!--<span class="active">1</span>-->
+            <!--<span>2</span>-->
           </div>
         </footer>
       </div>
       <div class="flight-data-container-outer">
         <div class="flight-data-container">
           <div class="l-part">
-            <header>发送航班</header>
+            <header>到达航班</header>
             <div class="time-box">
-              <select name="" id="">
-                <option value="10:00-11:00">10:00-11:00</option>
-                <option value="10:00-11:00">11:00-12:00</option>
+              <select name="" id="arr-time-box">
+                <!--<option value="10:00-11:00">10:00-11:00</option>-->
+                <!--<option value="10:00-11:00">11:00-12:00</option>-->
               </select>
             </div>
           </div>
@@ -321,56 +304,40 @@
             <header>
               <ul class="header">
                 <li>航班号</li>
-                <li>开点</li>
-                <li>目的地</li>
+                <li>到点</li>
+                <li>出发地</li>
                 <li>发送旅客数</li>
               </ul>
             </header>
             <div class="r-list">
-              <ul>
-                <li>
-                  <span>G4444</span>
-                  <span>12:12</span>
-                  <span title="">广州给中</span>
-                  <span>3456</span>
-                </li>
-                <li>
-                  <span>G4444</span>
-                  <span>12:12</span>
-                  <span>广州给中</span>
-                  <span>3456</span>
-                </li>
-                <li>
-                  <span>G4444</span>
-                  <span>12:12</span>
-                  <span>广州给中</span>
-                  <span>3456</span>
-                </li>
-                <li>
-                  <span>G4444</span>
-                  <span>12:12</span>
-                  <span>广州给中</span>
-                  <span>3456</span>
-                </li>
+              <ul id="arr-list-ul">
+                <!--<li>-->
+                  <!--<span>G4444</span>-->
+                  <!--<span>12:12</span>-->
+                  <!--<span title="">广州给中</span>-->
+                  <!--<span>3456</span>-->
+                <!--</li>-->
+
               </ul>
             </div>
           </div>
         </div>
         <footer>
-          <div class="paging">
-            <span class="active">1</span>
-            <span>2</span>
+          <div class="paging" id="arr-paging">
+            <!--<span class="active">1</span>-->
+            <!--<span>2</span>-->
           </div>
         </footer>
       </div>
 
     </div>
     <div class="flight-data-box2">
-      <div class="chart-tab">
+      <div class="chart-tab" id="fli-chart-tab">
         <span class="active">航班趋势</span>
         <span>旅客趋势</span>
       </div>
-      <div class="chart-box" id="flight-chart-box"></div>
+      <div class="chart-box" id="flight-chart-box1"></div>
+      <div class="chart-box" id="flight-chart-box2"></div>
     </div>
   </div>
 
@@ -403,18 +370,13 @@
         <img class="" src="yjzx/img/menu/icon_lower_right_nor.png" alt="">
       </div>
     </div>
-    <!--<div class="tab-box" data-name="高速">-->
-    <!--<span>高速路段</span>-->
-    <!--</div>-->
     <div class="tab-box" data-name="高速监测">
       <span>高速监测</span>
     </div>
-    <div class="tab-box" data-name="两客一危">
-      <span>两客一危</span>
-    </div>
-    <!--<div class="tab-arrow" id="tab-arrow">-->
-    <!--<img class="" src="yjzx/img/menu/icon_lower_right_nor.png" alt="">-->
+    <!--<div class="tab-box" data-name="两客一危">-->
+      <!--<span>两客一危</span>-->
     <!--</div>-->
+
     <!--当前位置-->
     <div class="tab-box-cur" id="tab-box-cur">
       <div class="bg-div">

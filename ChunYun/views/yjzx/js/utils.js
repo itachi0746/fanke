@@ -271,3 +271,26 @@ function isEmptyObject(obj){
   }
   return true
 }
+
+/**
+ * 计算时段数组,并返回
+ */
+function calTimeArr() {
+  var max = 24,theTimeArr = [],str = ':00';
+  for (var i = 0; i < max; i++) {
+    var preHour,aftHour,result;
+    preHour = i;
+    aftHour = i + 1;
+    if(preHour<10) {
+      preHour = '0' + preHour;
+    }
+    if(aftHour<10) {
+      aftHour = '0' + aftHour;
+    }
+    preHour += str;
+    aftHour += str;
+    result = preHour + '-' + aftHour;
+    theTimeArr.push(result);
+  }
+  return theTimeArr
+}

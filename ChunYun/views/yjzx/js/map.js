@@ -68,8 +68,8 @@ $(function () {
       center: theCenterPoint,
       features: ['bg', 'building', 'point'],//['all'],// ['bg', 'building','point'],
       zoom: 8,
-      expandZoomRange:true,
-      zooms: [8,20],
+      expandZoomRange:true,  // 改变最大缩放等级
+      zooms: [8,20],  // 改变最大缩放等级
       keyboardEnable: false,
       layers: [
         //satellite,
@@ -950,7 +950,7 @@ $(function () {
 
     layer.setOptions({
       style: {
-        radius: 30,
+        radius: 20,
         color: {
           0.5: '#2c7bb6',
           0.65: '#abd9e9',

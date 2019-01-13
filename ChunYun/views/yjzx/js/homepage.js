@@ -14,7 +14,7 @@ $(function () {
   var thePlaceZoomObj = {
     '深圳西站': 20,
   }
-  var tabArr = ['客运站,铁路,机场,港口', '服务区', '收费站', '高速监测', '两客一危'];
+  var tabArr = ['客运站,铁路,机场,港口', '服务区', '收费站', '高速监测'];
   var tieluArr, gongluArr;
   var tabDomNameArr = ['#tab2', '#tab3', '#tab4', '#tab5', '#tab6'];
   var newTabArr = tabArr.map(function (item, index) {
@@ -106,6 +106,7 @@ $(function () {
       toDefaultView();
     });
     flightBindClick();
+    fliTrendTabBindClick();
     backDivBandClick();
     weatherClick();
     tabArrowClick();
@@ -115,11 +116,8 @@ $(function () {
       console.log('搜索值为:', v);
     });
     // console.log($('input[type="text"]'));
-    var theInputArr = $('input[type="text"]');
-    for (var i = 0; i < theInputArr.length; i++) {
-      var inputDom = theInputArr[i];
-      $(inputDom).attr("readonly", "readonly")//将input元素设置为readonly
-    }
+    inputReadOnly();
+    flightAddTime();
 
     // 监听搜索input输入
     $('#search').on('input', function () {
@@ -216,6 +214,18 @@ $(function () {
   function zhongxinClick() {
     var sszxArr = $('.jkzx'), ddzxArr = $('.ddzx');
 
+  }
+
+
+  /**
+   * 将input元素设置为readonly
+   */
+  function inputReadOnly() {
+    var theInputArr = $('input[type="text"]');
+    for (var i = 0; i < theInputArr.length; i++) {
+      var inputDom = theInputArr[i];
+      $(inputDom).attr("readonly", "readonly")//将input元素设置为readonly
+    }
   }
 
   /**
@@ -519,7 +529,9 @@ $(function () {
   function toDefaultView() {
     isDefaultView = true;
     pointControl.ReturnDefualt();  // 默认视角
-    pointControl.showMarkers();  // 显示点标记
+    if(nowTab!==tabArr[3]) {
+      pointControl.showMarkers();  // 显示点标记
+    }
     traffic.removePaths();  // 清除高速路段的线
     clearCenterMarker();
     mapbase.removeHeartMap();
@@ -666,21 +678,293 @@ $(function () {
     }
   }
 
+
+  /**
+   * 航班时间选择dom添加option
+   */
+  function flightAddTime() {
+    var theTimeArr = calTimeArr();
+    var timeBoxArr = $('.time-box');
+    var theDefaultTimeItem = '03:00-04:00';  // 默认时段
+    for (var i = 0; i < timeBoxArr.length; i++) {
+      var timeBoxDom = timeBoxArr[i];
+      for (var j = 0; j < theTimeArr.length; j++) {
+        var theTimeItem = theTimeArr[j];
+        var optionStr = '<option value="' + theTimeItem + '">' + theTimeItem + '</option>';
+        var optionDom = $(optionStr);
+        if (theTimeItem === theDefaultTimeItem) {
+          optionDom.attr('selected', 'selected');
+        }
+        $(timeBoxDom).find('select').append($(optionDom));
+      }
+    }
+    flightTimeBindClick();
+    flightTimeBindClick2();
+  }
+
+  /**
+   * 航班时段点击
+   */
+  function flightTimeBindClick() {
+    var sendTimeBox = $('#send-time-box');
+    $(sendTimeBox).on('change', function () {
+      console.log($(this).val());
+      reqFlightData(curPosition, 'send');
+    })
+  }
+
+  function flightTimeBindClick2() {
+    var arrTimeBox = $('#arr-time-box');
+    // var sendListUl = $('#send-list-ul');
+    // var sendFooter = $('#send-paging');
+    $(arrTimeBox).on('change', function () {
+      console.log($(this).val());
+      reqFlightData(curPosition, 'arr');
+    })
+  }
+
+  var theSendFlightArr = [], theArrFlightArr = [];
+
   /**
    * 请求航班数据
    * @param name
+   * @param status 是状态,决定请求
    */
-  function reqFlightData(name) {
-    var sendTime = '07:00-08:00', arrivalTime = '07:00-08:00';
-    var url = 'terminal/selectAirInfo.do?sendTime=07:00-08:00&arrivalTime=23:00-24:00';
-    // var data = {
-    //   sendTime : sendTime,
-    //   arrivalTime : arrivalTime
-    // };
+  function reqFlightData(name, status) {
+    clearFlightList(status);
+    clearFooter(status);
+
+    var nameStr;
+    if (name === '广州白云国际机场') {
+      nameStr = 'byjc'
+    }
+    if (name === '深圳宝安国际机场') {
+      nameStr = 'bajc'
+    }
+    var arrivalTime, sendTime;
+    if (status === 'all') {
+      arrivalTime = $('#arr-time-box').val();
+      sendTime = $('#send-time-box').val();
+    } else if (status === 'send') {
+      sendTime = $('#send-time-box').val();
+      arrivalTime = '';
+    } else {
+      arrivalTime = $('#arr-time-box').val();
+      sendTime = '';
+    }
+
+    // var arrivalTime = '23:00-24:00';
+    // var sendTime = '15:00-16:00';
     // debugger
-    $.axpost(url,{},function (data) {
-      console.log('航班信息:',data)
+    var url = 'terminal/selectAirInfo.do?sendTime=' + sendTime + '&arrivalTime=' + arrivalTime + '&airport=' + nameStr;
+    // debugger
+    $.axpost(url, {}, function (data) {
+      console.log('航班信息:', data);
+      if (data.isSuccess && !isEmptyObject(data.data)) {
+        var sendListUl = $('#send-list-ul');
+        var arrListUl = $('#arr-list-ul');
+        var num = 4;
+
+        theSendFlightArr = data.data.sendList;
+        theArrFlightArr = data.data.arrivalList;
+        // debugger
+        if (theSendFlightArr) {
+          handleFlightData(theSendFlightArr, num, true);
+        }
+        if (theArrFlightArr) {
+          handleFlightData(theArrFlightArr, num, false);
+        }
+        // for (var i = 0; i < theArrFlightArr.length; i++) {
+        //   if (i >= num) {
+        //     break
+        //   }
+        //   var arrItem = theArrFlightArr[i];
+        //   var h = arrItem.arrTime.hours;
+        //   var m = arrItem.arrTime.minutes;
+        //   m = m < 10 ? '0' + m : m;
+        //   h = h < 10 ? '0' + h : h;
+        //   var theArrTime = h + ':' + m;
+        //   var sendLiStr = '                <li>\n' +
+        //     '                  <span title="' + arrItem.fltno + '">' + arrItem.fltno + '</span>\n' +
+        //     '                  <span>' + theArrTime + '</span>\n' +
+        //     '                  <span title="' + arrItem.endCity + '">' + arrItem.fromCity + '</span>\n' +
+        //     '                  <span title="' + arrItem.passenger + '">' + arrItem.passenger + '</span>\n' +
+        //     '                </li>';
+        //   arrListUl.append($(sendLiStr));
+        // }
+      }
     })
+  }
+
+  /**
+   * 处理航班数据渲染
+   * @param dataArr
+   * @param num 渲染条数
+   * @param isSend 是否是发送航班
+   */
+  function handleFlightData(dataArr, num, isSend) {
+    var cityKey, timeKey, theTgtUl, footer, theMaxNum = 12;
+    var theDataArr = dataArr;
+    // debugger
+    if (isSend) {
+      cityKey = 'endCity';
+      timeKey = 'depTime';
+      theTgtUl = $('#send-list-ul');
+      footer = $('#send-paging')
+    } else {
+      cityKey = 'fromCity';
+      timeKey = 'arrTime';
+      theTgtUl = $('#arr-list-ul');
+      footer = $('#arr-paging')
+    }
+    // if(!theDataArr.length) {
+    //   console.log('没有航班数据');
+    //   return
+    // }
+    for (var i = 0; i < theDataArr.length; i++) {
+      if (i >= num) {
+        break
+      }
+      var theDataItem = theDataArr[i];
+      var h = theDataItem[timeKey].hours;
+      var m = theDataItem[timeKey].minutes;
+      m = m < 10 ? '0' + m : m;
+      h = h < 10 ? '0' + h : h;
+      var theTimeVal = h + ':' + m;
+      var theLiStr = '                <li>\n' +
+        '                  <span title="' + theDataItem.fltno + '">' + theDataItem.fltno + '</span>\n' +
+        '                  <span>' + theTimeVal + '</span>\n' +
+        '                  <span title="' + theDataItem[cityKey] + '">' + theDataItem[cityKey] + '</span>\n' +
+        '                  <span title="' + theDataItem.passenger + '">' + theDataItem.passenger + '</span>\n' +
+        '                </li>';
+      theTgtUl.append($(theLiStr));
+    }
+
+    var pagingNum;  // 页数
+    if (theDataArr.length >= theMaxNum) {
+      pagingNum = 3;
+    } else if (theDataArr.length >= 8) {
+      pagingNum = 2;
+    } else if (theDataArr.length >= 4) {
+      pagingNum = 1;
+    }
+    for (var j = 0; j < pagingNum; j++) {
+      var theNum = j + 1;
+      var theSpanStr;
+      if (theNum === 1) {
+        theSpanStr = '<span class="active">' + theNum + '</span>';
+      } else {
+        theSpanStr = '<span>' + theNum + '</span>';
+      }
+      var theFooter = $(theSpanStr);
+      theFooter.on('click', function () {  // 分页点击
+        var id = $(this).parent().attr('id');
+        if (id === 'arr-paging') {
+          clearFlightList();
+        } else {
+          clearFlightList('send');
+        }
+        // debugger
+        var fSpan = footer.find('span');
+        for (var z = 0; z < fSpan.length; z++) {
+          var spanDom = fSpan[z];
+          $(spanDom).removeClass('active')
+        }
+        $(this).addClass('active');
+
+        var theText = $(this).text();
+        var theRenderList = [];
+        if (theText === '1') {
+          theRenderList = theDataArr.slice(0, 4)
+        } else if (theText === '2') {
+          theRenderList = theDataArr.slice(4, 8)
+        } else if (theText === '3') {
+          theRenderList = theDataArr.slice(8, 12)
+        }
+        // console.log(theRenderList);
+        // console.log(cityKey,timeKey);
+        // debugger
+        for (var k = 0; k < theRenderList.length; k++) {
+          var theDataItem = theRenderList[k];
+          // debugger
+          var h = theDataItem[timeKey].hours;
+          var m = theDataItem[timeKey].minutes;
+          m = m < 10 ? '0' + m : m;
+          h = h < 10 ? '0' + h : h;
+          var theTimeVal = h + ':' + m;
+          var theLiStr = '                <li>\n' +
+            '                  <span title="' + theDataItem.fltno + '">' + theDataItem.fltno + '</span>\n' +
+            '                  <span>' + theTimeVal + '</span>\n' +
+            '                  <span title="' + theDataItem[cityKey] + '">' + theDataItem[cityKey] + '</span>\n' +
+            '                  <span title="' + theDataItem.passenger + '">' + theDataItem.passenger + '</span>\n' +
+            '                </li>';
+          theTgtUl.append($(theLiStr));
+        }
+      });
+      footer.append(theFooter);
+    }
+
+
+  }
+
+  /**
+   * 清空航班列表
+   */
+  function clearFlightList(status) {
+    var sendListUl = $('#send-list-ul');
+    var arrListUl = $('#arr-list-ul');
+    if (status === 'all') {
+      sendListUl.empty();
+      arrListUl.empty();
+    } else if (status === 'send') {
+      sendListUl.empty();
+    } else {
+      arrListUl.empty();
+    }
+  }
+
+  /**
+   * 航班趋势,旅客趋势 绑定点击
+   */
+  function fliTrendTabBindClick() {
+    var flightBox = $('#flight-box');
+    var tabs = flightBox.find('.chart-tab').find('span');
+    // debugger
+    for (var i = 0; i < tabs.length; i++) {
+      var tab = tabs[i];
+      $(tab).on('click', function () {
+        // debugger
+        for (var j = 0; j < tabs.length; j++) {
+          var theTab = tabs[j];
+          $(theTab).removeClass('active');
+        }
+        $(this).addClass('active');
+
+        var theText = $(this).text();
+        if (theText === '航班趋势') {
+          fliTrendInitChart1()
+        }
+        if (theText === '旅客趋势') {
+          fliTrendInitChart2()
+        }
+      })
+    }
+  }
+
+  /**
+   * 清除分页
+   */
+  function clearFooter(status) {
+    var sendFooter = $('#send-paging');
+    var arrFooter = $('#arr-paging');
+    if (status === 'all') {
+      sendFooter.empty();
+      arrFooter.empty();
+    } else if (status === 'send') {
+      sendFooter.empty();
+    } else {
+      arrFooter.empty();
+    }
   }
 
   /**
@@ -690,12 +974,37 @@ $(function () {
     if (curPosition === '广州白云国际机场' || curPosition === '深圳宝安国际机场') {
       $('#flight-box').show();
       var theName = curPosition;
-      reqFlightData(theName);
+      clearFlightList();
+      clearFooter();
+      reqFlightData(theName, 'all');
     }
   }
 
   function hideFlightDom() {
     $('#flight-box').hide();
+  }
+
+  /**
+   * 请求航班趋势数据
+   * type 0 航班趋势  1 旅客趋势
+   */
+  function reqFlightTrendData(name, type) {
+    var theName, trendType = type;
+    if (name === '广州白云国际机场') {
+      theName = 'byjc'
+    }
+    if (name === '深圳宝安国际机场') {
+      theName = 'bajc'
+    }
+    var url = 'terminal/selectAirTrend.do?airport=' + theName + '&trendType=' + trendType;
+    $.axpost(url, {}, function (data) {
+      console.log('航班趋势:', data);
+      if (trendType === 1) {
+
+      } else {
+        fliTrendChart1reqData()
+      }
+    })
   }
 
   /**
@@ -712,6 +1021,7 @@ $(function () {
         $(ftab).removeClass('active')
       }
       $(this).addClass('active');
+      fliTrendInitChart1();
     });
     $('#flight-list-tab').on('click', function () {
       flightBox.find('.flight-data-box').show();
@@ -721,6 +1031,8 @@ $(function () {
         $(ftab).removeClass('active')
       }
       $(this).addClass('active');
+      reqFlightData(curPosition, 'all');
+      // fliTrendInitChart2()
     })
   }
 
@@ -1631,14 +1943,10 @@ $(function () {
       });
     }
 
-
     //实例化信息窗体
-    // content.push("<img src='http://tpc.googlesyndication.com/simgad/5843493769827749134'>地址：北京市朝阳区阜通东大街6号院3号楼东北8.3公里");
-    // content.push("电话：010-64733333");
-    // content.push("<a href='https://ditu.amap.com/detail/B000A8URXB?citycode=110105'>详细信息</a>");
     var infoWindow = new AMap.InfoWindow({
       isCustom: true,  //使用自定义窗体
-      content: createInfoWindow(title, dataObj),
+      content: createInfoWindow(dataObj),
       offset: new AMap.Pixel(11, 0),
       position: luWangMarker.getPosition()
     });
@@ -1650,21 +1958,24 @@ $(function () {
   }
 
   //构建自定义信息窗体
-  function createInfoWindow(title, content) {
+  function createInfoWindow(content) {
     var container = document.createElement("div");
     var info = document.createElement("div");
-    info.className = "amap-info-content amap-info-outer";
+    info.className = "amap-info-content2 amap-info-outer";
 
     //可以通过下面的方式修改自定义窗体的宽高
     //info.style.width = "400px";
     // 定义顶部标题
+    var camImg = document.createElement('img');
     var titleD = document.createElement("h4");
     var p = document.createElement("p");
     var closeX = document.createElement("a");
     var bottom = document.createElement("div");
 
+    camImg.src = 'yjzx/img/cam_active.png';
+    camImg.onclick = clickRoadCam;
     titleD.className = 'infoTitle';
-    titleD.innerHTML = title;
+    titleD.innerHTML = content.name;
     p.className = 'infoContent';
     // p.innerHTML = '方向:' + content.dir + ' ' + '长度:' + content.jamDist;
     p.innerHTML = content.data1 + ' ' + content.data2;
@@ -1677,6 +1988,9 @@ $(function () {
     bottom.className = 'amap-info-sharp';
 
     info.appendChild(titleD);
+    if(content.name==='华南快速') {
+      info.appendChild(camImg);
+    }
     info.appendChild(p);
     container.appendChild(info);
     container.appendChild(closeX);
@@ -1688,13 +2002,48 @@ $(function () {
   //构建自定义信息窗体2,直接用string
   function createInfoWindow2(content) {
     var result = '';
-    result = '  <div>\n' +
-      '    <div class="amap-info-content2 amap-info-outer"><h4 class="infoTitle">' + content.name + '</h4>\n' +
-      '      <p class="infoContent">' + content.data1 + '</p></div>\n' +
-      '    <a class="amap-info-close" href="javascript: void(0)">x</a>\n' +
-      '    <div class="amap-info-sharp"></div>\n' +
-      '  </div>';
+    if (nowTab === tabArr[0]) {
+      result = '  <div>\n' +
+        '    <div class="amap-info-content2 amap-info-outer"><h4 class="infoTitle">' + content.name + '</h4>\n' +
+        '      <p class="infoContent">' + content.data1 + '</p></div>\n' +
+        '    <a class="amap-info-close" href="javascript: void(0)">x</a>\n' +
+        '    <div class="amap-info-sharp"></div>\n' +
+        '  </div>';
+    } else {
+      if (content.name === '华南快速') {
+        var theImgStr = '<img class="road-cam-img" id="road-cam-img" src="yjzx/img/cam_active.png"></img>\n';
+        result = '  <div>\n' +
+          '<div class="amap-info-content2 amap-info-outer">' +
+          '<div class="road-name-container">\n' +
+          '<h4 class="infoTitle">' + content.name + '</h4>\n' +
+          theImgStr +
+          '</div>\n' +
+          '   <p class="infoContent">' + content.data1 + '</p></div>\n' +
+          '    <a class="amap-info-close" href="javascript: void(0)" onclick="closeInfoWindow">x</a>\n' +
+          '    <div class="amap-info-sharp"></div>\n' +
+          '  </div>';
+
+      } else {
+        result = '  <div>\n' +
+          '    <div class="amap-info-content2 amap-info-outer"><h4 class="infoTitle">' + content.name + '</h4>\n' +
+          '      <p class="infoContent">' + content.data1 + '</p></div>\n' +
+          '    <a class="amap-info-close" href="javascript: void(0)">x</a>\n' +
+          '    <div class="amap-info-sharp"></div>\n' +
+          '  </div>';
+      }
+    }
+
+
     return result
+  }
+
+  /**
+   * 道路摄像头点击
+   */
+  function clickRoadCam() {
+    // debugger
+    console.log(123);
+    window.location.href='SHWGOIE:http://14.23.164.13:7001/video/?vid=44152103041312001198'
   }
 
 //关闭信息窗体
@@ -7311,5 +7660,434 @@ $(function () {
   //   })
   //
   // }
+
+
+  var fliTrendChart1;
+
+  function fliTrendInitChart1() {
+    var cbox = $('#flight-chart-box1');
+    var cbox2 = $('#flight-chart-box2');
+    cbox.show();
+    cbox2.hide();
+    if (!fliTrendChart1) {
+      fliTrendChart1 = echarts.init(cbox[0]);
+    }
+    option = null;
+    var date = [];
+    for (var i = 0; i < 25; i++) {  // 时间(小时)
+      date.push(i);
+    }
+    option = {
+      title: {
+        show: false,
+        text: '航班趋势',
+        textStyle: {
+          color: 'rgb(221,243,255)',
+          fontSize: 18,
+          fontFamily: 'Microsoft YaHei',
+          // fontWeight:400
+        }
+      },
+      tooltip: {  // 提示框样式
+        trigger: 'axis',
+        // formatter: "{a} <br/>{b}: {c} ({d}%)"
+        // formatter: "{c}人",
+        // formatter: function (params) {
+        //   console.log(params)
+        //   return params[params.length - 1].data[1] + '人';
+        // },
+        backgroundColor: '#065f89',
+        padding: 10,
+        borderColor: '#28eefb',
+        borderWidth: 1,
+        axisPointer: {
+          lineStyle: {
+            color: '#68e5ff'
+          }
+        }
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        name: '时点',
+        data: date,
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+        axisLabel: {
+          interval: 3
+        }
+      },
+      yAxis: {
+        boundaryGap: [0, '50%'],
+        type: 'value',
+        name: '人',
+        // 轴 样式
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+        // 分割线
+        splitLine: {
+          show: false
+        }
+      },
+      legend: {
+        data: [],
+        textStyle: {
+          color: '#fff'
+        }
+      },
+      color: ['#f9d76f', 'rgb(62,139,230)'],
+      series: [
+        {
+          name: '出发航班',
+          type: 'line',
+          smooth: true,
+          symbol: 'none',
+          // stack: 'a',
+          label: {
+            normal: {
+              show: false
+            }
+          },
+          // 填充区域样式
+          areaStyle: {
+            normal: {
+              // color: 'rgb(62,139,230)',
+              // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: '#183d74' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
+                }],
+                globalCoord: false // 缺省为 false
+              }
+            }
+          },
+          lineStyle: {
+            color: '#f9d76f',
+          },
+          data: [],
+        },
+        {
+          name: '到达航班',
+          type: 'line',
+          smooth: true,
+          symbol: 'none',
+          // stack: 'a',
+          label: {
+            normal: {
+              show: false
+            }
+          },
+          // 填充区域样式
+          areaStyle: {
+            normal: {
+              // color: 'rgb(62,139,230)',
+              // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: '#183d74' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
+                }],
+                globalCoord: false // 缺省为 false
+              }
+            }
+          },
+          lineStyle: {
+            color: 'rgb(62,139,230)',
+          },
+          data: [],
+        }
+      ]
+    };
+
+    fliTrendChart1reqData();
+
+    if (option && typeof option === "object") {
+      fliTrendChart1.setOption(option, true);
+    }
+  }
+
+  function fliTrendChart1reqData() {
+    fliTrendChart1.showLoading();
+    $('#fli-chart-tab').hide();
+    var theName;
+    if (curPosition === '深圳宝安国际机场') {
+      theName = 'bajc'
+    }
+    if (curPosition === '广州白云国际机场') {
+      theName = 'byjc'
+    }
+    var trendType = 0;
+    var url = 'terminal/selectAirTrend.do?airport=' + theName + '&trendType=' + trendType;
+    $.axpost(url, {}, function (data) {
+      if (data.isSuccess) {
+        console.log('航班趋势:', data);
+        fliTrendChart1.hideLoading();    //隐藏加载动画
+        $('#fli-chart-tab').show();
+        var tData = data.data;
+        var leaArr = [], ariArr = [];
+        for (var i = 0; i < tData.arrivalTrendList.length; i++) {
+          var tItem = tData.arrivalTrendList[i];
+          leaArr.push(tItem.passenger)
+        }
+        for (var j = 0; j < tData.sendTrendList.length; j++) {
+          var tItem2 = tData.sendTrendList[j];
+          ariArr.push(tItem2.passenger)
+        }
+
+        fliTrendChart1.setOption({
+          legend: {
+            data: ['出发航班', '到达航班']
+          },
+          series: [
+            {
+              name: '出发航班',
+              data: leaArr
+            },
+            {
+              name: '到达航班',
+              data: ariArr
+            }
+          ]
+        })
+      }
+
+    })
+  }
+
+  var fliTrendChart2;
+
+  function fliTrendInitChart2() {
+    var cbox = $('#flight-chart-box2');
+    var cbox1 = $('#flight-chart-box1');
+    cbox.show();
+    cbox1.hide();
+    if (!fliTrendChart2) {
+      fliTrendChart2 = echarts.init(cbox[0]);
+    }
+    option = null;
+    var date = [];
+    for (var i = 0; i < 25; i++) {  // 时间(小时)
+      date.push(i);
+    }
+    option = {
+      title: {
+        show: false,
+        text: '旅客趋势',
+        textStyle: {
+          color: 'rgb(221,243,255)',
+          fontSize: 18,
+          fontFamily: 'Microsoft YaHei',
+
+          // fontWeight:400
+        }
+      },
+      tooltip: {  // 提示框样式
+        trigger: 'axis',
+        // formatter: "{a} <br/>{b}: {c} ({d}%)"
+        // formatter: "{c}人",
+        // formatter: function (params) {
+        //   console.log(params)
+        //   return params[params.length - 1].data[1] + '人';
+        // },
+        backgroundColor: '#065f89',
+        padding: 10,
+        borderColor: '#28eefb',
+        borderWidth: 1,
+        axisPointer: {
+          lineStyle: {
+            color: '#68e5ff'
+          }
+        }
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        name: '时点',
+        data: date,
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+        axisLabel: {
+          interval: 3
+        }
+      },
+      yAxis: {
+        boundaryGap: [0, '50%'],
+        type: 'value',
+        name: '人',
+        // 轴 样式
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: 'rgb(133,168,184)'
+          }
+        },
+        // 分割线
+        splitLine: {
+          show: false
+        }
+      },
+      legend: {
+        data: [],
+        textStyle: {
+          color: '#fff'
+        }
+      },
+      color: ['#f9d76f', 'rgb(62,139,230)'],
+      series: [
+        {
+          name: '出发旅客',
+          type: 'line',
+          smooth: true,
+          symbol: 'none',
+          // stack: 'a',
+          label: {
+            normal: {
+              show: false
+            }
+          },
+          // 填充区域样式
+          areaStyle: {
+            normal: {
+              // color: 'rgb(62,139,230)',
+              // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: '#183d74' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
+                }],
+                globalCoord: false // 缺省为 false
+              }
+            }
+          },
+          lineStyle: {
+            color: '#f9d76f',
+          },
+          data: [],
+        },
+        {
+          name: '到达旅客',
+          type: 'line',
+          smooth: true,
+          symbol: 'none',
+          // stack: 'a',
+          label: {
+            normal: {
+              show: false
+            }
+          },
+          // 填充区域样式
+          areaStyle: {
+            normal: {
+              // color: 'rgb(62,139,230)',
+              // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: '#183d74' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
+                }],
+                globalCoord: false // 缺省为 false
+              }
+            }
+          },
+          lineStyle: {
+            color: 'rgb(62,139,230)',
+          },
+          data: [],
+        }
+      ]
+    };
+
+    fliTrendChart2reqData();
+
+    if (option && typeof option === "object") {
+      fliTrendChart2.setOption(option, true);
+    }
+  }
+
+  function fliTrendChart2reqData() {
+    $('#fli-chart-tab').hide();
+    fliTrendChart2.showLoading();
+    var theName;
+    if (curPosition === '深圳宝安国际机场') {
+      theName = 'bajc'
+    }
+    if (curPosition === '广州白云国际机场') {
+      theName = 'byjc'
+    }
+    var trendType = 1;
+    var url = 'terminal/selectAirTrend.do?airport=' + theName + '&trendType=' + trendType;
+    $.axpost(url, {}, function (data) {
+      if (data.isSuccess) {
+        console.log('旅客趋势:', data);
+        fliTrendChart2.hideLoading();    //隐藏加载动画
+        $('#fli-chart-tab').show();
+        var tData = data.data;
+        var leaArr = [], ariArr = [];
+        for (var i = 0; i < tData.arrivalTrendList.length; i++) {
+          var tItem = tData.arrivalTrendList[i];
+          leaArr.push(tItem.passenger)
+        }
+        for (var j = 0; j < tData.sendTrendList.length; j++) {
+          var tItem2 = tData.sendTrendList[j];
+          ariArr.push(tItem2.passenger)
+        }
+
+        fliTrendChart2.setOption({
+          legend: {
+            data: ['出发旅客', '到达旅客']
+          },
+          series: [
+            {
+              name: '出发旅客',
+              data: leaArr
+            },
+            {
+              name: '到达旅客',
+              data: ariArr
+            }
+          ]
+        })
+      }
+
+    })
+  }
+
 
 });
