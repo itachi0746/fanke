@@ -2,28 +2,76 @@
 @import "../../../style/mixin";
 
 .main {
-  padding: 20px;
+  padding: .8rem;
+  position: relative;
+  z-index: 10;
+  color: #FFFFFF;
+  margin: 0 auto;
+  //width: 90%;
+  //padding-top: 10px;
+  //padding-bottom: 10px;
 }
 .header {
   display: flex;
-  margin-bottom: 50px;
+  margin-bottom: 1rem;
 
   .title {
     flex: 2;
+    font-size: .6rem;
+    padding-left: 32px;
   }
   .cal-box {
     flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .calender {
+    width: calRem(200);
+    font-size: calRem(24);
+    padding-left:calRem(58);
+    border-left: 1px solid #28eefb;
+    height: 100%;
   }
 }
 .tab-box {
   display: flex;
+  font-size: .560rem;
+  padding: 0 calRem(23) 0;
 
   div {
     flex: 1;
     text-align: center;
+    padding-bottom: calRem(10);
+    border-bottom: 2px solid rgb(20,127,186);
+    color: rgb(20,127,186);
+  }
+  div.active {
+    border-bottom: 4px solid #FFFFFF;
+    color: #FFFFFF;
   }
 }
 .inner-page {
   width: 100%;
   border: none;
+}
+
+.bg,
+.bg .layer{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.bg .parallax{
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  left: -25%;
+  top: -25%;
+  overflow: hidden;
+}
+.bg .layer{
+  background: #06286B url(../img/bg.png) no-repeat;
+  background-size: 100% auto;
 }
