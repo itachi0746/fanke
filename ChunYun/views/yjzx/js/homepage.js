@@ -11,13 +11,14 @@ $(function () {
     5: '45-54岁',
     6: '55岁以上'
   };
-  var thePlaceZoomObj = {
+  var thePlaceZoomObj = {  // 不同地点的缩放级别
     '深圳西站': 20,
 
     '三元里收费站': 20,
     '莞佛高速虎门大桥': 15,
   }
-  var tabArr = ['客运站,铁路,机场,港口', '服务区', '收费站', '高速监测'];
+  // var tabArr = ['客运站,铁路,机场,港口', '服务区', '收费站', '高速监测'];
+  var tabArr = ['客运站,铁路,机场,港口', '服务区', '高速监测'];
   var tieluArr, gongluArr;
   var tabDomNameArr = ['#tab2', '#tab3', '#tab4', '#tab5', '#tab6'];
   var newTabArr = tabArr.map(function (item, index) {
@@ -528,9 +529,11 @@ $(function () {
   function toDefaultView() {
     isDefaultView = true;
     pointControl.ReturnDefualt();  // 默认视角
-    if(nowTab!==tabArr[3]) {
-      pointControl.showMarkers();  // 显示点标记
-    }
+    // if(nowTab!==tabArr[3]) {
+    //   pointControl.showMarkers();  // 显示点标记
+    // }
+    pointControl.showMarkers();  // 显示点标记
+
     traffic.removePaths();  // 清除高速路段的线
     clearCenterMarker();
     mapbase.removeHeartMap();
@@ -541,8 +544,8 @@ $(function () {
     hideWeather();
     hideFlightDom();
     showTabs();
-    hideCurLocaction();
     hideTab2();
+    hideCurLocaction();
     $('#floor').addClass('dn');
     $('#tab-name').empty();
     initCenterBG();
@@ -610,7 +613,7 @@ $(function () {
       // debugger
       pointControl.MoveToPoint(arg, theZoom);
       isDefaultView = false;
-      reqWeather(name);
+      // reqWeather(name);
       showFlightDom();
       delDongChaTab();
       if (nowTab === tabArr[0] || nowTab === tabArr[1] || nowTab === tabArr[2]) {
@@ -618,7 +621,9 @@ $(function () {
       }
       if (nowTab === tabArr[0] || nowTab === tabArr[1]) {
         // debugger
+        reqWeather(name);
         reqReliData(name);
+
       }
     }
   }
@@ -1378,21 +1383,18 @@ $(function () {
   // 隐藏tab2
   function hideTab2() {
     var temp;
-    if (nowTab === '客运站,铁路,机场,港口') {
+    if (nowTab === tabArr[0]) {
       temp = $('#tab2');
     }
-    if (nowTab === '服务区') {
+    if (nowTab === tabArr[1]) {
       temp = $('#tab3');
     }
-    if (nowTab === '收费站') {
+    // if (nowTab === '收费站') {
+    //   temp = $('#tab4');
+    // }
+    if(nowTab===tabArr[2]) {
       temp = $('#tab4');
     }
-    // if(nowTab==='高速') {
-    //   temp = $('#tab5');
-    // }
-    // if(nowTab==='高速路网') {
-    //   // temp = $('#tab3');
-    // }
 
     temp.addClass('vh');
     var tabs = temp.find('.tab-box2-li');
@@ -1452,18 +1454,15 @@ $(function () {
       console.log('切换到:', t);
       moveTheMap();
       clearYjUL();
-      getYJData();
+      pointControl.ReturnDefualt();
+      pointControl.hideMarkers();
       clearStation();
-      // 测试
-      // moveTheTabArrow();
       showTheTabArrow();
       $('#tab-box-cur').hide();
       hideCurLocaction();
-      pointControl.ReturnDefualt();
-      pointControl.hideMarkers();
-      // pointControl.showPoints(t);
-      // markerBindClick();
       clearCenterMarker();
+      getYJData();
+
       if (nowTab === tabArr[0]) {
         // addStation();
         positionType = 1;  // 场站type
@@ -1491,32 +1490,55 @@ $(function () {
 
       }
       if (nowTab === tabArr[2]) {
-        positionType = 3;  // 收费站type
-        clearInterval(timer);
-        $('#top3').show();
+        positionType = 3;  // 收费站,高速监测
+        // clearInterval(timer);
+        // $('#top3').show();
         // $('#luwang-box').hide();
-        $('#container2').show();
-        mapbase.isGaoSuLuDuan = false;
-        mapbase.restoreDefaultStyle();
-        mapbase.setBg();
-        traffic.removePaths();  // 清除高速路段的线
-        $('#gaosujiance').hide();
-
+        // $('#container2').show();
+        // mapbase.isGaoSuLuDuan = false;
+        // mapbase.restoreDefaultStyle();
+        // mapbase.setBg();
+        // traffic.removePaths();  // 清除高速路段的线
+        // $('#gaosujiance').hide();
+          refreshTime();
+          $('#top3').hide();
+          // $('#luwang-box').show();
+          mapbase.setTrafficStyle();
+          // reqLuWangDtlData()
+          reqJamList();
+          reqKeyRoadData();
+          // jamRankLiClick();
+          $('#container2').hide();
+          $('#gaosujiance').show();
+          traffic.removePaths();  // 清除高速路段的线
       }
-      if (nowTab === tabArr[3]) {  // 高速监测
-        mapbase.isGaoSuLuDuan = false;
-        refreshTime();
-        $('#top3').hide();
-        // $('#luwang-box').show();
-        mapbase.setTrafficStyle();
-        // reqLuWangDtlData()
-        reqJamList();
-        reqKeyRoadData();
-        // jamRankLiClick();
-        $('#container2').hide();
-        $('#gaosujiance').show();
-        traffic.removePaths();  // 清除高速路段的线
-      }
+      // if (nowTab === tabArr[2]) {
+      //   positionType = 3;  // 收费站,高速监测
+      //   clearInterval(timer);
+      //   $('#top3').show();
+      //   // $('#luwang-box').hide();
+      //   $('#container2').show();
+      //   mapbase.isGaoSuLuDuan = false;
+      //   mapbase.restoreDefaultStyle();
+      //   mapbase.setBg();
+      //   traffic.removePaths();  // 清除高速路段的线
+      //   $('#gaosujiance').hide();
+      //
+      // }
+      // if (nowTab === tabArr[3]) {  // 高速监测
+      //   mapbase.isGaoSuLuDuan = false;
+      //   refreshTime();
+      //   $('#top3').hide();
+      //   // $('#luwang-box').show();
+      //   mapbase.setTrafficStyle();
+      //   // reqLuWangDtlData()
+      //   reqJamList();
+      //   reqKeyRoadData();
+      //   // jamRankLiClick();
+      //   $('#container2').hide();
+      //   $('#gaosujiance').show();
+      //   traffic.removePaths();  // 清除高速路段的线
+      // }
     }
 
 
@@ -1535,7 +1557,8 @@ $(function () {
   function moveTheMap() {
     var lnglat;
     var defaultZoom = 8;
-    if (nowTab !== tabArr[3]) {
+    // if (nowTab !== tabArr[3]) {
+    if (nowTab !== tabArr[2]) {
       lntlat = new AMap.LngLat(113.275824, 22.994826);
     } else {
       lntlat = new AMap.LngLat(114.231635, 22.999883);
@@ -1973,6 +1996,12 @@ $(function () {
           break
         }
       }
+      showTabs();
+      hideTab2();
+      hideCurLocaction();
+      showTheTabArrow();
+      $('#tab-name').empty();
+      initCenterBG();
     })
   }
 
@@ -2561,8 +2590,9 @@ $(function () {
             temp.userCnt = toWan2(temp[theNumKey]);
             // }
           }
-
-          addYjLi(item)
+          if(nowTab!==tabArr[2]) {
+            addYjLi(item)
+          }
         }
 
       }
