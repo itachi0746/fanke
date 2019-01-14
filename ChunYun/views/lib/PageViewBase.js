@@ -897,8 +897,8 @@ PageViewBase.prototype.initMap = function (id) {
     //创建地图实例
     var theMap = new AMap.Map('container', {
             pitch: 0,
-            mapStyle: 'amap://styles/9f47a75c5a80f716945988ccbc61aeb7',
-            //mapStyle: 'amap://styles/c6b6ea6de59432d8973e27caa9b04355',
+            // mapStyle: 'amap://styles/9f47a75c5a80f716945988ccbc61aeb7',
+            mapStyle: 'amap://styles/bf08c9e7fce336520245a2417ae54589',
             //mapStyle: 'amap://styles/grey',//'amap://styles/blue',
             viewMode: '3D',// 地图模式
             //lat: 22.251472
