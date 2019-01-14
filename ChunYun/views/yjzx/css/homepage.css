@@ -2677,15 +2677,63 @@ input:focus {
 .tab-box2 .tab-box2-li1 .li-tab-box {
   top: 0;
   width: 300px;
-  height: 214px; }
+  height: 214px;
+  overflow-y: auto; }
+  .tab-box2 .tab-box2-li1 .li-tab-box::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 10px;
+    /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px; }
+  .tab-box2 .tab-box2-li1 .li-tab-box::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: #2a659d; }
+  .tab-box2 .tab-box2-li1 .li-tab-box::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0); }
 
 .tab-box3 .tab-box2-li1 .li-tab-box {
   width: 427px;
-  top: -100px; }
+  top: -100px;
+  overflow-y: scroll; }
+  .tab-box3 .tab-box2-li1 .li-tab-box::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 10px;
+    /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px; }
+  .tab-box3 .tab-box2-li1 .li-tab-box::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: #2a659d; }
+  .tab-box3 .tab-box2-li1 .li-tab-box::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0); }
 
 .tab-box4 .tab-box2-li1 .li-tab-box {
   width: 427px;
-  top: -100px; }
+  top: -100px;
+  overflow-y: scroll; }
+  .tab-box4 .tab-box2-li1 .li-tab-box::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 10px;
+    /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px; }
+  .tab-box4 .tab-box2-li1 .li-tab-box::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: #2a659d; }
+  .tab-box4 .tab-box2-li1 .li-tab-box::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0); }
 
 .btm-part {
   position: absolute;
@@ -2772,7 +2820,13 @@ input:focus {
             align-items: center;
     background: url("../img/bg_03_nor.png");
     font-weight: bold;
-    cursor: pointer; }
+    cursor: pointer;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column; }
+    .flight-box .flight-tab .tre-date {
+      font-size: 20px; }
   .flight-box .flight-tab.active {
     color: #FFFFFF;
     background: url("../img/bg_03_active.png"); }
@@ -2870,7 +2924,6 @@ input:focus {
         -ms-flex-align: center;
             align-items: center; }
     .flight-box footer .paging {
-      width: 100px;
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
@@ -2911,7 +2964,7 @@ input:focus {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  padding: 10px 50px;
+  padding: 10px 38px;
   color: #d9f1ff;
   font-size: 18px;
   -webkit-box-pack: justify;
@@ -2919,8 +2972,7 @@ input:focus {
           justify-content: space-between;
   -webkit-box-align: center;
       -ms-flex-align: center;
-          align-items: center;
-  overflow-y: scroll; }
+          align-items: center; }
   .camera-box li section {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -2928,6 +2980,8 @@ input:focus {
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center; }
+  .camera-box li span {
+    white-space: nowrap; }
 
 .camera-box li:hover {
   background: url("../../yjzx/img/camera_active.png"); }

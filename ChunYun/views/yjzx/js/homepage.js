@@ -13,6 +13,9 @@ $(function () {
   };
   var thePlaceZoomObj = {
     '深圳西站': 20,
+
+    '三元里收费站': 20,
+    '莞佛高速虎门大桥': 15,
   }
   var tabArr = ['客运站,铁路,机场,港口', '服务区', '收费站', '高速监测'];
   var tieluArr, gongluArr;
@@ -44,7 +47,7 @@ $(function () {
   // console.log(tabBoxes2)
   window.mapbase = new MapBase();
   var title = $('#title');
-  pointControl = new PlacePointView(theMap);
+  pointControl = new PlacePointView(window.theMap);
   traffic = new TrafficView(theMap);
   init();
   MapBase.IsFloorVisible = function () {
@@ -60,18 +63,14 @@ $(function () {
 
   MapBase.OnFloorClick = function (name) {
     //debugger;
-    // if (curPosition == '广州南站' && name == '2F') {
-    //   mapbase.hideReli();
-    //   return;
-    // }
-    // if (curPosition == '广州南站' && name == '3A') {
-    //   mapbase.hideReli();
-    //   return;
-    // }
-    // if (curPosition == '广州南站' && name == 'B2') {
-    //   mapbase.hideReli();
-    //   return;
-    // }
+
+    // hideCurLocaction();
+    // var curPosDataBox = $('#cur-pos-data-box');
+    // curPosDataBox.hide();
+    // isHideStation = true;
+    // tabBoxCur.find('.arrow.up').removeClass('dn');
+    // tabBoxCur.find('.arrow.down').addClass('dn');
+
     var isTheReliFloor = filterFloor(name);
     if (!isTheReliFloor) {
       mapbase.hideReli();
@@ -301,8 +300,8 @@ $(function () {
           };
           var infoWindow = new AMap.InfoWindow({
             isCustom: true,  //使用自定义窗体
-            // content: createInfoWindow(theData.name, theData),
-            content: createInfoWindow2(theData),
+            content: createInfoWindow(theData),
+            // content: createInfoWindow2(theData),
             offset: new AMap.Pixel(11, 0),
             position: theMap.getCenter()
           });
@@ -588,6 +587,7 @@ $(function () {
     curPosition = name;
     hideSpecialData();
     hideTabArrow();
+    hideFlightDom();
     $('#tab-box-cur').show();
 
     var clickTarget = pointControl.findPointByName(name);
@@ -678,14 +678,22 @@ $(function () {
     }
   }
 
-
   /**
    * 航班时间选择dom添加option
    */
   function flightAddTime() {
     var theTimeArr = calTimeArr();
     var timeBoxArr = $('.time-box');
-    var theDefaultTimeItem = '03:00-04:00';  // 默认时段
+    var treDate = $('#tre-date');
+    var nowDate = moment().format('YYYY/MM/DD');
+    treDate.text(nowDate);
+    var nowHour = moment().format('HH');
+    var afterHourNum = parseInt(nowHour) + 1;
+    afterHourNum = afterHourNum < 10? '0' + afterHourNum: afterHourNum;
+
+    var theDefaultTimeItem = nowHour + ':00-' + afterHourNum + ':00';
+    // debugger
+    // var theDefaultTimeItem = '03:00-04:00';  // 默认时段
     for (var i = 0; i < timeBoxArr.length; i++) {
       var timeBoxDom = timeBoxArr[i];
       for (var j = 0; j < theTimeArr.length; j++) {
@@ -728,7 +736,7 @@ $(function () {
   /**
    * 请求航班数据
    * @param name
-   * @param status 是状态,决定请求
+   * @param status 是状态,决定请求 'all'代表全部, 'send'代表发送
    */
   function reqFlightData(name, status) {
     clearFlightList(status);
@@ -840,14 +848,8 @@ $(function () {
       theTgtUl.append($(theLiStr));
     }
 
-    var pagingNum;  // 页数
-    if (theDataArr.length >= theMaxNum) {
-      pagingNum = 3;
-    } else if (theDataArr.length >= 8) {
-      pagingNum = 2;
-    } else if (theDataArr.length >= 4) {
-      pagingNum = 1;
-    }
+    var pagingNum;
+    pagingNum = parseInt(theDataArr.length/4);
     for (var j = 0; j < pagingNum; j++) {
       var theNum = j + 1;
       var theSpanStr;
@@ -872,15 +874,18 @@ $(function () {
         }
         $(this).addClass('active');
 
-        var theText = $(this).text();
+        var theText = parseInt($(this).text());
         var theRenderList = [];
-        if (theText === '1') {
-          theRenderList = theDataArr.slice(0, 4)
-        } else if (theText === '2') {
-          theRenderList = theDataArr.slice(4, 8)
-        } else if (theText === '3') {
-          theRenderList = theDataArr.slice(8, 12)
-        }
+        theRenderList = theDataArr.slice(theText*4-4, theText*4);
+
+        // if (theText === '1') {
+        //   theRenderList = theDataArr.slice(0, 4)
+        // } else if (theText === '2') {
+        //   theRenderList = theDataArr.slice(4, 8)
+        // } else if (theText === '3') {
+        //   theRenderList = theDataArr.slice(8, 12)
+        // }
+
         // console.log(theRenderList);
         // console.log(cityKey,timeKey);
         // debugger
@@ -904,6 +909,72 @@ $(function () {
       footer.append(theFooter);
     }
 
+    // var pagingNum;  // 页数
+    // if (theDataArr.length >= theMaxNum) {
+    //   pagingNum = 3;
+    // } else if (theDataArr.length >= 8) {
+    //   pagingNum = 2;
+    // } else if (theDataArr.length >= 4) {
+    //   pagingNum = 1;
+    // }
+    // for (var j = 0; j < pagingNum; j++) {
+    //   var theNum = j + 1;
+    //   var theSpanStr;
+    //   if (theNum === 1) {
+    //     theSpanStr = '<span class="active">' + theNum + '</span>';
+    //   } else {
+    //     theSpanStr = '<span>' + theNum + '</span>';
+    //   }
+    //   var theFooter = $(theSpanStr);
+    //   theFooter.on('click', function () {  // 分页点击
+    //     var id = $(this).parent().attr('id');
+    //     if (id === 'arr-paging') {
+    //       clearFlightList();
+    //     } else {
+    //       clearFlightList('send');
+    //     }
+    //     // debugger
+    //     var fSpan = footer.find('span');
+    //     for (var z = 0; z < fSpan.length; z++) {
+    //       var spanDom = fSpan[z];
+    //       $(spanDom).removeClass('active')
+    //     }
+    //     $(this).addClass('active');
+    //
+    //     var theText = $(this).text();
+    //     var theRenderList = [];
+    //     if (theText === '1') {
+    //       theRenderList = theDataArr.slice(0, 4)
+    //     } else if (theText === '2') {
+    //       theRenderList = theDataArr.slice(4, 8)
+    //     } else if (theText === '3') {
+    //       theRenderList = theDataArr.slice(8, 12)
+    //     }
+    //     // console.log(theRenderList);
+    //     // console.log(cityKey,timeKey);
+    //     // debugger
+    //     for (var k = 0; k < theRenderList.length; k++) {
+    //       var theDataItem = theRenderList[k];
+    //       // debugger
+    //       var h = theDataItem[timeKey].hours;
+    //       var m = theDataItem[timeKey].minutes;
+    //       m = m < 10 ? '0' + m : m;
+    //       h = h < 10 ? '0' + h : h;
+    //       var theTimeVal = h + ':' + m;
+    //       var theLiStr = '                <li>\n' +
+    //         '                  <span title="' + theDataItem.fltno + '">' + theDataItem.fltno + '</span>\n' +
+    //         '                  <span>' + theTimeVal + '</span>\n' +
+    //         '                  <span title="' + theDataItem[cityKey] + '">' + theDataItem[cityKey] + '</span>\n' +
+    //         '                  <span title="' + theDataItem.passenger + '">' + theDataItem.passenger + '</span>\n' +
+    //         '                </li>';
+    //       theTgtUl.append($(theLiStr));
+    //     }
+    //   });
+    //   footer.append(theFooter);
+    // }
+  }
+
+  function perPage() {
 
   }
 
@@ -1954,7 +2025,9 @@ $(function () {
     theMap.add(luWangMarker);
     // 打开信息窗体
     infoWindow.open(theMap);
-    theMap.setFitView(luWangMarker, theMap.RoadPaths);
+    // theMap.setFitView(luWangMarker, theMap.RoadPaths);
+    var theZoom = thePlaceZoomObj[title];
+    theMap.setFitView(luWangMarker,null,null,theZoom);
   }
 
   //构建自定义信息窗体
@@ -1966,12 +2039,14 @@ $(function () {
     //可以通过下面的方式修改自定义窗体的宽高
     //info.style.width = "400px";
     // 定义顶部标题
+    var roadNameContainer = document.createElement('div');
     var camImg = document.createElement('img');
     var titleD = document.createElement("h4");
     var p = document.createElement("p");
     var closeX = document.createElement("a");
     var bottom = document.createElement("div");
 
+    roadNameContainer.className = 'road-name-container';
     camImg.src = 'yjzx/img/cam_active.png';
     camImg.onclick = clickRoadCam;
     titleD.className = 'infoTitle';
@@ -1984,12 +2059,15 @@ $(function () {
     closeX.innerHTML = 'x';
     // closeX.src = "https://webapi.amap.com/images/close2.gif";
 
+    roadNameContainer.appendChild(titleD);
     closeX.onclick = closeInfoWindow;
     bottom.className = 'amap-info-sharp';
 
-    info.appendChild(titleD);
+    // info.appendChild(titleD);
+    info.appendChild(roadNameContainer);
     if(content.name==='华南快速') {
-      info.appendChild(camImg);
+      // info.appendChild(camImg);
+      roadNameContainer.appendChild(camImg);
     }
     info.appendChild(p);
     container.appendChild(info);
@@ -2927,6 +3005,7 @@ $(function () {
    */
   function clickArrow(tabName, arrows) {
     // debugger
+    closeInfoWindow();
     if (isHideStation) {
       isHideStation = false;
       // debugger
@@ -7848,11 +7927,11 @@ $(function () {
         var leaArr = [], ariArr = [];
         for (var i = 0; i < tData.arrivalTrendList.length; i++) {
           var tItem = tData.arrivalTrendList[i];
-          leaArr.push(tItem.passenger)
+          ariArr.push(tItem.passenger)
         }
         for (var j = 0; j < tData.sendTrendList.length; j++) {
           var tItem2 = tData.sendTrendList[j];
-          ariArr.push(tItem2.passenger)
+          leaArr.push(tItem2.passenger)
         }
 
         fliTrendChart1.setOption({
@@ -8062,11 +8141,11 @@ $(function () {
         var leaArr = [], ariArr = [];
         for (var i = 0; i < tData.arrivalTrendList.length; i++) {
           var tItem = tData.arrivalTrendList[i];
-          leaArr.push(tItem.passenger)
+          ariArr.push(tItem.passenger)
         }
         for (var j = 0; j < tData.sendTrendList.length; j++) {
           var tItem2 = tData.sendTrendList[j];
-          ariArr.push(tItem2.passenger)
+          leaArr.push(tItem2.passenger)
         }
 
         fliTrendChart2.setOption({

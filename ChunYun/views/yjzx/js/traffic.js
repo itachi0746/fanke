@@ -266,6 +266,7 @@ TrafficView.prototype.showRoads = function () {
     for (var i = 0; i < this.RoadPaths.length; i++) {
       this.RoadPaths[i].show();
     }
+    // console.log(this.RoadPaths)
     // debugger
     // this.TheMap.setFitView();
     this.TheMap.setFitView(this.RoadPaths);
