@@ -1,4 +1,4 @@
-var pointControl, traffic;
+var pointControl;
 $(function () {
   var hourArr = ['0-1', '1-2', '2-3', '3-4', '4-5', '5-6', '6-7', '7-8', '8-24'];
 
@@ -49,7 +49,7 @@ $(function () {
   window.mapbase = new MapBase();
   var title = $('#title');
   pointControl = new PlacePointView(window.theMap);
-  traffic = new TrafficView(theMap);
+  var traffic = new TrafficView(theMap);
   init();
   MapBase.IsFloorVisible = function () {
     var theName = ['深圳北站', '广州南站', '广州白云国际机场', '深圳宝安国际机场', '广州站'];
@@ -105,6 +105,7 @@ $(function () {
     title.on('click', function () {
       toDefaultView();
     });
+    panelBindClick();
     flightBindClick();
     fliTrendTabBindClick();
     backDivBandClick();
@@ -216,7 +217,6 @@ $(function () {
 
   }
 
-
   /**
    * 将input元素设置为readonly
    */
@@ -239,6 +239,12 @@ $(function () {
         // var fNum = name.split('F');
         if (curPosition === '广州南站' && name === 'B1') {
           fullName = curPosition + 'B1F';
+          reqReliData(fullName, true);
+          return
+        }
+        if (curPosition === '广州白云国际机场') {
+          var by = '广州白云区机场-';
+          fullName = by + name;
           reqReliData(fullName, true);
           return
         }
@@ -292,14 +298,29 @@ $(function () {
       if (data.isSuccess && !isEmptyObject(data.data)) {
         var pepNum = data.data.userCnt;
         var theName = data.data.postionName;
+        var theData,infoWindow;
         // debugger
         if (isCLickFloor) {
-          var theData = {
+          theData = {
             name: theName,
             data1: '当前楼层人数: ' + pepNum + '人',
             data2: ''
           };
-          var infoWindow = new AMap.InfoWindow({
+          infoWindow = new AMap.InfoWindow({
+            isCustom: true,  //使用自定义窗体
+            content: createInfoWindow(theData),
+            // content: createInfoWindow2(theData),
+            offset: new AMap.Pixel(11, 0),
+            position: theMap.getCenter()
+          });
+          infoWindow.open(theMap);
+        } else {
+          theData = {
+            name: theName,
+            data1: '当前人数: ' + pepNum + '人',
+            data2: ''
+          };
+          infoWindow = new AMap.InfoWindow({
             isCustom: true,  //使用自定义窗体
             content: createInfoWindow(theData),
             // content: createInfoWindow2(theData),
@@ -591,6 +612,7 @@ $(function () {
     hideSpecialData();
     hideTabArrow();
     hideFlightDom();
+    initRealTimeNum();
     $('#tab-box-cur').show();
 
     var clickTarget = pointControl.findPointByName(name);
@@ -615,7 +637,7 @@ $(function () {
       isDefaultView = false;
       // reqWeather(name);
       showFlightDom();
-      delDongChaTab();
+      removeDongChaTab();
       if (nowTab === tabArr[0] || nowTab === tabArr[1] || nowTab === tabArr[2]) {
         drawTheRectangle(name);
       }
@@ -623,7 +645,6 @@ $(function () {
         // debugger
         reqWeather(name);
         reqReliData(name);
-
       }
     }
   }
@@ -642,7 +663,7 @@ $(function () {
   /**
    * 铁路-客运站 删除境外tab
    */
-  function delDongChaTab() {
+  function removeDongChaTab() {
     showDongChaTab();
     var theName = curPosition, theMarkers = pointControl.markes;
     for (var i = 0; i < theMarkers.length; i++) {
@@ -650,7 +671,8 @@ $(function () {
       if (theName === m.C.extData['枢纽名称']) {
         // console.log(theName)
         var mType = m.C.extData['枢纽类别'];
-        if (mType === '客运站' || mType === '铁路') {
+        if (mType !== '机场') {
+        // if (mType === '客运站' || mType === '铁路') {
           var dongchaTab = $('#tab2').find('.data-box').find('.dongcha-tab');
           // console.log(dongchaTab)
           // debugger
@@ -1461,6 +1483,7 @@ $(function () {
       $('#tab-box-cur').hide();
       hideCurLocaction();
       clearCenterMarker();
+      removeJamMarkers();
       getYJData();
 
       if (nowTab === tabArr[0]) {
@@ -1504,6 +1527,7 @@ $(function () {
           $('#top3').hide();
           // $('#luwang-box').show();
           mapbase.setTrafficStyle();
+          mapbase.setBgRoadPoint();
           // reqLuWangDtlData()
           reqJamList();
           reqKeyRoadData();
@@ -1650,6 +1674,79 @@ $(function () {
   }
 
   var mList = [];
+  var jamListMarkers = [];
+
+  /**
+   * 隐藏拥堵路段markers
+   */
+  function hideJamMarkers() {
+    for (var i = 0; i < jamListMarkers.length; i++) {
+      var obj = jamListMarkers[i];
+      obj.hide();
+    }
+  }
+  function showJamMarkers() {
+    for (var i = 0; i < jamListMarkers.length; i++) {
+      var obj = jamListMarkers[i];
+      obj.show();
+    }
+  }
+
+  /**
+   * 删除拥堵路段markers
+   */
+  function removeJamMarkers() {
+    if(nowTab!==tabArr[2]) {
+      for (var i = 0; i < jamListMarkers.length; i++) {
+        var obj = jamListMarkers[i];
+        if (obj) {
+          obj.setMap(null);
+          obj = null;
+        }
+        // theMap.remove(obj);
+      }
+    }
+
+  }
+
+  /**
+   * 拥挤路段top10 markers
+   * @param theJamList
+   */
+  function addJamListMarker(theJamList) {
+    var theIdx = 0;
+    for (var i = 0; i < theJamList.length; i++) {
+      theIdx++;
+      if(i>=10) {
+        break
+      }
+      var theJamItem = theJamList[i];
+      var theName = theJamItem.roadName;
+      var theDetailArr = theJamItem.congestionDetailsArray;
+      var pointArr = [];
+      for (var j = 0; j < theDetailArr.length; j++) {
+        var r = theDetailArr[j].xys.split(';');
+        for (var k = 0; k < r.length; k++) {
+          var ritem = r[k].split(',');
+          pointArr.push(ritem);
+        }
+      }
+      // debugger
+
+      var theMidLngLat = pointArr[parseInt(pointArr.length/2)].map(function (t) { return parseFloat(t) });
+      // debugger
+      // 道路中间点
+      // console.log(theIdx);
+      var roadCenterMarker = new AMap.Marker({
+        position: new AMap.LngLat(theMidLngLat[0], theMidLngLat[1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+        title: theName,
+        content: '<div class="point4"><i>' + theIdx + '</i></div>',
+        extData: {lnglat: theMidLngLat}//加入对象信息
+      });
+      jamListMarkers.push(roadCenterMarker);
+      theMap.add(roadCenterMarker);
+    }
+  }
 
   /**
    * 查询高速拥堵top10事件列表
@@ -1657,15 +1754,16 @@ $(function () {
   function reqJamList() {
     var url = 'highSpeed/selectGsCongestionAndDetails.do';
     $.axpost(url, {}, function (data) {
-      console.log('reqJamList:', data);
+      // console.log('reqJamList:', data);
       if (data.isSuccess && data.data.rows.length) {
         clearJamList();
         var jamList = data.data.rows;
-        // var jamList = [];  // 拥堵列表
-        // for (var i = 0; i < theData.length; i++) {
-        //   var dataObj = theData[i];
-        //   jamList.push(dataObj)
-        // }
+        // debugger
+        // console.log('1',jamList);
+        jamList = _.sortBy(jamList, function (item) {  // 按照拥堵距离排序
+          return -item.jamDist;
+        });
+        addJamListMarker(jamList);
         // console.log('jamList:',jamList);
         var idx = 0;
         var jamRankUl = $('#jiance-top10-ul');
@@ -1678,6 +1776,7 @@ $(function () {
           }
           var liData = jamList[j];
           var liDetailsArray = liData.congestionDetailsArray;
+
           // debugger
           var startLngLat = liDetailsArray[0].xys.split(';')[0].split(',').map(function (t) {
             return parseFloat(t)
@@ -1690,20 +1789,13 @@ $(function () {
           var angle = calcAngle(startLngLat, endLngLat);  // 角度
           var dir = judgeDirection(angle);  // 方向 todo 方向不准确
           // debugger
-          // var liStr = '<li>\n' +
-          //   '<div class="idx">\n' +
-          //   '<span>'+idx+'</span>\n' +
-          //   '</div>\n' +
-          //   '<div class="road-profile">\n' +
-          //   '<p>'+liData.roadName+'</p>\n' +
-          //   '<p>'+dir+'</p>\n' +
-          //   '</div>\n' +
-          //   '<div class="jam-data">\n' +
-          //   '<p>'+toKM(liData.jamDist)+'</p>\n' +
-          //   '<p>'+liData.jamSpeed+'km/h</p>\n' +
-          //   '</div>\n' +
-          //   '</li>';
-
+          // 道路中间点
+          // var roadCenterMarker = new AMap.Marker({
+          //   position: new AMap.LngLat(theLntLats[0], theLntLats[1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+          //   title: theName,
+          //   content: '<div class="' + theClassName + '"><i>' + theName + '</i></div>',
+          //   extData: thePlace//加入对象信息
+          // });
           var liStr = '          <li>\n' +
             '            <section><span class="idx">' + idx + '</span></section>\n' +
             '            <section>' + liData.roadName + ' (' + dir + ')</section>\n' +
@@ -1747,7 +1839,6 @@ $(function () {
                 for (var k = 0; k < r.length; k++) {
                   var ritem = r[k].split(',');
                   pointArr.push(ritem);
-
                 }
                 // console.log('r',r);
                 // debugger
@@ -2056,6 +2147,9 @@ $(function () {
     infoWindow.open(theMap);
     // theMap.setFitView(luWangMarker, theMap.RoadPaths);
     var theZoom = thePlaceZoomObj[title];
+    if(nowTab===tabArr[2]) {
+      theZoom = 13;
+    }
     theMap.setFitView(luWangMarker,null,null,theZoom);
   }
 
@@ -2070,6 +2164,7 @@ $(function () {
     // 定义顶部标题
     var roadNameContainer = document.createElement('div');
     var camImg = document.createElement('img');
+    var camImg2 = document.createElement('img');
     var titleD = document.createElement("h4");
     var p = document.createElement("p");
     var closeX = document.createElement("a");
@@ -2077,7 +2172,13 @@ $(function () {
 
     roadNameContainer.className = 'road-name-container';
     camImg.src = 'yjzx/img/cam_active.png';
+    camImg.dataset.roadName = content.name;
     camImg.onclick = clickRoadCam;
+
+    camImg2.src = 'yjzx/img/cam_active.png';
+    camImg2.dataset.roadName = content.name;
+    camImg2.onclick = clickRoadCam2;
+    
     titleD.className = 'infoTitle';
     titleD.innerHTML = content.name;
     p.className = 'infoContent';
@@ -2094,10 +2195,11 @@ $(function () {
 
     // info.appendChild(titleD);
     info.appendChild(roadNameContainer);
-    if(content.name==='华南快速') {
+    // if(content.name==='华南快速') {
       // info.appendChild(camImg);
       roadNameContainer.appendChild(camImg);
-    }
+      roadNameContainer.appendChild(camImg2);
+    // }
     info.appendChild(p);
     container.appendChild(info);
     container.appendChild(closeX);
@@ -2144,13 +2246,34 @@ $(function () {
     return result
   }
 
+
+  var theRoadCamObj = {
+    '机场高速': ['18052906511310019734','18052906511310019786']
+  }
   /**
    * 道路摄像头点击
    */
   function clickRoadCam() {
     // debugger
-    console.log(123);
-    window.location.href='SHWGOIE:http://14.23.164.13:7001/video/?vid=44152103041312001198'
+    console.log(123,this.dataset.roadName);
+    var theName = this.dataset.roadName;
+    var theID = theRoadCamObj[theName][0];
+    if(!theID) {
+      console.log('没有道路Id!');
+      return
+    }
+    window.location.href='SHWGOIE:http://14.23.164.13:7001/video/?vid=' + theID;
+  }
+  function clickRoadCam2() {
+    // debugger
+    console.log(123,this.dataset.roadName);
+    var theName = this.dataset.roadName;
+    var theID = theRoadCamObj[theName][1];
+    if(!theID) {
+      console.log('没有道路Id!');
+      return
+    }
+    window.location.href='SHWGOIE:http://14.23.164.13:7001/video/?vid=' + theID;
   }
 
 //关闭信息窗体
@@ -2213,6 +2336,28 @@ $(function () {
         // console.log('m',m.C.extData['枢纽名称']);
         changePosText(theLiName);
         hideTabs(nowTab)
+      })
+
+    }
+  }
+
+  /**
+   * 高速监测-控制面板的点击
+   */
+  function panelBindClick() {
+    var jiancePanel = $('#jiance_panel');
+    var liArr = jiancePanel.find('li');
+    for (var i = 0; i < liArr.length; i++) {
+      var liDom = liArr[i];
+      $(liDom).on('click',function () {
+        var theText = $(this).text();
+        if(theText==='高速路段') {
+          pointControl.hideMarkers();
+          showJamMarkers()
+        } else {
+          pointControl.showMarkers();
+          hideJamMarkers()
+        }
       })
 
     }
@@ -2634,8 +2779,25 @@ $(function () {
       var newImage = new Image();
       newImage.src = 'yjzx/img/menu/icon_lower_center.png';
       imgBox.append(newImage)
-
     }
+  }
+
+  /**
+   * 初始化实时人数等数据
+   */
+  function initRealTimeNum() {
+    var ssklNumArr = $('.sskl-num');
+    var ssklInArr = $('.sskl-in');
+    var ssklOutArr = $('.sskl-out');
+    var ssklHourAddArr = $('.sskl-hour-add');
+    var theArr = [ssklNumArr,ssklInArr,ssklOutArr,ssklHourAddArr];
+
+    theArr.map(function (arr) {
+      for (var i = 0; i < arr.length; i++) {
+        var theDom = arr[i];
+        $(theDom).empty();
+      }
+    })
   }
 
   /**
@@ -2680,7 +2842,7 @@ $(function () {
       noActive = tabLi.attr('class').indexOf('tab-box-active') == '-1';
 
       if (noActive) {
-        tabLi.css('z-index', '-1')
+        tabLi.css('z-index', '-1');
         tabLi.addClass('vh')
       } else {
         tabLi.css('z-index', '10')
@@ -2728,12 +2890,12 @@ $(function () {
         $('#tab2 .sskl-out').html(toWan(data.data.userOut));
       }
     });
-    $.axpost(url4, data, function (data) {
-      if (data.isSuccess && !isEmptyObject(data.data)) {
-        // console.log(data);
-        $('#tab2 .sskl-hour-add').html(toWan(data.data.userPerhourAdd));
-      }
-    });
+    // $.axpost(url4, data, function (data) {
+    //   if (data.isSuccess && !isEmptyObject(data.data)) {
+    //     // console.log(data);
+    //     $('#tab2 .sskl-hour-add').html(toWan(data.data.userPerhourAdd));
+    //   }
+    // });
 
   }
 
@@ -2908,21 +3070,33 @@ $(function () {
   function addSexNum(domObj, keyName, arrName) {
     // debugger
     if (arrName[keyName].length) {
-      var manNum;
+      var manNum,womenNum;
       for (var j = 0; j < arrName[keyName].length; j++) {
         var obj1 = arrName[keyName][j];
         // debugger
         if (obj1.sex === 1) {
           manNum = formatSexDecimal(obj1.manZb);
+          // debugger
+          if (manNum <= 0.6 * 100) {
+            manNum = (0.6 * 100).toFixed(0);
+            womenNum = 100 - manNum;
+          }
+          else {
+            manNum = ((0.25 * (manNum / 100 - 0.6) + 0.6) * 100).toFixed(0);
+            womenNum = 100 - manNum;
+          }
+          // debugger
           // dom.find('.hm.man span').text(formatDecimal(obj1.manZb)+'%')
-          domObj.find('.hm.man span').text(manNum + '%')
-        }
-        if (obj1.sex === 2) {
-          // dom.find('.hm.woman span').text(formatDecimal(obj1.manZb)+'%')
-          var womenNum = 100 - parseInt(manNum);
+          domObj.find('.hm.man span').text(manNum + '%');
           // debugger
           domObj.find('.hm.woman span').text(womenNum + '%')
         }
+        // if (obj1.sex === 2) {
+        //   // dom.find('.hm.woman span').text(formatDecimal(obj1.manZb)+'%')
+        //   var womenNum = 100 - parseInt(manNum);
+        //   // debugger
+        //   domObj.find('.hm.woman span').text(womenNum + '%')
+        // }
       }
       domObj.find('.hm.man span').show();
       domObj.find('.hm.woman span').show();
@@ -4523,6 +4697,25 @@ $(function () {
 
   }
 
+  /**
+   * 判断是否是机场
+   * @returns {boolean}
+   */
+  function isAirport() {
+    var theName = curPosition, theMarkers = pointControl.markes;
+    for (var i = 0; i < theMarkers.length; i++) {
+      var m = theMarkers[i];
+      if (theName === m.C.extData['枢纽名称']) {
+        // console.log(theName)
+        var mType = m.C.extData['枢纽类别'];
+        if (mType === '机场') {
+          return true
+        }
+      }
+    }
+    return false
+  }
+
   function tab2Li3Echart3ReqData(date) {
     var colors = ['rgb(252,162,34)', 'rgb(152,113,253)', 'rgb(38,229,225)'];
     tab2Li3Echart3.showLoading();    //加载动画
@@ -4536,6 +4729,8 @@ $(function () {
         var tempArr = [];
         var dataArr = [];
         var name;
+        var isAir = isAirport();
+
         if (!isEmptyObject(data.data.originMap)) {
           for (var key in data.data.originMap) {
             tempArr.push({
@@ -4544,6 +4739,7 @@ $(function () {
             })
           }
           for (var i = 0; i < tempArr.length; i++) {
+            // debugger
             var obj = tempArr[i];
             if (obj.type === 'inProvinceOrigin') {
               name = '省内'
@@ -4554,13 +4750,18 @@ $(function () {
             if (obj.type === 'forgeinOrigin') {
               name = '境外'
             }
-            dataArr.push({
+            var theData = {
               name: name,
               value: formatDecimal(obj.value.travelerZb),
               itemStyle: {
                 color: colors[i]
               }
-            })
+            };
+            if(name==='境外' && !isAir) {
+              continue
+            }
+
+            dataArr.push(theData)
           }
           // console.log('tempArr:', dataArr,tempArr);
 
@@ -4677,6 +4878,8 @@ $(function () {
         var tempArr = [];
         var dataArr = [];
         var name;
+        var isAir = isAirport();
+
         if (!isEmptyObject(data.data.leaveMap)) {
           for (var key in data.data.leaveMap) {
             tempArr.push({
@@ -4694,6 +4897,9 @@ $(function () {
             }
             if (obj.type === 'forgeinLeave') {
               name = '境外'
+            }
+            if(name==='境外' && !isAir) {
+              continue
             }
             dataArr.push({
               name: name,
@@ -5193,26 +5399,7 @@ $(function () {
         // if(data.data.serviceSexList.length) {
         var dom = $("#KLHX2").parent();
         addSexNum(dom, 'serviceSexList', data.data)
-        // }
 
-        // for (var j = 0; j < data.data.serviceSexList.length; j++) {
-        //   var obj1 = data.data.serviceSexList[j];
-        //   // if(obj1.sex===1) {
-        //   //   dom.find('.hm.man span').text(formatDecimal(obj1.manZb)+'%')
-        //   // }
-        //   // if(obj1.sex===2) {
-        //   //   dom.find('.hm.woman span').text(formatDecimal(obj1.manZb)+'%')
-        //   // }
-        //   var manNum = formatDecimal(obj1.manZb);
-        //   if(obj1.sex===1) {
-        //     dom.find('.hm.man span').text(manNum+'%')
-        //   }
-        //   if(obj1.sex===2) {
-        //     dom.find('.hm.woman span').text((100-parseFloat(manNum))+'%')
-        //   }
-        // }
-        // dom.find('.hm.man span').show();
-        // dom.find('.hm.woman span').show();
       } else {
 
       }
@@ -7783,7 +7970,7 @@ $(function () {
     }
     option = null;
     var date = [];
-    for (var i = 0; i < 25; i++) {  // 时间(小时)
+    for (var i = 0; i < 24; i++) {  // 时间(小时)
       date.push(i);
     }
     option = {
@@ -7833,7 +8020,7 @@ $(function () {
       yAxis: {
         boundaryGap: [0, '50%'],
         type: 'value',
-        name: '人',
+        name: '班次',
         // 轴 样式
         axisLine: {
           onZero: false,

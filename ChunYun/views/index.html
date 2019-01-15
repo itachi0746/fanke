@@ -125,6 +125,16 @@
         </ul>
       </div>
     </div>
+    <!--高速监测 控制面板-->
+    <div class="jiance_panel" id="jiance_panel">
+      <div class="jiance_title">控制</div>
+      <div class="panel-list">
+        <ul>
+          <li>高速路段</li>
+          <li>收费站</li>
+        </ul>
+      </div>
+    </div>
   </div>
 
   <!--高速监测模块  结束-->
@@ -309,7 +319,7 @@
                 <li>航班号</li>
                 <li>到点</li>
                 <li>出发地</li>
-                <li>发送旅客数</li>
+                <li>到达旅客数</li>
               </ul>
             </header>
             <div class="r-list">
@@ -469,10 +479,6 @@
               </section>
               <span>广州南站一号摄像头</span>
             </li>
-            <!--<li></li>-->
-            <!--<li></li>-->
-            <!--<li></li>-->
-            <!--<li></li>-->
           </ul>
         </div>
         <!--链接中心-->
@@ -586,12 +592,12 @@
               <label class="sskl-out"></label>
             </p>
           </div>
-          <div>
-            <p class="title-name">小时新增人数</p>
-            <p>
-              <label class="sskl-hour-add"></label>
-            </p>
-          </div>
+          <!--<div>-->
+            <!--<p class="title-name">小时新增人数</p>-->
+            <!--<p>-->
+              <!--<label class="sskl-hour-add"></label>-->
+            <!--</p>-->
+          <!--</div>-->
         </div>
         <!--宝安机场 要显示的内容-->
         <div class="header2 dn" id="bao-an">
@@ -809,20 +815,32 @@
   <ul id="tab3" class="tab-box3 vh">
     <li data-name="实时监控" class="tab-box2-li1 tab-box2-li">
       <div class="li-tab-box">
-        <div class="zhongxin-box jkzx">
-          <div class="zhongxin-name">视频监控中心</div>
-          <div class="btm-part">
-            <span>点击进入</span>
-            <img src="yjzx/img/link-icon.png" alt="">
-          </div>
+        <!--摄像头部分-->
+        <div class="camera-box">
+          <ul>
+            <!--<li onclick="window.location.href='SHWGOIE:http://14.23.164.13:7001/video/?vid=44152103041312001198'">-->
+              <li onclick="">
+              <section>
+                <img src="yjzx/img/cam_nor.png" alt="">
+              </section>
+              <span>广州南站一号摄像头</span>
+            </li>
+          </ul>
         </div>
-        <div class="zhongxin-box ddzx">
-          <div class="zhongxin-name">紧急调度中心</div>
-          <div class="btm-part">
-            <span>点击进入</span>
-            <img src="yjzx/img/link-icon.png" alt="">
-          </div>
-        </div>
+        <!--<div class="zhongxin-box jkzx">-->
+          <!--<div class="zhongxin-name">视频监控中心</div>-->
+          <!--<div class="btm-part">-->
+            <!--<span>点击进入</span>-->
+            <!--<img src="yjzx/img/link-icon.png" alt="">-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="zhongxin-box ddzx">-->
+          <!--<div class="zhongxin-name">紧急调度中心</div>-->
+          <!--<div class="btm-part">-->
+            <!--<span>点击进入</span>-->
+            <!--<img src="yjzx/img/link-icon.png" alt="">-->
+          <!--</div>-->
+        <!--</div>-->
         <!--<div class="video-play-box">-->
           <!--<div class="add-box"></div>-->
           <!--<div class="full-screen"></div>-->
@@ -1012,20 +1030,20 @@
         <!--<div class="chart2" id="tab3li3-chart2"></div>-->
       </div>
     </li>
-    <li data-name="旅客趋势" class="tab-box2-li3 tab-box2-li">
-      <div class="li-tab-box">
-        <div class="calendar-box">
-          <input type="text" id="tab3-li3-cld2" class="tab-li3-cld">
-          <div class="calendar" id="tab3-li3-cld2-box">
-            <div class="cld-icon"></div>
-            <input type="text" id="tab3-li3-cld2-1" class="hidden-cld">
-            <div class="arrow"></div>
-          </div>
-        </div>
-        <div class="chart1" id="tab3li4-chart1"></div>
-        <!--<div class="chart2" id="tab3li4-chart2"></div>-->
-      </div>
-    </li>
+    <!--<li data-name="旅客趋势" class="tab-box2-li3 tab-box2-li">-->
+      <!--<div class="li-tab-box">-->
+        <!--<div class="calendar-box">-->
+          <!--<input type="text" id="tab3-li3-cld2" class="tab-li3-cld">-->
+          <!--<div class="calendar" id="tab3-li3-cld2-box">-->
+            <!--<div class="cld-icon"></div>-->
+            <!--<input type="text" id="tab3-li3-cld2-1" class="hidden-cld">-->
+            <!--<div class="arrow"></div>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="chart1" id="tab3li4-chart1"></div>-->
+        <!--&lt;!&ndash;<div class="chart2" id="tab3li4-chart2"></div>&ndash;&gt;-->
+      <!--</div>-->
+    <!--</li>-->
     <li data-name="" class="tab-box2-li5 tab-box2-li" onclick="window.open('http://10.0.64.217/layout/conference/template','newwindow','height=400,width=600,top=100,left=100,scrollbars=no,resizable=no,location=no, status=no')"></li>
 
   </ul>
@@ -1033,20 +1051,39 @@
   <ul id="tab4" class="tab-box4 vh">
     <li data-name="实时监控" class="tab-box2-li1 tab-box2-li">
       <div class="li-tab-box">
-        <div class="zhongxin-box jkzx">
-          <div class="zhongxin-name">视频监控中心</div>
-          <div class="btm-part">
-            <span>点击进入</span>
-            <img src="yjzx/img/link-icon.png" alt="">
-          </div>
+        <!--摄像头部分-->
+        <div class="camera-box">
+          <ul>
+            <li onclick="window.location.href='SHWGOIE:http://14.23.164.13:7001/video/?vid=18052907071310018378'">
+              <section>
+                <img src="yjzx/img/cam_nor.png" alt="">
+              </section>
+              <span>广州南站一号摄像头</span>
+            </li>
+            <li onclick="window.location.href='SHWGOIE:http://14.23.164.13:7001/video/?vid=18052907111310018970'">
+              <section>
+                <img src="yjzx/img/cam_nor.png" alt="">
+              </section>
+              <span>广州南站一号摄像头</span>
+            </li>
+          </ul>
         </div>
-        <div class="zhongxin-box ddzx">
-          <div class="zhongxin-name">紧急调度中心</div>
-          <div class="btm-part">
-            <span>点击进入</span>
-            <img src="yjzx/img/link-icon.png" alt="">
-          </div>
-        </div>
+
+
+        <!--<div class="zhongxin-box jkzx">-->
+          <!--<div class="zhongxin-name">视频监控中心</div>-->
+          <!--<div class="btm-part">-->
+            <!--<span>点击进入</span>-->
+            <!--<img src="yjzx/img/link-icon.png" alt="">-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="zhongxin-box ddzx">-->
+          <!--<div class="zhongxin-name">紧急调度中心</div>-->
+          <!--<div class="btm-part">-->
+            <!--<span>点击进入</span>-->
+            <!--<img src="yjzx/img/link-icon.png" alt="">-->
+          <!--</div>-->
+        <!--</div>-->
         <!--<div class="video-play-box">-->
           <!--<div class="add-box"></div>-->
           <!--<div class="full-screen"></div>-->
