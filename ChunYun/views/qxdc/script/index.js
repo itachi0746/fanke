@@ -80,13 +80,13 @@ $(function () {
     //获取当前的日期数据
     var formateDate = function () {
         if (!theCurrentDate) {
-           return GetTodayDate().before(3).formate();
+            return GetTodayDate().before(3).formate();
         }
         return theCurrentDate.year + '-' + FormateDateNum(theCurrentDate.month) + '-' + FormateDateNum(theCurrentDate.date);//
     }
     var formateDate1 = function () {
         if (!theCurrentDate) {
-            var theDate =GetTodayDate().before(3);// GetFromDate();
+            var theDate = GetTodayDate().before(3);// GetFromDate();
             //theDate.setDate(theDate.getDate()-1);
             return theDate.getFullYear() + "年" + FormateDateNum(theDate.getMonth() + 1) + "月" + FormateDateNum(theDate.getDate()) + '日';
         }
@@ -243,7 +243,7 @@ $(function () {
             format: 'yyyy年MM月dd日',
             //range: true,//范围选择
             value: formateDate1(),
-            max:GetTodayDate().formate(),
+            max: GetTodayDate().formate(),
             done: function (value, date, endDate) {
                 //debugger;
                 console.log('日期变化:' + value); //得到日期生成的值，如：2017-08-18
@@ -268,12 +268,12 @@ $(function () {
 
         $('#' + theFromCityId + ",#" + theToCityId).each(function () {
             $(this).empty();
-            // $(this).append('<option value="">' + '请选择' + '</option>')
+            $(this).append('<option value="">' + '请选择' + '</option>')
             for (var theCityName in theCitys) {
                 $(this).append('<option value="' + theCityName + '">' + theCityName + '</option>')
             }
-            $('#' + theFromCityId).val('广州');
-            $('#' + theToCityId).val('深圳');
+            //$('#' + theFromCityId).val('广州');
+            //$('#' + theToCityId).val('深圳');
         });
         $('#' + theFromCityId + ",#" + theToCityId).change(function () {
             var theFromCityValue = $('#' + theFromCityId).val();
@@ -392,7 +392,7 @@ $(function () {
         var theTitle = theSelectData.name + theSubString;
         // this.loadMigrantOutType(formateDate());
         //this.updateNum('迁出洞察人数', "");
-        this.updateNum('迁出洞察人数', $("#num2").data('value'));
+        this.updateNum('迁出人数', $("#num2").data('value'));
         var me = this;
         this.loadMigrantDirectType(theCurrentView, theSelectData.type, formateDate());
         /*this.loadMigrantCountNum(theCurrentView, theSelectData.type, formateDate(), function (num) {
@@ -410,7 +410,7 @@ $(function () {
         var theSelectData = $(theSelectDiv).find('.tab-direction .select').data();
         var theTitle = theSelectData.name + theSubString;
         //this.updateNum(theTitle, "");
-        this.updateNum('迁入洞察人数', $("#num1").data('value'));
+        this.updateNum('迁入人数', $("#num1").data('value'));
         var me = this;
         this.loadMigrantDirectType(theCurrentView, theSelectData.type, formateDate());
         /*this.loadMigrantCountNum(theCurrentView, theSelectData.type, formateDate(), function (num) {
@@ -647,6 +647,7 @@ $(function () {
                 if (seeType == 3) {
                     $('#direction-num').text(0);
                 }
+                //debugger;
                 if (theData && theData.length > 0) {
                     var theDataList = theData;
                     var theTotalNum = 0;
@@ -654,7 +655,8 @@ $(function () {
                         var theItem = theDataList[i];
                         if (theCharts[theItem.outChannel || theItem.inType || theItem.migChannel]) {
                             theTotalNum += (theItem.migNum || 0);
-                            theCharts[theItem.outChannel || theItem.inType || theItem.migChannel].refresh('', (theItem.outPercentage || theItem.inPercentage || theItem.oPercentage));
+                         // debugger;
+                          theCharts[theItem.outChannel || theItem.inType || theItem.migChannel].refresh('', (theItem.outPercentage || theItem.inPercentage || theItem.oPercentage));
                         }
                     }
                     //debugger;
@@ -675,7 +677,7 @@ $(function () {
                             me.refreshPage(me.currentTable, theCurrentView, me.selectItem);
                         }
                         else {
-                            me.selectItem=null;
+                            me.selectItem = null;
                             me.refreshPage(me.currentTable, theCurrentView);
                         }
                         //debugger;
@@ -755,6 +757,7 @@ $(function () {
                     "5": "qita",
                 };
 
+                var theRowMap={};
                 for (var i = 0; i < theData.length; i++) {
                     var theDataItem = theData[i];
                     var theRow = {
@@ -769,6 +772,7 @@ $(function () {
                         "sourceType": sourceType,
                         "value": 0
                     };
+
                     theRow['area'] = theDataItem.area;
                     //debugger;
                     if (seeType == ViewType.OUT) {
@@ -798,17 +802,26 @@ toCity: "深圳"
 
                     for (var j = 0; j < theDataItem.list.length; j++) {
                         var theCellItem = theDataItem.list[j];
-                        theRow[theChannelMap[theCellItem.outChannel || theCellItem.inChannel || theCellItem.migChannel]] = (theCellItem.outPercentage || theCellItem.inPercentage || theCellItem.oPercentage);
+
+                        theRow[theChannelMap[theCellItem.outChannel || theCellItem.inChannel || theCellItem.migChannel]] = ((theCellItem.outPercentage || theCellItem.inPercentage || theCellItem.oPercentage||0)*100).toFixed(2);
+                       //debugger;
+
                     }
                     theTableList.push(theRow);
                 }
                 var theIndex = seeType;
                 me.currentTable = theTableList;
-                if( seeType == ViewType.PROVINCE){
-                    me.refreshPage(me.currentTable, theCurrentView,  me.selectItem );
+                if (seeType == ViewType.PROVINCE) {
+                    me.refreshPage(me.currentTable, theCurrentView, me.selectItem);
                 }
-                else{
-                    me.refreshPage(me.currentTable, theCurrentView, );
+                else {
+                    //debugger;
+                    if(sourceType==DirectionType.JW&&me.currentTable){
+                        for(var i=0;i<me.currentTable.length;i++){
+                            me.currentTable[i]['minhang']=100;
+                        }
+                    }
+                    me.refreshPage(me.currentTable, theCurrentView,null);
                 }
 
                 me.loadTemplateTable('table-' + theIndex, theTableList);

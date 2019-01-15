@@ -9,6 +9,7 @@ $(function () {
     //当前选择的时间
     var theCurrentDate = null;
     var theCurrentDate1 = null;
+    var theCurrentDate3 = null;
     //当前的区域名称
     var theAreaNmae = "";
     var belongType = 2;
@@ -109,6 +110,12 @@ $(function () {
         }
         return theCurrentDate.year + '-' + FormateDateNum(theCurrentDate.month) + '-' + FormateDateNum(theCurrentDate.date);//
     }
+    var formateDate3 = function () {
+        if (!theCurrentDate3) {
+            return GetTodayDate().formate();
+        }
+        return theCurrentDate3.year + '-' + FormateDateNum(theCurrentDate3.month) + '-' + FormateDateNum(theCurrentDate3.date);//
+    }
 
     var formateNum = function (num) {
         var theNumString = num + "";
@@ -132,8 +139,8 @@ $(function () {
         if (!theCurrentDate1) {
             var theDate = GetFromDate();
             var theBeginDay = theDate.getDay();
-            var theBeginDate = theDate.addDays(-theBeginDay);
-            var theEndDate = theBeginDate.addDays(6);
+            var theBeginDate = theDate.addDays(-7);
+            var theEndDate = theBeginDate.addDays(7);
             return theBeginDate.getFullYear() + "-" + FormateDateNum(theBeginDate.getMonth() + 1) + "-" + FormateDateNum(theBeginDate.getDate()) + " - " +
                 theEndDate.getFullYear() + "-" + FormateDateNum(theEndDate.getMonth() + 1) + "-" + FormateDateNum(theEndDate.getDate());
         }
@@ -171,6 +178,25 @@ $(function () {
                 if (theCurrentDate != date) {
                     theCurrentDate = date;
                     me.loadPart1();
+                }
+
+            }
+        });
+
+        laydate.render({
+            elem: '#date-input3', //指定元素
+            trigger: 'click',
+            max: GetTodayDate().formate(),
+            value: formateDate3(),
+            done: function (value, date, endDate) {
+                //debugger;
+                console.log('日期变化:' + value); //得到日期生成的值，如：2017-08-18
+                console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+                if (theCurrentDate != date) {
+                    theCurrentDate3 = date;
+                    //me.loadPart1();
+                    me.loadQzFlowTrend();
                 }
 
             }
@@ -263,6 +289,7 @@ $(function () {
     PageViewModel.prototype.loadData = function () {
         if (theViewType == 1) {
             this.loadPart1();
+            this.loadQzFlowTrend();
         }
         else {
             this.loadPart2();
@@ -279,8 +306,11 @@ $(function () {
         //debugger;
         var theCurrentOption = {};
         $.extend(true, theCurrentOption, option1);
-        theCurrentOption.grid.height = 100;
-        theCurrentOption.grid.bottom = 10;
+        theCurrentOption.grid.height = 170;
+        theCurrentOption.grid.width = 1000;
+        theCurrentOption.grid.left = 30;
+        theCurrentOption.grid.top = 40;
+        theCurrentOption.grid.bottom = 30;
         var theXData = [];
         //var theTodayDate=new Date();
         for (var i = 0; i <= 24; i++) {
@@ -340,10 +370,10 @@ $(function () {
             },
                 {
                     name: '海安港',
-                    textStyle: {color: "#357acb"}
+                    textStyle: {color: "#32ff4b"}
                     //textStyle: {color: "#85a8b8"}
                 }],
-            x: 'right',
+            x: 'center',
             y: 'top'
         };
 
@@ -358,6 +388,7 @@ $(function () {
                 },
                 //stack: '总量',
                 smooth: true,
+                symbol: 'none',
                 data: data1,//|| [11, 14, 22, 15, 7, 8],
                 areaStyle: {
                     normal: {
@@ -387,18 +418,36 @@ $(function () {
                 //name: '搜索引擎',
                 type: 'line',
                 name: '海安港',
-
+                areaStyle: {
+                    normal: {
+                        color: {
+                            type: 'linear',
+                            x: 0,
+                            y: 0,
+                            x2: 0,
+                            y2: 1,
+                            colorStops: [{
+                                offset: 0, color: 'rgba(50,255,75,0.3)'
+                            }, {
+                                offset: 0.5, color: 'rgba(50,255,75,0.15)'
+                            }, {
+                                offset: 1, color: 'rgba(50,255,75,0)'
+                            }]
+                        }
+                    }
+                },
                 itemStyle: {
                     normal: {
-                        color: '#357acb',
+                        color: '#32ff4b',
                         lineStyle: {
                             width: 2,
-                            color: '#357acb',
+                            color: '#32ff4b',
                             type: 'solid'  //'dotted'虚线 'solid'实线
                         }
                     }
                 },
                 smooth: true,
+                symbol: 'none',
                 //stack: '总量',
                 data: data2 //|| [5, 6, 7, 8, 11, 12]
             }
@@ -429,13 +478,16 @@ $(function () {
         for (var i = 0; i < xData.length; i++) {
             theMap[xData[i]] = data1[i];
         }
+        //debugger;
+        var me = this;
+
         while (theEndDate.getTime() > theBeginDate.getTime()) {
 
             var thekey = theBeginDate.getFullYear() + '' + FormateDateNum(theBeginDate.getMonth() + 1) + '' + FormateDateNum(theBeginDate.getDate());
             theXData.push((theBeginDate.getMonth() + 1) + '-' + FormateDateNum(theBeginDate.getDate()));
 
             if (maxDate) {
-                if (theBeginDate.getTime() > new Date(maxDate).getTime()) {
+                if (theBeginDate.getTime() > me.parserDate(maxDate).getTime()) {
                     theBeginDate.setDate(theBeginDate.getDate() + 1);
                     continue;
                 }
@@ -473,6 +525,7 @@ $(function () {
                     color: '#d1b96b'
                 },
                 smooth: true,
+                symbol: 'none',
                 data: data1.map(function (item) {
                     return (item / 10000).toFixed(2);
                 }),// || [11, 14, 22, 15, 7, 8],
@@ -539,7 +592,7 @@ $(function () {
             theXData.push((theBeginDate.getMonth() + 1) + '-' + FormateDateNum(theBeginDate.getDate()));
 
             if (maxDate) {
-                if (theBeginDate.getTime() > new Date(maxDate).getTime()) {
+                if (theBeginDate.getTime() > this.parserDate(maxDate).getTime()) {
                     theBeginDate.setDate(theBeginDate.getDate() + 1);
                     continue;
                 }
@@ -561,6 +614,7 @@ $(function () {
                 //stack: '总量',
                 name: '每日客流',
                 smooth: true,
+                symbol: 'none',
                 data: data1.map(function (item) {
                     return (item / 10000).toFixed(2);
                 }),// || [11, 14, 22, 15, 7, 8],
@@ -622,7 +676,7 @@ $(function () {
             theXData.push((theBeginDate.getMonth() + 1) + '-' + FormateDateNum(theBeginDate.getDate()));
 
             if (maxDate) {
-                if (theBeginDate.getTime() > new Date(maxDate).getTime()) {
+                if (theBeginDate.getTime() > this.parserDate(maxDate).getTime()) {
                     theBeginDate.setDate(theBeginDate.getDate() + 1);
                     continue;
                 }
@@ -643,6 +697,7 @@ $(function () {
                 type: 'line',
                 //stack: '总量',
                 smooth: true,
+                symbol: 'none',
                 data: data1.map(function (item) {
                     return (item / 10000).toFixed(2);
                 }),// || [11, 14, 22, 15, 7, 8],
@@ -691,9 +746,9 @@ $(function () {
                 left: 92,
                 right: 5,
                 top: 30,
-                bottom: 0,
+                bottom: 20,
                 width: 560,
-                height: 80,
+                height: 150,
                 containLabel: true
             },
             xAxis: [
@@ -890,6 +945,7 @@ $(function () {
             if (res && res.isSuccess && res.data) {
                 var theAges = res.data.age;
                 // var theGenders = res.data.gender;
+                //debugger;
                 theAgeObj.man = Math.ceil((res.data.man || 0) * 100);
                 theAgeObj.woman = 100 - theAgeObj.man;
                 /*for (var i = 0; i < theGenders.length; i++) {
@@ -931,7 +987,7 @@ $(function () {
         $('.man-icon').text(man + '%');
         $('.woman-icon').text(woman + '%');
         // debugger;
-        var theDegaer =man * 360 / 100
+        var theDegaer = man * 360 / 100
         var thePath = this.drawArcByRadiusDeg(118, 59, 59, (theDegaer || 0), 1);
         ;$('#per-path').attr('d', thePath);
         var theDatas = [];
@@ -948,7 +1004,7 @@ $(function () {
      */
     PageViewModel.prototype.loadQzFlowTrend = function () {
         var theCallUrl = "qz/qzFlowTrend.do";
-        var theParamter = {date: formateDate()};
+        var theParamter = {date: formateDate3()};
         var me = this;
 
         this.load(theCallUrl, theParamter, function (res) {
@@ -995,6 +1051,11 @@ $(function () {
                     "statDate": "2018-12-12"
                 }]], "isSuccess": true, "msg": "success"
             };*/
+            //debugger;
+            /*for (var i = 0; i < 24; i++) {
+                theData1.push(0);
+                theData2.push(0);
+            }*/
             if (res && res.isSuccess) {
                 if (res.data.length > 1) {
                     var theItems = res.data[0];
@@ -1019,7 +1080,12 @@ $(function () {
             for (var i = 0; i < theTmpArray.length; i++) {
                 if (!theHash[theTmpArray[i]]) {
                     theHash[theTmpArray[i]] = true;
+                    var theDate = theTmpArray[i];
+                    //2019-01-15 00
+                    var theIndexStr = eval(theDate.split(' ')[1]);
                     theX.push(theTmpArray[i]);
+                    //theData1[theIndexStr] = theX1Obj[theTmpArray[i]] || 0;
+                    //theData2[theIndexStr] = theX2Obj[theTmpArray[i]] || 0;
                     theData1.push(theX1Obj[theTmpArray[i]] || 0);
                     theData2.push(theX2Obj[theTmpArray[i]] || 0);
                 }
@@ -1068,6 +1134,7 @@ $(function () {
                      "statDate": "2018-12-13"
                  }]
              };*/
+            //var theMaxDate=null;
             if (res && res.isSuccess) {
                 for (var i = 0; i < res.data.length; i++) {
                     var theItem = res.data[i];
@@ -1428,7 +1495,7 @@ $(function () {
         this.loadQzRatio();
         this.loadQzStay();
 
-        this.loadQzFlowTrend();
+
     }
     /***
      * 加载第二部分数据

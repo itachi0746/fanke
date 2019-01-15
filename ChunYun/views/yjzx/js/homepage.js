@@ -13,7 +13,7 @@ $(function () {
   };
   var thePlaceZoomObj = {  // 不同地点的缩放级别
     '深圳西站': 20,
-
+    '湛江机场': 19,
     '三元里收费站': 20,
     '莞佛高速虎门大桥': 15,
   }
@@ -71,7 +71,7 @@ $(function () {
     // isHideStation = true;
     // tabBoxCur.find('.arrow.up').removeClass('dn');
     // tabBoxCur.find('.arrow.down').addClass('dn');
-
+    closeInfoWindow();
     var isTheReliFloor = filterFloor(name);
     if (!isTheReliFloor) {
       mapbase.hideReli();
@@ -299,7 +299,10 @@ $(function () {
         var pepNum = data.data.userCnt;
         var theName = data.data.postionName;
         var theData,infoWindow;
+        var lnglat = pointControl.findPointPosition(curPosition).split(',').map(function (t) { return parseFloat(t) });
+
         // debugger
+        // return
         if (isCLickFloor) {
           theData = {
             name: theName,
@@ -311,10 +314,11 @@ $(function () {
             content: createInfoWindow(theData),
             // content: createInfoWindow2(theData),
             offset: new AMap.Pixel(11, 0),
-            position: theMap.getCenter()
+            position: new AMap.LngLat(lnglat[0],lnglat[1])
           });
           infoWindow.open(theMap);
         } else {
+          // debugger
           theData = {
             name: theName,
             data1: '当前人数: ' + pepNum + '人',
@@ -325,7 +329,7 @@ $(function () {
             content: createInfoWindow(theData),
             // content: createInfoWindow2(theData),
             offset: new AMap.Pixel(11, 0),
-            position: theMap.getCenter()
+            position: new AMap.LngLat(lnglat[0],lnglat[1])
           });
           infoWindow.open(theMap);
         }
@@ -645,6 +649,7 @@ $(function () {
         // debugger
         reqWeather(name);
         reqReliData(name);
+        addCamLi(name);
       }
     }
   }
@@ -2178,7 +2183,7 @@ $(function () {
     camImg2.src = 'yjzx/img/cam_active.png';
     camImg2.dataset.roadName = content.name;
     camImg2.onclick = clickRoadCam2;
-    
+
     titleD.className = 'infoTitle';
     titleD.innerHTML = content.name;
     p.className = 'infoContent';
@@ -2195,11 +2200,11 @@ $(function () {
 
     // info.appendChild(titleD);
     info.appendChild(roadNameContainer);
-    // if(content.name==='华南快速') {
+    if(nowTab===tabArr[2]) {  // 高速监测要显示
       // info.appendChild(camImg);
       roadNameContainer.appendChild(camImg);
       roadNameContainer.appendChild(camImg2);
-    // }
+    }
     info.appendChild(p);
     container.appendChild(info);
     container.appendChild(closeX);
@@ -2515,7 +2520,7 @@ $(function () {
       getPassengerData();
       getAreaData($(tabDomNameArr[0]), '省外', tab2Li2DefaultDate);  // 默认省外
 
-      tab2Li3InitEchart1();
+      // tab2Li3InitEchart1();
       tab2Li3InitEchart2();
       tab2Li3InitEchart3();
       tab2Li3InitEchart4();
@@ -2534,7 +2539,7 @@ $(function () {
     if (nowTab === tabArr[1] && tab2Name === '旅客洞察') {
       initDongchaTab2();
       getAreaData2($(tabDomNameArr[1]), '境外', tab3Li2DefaultDate);  // 默认省外
-      tab3Li3InitEchart();
+      // tab3Li3InitEchart();
       tab3Li3InitKLHX2();
       guishufenxiChart();
     }
@@ -2645,11 +2650,83 @@ $(function () {
 
   }
 
+  var nanzhanarr = ['33000000001310001931','33000000001310001941','33000000001310001942'];
+  var baiyunarr = ['33000000001310001544','33000000001310001545','33000000001310001922'];
+  var arr3 = ['33000000001310001902','33000000001310001903'];
+  var arr4 = ['44010600001310000436-185','44010600001310000439-188','44010600001310000448'];
+  var thecamObj = {
+    '广州南站':nanzhanarr,
+    '广州白云国际机场':baiyunarr,
+    '广州火车站':arr3,
+    '省汽车客运站':arr4
+  }
+
+  /**
+   * 情况摄像头列表
+   */
+  function clearCamLi() {
+    var theDom;
+    if(nowTab===tabArr[0]) {
+      theDom = $('#tab2')
+    }
+    else if(nowTab===tabArr[1]) {
+      theDom = $('#tab2')
+    } else {
+      return
+    }
+    var theUl = theDom.find('.camera-box').find('ul');
+    theUl.empty();
+  }
+  /**
+   * 添加摄像头Li
+   */
+  function addCamLi() {
+    clearCamLi();
+    var theDom;
+    if(nowTab===tabArr[0]) {
+      theDom = $('#tab2')
+    }
+    else if(nowTab===tabArr[1]) {
+      theDom = $('#tab2')
+    } else {
+      return
+    }
+    var theUl = theDom.find('.camera-box').find('ul');
+    var theArr = thecamObj[curPosition];
+    if(!theArr) {
+      return
+    }
+      var idx = 0;
+      for (var i = 0; i < theArr.length; i++) {
+        idx++;
+        var idItem = theArr[i];
+        var liStr = ' <li>\n' +
+          '              <section>\n' +
+          '                <img src="yjzx/img/cam_nor.png" alt="">\n' +
+          '              </section>\n' +
+          '              <span>'+idx+'号摄像头</span>\n' +
+          '            </li>';
+        var liDom = $(liStr);
+        liDom.data('id',idItem);
+        liDom.on('click',function () {
+          var theId = $(this).data('id');
+          window.location.href='SHWGOIE:http://14.23.164.13:7001/video/?vid=' + theId;
+        });
+        theUl.append(liDom);
+      }
+
+  }
+
   /**
    * 清空预警列表
    */
   function clearYjUL() {
     var theUlArr = $('#top3 ul');
+    var yjNum = theUlArr.find('.yj-num');
+    for (var j = 0; j < yjNum.length; j++) {
+      var num = yjNum[j];
+      num.empty()
+    }
     for (var i = 0; i < theUlArr.length; i++) {
       var ulDom = theUlArr[i];
       $(ulDom).empty();
@@ -2681,15 +2758,26 @@ $(function () {
       return
     }
 
+    var top3 = $('#top3');
+    var isLoading =  top3.data('isLoading');
+    if(isLoading) {
+      return
+    }
+    top3.data('isLoading',true);
+
     if (getYJDataAjax) {
+      // debugger
+      clearYjUL();
       getYJDataAjax.abort();
     }
     var data = {};
     getYJDataAjax = $.axpost(url, data, function (data) {
       // console.log('c',curAjax);
-
+      top3.data('isLoading',false);
       // clearYjUL();
       if (data && data.isSuccess) {
+        top3.data('isLoading',false);
+
         getYJDataAjax = null;
         var yongji = $('#yongji');
         var shizhong = $('#shizhong');
@@ -3230,6 +3318,7 @@ $(function () {
 
     // 左边tab去除active
     for (var i = 0; i < tabBox2LiArr.length; i++) {
+      // debugger
       var t = tabBox2LiArr[i];
       $(t).removeClass('active');
       $(t).find('.li-tab-box').css('visibility', 'hidden')
@@ -3252,6 +3341,7 @@ $(function () {
     });
 
     tabBoxCur.on('click', function () {
+      // debugger
       clickArrow(nowTab, arrows)
 
     })
@@ -5704,8 +5794,9 @@ $(function () {
         formatter: "{a} <br/>{b}: {c} ({d}%)"
       },
       legend: {
-        orient: 'horizontal',
-        // x: 'top',
+        show:true,
+        // orient: 'horizontal',
+        // x: 'left',
         top: '90%',
         data: [],
         textStyle: {
@@ -5765,11 +5856,17 @@ $(function () {
       // if(data.isSuccess&&data.data.length) {
       if (data.isSuccess) {
         var dataArr = [];
+        var myObj = {
+          1:'省内',
+          2:'省外',
+          3:'境外'
+        }
         if (data.data.length) {
           for (var i = 0; i < data.data.length; i++) {
             var obj = data.data[i];
+            // debugger
             dataArr.push({
-              name: obj.categoryName,
+              name: myObj[obj.categoryName],
               value: formatDecimal(obj.travelerZb),
               itemStyle: {
                 color: colors[i]

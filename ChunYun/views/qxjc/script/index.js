@@ -9,6 +9,16 @@ $(function () {
     var theCurrentDate = null;
     //当前的区域名称
     var theAreaNmae = "";
+    var formateRgba = function (colorName, num) {
+        // var theRgbaString = 'rgba';
+        if (colorName.indexOf('#') >= 0) {
+            var r = eval('0x' + colorName.substr(1, 2));
+            var g = eval('0x' + colorName.substr(3, 2));//colorName.substr(3, 2);
+            var b = eval('0x' + colorName.substr(5, 2)); //colorName.substr(5, 2);
+            var theResult = `rgba(${r},${g},${b},${num})`;
+            return theResult;
+        }
+    };
     var formateDate = function () {
         if (!theCurrentDate) {
             var theDate = new Date();// GetYesterdayDate();
@@ -19,7 +29,7 @@ $(function () {
     }
     var formateDate1 = function () {
         if (!theCurrentDate) {
-            var theDate = GetYesterdayDate();
+            var theDate =GetTodayDate ();
             // theDate.setDate(theDate.getDate()-1);
             return theDate.getFullYear() + "年" + FormateDateNum(theDate.getMonth() + 1) + "月" + FormateDateNum(theDate.getDate()) + '日';
         }
@@ -50,7 +60,7 @@ $(function () {
             top: 30,
             bottom: 10,
             width: 480,
-            height: 100,
+            height: 175,
             containLabel: true
         },
         /*toolbox: {
@@ -191,6 +201,7 @@ $(function () {
         $('#date-input').val(formateDate1());
     }
     PageViewModel.prototype.initEvent = function () {
+        var me = this;
         this.updateDate();
         $('.topbutton').click(function () {
             var theUrl = $(this).data('url');
@@ -202,6 +213,29 @@ $(function () {
                 console.log("未找到对应的URL不跳转！");
             }
         });
+        $('.btn-contain .btn').click(
+            function () {
+                if ($(this).hasClass('active')) {
+                    return;
+                }
+                else {
+                    $('.btn-contain .btn').removeClass('active');
+                    $(this).addClass('active');
+                    $('#chart4').data('mode', $(this).data('mode'));
+
+                    var theData = $('#chart4').data('data') || {};
+                    //1 人口总量 2  迁入迁出
+                    var theMode = $('#chart4').data('mode') || 1;
+                    if (theMode == 1) {
+                        me.showChart4(theXData,  theData['dataPopulationGd1'] || [], theData['dataPopulationGd2'] || [], theData['dataResi1'] || [], theData['dataResi2'] || [],theMode);
+                    }
+                    else {
+                        me.showChart4(theXData, theData['dataMigOut1'] || [], theData['dataMigOut2'] || [], theData['dataMigIn1'] || [], theData['dataMigIn2'] || [], theMode);
+                    }
+
+                }
+            }
+        );
         // $('#date-action').click(function () {
         //$('#date-input').click();
         /*laydate.render({
@@ -213,7 +247,7 @@ $(function () {
         var me = this;
         //var theDate=new Date();
         // theDate.setDate(theDate.getDate()-1);
-        /* laydate.render({
+        laydate.render({
              elem: '#date-input', //指定元素
              trigger: 'click',
              format: 'yyyy年MM月dd日',
@@ -230,7 +264,7 @@ $(function () {
                  }
 
              }
-         });*/
+         });
         /*$('#date-input').change(function(){
             theCurrentDate=$(this).val();
             console.log('日期变化:'+theCurrentDate);
@@ -487,6 +521,7 @@ $(function () {
                 type: 'line',
                 //stack: '总量',
                 smooth: true,
+                symbol: 'none',
                 data: data1.map(function (item) {
                     return (item / 10000).toFixed(2);
                 }),
@@ -544,6 +579,7 @@ $(function () {
         //debugger;
         var theCurrentOption = {};
         $.extend(true, theCurrentOption, option1);
+        //theCurrentOption.yAxis.axisLine.onZero=true;
         theCurrentOption.series = [
 
             {
@@ -551,6 +587,7 @@ $(function () {
                 type: 'line',
                 //stack: '总量',
                 smooth: true,
+                symbol: 'none',
                 data: data1.map(function (item) {
                     return (item / 10000).toFixed(2);
                 }),
@@ -616,6 +653,7 @@ $(function () {
                 type: 'line',
                 //stack: '总量',
                 smooth: true,
+                symbol: 'none',
                 data: data1.map(function (item) {
                     return (item / 10000).toFixed(2);
                 }),
@@ -666,41 +704,78 @@ $(function () {
         this.Chart3.setOption(theCurrentOption);
     }
     PageViewModel.prototype.loadChart4 = function (theXData, dataPopulationGd1, dataMigIn1, dataMigOut1, dataPopulationGd2, dataMigIn2, dataMigOut2, dataResi1, dataResi2) {
+        dataPopulationGd1 = dataPopulationGd1 || [];
+        dataPopulationGd2 = dataPopulationGd2 || [];
+        dataResi1 = dataResi1 || [];
+        dataResi2 = dataResi2 || [];
+
+        dataMigIn1 = dataMigIn1 || [];
+        dataMigOut1 = dataMigOut1 || [];
+        dataMigIn2 = dataMigIn2 || [];
+        dataMigOut2 = dataMigOut2 || [];
+
+        $('#chart4').data('data',
+            {
+                dataPopulationGd1: dataPopulationGd1,
+                dataPopulationGd2: dataPopulationGd2,
+                dataResi1: dataResi1,
+                dataResi2: dataResi2,
+                dataMigIn1: dataMigIn1,
+                dataMigOut1: dataMigOut1,
+                dataMigIn2: dataMigIn2,
+                dataMigOut2: dataMigOut2
+            });
+        //1 人口总量 2  迁入迁出
+        var theMode = $('#chart4').data('mode') || 1;
+        if (theMode == 1) {
+            this.showChart4(theXData,  dataPopulationGd1, dataPopulationGd2,dataResi1, dataResi2, theMode);
+        }
+        else {
+            this.showChart4(theXData, dataMigOut1, dataMigOut2, dataMigIn1, dataMigIn2, theMode);
+        }
+
+    }
+    /**
+     *
+     * @param theXData
+     * @param data11
+     * @param data12
+     * @param data21
+     * @param data22
+     * @param theMode  //1 人口总量 2  迁入迁出
+     */
+    PageViewModel.prototype.showChart4 = function (theXData, data11, data12, data21, data22, theMode) {
         if (!this.Chart4) {
             this.Chart4 = echarts.init(document.getElementById('chart4'));
         }
 
-        dataPopulationGd1 = dataPopulationGd1 || [];
-        dataMigIn1 = dataMigIn1 || [];
-        dataMigOut1 = dataMigOut1 || [];
-        dataPopulationGd2 = dataPopulationGd2 || [];
-        dataMigIn2 = dataMigIn2 || [];
-        dataMigOut2 = dataMigOut2 || [];
-        dataResi1 = dataResi1 || [];
-        dataResi2 = dataResi2 || [];
+        //1 人口总量 2  迁入迁出
+        var theMode = $('#chart4').data('mode') || 1;
+
         var theBeginDate = new Date('2019-01-21');
         var theXData = [];
-        /*var theMinDate = theXData.min(function(a,b){
-            return a.getTime()<b.getTime();
-        });*/
+        var theColors = ['#32ff4b', '#4293f2'];
 
-        /*if (theMinDate) {
-            if (theMinDate.length == 8) {
-                theBeginDate = new Date(theMinDate.substr(0, 4) + '-' + theMinDate.substr(4, 2) + '-' + theMinDate.substr(6, 2))
-            }
-            else {
-                theBeginDate = new Date(theMinDate);
-            }
-        }*/
+        var theLegends = [
+            {name: '人口总量', textStyle: {color: "#32ff4b"}},
+            {name: '常驻人口', textStyle: {color: "#4293f2"}},
+        ];
+        var theName1 = "人口总量";
+        var theName2 = "常驻人口";
+        if (theMode == 2) {
+            theName1 = "迁出";
+            theName2 = "迁入";
+            theLegends = [
+                {name: '迁出', textStyle: {color: "#32ff4b"}},
+                {name: '迁入', textStyle: {color: "#4293f2"}}
+            ];
+        }
         theXData.push(theBeginDate.getTime());
         for (var i = 1; i < 40; i++) {
             theBeginDate.setDate(theBeginDate.getDate() + 1);
             theXData.push(theBeginDate.getTime());
         }
         var option = {
-            /*title: {
-                text: '折线图堆叠'
-            },*/
             tooltip: {
                 trigger: 'axis',
                 //show:true,
@@ -726,42 +801,11 @@ $(function () {
                             theDatas.push(params[i].seriesName + ':' + (params[i].data || params[i + 1].data) + '万');
                         }
                     }
-                    /* while (theIndex < params.length - 1) {
-
-                         theText += params[theIndex].data + "<br />";
-                         theIndex += 2;
-                     }*/
                     return theDatas.join('<br />');
                 }
             },
-
-            legend: {
-                textStyle: {
-                    color: '#557398',
-                },
-                data: [{name: '人口总量', textStyle: {color: "#ffdc6f"}},
-                    {name: '常驻人口', textStyle: {color: "#ffdc6f"}},
-                    {
-                        name: '迁出',
-                        textStyle: {color: "#32ff4b"}
-                    }, {name: '迁入', textStyle: {color: "#4293f2"}}
-                ]
-            },
-
-
-            /* visualMap:{
-                 show:false,
-                 seriesIndex:1,
-             },*/
-            /*legend: {
-                data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
-            },*/
-            /* grid: {
-                 left: '3%',
-                 right: '4%',
-                 bottom: '3%',
-                 containLabel: true
-             },*/
+            color: theColors,
+            legend: theLegends,
             grid: {
                 left: 0,
                 right: 30,
@@ -771,12 +815,6 @@ $(function () {
                 height: 216,
                 containLabel: true
             },
-            /*toolbox: {
-                feature: {
-                    saveAsImage: {}
-                }
-            },*/
-
             xAxis: {
                 type: 'category',
                 boundaryGap: false,
@@ -788,7 +826,6 @@ $(function () {
                 },
                 axisPointer: {
                     label: {
-
                         color: '#05cffa',
                         formatter: function (arg) {
                             //debugger;
@@ -834,21 +871,19 @@ $(function () {
             series: [
 
                 {
-                    name: '人口总量',
+                    name: theName1,
                     type: 'line',
+                    symbol: 'none',
                     //stack: '总量',
                     smooth: true,
-                    showSymbol: false,
-                    tooltip: {
-                        position: 'left',
-                        /*function (point, params, dom, rect, size) {
-                            // 固定在顶部
-                            return [point[0], '10%'];
-                        }*/
-                    },
-                    data: dataPopulationGd1.map(function (item) {
+                    data: data11.map(function (item) {
                         return (item / 10000).toFixed(2)
                     }),
+                    lineStyle: {
+                        normal: {
+                            color: '#32ff4b' //rgba(66,147,242
+                        }
+                    },
                     areaStyle: {
                         normal: {
                             color: {
@@ -858,109 +893,48 @@ $(function () {
                                 x2: 0,
                                 y2: 1,
                                 colorStops: [{
-                                    offset: 0, color: 'rgba(255,220,111,0.3)'
+                                    offset: 0, color: formateRgba('#32ff4b',0.3)//'rgba(66,147,242,0.3)'
                                 }, {
-                                    offset: 0.5, color: 'rgba(255,220,111,0.15)'
+                                    offset: 0.5, color: formateRgba('#32ff4b',0.15)//'rgba(66,147,242,0.15)'
                                 }, {
-                                    offset: 1, color: 'rgba(255,220,111,0)'
+                                    offset: 1, color:formateRgba('#32ff4b',0)// 'rgba(66,147,242,0)'
                                 }]
                             }
                         }
                     },
-                    lineStyle: {
-                        normal: {
-                            color: '#ffdc6f'
-                        }
-                    }
                 },
                 {
-                    name: '人口总量',
+                    name: theName1,
                     type: 'line',
+                    symbol: 'none',
                     itemStyle: {
                         normal: {
                             lineStyle: {
                                 width: 2,
-                                color: '#ffdc6f',
+                                color: '#32ff4b',
                                 type: 'dotted'  //'dotted'虚线 'solid'实线
                             }
                         }
                     },
                     smooth: true,
                     //stack: '总量',
-                    data: dataPopulationGd2.map(function (item) {
-                        return (item / 10000).toFixed(2)
-                    })
-                },
-
-                {
-                    name: '常驻人口',
-                    type: 'line',
-                    //stack: '总量',
-                    smooth: true,
-                    showSymbol: false,
-                    tooltip: {
-                        position: 'left',
-                        /*function (point, params, dom, rect, size) {
-                            // 固定在顶部
-                            return [point[0], '10%'];
-                        }*/
-                    },
-                    data: dataResi1.map(function (item) {
+                    data: data12.map(function (item) {
                         return (item / 10000).toFixed(2)
                     }),
-                    areaStyle: {
-                        normal: {
-                            color: {
-                                type: 'linear',
-                                x: 0,
-                                y: 0,
-                                x2: 0,
-                                y2: 1,
-                                colorStops: [{
-                                    offset: 0, color: 'rgba(255,220,111,0.3)'
-                                }, {
-                                    offset: 0.5, color: 'rgba(255,220,111,0.15)'
-                                }, {
-                                    offset: 1, color: 'rgba(255,220,111,0)'
-                                }]
-                            }
-                        }
-                    },
-                    lineStyle: {
-                        normal: {
-                            color: '#ffdc6f'
-                        }
-                    }
                 },
                 {
-                    name: '常驻人口',
+                    name: theName2,
                     type: 'line',
-                    itemStyle: {
-                        normal: {
-                            lineStyle: {
-                                width: 2,
-                                color: '#ffdc6f',
-                                type: 'dotted'  //'dotted'虚线 'solid'实线
-                            }
-                        }
-                    },
-                    smooth: true,
-                    //stack: '总量',
-                    data: dataResi2.map(function (item) {
-                        return (item / 10000).toFixed(2)
-                    })
-                },
-                {
-                    name: '迁入',
-                    type: 'line',
+                    symbol: 'none',
+                    z: 1,
                     //stack: '总量',
                     smooth: true,
-                    data: dataMigIn1.map(function (item) {
+                    data: data21.map(function (item) {
                         return (item / 10000).toFixed(2)
                     }),
                     lineStyle: {
                         normal: {
-                            color: '#4293f2' //rgba(66,147,242
+                            color: '#4293f2'//rgba(55,255,75
                         }
                     },
                     areaStyle: {
@@ -972,18 +946,20 @@ $(function () {
                                 x2: 0,
                                 y2: 1,
                                 colorStops: [{
-                                    offset: 0, color: 'rgba(66,147,242,0.3)'
+                                    offset: 0, color:formateRgba('#4293f2',0.3)// 'rgba(55,255,75,0.3)'
                                 }, {
-                                    offset: 0.5, color: 'rgba(66,147,242,0.15)'
+                                    offset: 0.5, color:formateRgba('#4293f2',0.15)// 'rgba(55,255,75,0.15)'
                                 }, {
-                                    offset: 1, color: 'rgba(66,147,242,0)'
+                                    offset: 1, color:formateRgba('#4293f2',0)// 'rgba(55,255,75,0)'
                                 }]
                             }
                         }
                     },
                 },
                 {
-                    name: '迁入',
+                    name: theName2,
+                    symbol: 'none',
+                    z: 2,
                     type: 'line',
                     itemStyle: {
                         normal: {
@@ -996,74 +972,71 @@ $(function () {
                     },
                     smooth: true,
                     //stack: '总量',
-                    data: dataMigIn2.map(function (item) {
-                        return (item / 10000).toFixed(2)
-                    }),
-                },
-
-
-                {
-                    name: '迁出',
-                    type: 'line',
-                    z: 1,
-                    //stack: '总量',
-                    smooth: true,
-                    data: dataMigOut1.map(function (item) {
-                        return (item / 10000).toFixed(2)
-                    }),
-                    lineStyle: {
-                        normal: {
-                            color: '#32ff4b'//rgba(55,255,75
-                        }
-                    },
-                    areaStyle: {
-                        normal: {
-                            color: {
-                                type: 'linear',
-                                x: 0,
-                                y: 0,
-                                x2: 0,
-                                y2: 1,
-                                colorStops: [{
-                                    offset: 0, color: 'rgba(55,255,75,0.3)'
-                                }, {
-                                    offset: 0.5, color: 'rgba(55,255,75,0.15)'
-                                }, {
-                                    offset: 1, color: 'rgba(55,255,75,0)'
-                                }]
-                            }
-                        }
-                    },
-                },
-                {
-                    name: '迁出',
-                    symbol: 'none',
-                    z: 2,
-                    type: 'line',
-                    itemStyle: {
-                        normal: {
-                            lineStyle: {
-                                width: 2,
-                                color: '#32ff4b',
-                                type: 'dotted'  //'dotted'虚线 'solid'实线
-                            }
-                        }
-                    },
-                    smooth: true,
-                    //stack: '总量',
-                    data: dataMigOut2.map(function (item) {
+                    data: data22.map(function (item) {
                         return (item / 10000).toFixed(2)
                     })
                 },
             ]
         };
+        //debugger;
         this.Chart4.setOption(option);
+    }
+    PageViewModel.prototype.loadChart5 = function (xData, data1) {
+        if (!this.Chart5) {
+            this.Chart5 = echarts.init(document.getElementById('chart5'));
+        }
+        //debugger;
+        data1 = data1 || [];
+        //debugger;
+        var theCurrentOption = {};
+        $.extend(true, theCurrentOption, option1);
+        theCurrentOption.yAxis.axisLine.onZero=true;
+        theCurrentOption.series = [
+
+            {
+                // name: '搜索引擎',
+                type: 'line',
+                //stack: '总量',
+                smooth: true,
+                symbol: 'none',
+                data: data1.map(function (item) {
+                    return (item / 10000).toFixed(2);
+                }),
+                lineStyle: {
+                    normal: {
+                        color: '#4293f2' //rgba(66,147,242
+                    }
+                },
+                areaStyle: {
+                    normal: {
+                        color: {
+                            type: 'linear',
+                            x: 0,
+                            y: 0,
+                            x2: 0,
+                            y2: 1,
+                            colorStops: [{
+                                offset: 0, color: 'rgba(66,147,242,0.3)'
+                            }, {
+                                offset: 0.5, color: 'rgba(66,147,242,0.15)'
+                            }, {
+                                offset: 1, color: 'rgba(66,147,242,0)'
+                            }]
+                        }
+                    }
+                },
+            },
+        ];
+
+        this.Chart5.setOption(theCurrentOption);
+
     }
     PageViewModel.prototype.initCharts = function () {
         this.loadChart1()
-        this.loadChart2()
-        this.loadChart3()
-        this.loadChart4()
+        //this.loadChart2()
+        //this.loadChart3()
+        this.loadChart4();
+        this.loadChart5();
 
     }
 
@@ -1099,7 +1072,29 @@ $(function () {
                     theViewData.populationGd = (theViewData.populationGd || 0) / 10000;
                     theViewData.populationIn = ((theViewData.populationIn || 0) / 10000).toFixed(2); //保留两位小数
                     theViewData.populationOut = ((theViewData.populationOut || 0) / 10000).toFixed(2); //保留两位小数
+               // ↑↓
+                    var theSuStr="↑";
+                    if(theViewData.populationIn<0){
+                        theSuStr="↓";
+                    }
+                    else{
+                        if(theViewData.populationIn==0){
+                            theSuStr="";
+                        }
+                    }
                     theViewData['populationGd'] = formateNum1(theViewData.populationGd);
+
+                    //theSuStr+
+                    //debugger;
+                    $('#populationOut').removeClass('red');
+                    $('#populationOut').removeClass('green');
+                    if(theSuStr=='↑'){
+                        $('#populationOut').addClass('red');
+                    }
+                    if(theSuStr=='↓'){
+                        $('#populationOut').addClass('green');
+                    }
+                    theViewData.populationOut=theSuStr+ Math.abs(theViewData.populationOut);
                 }
                 me.bind('.numpart', theViewData);
             }
@@ -1181,7 +1176,7 @@ $(function () {
                         }
                     }
                 }
-
+                //debugger;
                 if (thePredictList && thePredictList.length > 0) {
                     for (var i = 0; i < thePredictList.length; i++) {
                         var theItem = thePredictList[i];
@@ -1194,10 +1189,11 @@ $(function () {
                outNum: 4844850
                statDate: "2019-01-21"
                * */
-                            dataPopulationGd2.push(theItem.countNum * theRate);
-                            dataMigIn2.push(theItem.inNum * theRate);
-                            dataMigOut2.push(theItem.outNum * theRate);
-                            dataResi2.push(theItem.populationResi * theRate);
+                           // debugger;
+                            dataPopulationGd2.push((theItem.countNum || 0) * theRate);
+                            dataMigIn2.push((theItem.inNum || 0) * theRate);
+                            dataMigOut2.push((theItem.outNum || 0) * theRate);
+                            dataResi2.push((theItem.populationResi || 0) * theRate);
                         }
                     }
                 }
@@ -1230,6 +1226,8 @@ $(function () {
         var me = this;
         this.load(theCallUrl, theCallArgument, function (data) {
             //debugger;
+            var theDataList=[];
+            var theLastData=null;
             if (data && data.isSuccess) {
                 var theResultDatas = data.data;//数据长度
                 var dataMigOut1 = [];
@@ -1254,11 +1252,19 @@ $(function () {
                     dataMigOut2.push(theDataItem.outNum);
                     dataMigIn2.push(theDataItem.inNum);
                     dataPopulationGd2.push(theDataItem.countNum);
+                    if(theLastData==null){
+                        theDataList.push(0);
+                    }
+                    else{
+                        theDataList.push(theDataItem.countNum-theLastData);
+                    }
+                    theLastData=theDataItem.countNum;
                 }
                 //debugger;
                 me.loadChart1(theXData, dataPopulationGd1, dataPopulationGd2);
-                me.loadChart2(theXData, dataMigIn1, dataMigIn2);
-                me.loadChart3(theXData, dataMigOut1, dataMigOut2);
+                me.loadChart5(theXData,theDataList);
+                //me.loadChart2(theXData,dataMigOut1, dataMigOut2 );
+                //me.loadChart3(theXData, dataMigIn1, dataMigIn2);
             }
             else {
                 console.log("loadCurrent错误:" + data);

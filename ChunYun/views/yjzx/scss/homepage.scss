@@ -2112,7 +2112,7 @@ html,body{
 
 
   .li-tab-box {
-    height: 870px;
+    //height: 870px;
     top: $tab2Top*3;
 
     .calendar {
@@ -2401,7 +2401,7 @@ html,body{
   }
 
   .li-tab-box {
-    height: 870px;
+    //height: 870px;
     top: -450px;
 
     .calendar {
@@ -3407,4 +3407,8 @@ input:focus {
       cursor: pointer;
     }
   }
+}
+
+.amap-maps {
+  z-index:1!important;
 }

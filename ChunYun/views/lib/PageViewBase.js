@@ -40,6 +40,26 @@ Date.prototype.next = function (num) {
     this.setDate(this.getDate() + (num || 0));
     return this;
 }
+/**
+ * 相邻之间的日期间隔
+ * @param date1
+ * @param date2
+ * @returns {number}
+ */
+Date.daysBetween = function( date1, date2 ) {
+    //Get 1 day in milliseconds
+    var one_day=1000*60*60*24;
+
+    // Convert both dates to milliseconds
+    var date1_ms = date1.getTime();
+    var date2_ms = date2.getTime();
+
+    // Calculate the difference in milliseconds
+    var difference_ms = date2_ms - date1_ms;
+
+    // Convert back to days and return
+    return Math.round(difference_ms/one_day);
+}
 /*
 概况：3号下午跑1号的数据
 * 琼州海峡：3号下午跑1号的数据
@@ -53,9 +73,9 @@ var theDefineDate = {
     "gzadq.html": "2019-01-02",
 };
 var theDefineDateDays = {
-    "qzhx.html": 5,
-    "gzadq.html": 5,
-    "qxdc.html": 3
+    //"qzhx.html": 5,
+    //"gzadq.html": 5,
+    //"qxdc.html": 3
 }
 
 function GetFromDate() {
@@ -207,12 +227,16 @@ function PageViewBase(frameElement) {
     // this.serviceBase = "http://localhost/gdcnymot/";
     this.serviceBase = serviceBase;
     this.initExtend();
+   /* this.load("cw/initData.do",{},function () {
+        
+    });*/
     var theUrlMap = {
         "test": "qxjc.html",
         "insight": "qxdc.html",
         "bridge": "gzadq.html",
         "strait": "qzhx.html",
-        "yxzk": 'yxzk.html'
+        "yxzk": 'yxzk.html',
+        "lkyw":'lkyw.html',// 'http://10.0.64.247:11000/StaticResource/Framework/Assets/global/plugins/uniform/css/uniform.default.css',//
     };
     $('.date-action,.date-icon').unbind().click(function (e) {
         //debugger;
@@ -227,11 +251,12 @@ function PageViewBase(frameElement) {
     if (frameElement) {
         var onHashChange = function () {
             var hash = location.hash;
-            var theCls = 'test';
+            var theCls = 'yxzk';
             if (hash) {
                 theCls = hash.replace('#', '');
             }
             $('.topbutton_new.' + theCls).click();
+            $('.topbutton_1.' + theCls).click();
         };
         window.addEventListener("hashchange", onHashChange);
         //debugger;
@@ -242,14 +267,14 @@ function PageViewBase(frameElement) {
     }
     if (parent) {
         $(function () {
-            $(document.body).css('background-image', 'transparent');
+           // $(document.body).css('background-image', 'transparent');
         });
     }
-    $('.topbutton,.topbutton_new').click(function () {
+    $('.topbutton,.topbutton_new,.topbutton_1').click(function () {
         if ($(this).hasClass('active')) {
             return;
         }
-        $('.topbutton,.topbutton_new').removeClass('active');
+        $('.topbutton,.topbutton_new,.topbutton_1').removeClass('active');
         $(this).addClass('active');
         if ($(this).hasClass('test')) {
             if (frameElement) {
@@ -296,6 +321,15 @@ function PageViewBase(frameElement) {
                 location.href = theUrlMap['yxzk'];
             }
             location.hash = 'yxzk';
+        }
+        if ($(this).hasClass('lkyw')) {
+            if (frameElement) {
+                $('#' + frameElement).attr('src', theUrlMap['lkyw']);
+            }
+            else {
+                location.href = theUrlMap['lkyw'];
+            }
+            location.hash = 'lkyw';
         }
     });
 
@@ -413,7 +447,7 @@ PageViewBase.prototype.bind = function (ele, data) {
     var theFieldCls = '.field';
     $(ele).find(theFieldCls).each(function () {
         var theFieldName = $(this).data('field');
-        if (theFieldName && data.hasOwnProperty(theFieldName)) {
+        if (theFieldName &&data&& data[theFieldName]!=undefined) {
             var theText = data[theFieldName];
             if ($(this).is('input')) {
                 $(this).val(theText);
@@ -432,9 +466,10 @@ PageViewBase.prototype.bind = function (ele, data) {
 PageViewBase.prototype.loadTemplateTable = function (theTableId, data, pageindex, pagesize) {
     var theTemplate = $('#' + theTableId).find('.template');
     var theTableBody = $('#' + theTableId).find('.data');
+    var thePageSize=$('#' + theTableId).data('pagesize');
     var theTemplateStr = $(theTemplate).html();
     pageindex = pageindex || 0;
-    pagesize = pagesize || 5;
+    pagesize = pagesize ||thePageSize|| 5;
     var theStartIndex = pagesize * (pageindex || 0);
     var theEndIndex = pagesize * (pageindex || 0) + pagesize;
     $(theTableBody).empty();
@@ -701,7 +736,7 @@ PageViewBase.prototype.drawRoad = function (path) {
     // debugger;
     var RoadPath = new AMap.Polyline({
         path: pathArray,
-        strokeColor: "#0d305d",
+        strokeColor: '#80ddfe',//"#0d305d",
         strokeOpacity: "0.6",
         strokeWeight: "6",
         strokeStyle: "solid",
@@ -897,13 +932,13 @@ PageViewBase.prototype.initMap = function (id) {
     //创建地图实例
     var theMap = new AMap.Map('container', {
             pitch: 0,
-            // mapStyle: 'amap://styles/9f47a75c5a80f716945988ccbc61aeb7',
-            mapStyle: 'amap://styles/bf08c9e7fce336520245a2417ae54589',
+            mapStyle: 'amap://styles/9f47a75c5a80f716945988ccbc61aeb7',
+            //mapStyle: 'amap://styles/c6b6ea6de59432d8973e27caa9b04355',
             //mapStyle: 'amap://styles/grey',//'amap://styles/blue',
             viewMode: '3D',// 地图模式
             //lat: 22.251472
             //lng: 113.766128
-            center: id == 1 ? [114.067447, 22.33259] : [110.427377, 20.260057],//港珠澳大桥
+            center: id == 1 ? [114.067447, 22.33259] : [110.432232, 20.225891],//港珠澳大桥
 
             //center:[110.322391,20.146053 ],//琼州海峡 //lat: 20.146053  lng: 110.322391
 
@@ -965,11 +1000,15 @@ PageViewBase.prototype.initMap = function (id) {
  * @param argment
  * @param callback
  */
-PageViewBase.prototype.load = function (url, argment, callback) {
+PageViewBase.prototype.load = function (url, argment, callback,emal) {
     console.log("访问地址：" + url);
     console.log("访问参数:" + argment);
     if (!url) {
         console.log("访问地址不能为空：");
+        return;
+    }
+    if(emal){
+        callback&&callback();
         return;
     }
     url = this.serviceBase + url;

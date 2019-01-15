@@ -65,7 +65,11 @@
     function refresh(data) {
         //debugger;
         var colors = [
-            '#ff3333', 'orange', 'yellow','lime','aqua',
+            '#ff3333',
+            'orange',
+            'yellow',
+            'lime',
+            'aqua',
            /* '#faeebe',
             '#c9c5fd',
             '#21faf6',
@@ -90,6 +94,9 @@
         var values=[];
         for (var i = 0; i < data.length; i++) {
             var theItem = data[i];
+            if(!theItem.from||!theItem.to){
+                continue;
+            }
             theItem.from=theItem.from.trim();
             theItem.to=theItem.to.trim();
             if (!theCitys[theItem.from] || !theCitys[theItem.to]) {
@@ -98,7 +105,12 @@
                 continue;
             }
             values.push( theItem.value ||theItem.num|| 0);
-            theData.push({name: theItem.to, value: theItem.value ||theItem.num|| 0});
+           if(theItem.from=='广州'){
+               theData.push({name: theItem.to, value: theItem.value ||theItem.num|| 0});
+           }
+            else{
+               theData.push({name: theItem.from, value: theItem.value ||theItem.num|| 0});
+           }
             theLineData.push([{name: theItem.from}, {name: theItem.to, value: theItem.value||theItem.num || 0}]);
         }
 
@@ -218,7 +230,7 @@
                     markPoint: {
                         symbol: 'emptyCircle',
                         symbolSize: function (v) {
-                            return 10 + v / 10000
+                            return Math.min( 10 + v / 10000,40);
                         },
                         effect: {
                             show: true,

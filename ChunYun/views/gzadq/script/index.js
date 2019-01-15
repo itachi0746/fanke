@@ -82,8 +82,8 @@ $(function () {
         if (!theCurrentDate1) {
             var theDate1 = GetFromDate();
             var theBeginDay1 = theDate1.getDay();
-            var theBeginDate1 = theDate1.addDays(-theBeginDay1);
-            var theEndDate1 = theBeginDate1.addDays(6);
+            var theBeginDate1 = theDate1.addDays(-7);
+            var theEndDate1 = theBeginDate1.addDays(7);
             datebegin = theBeginDate1.getFullYear() + "-" + FormateDateNum(theBeginDate1.getMonth() + 1) + "-" + FormateDateNum(theBeginDate1.getDate());
             dateend = theEndDate1.getFullYear() + "-" + FormateDateNum(theEndDate1.getMonth() + 1) + "-" + FormateDateNum(theEndDate1.getDate());
             return theBeginDate1.getFullYear() + "-" + FormateDateNum(theBeginDate1.getMonth() + 1) + "-" + FormateDateNum(theBeginDate1.getDate()) + " - " +
@@ -176,7 +176,7 @@ $(function () {
                     }
                 }
             },
-            data: ['0', '6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00']
+            data: ['6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00','23:00']
             //data: theXData
         },
         yAxis: {
@@ -486,6 +486,7 @@ $(function () {
                 type: 'line',
                 //stack: '总量',
                 smooth: true,
+                symbol: 'none',
                 data: data,
                 areaStyle: {
                     normal: {
@@ -598,6 +599,7 @@ $(function () {
                 //    backgroundColor: 'red',
                 //},
                 smooth: true,
+                symbol: 'none',
                 data: data1.map(function (item) {
                     return (item / 10000).toFixed(2);
                 }),// || [1, 1, 1, 1, 1, 1],
@@ -643,6 +645,7 @@ $(function () {
                     }
                 },
                 smooth: true,
+                symbol: 'none',
                 //stack: '总量',
                 data: data2.map(function (item) {
                     return (item / 10000).toFixed(2);
@@ -664,6 +667,7 @@ $(function () {
                     }
                 },
                 smooth: true,
+                symbol: 'none',
                 //stack: '总量',
                 data: data3.map(function (item) {
                     return (item / 10000).toFixed(2);
@@ -725,6 +729,7 @@ $(function () {
                     //stack: '总量',
                     name: '每日客流',
                     smooth: true,
+                    symbol: 'none',
                     data: data1.map(function (item) {
                         return (item / 10000).toFixed(2);
                     }),// || [820, 932, 901, 934, 1290, 1330],
@@ -772,6 +777,7 @@ $(function () {
                         }
                     },
                     smooth: true,
+                    symbol: 'none',
                     //stack: '总量',
                     data: data2.map(function (item) {
                         return (item / 10000).toFixed(2);
@@ -820,6 +826,7 @@ $(function () {
                 type: 'line',
                 //stack: '总量',
                 smooth: true,
+                symbol: 'none',
                 data: data,// || [820, 932, 901, 934, 1290, 1330],
                 lineStyle: {
                     normal: {
@@ -856,7 +863,7 @@ $(function () {
         this.loadChart2()
         this.loadChart3()
         this.loadChart4()
-        this.loadChartBar();
+        //this.loadChartBar();
 
     }
 
@@ -948,12 +955,18 @@ $(function () {
             if (data && data.isSuccess) {
                 var theResultDatas = data.data;//{"isSuccess":true,"msg":"success","data":[{"id":1,"postionName":"港珠澳大桥","postionType":"港珠澳大桥","statDate":"2018-12-12","tTime":"6:00","tTimePass":15}]}
                 //debugger
+
                 for (var i = 0; i < theResultDatas.length; i++) {
                     var theItem = theResultDatas[i];
+                    if(theItem.tTime<6){
+                        continue;
+                    }
                     var theStayTime = theItem.tTimePass;
                     chart1Data.push(theStayTime)
                 }
+                //debugger;
             }
+
             else {
                 console.log("loadCurrent错误:" + data);
             }
@@ -1208,10 +1221,9 @@ $(function () {
             data = data.slice(0, 4);
         }
         var option = {
-
             grid: {
-                left: '3%',
-                right: '4%',
+                left: 0,
+                right: 0,
                 bottom: '3%',
                 containLabel: true
             },
@@ -1258,7 +1270,11 @@ $(function () {
                     label: {
                         normal: {
                             show: true,
-                            'position': 'top'
+                            'position': 'top',
+                            formatter: function (arg) {
+                                return arg.value + '%';
+                                //return arg;
+                            },
                         }
                     },
                     name: '累积',
@@ -1411,10 +1427,19 @@ $(function () {
                 //var theProCountPeople = res.data["ProCountPeople"][0] || {};
                 //var theStationNewPeople = res.data["StationNewPeople"][0] || {};
                 var theStationTollStay = res.data["stay"];// res.data["StationNewPeople"];//实时驻留时长
+                var theDefualtData=[0,0,0,0];
                 var theDatas = theStationTollStay.map(function (item) {
-                    return item.subscribercount;//(item.subscribercount / 10000).toFixed(2);
+                    if(item.staytimespan<=4){
+                        if(item.staytimespan==0){
+                            theDefualtData[item.staytimespan-1]=((item.ratio||0)*100).toFixed(2);
+                        }
+                        else{
+                            theDefualtData[item.staytimespan-1]=((item.ratio||0)*100).toFixed(2);
+                        }
+
+                    }//(item.subscribercount / 10000).toFixed(2);
                 })
-                me.loadChartBar(theDatas);
+               // me.loadChartBar(theDefualtData);
                 var unitText = "万";
                 var inPeople = (res.data["inPeople"] || 0);
                 if (inPeople < 1000) {
@@ -1444,7 +1469,7 @@ $(function () {
                 }
 
 
-                $('.newcome-num.add').html('<span class="newcome-people">' + addPeople + '</span>' + unitText);//新增
+                $('.newcome-num.add').html('<span class="newcome-people">' + addPeople + '</span>' + unitText+'/分钟');//新增
                 //$('.newcome.out').text(( / 10000).toFixed(1));//离开
                 //$('.newcome.add').text(( / 10000).toFixed(1));//新增
             }

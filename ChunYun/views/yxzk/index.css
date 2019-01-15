@@ -1,5 +1,6 @@
 
 * {
+    font-family: "微软雅黑", "Microsoft YaHei", Tahoma, Verdana;
     background-repeat: no-repeat;
     margin: 0px;
     padding: 0px;
@@ -46,7 +47,7 @@ html, body {
     margin-left: 40px;
     color: #d9f1ff;
     font-size: 24px;
-    line-height: 30px;
+    line-height: 33px;
     display: inline-block;
 }
 
@@ -61,8 +62,8 @@ html, body {
     border-width: 0px;
     font-size: 18px;
     color: #ddf3ff;
-    height: 32px;
-    line-height: 32px;
+    height: 30px;
+    line-height: 33px;
     /* padding-right: 32px; */
     right: 0px;
     text-align: left;
@@ -74,12 +75,18 @@ html, body {
     background-position-x: 141px;
     background-position-y: 9px;
     background-size: 14px 8px;
+    margin-bottom: 3px;
+}
+.date.readonly{
+    background: transparent!important;
 }
 
 .part1 .date, .part2 .date {
-    margin-left: 235px !important;
+    margin-left: 218px !important;
 }
-
+#date3{
+    margin-left: 110px!important;
+}
 .date-text {
     line-height: 30px;
     color: #ddf3ff;
@@ -138,22 +145,27 @@ html, body {
 
 .right-title1 {
     font-size: 24px;
-    padding-right: 15px;
-    margin-left: 680px;
+    /* padding-right: 15px; */
+    /* margin-left: 680px; */
     width: 237px;
+    padding-left: 2px;
     color: #d9f1ff;
     display: inline-block;
     cursor: pointer;
+    position: absolute;
+    left: 1334px;
 }
 
 .right-title2 {
     font-size: 24px;
-    padding-right: 15px;
-    margin-left: 20px;
+    /* padding-right: 15px; */
+    /* margin-left: 20px; */
     width: 237px;
     color: #289ee5;
     display: inline-block;
     cursor: pointer;
+    position: absolute;
+    left: 1628px;
 }
 
 .part2.active .right-title1 {
@@ -182,6 +194,7 @@ html, body {
 }
 
 .btn {
+    cursor: pointer;
     width: 115px;
     text-align: center;
     display: inline-block;
@@ -194,6 +207,13 @@ html, body {
 
 .btn.active {
     background: url("img/btn_01.png");
+}
+
+.btn2{
+    width: 75px;
+}
+.btn2.active {
+    background: url("img/btn_samll.png");
 }
 
 table {
@@ -293,7 +313,16 @@ table > td {
     font-weight: bold;
 }
 
-#chart1, #chart2 {
+#chart1, #chart2,#chart3 {
     width: 1850px;
     height: 250px;
+}
+
+select option {
+    /*font-size: 12px;*/
+    background: #0f265c;
+}
+.date-part{
+    display: inline-block;
+    margin-left: 90px;
 }
