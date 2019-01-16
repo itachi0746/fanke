@@ -81,26 +81,26 @@ $(function () {
     });
     window.theMap = theMap;
 // 模拟鹰眼
-    theMap2 = new AMap.Map('container2', {
-      mapStyle: theDefaultMapStyle,
-      center: theCenterPoint,
-      features: ['bg'],
-      zoom: 5,
-      dragEnable: false,
-      zoomEnable: true,
-      scrollWheel: false,
-      doubleClickZoom: false,
-      keyboardEnable: false,
-      layers: [
-        //disCountry,
-        //indoorMap,
-        //innerRoom
-        // satellite,
-        // building
-        // object3Dlayer
-        //roadNet
-      ]
-    });
+//     theMap2 = new AMap.Map('container2', {
+//       mapStyle: theDefaultMapStyle,
+//       center: theCenterPoint,
+//       features: ['bg'],
+//       zoom: 5,
+//       dragEnable: false,
+//       zoomEnable: true,
+//       scrollWheel: false,
+//       doubleClickZoom: false,
+//       keyboardEnable: false,
+//       layers: [
+//         //disCountry,
+//         //indoorMap,
+//         //innerRoom
+//         // satellite,
+//         // building
+//         // object3Dlayer
+//         //roadNet
+//       ]
+//     });
     AMap.plugin('AMap.DistrictSearch', function () {
       // 创建行政区查询对象
       var district = new AMap.DistrictSearch({
@@ -132,7 +132,6 @@ $(function () {
         }
         // console.log('theBigBounds',theBigBounds);
 
-        me.showLine(theBigBounds, theMap, theMap2);
 
       })
     });
@@ -206,7 +205,6 @@ $(function () {
 
   MapBase.prototype.initEvent = function () {
     this.initMapEvent();
-    this.initMap2Event();
   }
   MapBase.prototype.setBg = function () {
     theMap.setFeatures(['bg']);
@@ -228,7 +226,6 @@ $(function () {
     var me = this;
     theMap.on("moveend", function () {
       //theMap2.off('moveend');
-      theMap2.setCenter(theMap.getCenter());
     });
 
     theMap.on('zoomend', function () {
@@ -239,7 +236,6 @@ $(function () {
         theCurrentZoom = theMinZoom;
       }
       //debugger;
-      theMap2.setZoom(theCurrentZoom);
     });
 
     AMap.plugin(['AMap.IndoorMap', 'AMap.OverView'], function () {
@@ -409,51 +405,7 @@ $(function () {
     this.theHeartLayer&&this.theHeartLayer.remove();
     this.theHeartLayer=null;
   }
-  /**
-   * 初始化小图事件
-   */
-  MapBase.prototype.initMap2Event = function () {
-    var theLastpoint;
-    var yingYan = $('#yingyan');
-    theMap2.on("mousedown", function (arg) {
-      //theMap2.off('moveend');
-      // theMap2.setCenter(theMap.getCenter())
-      // ;
-      theLastpoint = {x: arg.pixel.x, y: arg.pixel.y};
 
-      theMap2.on('mousemove', function (arg) {
-
-        if (theLastpoint) {
-          var theCurrentpoint = {x: arg.pixel.x, y: arg.pixel.y};
-
-          var theX = theCurrentpoint.x - theLastpoint.x;
-          var theY = theCurrentpoint.y - theLastpoint.y;
-          // console.log(theX,theY)
-          if (theX == 0 && theY == 0) {
-            return;
-          }
-
-          yingYan[0].style.top = yingYan.position().top + theY + 'px';
-          yingYan[0].style.left = yingYan.position().left + theX + 'px';
-
-          theLastpoint = theCurrentpoint;
-        }
-
-      });
-    });
-    theMap2.on("mouseup", function (arg) {
-      //theMap2.off('moveend');
-      // theMap2.setCenter(theMap.getCenter())
-      // ;
-      var lnglat = arg.lnglat;
-      theMap.setCenter(lnglat);
-      theMap2.setCenter(lnglat);
-      theLastpoint = null;
-      yingYan[0].style.top = '100px';
-      yingYan[0].style.left = '100px';
-
-    });
-  }
   /**
    * 设置地图为默认样式
    */
@@ -461,7 +413,6 @@ $(function () {
     this.isGaoSuLuWang = false;
     this.hideOtherProvince(false);
     theMap.setMapStyle(theDefaultMapStyle);
-    theMap2.setMapStyle(theDefaultMapStyle);
     theMap.remove(traffic);
     theMap.remove(roadNet);
   };
@@ -909,19 +860,18 @@ $(function () {
       return;
     }
     var thePorints =path;
+    // debugger
     var lngs = thePorints.map(function (item) {
       return item[0];
     });
-    // debugger
     var lats = thePorints.map(function (item) {
       return item[1];
     });
-
+    // debugger
     var minLngs = lngs.min();
     var maxLngs = lngs.max();
     var minLats = lats.min();
     var maxLats = lats.max();
-
 
     var theValidPoints = [];
     for (var i = 0; i < 1000; i++) {
@@ -975,4 +925,6 @@ $(function () {
   };
 
   window.MapBase = MapBase;
+
+  // var mapbase = new MapBase();
 });

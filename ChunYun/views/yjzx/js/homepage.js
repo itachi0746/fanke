@@ -386,10 +386,10 @@ $(function () {
         $('#temperature').text(theData.MIN_TEMP_24 + '℃ - ' + theData.MAX_TEMP_24 + '℃');
         $('#weather-date').text(theData.DDATETIME.split(' ')[0]);
         $('#wind-speed').text(theData.WIND_SPEED_12);
-        if (theData.WEATHER_TYPE_12 == '阵雨') {
+        weatherName = theData.WEATHER_TYPE_12;
+        if (weatherName == '阵雨') {
           weatherName = theIconMap['阵雨']
         }
-        weatherName = theData.WEATHER_TYPE_12;
         var imgUrl = 'yjzx/img/weather/' + weatherName + '.png';
         $('#weather-img').attr('src', imgUrl);
       }
@@ -1168,10 +1168,11 @@ $(function () {
           , max: 0 //禁止选未来日期
           , closeStop: '#tab2-li4-cld-box' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
           , done: function (value, date, endDate) {
+            initRealTimeNum();
             initDongchaTab();
             tab2Li3Date = value;
             getPassengerData(value);
-            tab2Li3Echart1reqData(value);
+            // tab2Li3Echart1reqData(value);
             tab2Li3Echart2ReqData(value);
             tab2Li3Echart3ReqData(value);
             tab2Li3Echart4ReqData(value);
@@ -1234,7 +1235,7 @@ $(function () {
           , done: function (value, date, endDate) {
             initDongchaTab2();
             tab3Li3Date = value;
-            tab3Li3Echart1reqData(value);
+            // tab3Li3Echart1reqData(value);
             tab3Li3Echart2ReqData(value);
             guishufenxiReqData(value);
             getAreaData2($('#tab3'), '境外', value)
@@ -2080,7 +2081,7 @@ $(function () {
       var theData = {
         name: theName,
         data1: '平均车速: ' + theSpeed + 'km/h',
-        data2: '拥堵状态: ' + theStatus
+        data2: '通行状态: ' + theStatus
       };
       for (var i = 0; i < LuDuanDataArr.length; i++) {
         var roadObj = LuDuanDataArr[i];
@@ -2187,6 +2188,7 @@ $(function () {
     titleD.className = 'infoTitle';
     titleD.innerHTML = content.name;
     p.className = 'infoContent';
+    $(p).attr('id','infoContent');
     // p.innerHTML = '方向:' + content.dir + ' ' + '长度:' + content.jamDist;
     p.innerHTML = content.data1 + ' ' + content.data2;
     closeX.className = 'amap-info-close';
@@ -2502,15 +2504,24 @@ $(function () {
   }
 
   /**
+   * 刷新信息窗体人数
+   */
+  function refreshInfoWindow(num) {
+    // debugger
+    var infoC = $('#infoContent');
+    infoC.text('当前人数: '+num+'人');
+  }
+
+  /**
    * 点击2级tab后,初始化相关图表,日历
    * @param tab2Name
    */
   function initTab2(tab2Name) {
     initCalendar();
+    initRealTimeNum();
     if (nowTab === tabArr[0] && tab2Name === '实时客流') {  // 交通枢纽
       // 请求客流量数据
       getRealTimeFlowDataT1();
-
       tab2Li2InitEchart();
       tab2Li2InitEchart2();
       // initCalendar();
@@ -2874,12 +2885,15 @@ $(function () {
    * 初始化实时人数等数据
    */
   function initRealTimeNum() {
+    // debugger
     var ssklNumArr = $('.sskl-num');
     var ssklInArr = $('.sskl-in');
     var ssklOutArr = $('.sskl-out');
     var ssklHourAddArr = $('.sskl-hour-add');
     var theArr = [ssklNumArr,ssklInArr,ssklOutArr,ssklHourAddArr];
-
+    $('.total-psg').empty();
+    $('.arrival-psg').empty();
+    $('.leave-psg').empty();
     theArr.map(function (arr) {
       for (var i = 0; i < arr.length; i++) {
         var theDom = arr[i];
@@ -2963,7 +2977,8 @@ $(function () {
     $.axpost(url, data, function (data) {
       if (data.isSuccess && !isEmptyObject(data.data)) {
         // console.log(data);
-        $('#tab2 .sskl-num').html(toMoney(data.data.userCnt))
+        $('#tab2 .sskl-num').html(toMoney(data.data.userCnt));
+        refreshInfoWindow(data.data.userCnt);
       }
     });
     $.axpost(url2, data, function (data) {
@@ -3021,7 +3036,9 @@ $(function () {
     $.axpost(url, data, function (data) {
       if (data.isSuccess && !isEmptyObject(data.data)) {
         // console.log(data);
-        $('#tab3 .sskl-num').text(toMoney(data.data.userCnt))
+        $('#tab3 .sskl-num').text(toMoney(data.data.userCnt));
+        refreshInfoWindow(data.data.userCnt);
+
       }
     });
     $.axpost(url2, data, function (data) {
@@ -3058,7 +3075,9 @@ $(function () {
       if (!isEmptyObject(data.data) && data.isSuccess) {
         console.log(data);
         // debugger
-        $('#tab4 .sskl-num').html(toWan(data.data.pepValue))
+        $('#tab4 .sskl-num').html(toWan(data.data.pepValue));
+        refreshInfoWindow(data.data.pepValue);
+
       }
     });
     // $.axpost(url2,data,function (data) {
@@ -4818,7 +4837,7 @@ $(function () {
         // console.log('tab2Li3Echart3', data);
         var tempArr = [];
         var dataArr = [];
-        var name;
+        var name,snNum;
         var isAir = isAirport();
 
         if (!isEmptyObject(data.data.originMap)) {
@@ -4832,7 +4851,8 @@ $(function () {
             // debugger
             var obj = tempArr[i];
             if (obj.type === 'inProvinceOrigin') {
-              name = '省内'
+              name = '省内';
+              snNum = formatDecimal(obj.value.travelerZb);
             }
             if (obj.type === 'outProvinceOrigin') {
               name = '省外'
@@ -4850,9 +4870,11 @@ $(function () {
             if(name==='境外' && !isAir) {
               continue
             }
+            dataArr.push(theData);
 
-            dataArr.push(theData)
           }
+          correctDongChaNum(dataArr,snNum)
+
           // console.log('tempArr:', dataArr,tempArr);
 
         }
@@ -4866,11 +4888,28 @@ $(function () {
             }
           ],
           legend: {
-            data: ['境外', '省内', '省外']
+            // data: ['境外', '省内', '省外']
+            data: ['省内', '省外']
           }
         })
       }
     })
+  }
+
+  function correctDongChaNum(arr,snNum) {
+    if(arr.length>2) {
+      return
+    }
+    var swNum;
+    swNum = (100 - snNum).toFixed(1);
+    // debugger
+    for (var i = 0; i < arr.length; i++) {
+      var item = arr[i];
+      if(item.name==='省外') {
+        item.value = swNum;
+      }
+    }
+
   }
 
   var tab2Li3Echart4;
@@ -4967,7 +5006,7 @@ $(function () {
         // console.log('tab2Li3Echart4', data);
         var tempArr = [];
         var dataArr = [];
-        var name;
+        var name,snNum;
         var isAir = isAirport();
 
         if (!isEmptyObject(data.data.leaveMap)) {
@@ -4980,7 +5019,8 @@ $(function () {
           for (var i = 0; i < tempArr.length; i++) {
             var obj = tempArr[i];
             if (obj.type === 'inProvinceLeave') {
-              name = '省内'
+              name = '省内';
+              snNum = formatDecimal(obj.value.travelerZb)
             }
             if (obj.type === 'outProvinceLeave') {
               name = '省外'
@@ -4997,15 +5037,18 @@ $(function () {
               itemStyle: {
                 color: colors[i]
               }
-            })
+            });
           }
+          correctDongChaNum(dataArr,snNum)
+
           // console.log('tempArr:', dataArr,tempArr);
         }
 
         tab2Li3Echart4.hideLoading();    //隐藏加载动画
         tab2Li3Echart4.setOption({
           legend: {
-            data: ['境外', '省内', '省外']
+            data: ['省内', '省外']
+            // data: ['境外', '省内', '省外']
           },
           series: [
             {

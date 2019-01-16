@@ -12,15 +12,15 @@ var config = {
   src: "src", // 要搬运的目录
   moveTo: "daka",  // 搬运去的目录
 
-  scss: "views/yjzx",  // 要编译的scss目录
-  dest: "views/yjzx",  // 编译scss输出的目录
-  server: "views", // 服务器根目录
-  target: "index.html" // 要监视(执行)的html文件
-
-  // scss: "views/mobile/qxfx",  // 要编译的scss目录
-  // dest: "views/mobile/qxfx",  // 编译scss输出的目录
+  // scss: "views/yjzx",  // 要编译的scss目录
+  // dest: "views/yjzx",  // 编译scss输出的目录
   // server: "views", // 服务器根目录
-  // target: "h5_qxfx.html" // 要监视(执行)的html文件
+  // target: "index.html" // 要监视(执行)的html文件
+
+  scss: "views/mobile/qxfx",  // 要编译的scss目录
+  dest: "views/mobile/qxfx",  // 编译scss输出的目录
+  server: "views", // 服务器根目录
+  target: "h5_qxfx.html" // 要监视(执行)的html文件
 
 };
 // 一次安装
