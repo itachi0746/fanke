@@ -2177,13 +2177,7 @@ $(function () {
     var bottom = document.createElement("div");
 
     roadNameContainer.className = 'road-name-container';
-    camImg.src = 'yjzx/img/cam_active.png';
-    camImg.dataset.roadName = content.name;
-    camImg.onclick = clickRoadCam;
 
-    camImg2.src = 'yjzx/img/cam_active.png';
-    camImg2.dataset.roadName = content.name;
-    camImg2.onclick = clickRoadCam2;
 
     titleD.className = 'infoTitle';
     titleD.innerHTML = content.name;
@@ -2204,8 +2198,14 @@ $(function () {
     info.appendChild(roadNameContainer);
     if(nowTab===tabArr[2]) {  // 高速监测要显示
       // info.appendChild(camImg);
-      roadNameContainer.appendChild(camImg);
-      roadNameContainer.appendChild(camImg2);
+      var theResultArr = createCamDom(content,theRoadCamObj);
+      if(theResultArr) {
+        for (var i = 0; i < theResultArr.length; i++) {
+          var theImgDom = theResultArr[i];
+          $(roadNameContainer).append(theImgDom)
+        }
+      }
+
     }
     info.appendChild(p);
     container.appendChild(info);
@@ -2213,6 +2213,40 @@ $(function () {
     container.appendChild(bottom);
 
     return container;
+  }
+
+  /**
+   * 创建摄像头dom
+   * @param content
+   * @param camObj
+   */
+  function createCamDom(content,camObj) {
+    var theContent = content;
+    var theCamObj = camObj;
+    var idx = 0;
+    var resultArr = [];
+
+    var theCamArr = theCamObj[theContent.name];
+    if(!theCamArr) {
+      console.log('没有摄像头id!');
+      return
+    }
+    // debugger
+    for (var i = 0; i < theCamArr.length; i++) {
+      idx++;
+      var theCamId = theCamArr[i];
+      var theImgDom = $('<img>');
+      var titleData = theContent.name + idx + '号摄像头';
+      theImgDom.attr('title',titleData);
+      theImgDom.data('id',theCamId);
+      theImgDom.attr('src','yjzx/img/cam_active.png');
+      theImgDom.on('click',function () {
+        var theId = $(this).data('id');
+        window.location.href='SHWGOIE:http://14.23.164.13:7001/video/?vid=' + theId;
+      });
+      resultArr.push(theImgDom);
+    }
+    return resultArr
   }
 
   //构建自定义信息窗体2,直接用string
@@ -2254,9 +2288,9 @@ $(function () {
   }
 
 
-  var theRoadCamObj = {
-    '机场高速': ['18052906511310019734','18052906511310019786']
-  }
+  // var theRoadCamObj = {
+  //   '机场高速': ['18052906511310019734','18052906511310019786']
+  // }
   /**
    * 道路摄像头点击
    */
@@ -2659,17 +2693,6 @@ $(function () {
     new theScale('tuodong3', 'line3');
     // console.log('dis:',tuodong.dis)
 
-  }
-
-  var nanzhanarr = ['33000000001310001931','33000000001310001941','33000000001310001942'];
-  var baiyunarr = ['33000000001310001544','33000000001310001545','33000000001310001922'];
-  var arr3 = ['33000000001310001902','33000000001310001903'];
-  var arr4 = ['44010600001310000436-185','44010600001310000439-188','44010600001310000448'];
-  var thecamObj = {
-    '广州南站':nanzhanarr,
-    '广州白云国际机场':baiyunarr,
-    '广州火车站':arr3,
-    '省汽车客运站':arr4
   }
 
   /**

@@ -2786,11 +2786,12 @@ input:focus {
 }
 .road-name-container {
   display: flex;
-  justify-content: space-between;
+  //justify-content: space-between;
   align-items: center;
 
   img {
     cursor: pointer;
+    margin-left: 5px;
   }
 }
 

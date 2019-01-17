@@ -17,10 +17,10 @@ var config = {
   // server: "views", // 服务器根目录
   // target: "index.html" // 要监视(执行)的html文件
 
-  scss: "views/mobile/qxfx",  // 要编译的scss目录
-  dest: "views/mobile/qxfx",  // 编译scss输出的目录
+  scss: "views/mobile/snjc",  // 要编译的scss目录
+  dest: "views/mobile/snjc",  // 编译scss输出的目录
   server: "views", // 服务器根目录
-  target: "h5_qxfx.html" // 要监视(执行)的html文件
+  target: "h5_snjc.html" // 要监视(执行)的html文件
 
 };
 // 一次安装
