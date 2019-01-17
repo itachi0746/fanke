@@ -9,7 +9,9 @@
   <link rel="stylesheet" type="text/css" href="mobile/qxfx/css/qxfx.css">
   <script src="mobile/utils/jquery-1.8.2.min.js"></script>
   <script src="mobile/utils/base.js"></script>
+  <script src="lib/laydate.js"></script>
   <script src="mobile/utils/rem.js"></script>
+
   <!--<script src="lib/echarts2.js"></script>-->
   <!--<script src="lib/echarts.min.js"></script>-->
 
@@ -28,7 +30,9 @@
   <header class="header">
     <div class="title">广东省人口迁徙监测分析</div>
     <div class="cal-box">
-      <div class="calender"></div>
+      <div class="calender" id="date">
+
+      </div>
       <img src="mobile/qxfx/img/icon_day.png" alt="">
     </div>
   </header>
@@ -42,12 +46,12 @@
 
   </iframe>
 
-  <div class="btm-box">
-    <div class="btm-box-header">
+  <div class="btm-box" style="padding-top:0.1rem;">
+    <!--<div class="btm-box-header">
       <section class="active">省内迁徙</section>
       <section>国内迁徙</section>
       <section>国际迁徙</section>
-    </div>
+    </div>-->
 
     <div class="btm-box-body">
     <!--<div class="body-header">-->
@@ -83,7 +87,7 @@
     <!--<li>国际</li>-->
     <!--</ul>-->
       <div class="tab-name" id="tab-name">
-        省内迁徙路线Top10
+        <span class="tab-title">国内迁徙</span>路线Top10
       </div>
       <div class="tab-main">
         <div class="col1-header-line1"></div>
@@ -101,6 +105,10 @@
               <i>1</i>
               <span>广州----深圳深圳深圳深圳</span>
             </li>
+            <li>
+              <i>1</i>
+              <span>广州----深圳深圳深圳深圳</span>
+            </li>
           </ul>
 
         </div>
@@ -111,8 +119,10 @@
             </div>
           </div>
           <ul>
+          <li>12345</li>
             <li>12345</li>
-          </ul>
+        </ul>
+
         </div>
         <div class="col3">
           <div class="col3-header-outer">
@@ -125,6 +135,24 @@
           </div>
           <div class="col3-list">
             <ul>
+              <li>
+                <section>
+                  <div class="pillar"></div>
+                  <div class="num">33%</div>
+                </section>
+                <section>
+                  <div class="pillar"></div>
+                  <div class="num">33%</div>
+                </section>
+                <section>
+                  <div class="pillar"></div>
+                  <div class="num">33%</div>
+                </section>
+                <section>
+                  <div class="pillar"></div>
+                  <div class="num">33%</div>
+                </section>
+              </li>
               <li>
                 <section>
                   <div class="pillar"></div>

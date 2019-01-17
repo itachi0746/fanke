@@ -173,7 +173,7 @@ $(function () {
           isHideStation = true;
           goToPointByName(name);
           // console.log('m',m.C.extData['枢纽名称']);
-          changePosText(name);
+          // changePosText(name);
           hideTabs()
           // $('#tab-name').text($(this).text());
         });
@@ -475,7 +475,7 @@ $(function () {
         hideTabs(nowTab);
         goToPointByName(name);
         // $('#tab-name').text($(this).text());
-        changePosText(name);
+        // changePosText(name);
       });
       $('#station-box-1').find('ul').append(stationDom);
       // $('#station-box-1').find('ul').append($('<li>'+ t +'</li>'));
@@ -502,7 +502,7 @@ $(function () {
         curPosDataBox.hide(300);
         goToPointByName(name);
         // $('#tab-name').text($(this).text());
-        changePosText(name);
+        // changePosText(name);
         hideTabs(nowTab);
 
       })
@@ -526,7 +526,7 @@ $(function () {
         curPosDataBox.hide(300);
         goToPointByName(name);
         // $('#tab-name').text($(this).text());
-        changePosText(name);
+        // changePosText(name);
         hideTabs(nowTab);
 
       });
@@ -613,6 +613,7 @@ $(function () {
    */
   function goToPointByName(name) {
     curPosition = name;
+    changePosText(name);
     hideSpecialData();
     hideTabArrow();
     hideFlightDom();
@@ -1465,6 +1466,7 @@ $(function () {
     }
   }
 
+
   /**
    * 主tab点击事件
    */
@@ -1600,7 +1602,7 @@ $(function () {
    * 移动一级tab对应的箭头
    */
   function moveTheTabArrow() {
-    var topDis, top = 102, left = 190,
+    var topDis, top = 130, left = 190,
       theTabArr = $('#tab-arrow'), tabBoxCur = $('#tab-box-cur');
     // theTabArr.show();
     if (nowTab === tabArr[0]) {
@@ -2375,7 +2377,7 @@ $(function () {
         curPosDataBox.hide(300);
         isHideStation = true;
         // console.log('m',m.C.extData['枢纽名称']);
-        changePosText(theLiName);
+        // changePosText(theLiName);
         hideTabs(nowTab)
       })
 
@@ -2474,22 +2476,6 @@ $(function () {
       var m = markerArr[i];
 
       var stationDom = $('<li>' + m.C.extData['枢纽名称'] + '</li>');
-      // stationDom.on('click', function () {
-      //   var name = $(this).text();
-      //   goToPointByName(name);
-      //   curPosition = name;
-      //   var curPosDataBox = $('#cur-pos-data-box');
-      //   var tabBoxCur = $('#tab-box-cur');
-      //   var arrows = tabBoxCur.find('.arrow');
-      //   tabBoxCur.find('.up').addClass('dn');
-      //   tabBoxCur.find('.down').removeClass('dn');
-      //
-      //   curPosDataBox.hide(300);
-      //   isHideStation = true;
-      //   // console.log('m',m.C.extData['枢纽名称']);
-      //   changePosText(name);
-      //   hideTabs(nowTab)
-      // });
       // debugger
       // debugger
       tgt.find('ul').append(stationDom);
@@ -2716,7 +2702,7 @@ $(function () {
    */
   function addCamLi() {
     clearCamLi();
-    var theDom;
+    var theDom,theCamData;
     if(nowTab===tabArr[0]) {
       theDom = $('#tab2')
     }
@@ -2726,28 +2712,51 @@ $(function () {
       return
     }
     var theUl = theDom.find('.camera-box').find('ul');
-    var theArr = thecamObj[curPosition];
-    if(!theArr) {
+    // var theArr = theCamObj[curPosition];
+    for (var k = 0; k < theCamArr.length; k++) {
+      var camObj = theCamArr[k];
+      var thePlaceName = camObj.name;
+      if(thePlaceName===curPosition) {
+        console.log('找到摄像头数据了');
+        theCamData = camObj.data;
+        break
+      }
+    }
+    if(!theCamData) {
       return
     }
-      var idx = 0;
-      for (var i = 0; i < theArr.length; i++) {
-        idx++;
-        var idItem = theArr[i];
-        var liStr = ' <li>\n' +
-          '              <section>\n' +
-          '                <img src="yjzx/img/cam_nor.png" alt="">\n' +
-          '              </section>\n' +
-          '              <span>'+idx+'号摄像头</span>\n' +
-          '            </li>';
-        var liDom = $(liStr);
-        liDom.data('id',idItem);
-        liDom.on('click',function () {
-          var theId = $(this).data('id');
-          window.location.href='SHWGOIE:http://14.23.164.13:7001/video/?vid=' + theId;
-        });
-        theUl.append(liDom);
+    var idx = 0;
+    for (var i = 0; i < theCamData.length; i++) {
+      if(i>=4) {  // 最多展示4个
+        return
       }
+      var idItem = theCamData[i];
+      var theFullName = '';
+      var camNameData = idItem[0].split(' ');
+      var theId = idItem[1];
+      var otherData = idItem[2];
+      for (var j = 0; j < camNameData.length; j++) {
+        var item = camNameData[j];
+        if(!item) {
+          continue
+        }
+        theFullName += item;
+      }
+      idx++;
+      var liStr = ' <li>\n' +
+        '              <section>\n' +
+        '                <img src="yjzx/img/cam_nor.png" alt="">\n' +
+        '              </section>\n' +
+        '              <span>'+theFullName+'</span>\n' +
+        '            </li>';
+      var liDom = $(liStr);
+      liDom.data('id',theId);
+      liDom.on('click',function () {
+        var theId = $(this).data('id');
+        window.location.href='SHWGOIE:http://14.23.164.13:7001/video/?vid=' + theId;
+      });
+      theUl.append(liDom);
+    }
 
   }
 
@@ -2772,8 +2781,9 @@ $(function () {
   /**
    * 获取3级预警数据
    */
-  function getYJData() {
+  function getYJData(theTab) {
     var url, keyName, theNumKey;
+    var temp = ''
     if (nowTab === tabArr[0]) {
       url = 'terminal/getTerminalWarningList.do';
       keyName = 'listTerminal';
@@ -2787,83 +2797,156 @@ $(function () {
     else if (nowTab === tabArr[2]) {
       url = 'toll/getTollWarningList.do';
       keyName = 'listToll';
-      theNumKey = 'pepValue'
+      theNumKey = 'pepValue';
+      pointControl.showPoints(nowTab,[]);
+      markerBindClick();
+      addStation2();
+      return
     } else {
       return
     }
 
     var top3 = $('#top3');
     var isLoading =  top3.data('isLoading');
-    if(isLoading) {
-      return
-    }
+    // if(isLoading) {
+    //   return
+    // }
     top3.data('isLoading',true);
 
-    if (getYJDataAjax) {
-      // debugger
-      clearYjUL();
-      getYJDataAjax.abort();
-    }
+    // if (getYJDataAjax) {
+    //   // debugger
+    //   clearYjUL();
+    //   getYJDataAjax.abort();
+    // }
     var data = {};
-    getYJDataAjax = $.axpost(url, data, function (data) {
-      // console.log('c',curAjax);
-      top3.data('isLoading',false);
-      // clearYjUL();
-      if (data && data.isSuccess) {
+    $.ajax({
+      type: "POST",
+      url: serviceBase + url,
+      data: {},
+      dataType: "json",
+      theTab: nowTab,
+      success: function (data) {
+        // console.log('reqRoadData',data)
         top3.data('isLoading',false);
+        // clearYjUL();
+        if (data && data.isSuccess) {
 
-        getYJDataAjax = null;
-        var yongji = $('#yongji');
-        var shizhong = $('#shizhong');
-        var shushi = $('#shushi');
-        var ss = {
-          name: '舒适',
-          dom: shushi,
-          icon: 'top3-icon3',
-          pointClass: 'point3',
-          data: data.data[keyName + '_ss'],
-        };
-        var sz = {
-          name: '适中',
-          dom: shizhong,
-          icon: 'top3-icon2',
-          pointClass: 'point2',
-          data: data.data[keyName + '_sz'],
+          getYJDataAjax = null;
+          var yongji = $('#yongji');
+          var shizhong = $('#shizhong');
+          var shushi = $('#shushi');
+          var ss = {
+            name: '舒适',
+            dom: shushi,
+            icon: 'top3-icon3',
+            pointClass: 'point3',
+            data: data.data[keyName + '_ss'],
+          };
+          var sz = {
+            name: '适中',
+            dom: shizhong,
+            icon: 'top3-icon2',
+            pointClass: 'point2',
+            data: data.data[keyName + '_sz'],
 
-        };
-        var yj = {
-          name: '拥挤',
-          dom: yongji,
-          icon: 'top3-icon1',
-          pointClass: 'point1',
-          data: data.data[keyName + '_yj']
-        };
+          };
+          var yj = {
+            name: '拥挤',
+            dom: yongji,
+            icon: 'top3-icon1',
+            pointClass: 'point1',
+            data: data.data[keyName + '_yj']
+          };
 
-        var dataArr = [ss, sz, yj];
-        pointControl.showPoints(nowTab, dataArr); // 刷新了markers
-        markerBindClick();
-        addStation2();
-
-        for (var i = 0; i < dataArr.length; i++) {
-          var item = dataArr[i];
-          // debugger
-          for (var j = 0; j < item.data.length; j++) {
-            var temp = item.data[j];
-            var num;
-            // if(temp.userCnt>=10000) {
-            // num = temp.userCnt.toString();
-            // num = num.slice(0, num.length - 4);
-            // temp.userCnt = parseInt(num);
-            temp.userCnt = toWan2(temp[theNumKey]);
-            // }
+          var dataArr = [ss, sz, yj];
+          if(this.theTab===nowTab) {
+            // debugger
+            pointControl.showPoints(nowTab, dataArr); // 刷新了markers
+            markerBindClick();
+            addStation2();
           }
-          if(nowTab!==tabArr[2]) {
-            addYjLi(item)
+
+          for (var i = 0; i < dataArr.length; i++) {
+            var item = dataArr[i];
+            // debugger
+            for (var j = 0; j < item.data.length; j++) {
+              var temp = item.data[j];
+              var num;
+              // if(temp.userCnt>=10000) {
+              // num = temp.userCnt.toString();
+              // num = num.slice(0, num.length - 4);
+              // temp.userCnt = parseInt(num);
+              temp.userCnt = toWan2(temp[theNumKey]);
+              // }
+            }
+            if(nowTab!==tabArr[2] && this.theTab===nowTab) {
+              // debugger
+              addYjLi(item)
+            }
           }
+
         }
-
       }
     });
+
+    // $.axpost(url, data, function (data) {
+    //   // console.log('c',curAjax);
+    //   top3.data('isLoading',false);
+    //   clearYjUL();
+    //   if (data && data.isSuccess) {
+    //
+    //     getYJDataAjax = null;
+    //     var yongji = $('#yongji');
+    //     var shizhong = $('#shizhong');
+    //     var shushi = $('#shushi');
+    //     var ss = {
+    //       name: '舒适',
+    //       dom: shushi,
+    //       icon: 'top3-icon3',
+    //       pointClass: 'point3',
+    //       data: data.data[keyName + '_ss'],
+    //     };
+    //     var sz = {
+    //       name: '适中',
+    //       dom: shizhong,
+    //       icon: 'top3-icon2',
+    //       pointClass: 'point2',
+    //       data: data.data[keyName + '_sz'],
+    //
+    //     };
+    //     var yj = {
+    //       name: '拥挤',
+    //       dom: yongji,
+    //       icon: 'top3-icon1',
+    //       pointClass: 'point1',
+    //       data: data.data[keyName + '_yj']
+    //     };
+    //
+    //     var dataArr = [ss, sz, yj];
+    //     pointControl.showPoints(nowTab, dataArr); // 刷新了markers
+    //     markerBindClick();
+    //     addStation2();
+    //
+    //     for (var i = 0; i < dataArr.length; i++) {
+    //       var item = dataArr[i];
+    //       // debugger
+    //       for (var j = 0; j < item.data.length; j++) {
+    //         var temp = item.data[j];
+    //         var num;
+    //         // if(temp.userCnt>=10000) {
+    //         // num = temp.userCnt.toString();
+    //         // num = num.slice(0, num.length - 4);
+    //         // temp.userCnt = parseInt(num);
+    //         temp.userCnt = toWan2(temp[theNumKey]);
+    //         // }
+    //       }
+    //       if(nowTab!==tabArr[2]) {
+    //         addYjLi(item)
+    //       }
+    //     }
+    //
+    //   }
+    // });
 
     function addYjLi(item) {
       var index = 0;
@@ -2881,7 +2964,6 @@ $(function () {
           var name = $(this).find('.p-name').text();
           curPosition = name;
           goToPointByName(name);
-          changePosText(name);
           hideTabs(name);
           pointControl.hideMarkers();
           hideLiTabBox();
@@ -2897,11 +2979,11 @@ $(function () {
   function initCenterBG() {
     var imgBox = $('#center-img');
     imgBox.empty();
-    for (var i = 0; i < 2; i++) {
-      var newImage = new Image();
-      newImage.src = 'yjzx/img/menu/icon_lower_center.png';
-      imgBox.append(newImage)
-    }
+    // for (var i = 0; i < 2; i++) {
+    //   var newImage = new Image();
+    //   newImage.src = 'yjzx/img/menu/icon_lower_center.png';
+    //   imgBox.append(newImage)
+    // }
   }
 
   /**
@@ -2933,13 +3015,16 @@ $(function () {
     // console.log(posName);
     // debugger
     initCenterBG();
-    if (posName.length > 4) {
+    var theNum = 2;
+    if (posName.length > theNum) {
       var imgBox = $('#center-img');
-      var temp = posName.length - 4;
+      var temp = posName.length - theNum;
       var img = imgBox.find('img')[0];
       for (var j = 0; j < temp; j++) {
         var newImage = new Image();
-        newImage.src = img.src;
+        // newImage.src = img.src;
+          newImage.src = 'yjzx/img/menu/icon_lower_center.png';
+
         // console.log('temp:',temp)
         imgBox.append(newImage)
       }
@@ -2951,6 +3036,7 @@ $(function () {
   // 隐藏1级tab,显示2级tab
   function hideTabs(name) {
     var tab = $('#tab');
+    var theTop = '-102px';
     var tabBox = tab.find('.tab-box');
     var noActive;
     // console.log(tab)
@@ -2958,12 +3044,10 @@ $(function () {
     // curPosition = name;
     // console.log(curPosition);
 
-    // changePosText(curPosition);
-
     // tab移动
     for (var i = 0; i < tabBox.length; i++) {
       var tabLi = $(tabBox[i]);
-      tabLi.css('top', '-102px');
+      tabLi.css('top', theTop);
       noActive = tabLi.attr('class').indexOf('tab-box-active') == '-1';
 
       if (noActive) {
@@ -2976,7 +3060,7 @@ $(function () {
     showCurLocaction();
 
     var tabBoxCur = $('#tab-box-cur');
-    tabBoxCur.css('top', '-102px');
+    tabBoxCur.css('top', theTop);
     // var tab2 = $('#tab2');
     // tabBoxCur.find('.up').removeClass('dn');
     // tabBoxCur.find('.down').addClass('dn');
@@ -3320,7 +3404,7 @@ $(function () {
 
   // 显示1级tab
   function showTabs() {
-    var dis = 102;
+    var dis = 130;
     var tab = $('#tab');
     var tabBox = tab.find('.tab-box');
     for (var i = 0; i < tabBox.length; i++) {
@@ -3766,12 +3850,7 @@ $(function () {
         // debugger
         goToPointByName(theName);
         hideTabs(theName);
-        changePosText(theName);
 
-        // $('#tab-arrow').hide();
-        // $('#tab-box-cur').show();
-
-        // showWeather();
       })
     }
   }
@@ -3889,22 +3968,6 @@ $(function () {
           },
           data: [],
         },
-        // {
-        //   name: '客流预测',
-        //   type: 'line',
-        //   smooth: true,
-        //   symbol: 'none',
-        //   stack: 'a',
-        //   // areaStyle: {
-        //   //   normal: {
-        //   //   }
-        //   // },
-        //   lineStyle: {
-        //     type: 'dotted',
-        //     color: 'rgb(62,139,230)',
-        //   },
-        //   data: []
-        // }
       ]
     };
 

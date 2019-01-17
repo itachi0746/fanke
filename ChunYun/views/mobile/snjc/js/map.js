@@ -372,9 +372,9 @@ $(function () {
           //找到图层了
           console.log('jiazaiwancheng@!1');
           $('#DivButton').empty();
-          if(!MapBase.IsFloorVisible()){
-            return;
-          }
+          // if(!MapBase.IsFloorVisible()){
+          //   return;
+          // }
           //floor_complete
           var theFloors = theBuilding.floor_details.floor_nonas;
           var theFloorIndex = theBuilding.floor_details.floor_indexs;
@@ -908,7 +908,7 @@ $(function () {
 
     layer.setOptions({
       style: {
-        radius: 27,
+        radius: 15,
         color: {
           0.5: '#2c7bb6',
           0.65: '#abd9e9',

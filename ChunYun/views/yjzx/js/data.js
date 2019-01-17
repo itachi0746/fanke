@@ -179,6 +179,7 @@ function PlacePointView(theMap) {
     nameArr[obj['枢纽名称']] = obj;
   }
   this.theMap = theMap;
+  // debugger
   this.markes = [];
   this.unMatchYJData = [];
 
@@ -389,11 +390,13 @@ PlacePointView.prototype.showPoints = function (pointType,YJData) {
       // }
       // 模拟数据=============
 
-      this.unMatchYJData.push(marker);
-      // console.log(this.unMatchYJData)
-      // debugger
-      this.markes.push(marker);
-      theMap.add(marker);
+      // this.unMatchYJData.push(marker);
+      if(window.nowTab==='高速监测') {
+        this.markes.push(marker);
+        theMap.add(marker);
+      }
+      // this.markes.push(marker);
+      // theMap.add(marker);
     }
 
   }

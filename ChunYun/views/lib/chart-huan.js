@@ -102,7 +102,7 @@ $(function () {
         if(value>100){
             value=100;
         }
-        var theTextValue = value + "%";
+        var theTextValue = (value * 1.0).toFixed(2) + "%";
         $(this.element).find('#fieldValue').text(theTextValue);
         var thePath = describeArc(50, 50, 45, 0, value * 3);
         var theElement = $(this.element).find('#per-path');
