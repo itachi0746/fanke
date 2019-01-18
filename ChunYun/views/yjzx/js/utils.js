@@ -294,3 +294,17 @@ function calTimeArr() {
   }
   return theTimeArr
 }
+
+/**
+ * 判断是否已经过指定的分钟
+ * @param timeStamp 上一个时间戳(毫秒)
+ * @param interval 时间间隔(分钟)
+ */
+function canRefresh(timeStamp, interval) {
+  // debugger
+  var curTime = new Date().valueOf();
+  interval = interval * 60000;
+  timeStamp = timeStamp.valueOf();
+  var result = curTime - timeStamp;
+  return result > interval
+}

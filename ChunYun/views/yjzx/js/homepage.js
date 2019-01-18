@@ -32,6 +32,8 @@ $(function () {
   // 记录日历的日期
   var tab2Li3Date, tab3Li3Date;
   var tab2Li2DefaultDate, tab3Li2DefaultDate, tab4Li2DefaultDate;  // 枢纽,服务区,收费站-洞察部分,默认日期
+  var myTime;  // 记录高速监测初始化时间
+  var tab0Time,tab1Time;  // 记录枢纽,服务区预警初始化时间
   var nowTab = tabArr[0];
   window.nowTab = nowTab;
   //postionType-位置类别：1场站，2服务区，3收费站
@@ -87,13 +89,7 @@ $(function () {
    * 初始化应用
    */
   function init() {
-    // theMap.on('zoomend', function () {
-    //   var theZoom = theMap.getZoom();
-    //   if(curPosition==='深圳西站') {
-    //     debugger
-    //     theMap.setZoom(20)
-    //   }
-    // });
+    myTime = tab0Time = tab1Time = new Date();
 
     moment.locale('zh-cn');
     console.log('切换到:', nowTab);
@@ -207,8 +203,10 @@ $(function () {
     arrowBindClick();
     dongchaTabBindClick();
     // addStation();
-    getYJData();
-
+    // getYJData();
+    reqTerminalWarningList();
+    reqServiceAreaWarningList();
+    reqJamList();
   }
 
   /**
@@ -300,8 +298,10 @@ $(function () {
       if (data.isSuccess && !isEmptyObject(data.data)) {
         var pepNum = data.data.userCnt;
         var theName = data.data.postionName;
-        var theData,infoWindow;
-        var lnglat = pointControl.findPointPosition(curPosition).split(',').map(function (t) { return parseFloat(t) });
+        var theData, infoWindow;
+        var lnglat = pointControl.findPointPosition(curPosition).split(',').map(function (t) {
+          return parseFloat(t)
+        });
 
         // debugger
         // return
@@ -316,7 +316,7 @@ $(function () {
             content: createInfoWindow(theData),
             // content: createInfoWindow2(theData),
             offset: new AMap.Pixel(11, 0),
-            position: new AMap.LngLat(lnglat[0],lnglat[1])
+            position: new AMap.LngLat(lnglat[0], lnglat[1])
           });
           infoWindow.open(theMap);
         } else {
@@ -331,7 +331,7 @@ $(function () {
             content: createInfoWindow(theData),
             // content: createInfoWindow2(theData),
             offset: new AMap.Pixel(11, 0),
-            position: new AMap.LngLat(lnglat[0],lnglat[1])
+            position: new AMap.LngLat(lnglat[0], lnglat[1])
           });
           infoWindow.open(theMap);
         }
@@ -680,7 +680,7 @@ $(function () {
         // console.log(theName)
         var mType = m.C.extData['枢纽类别'];
         if (mType !== '机场') {
-        // if (mType === '客运站' || mType === '铁路') {
+          // if (mType === '客运站' || mType === '铁路') {
           var dongchaTab = $('#tab2').find('.data-box').find('.dongcha-tab');
           // console.log(dongchaTab)
           // debugger
@@ -724,7 +724,7 @@ $(function () {
     treDate.text(nowDate);
     var nowHour = moment().format('HH');
     var afterHourNum = parseInt(nowHour) + 1;
-    afterHourNum = afterHourNum < 10? '0' + afterHourNum: afterHourNum;
+    afterHourNum = afterHourNum < 10 ? '0' + afterHourNum : afterHourNum;
 
     var theDefaultTimeItem = nowHour + ':00-' + afterHourNum + ':00';
     // debugger
@@ -884,7 +884,7 @@ $(function () {
     }
 
     var pagingNum;
-    pagingNum = parseInt(theDataArr.length/4);
+    pagingNum = parseInt(theDataArr.length / 4);
     for (var j = 0; j < pagingNum; j++) {
       var theNum = j + 1;
       var theSpanStr;
@@ -911,7 +911,7 @@ $(function () {
 
         var theText = parseInt($(this).text());
         var theRenderList = [];
-        theRenderList = theDataArr.slice(theText*4-4, theText*4);
+        theRenderList = theDataArr.slice(theText * 4 - 4, theText * 4);
 
         // if (theText === '1') {
         //   theRenderList = theDataArr.slice(0, 4)
@@ -1423,7 +1423,7 @@ $(function () {
     // if (nowTab === '收费站') {
     //   temp = $('#tab4');
     // }
-    if(nowTab===tabArr[2]) {
+    if (nowTab === tabArr[2]) {
       temp = $('#tab4');
     }
 
@@ -1494,10 +1494,9 @@ $(function () {
       hideCurLocaction();
       clearCenterMarker();
       removeJamMarkers();
-      getYJData();
+      // getYJData();
 
       if (nowTab === tabArr[0]) {
-        // addStation();
         positionType = 1;  // 场站type
         clearInterval(timer);
         $('#top3').show();
@@ -1508,6 +1507,8 @@ $(function () {
         mapbase.setBg();
         traffic.removePaths();  // 清除高速路段的线
         $('#gaosujiance').hide();
+        refreshTerminalWarningList();
+
       }
       if (nowTab === tabArr[1]) {
         positionType = 2;  // 服务区type
@@ -1520,31 +1521,27 @@ $(function () {
         mapbase.setBg();
         traffic.removePaths();  // 清除高速路段的线
         $('#gaosujiance').hide();
-
+        refreshServiceAreaWarningList()
       }
       if (nowTab === tabArr[2]) {
         positionType = 3;  // 收费站,高速监测
-        // clearInterval(timer);
-        // $('#top3').show();
-        // $('#luwang-box').hide();
-        // $('#container2').show();
-        // mapbase.isGaoSuLuDuan = false;
-        // mapbase.restoreDefaultStyle();
-        // mapbase.setBg();
-        // traffic.removePaths();  // 清除高速路段的线
-        // $('#gaosujiance').hide();
-          refreshTime();
-          $('#top3').hide();
-          // $('#luwang-box').show();
-          mapbase.setTrafficStyle();
-          mapbase.setBgRoadPoint();
-          // reqLuWangDtlData()
-          reqJamList();
-          reqKeyRoadData();
-          // jamRankLiClick();
-          $('#container2').hide();
-          $('#gaosujiance').show();
-          traffic.removePaths();  // 清除高速路段的线
+
+        refreshTime();
+        $('#top3').hide();
+        // $('#luwang-box').show();
+        mapbase.setTrafficStyle();
+        mapbase.setBgRoadPoint();
+        // reqLuWangDtlData()
+        // reqJamList();
+        refreshJamList();
+        reqKeyRoadData();
+        // jamRankLiClick();
+        $('#container2').hide();
+        $('#gaosujiance').show();
+        traffic.removePaths();  // 清除高速路段的线
+        pointControl.showPoints(nowTab, []);
+        markerBindClick();
+        addStation2();
       }
       // if (nowTab === tabArr[2]) {
       //   positionType = 3;  // 收费站,高速监测
@@ -1694,6 +1691,7 @@ $(function () {
       obj.hide();
     }
   }
+
   function showJamMarkers() {
     for (var i = 0; i < jamListMarkers.length; i++) {
       var obj = jamListMarkers[i];
@@ -1705,7 +1703,7 @@ $(function () {
    * 删除拥堵路段markers
    */
   function removeJamMarkers() {
-    if(nowTab!==tabArr[2]) {
+    if (nowTab !== tabArr[2]) {
       for (var i = 0; i < jamListMarkers.length; i++) {
         var obj = jamListMarkers[i];
         if (obj) {
@@ -1727,7 +1725,7 @@ $(function () {
     var resultArr = {};
     for (var i = 0; i < theJamList.length; i++) {
       theIdx++;
-      if(i>=10) {
+      if (i >= 10) {
         break
       }
       var theJamItem = theJamList[i];
@@ -1743,7 +1741,9 @@ $(function () {
       }
       // debugger
 
-      var theMidLngLat = pointArr[parseInt(pointArr.length/2)].map(function (t) { return parseFloat(t) });
+      var theMidLngLat = pointArr[parseInt(pointArr.length / 2)].map(function (t) {
+        return parseFloat(t)
+      });
       resultArr[theName] = theMidLngLat;
       // debugger
       // 道路中间点
@@ -1759,146 +1759,249 @@ $(function () {
     }
     return resultArr
   }
+
   var jamList = [];
+
+  /**
+   * 查询高速拥堵top10事件列表
+   */
+  // function reqJamList() {
+  //   var url = 'highSpeed/selectGsCongestionAndDetails.do';
+  //   $.axpost(url, {}, function (data) {
+  //     // console.log('reqJamList:', data);
+  //     if (data.isSuccess && data.data.rows.length) {
+  //       clearJamList();
+  //       var jamList = data.data.rows;
+  //       // debugger
+  //       // console.log('1',jamList);
+  //       jamList = _.sortBy(jamList, function (item) {  // 按照拥堵距离排序
+  //         return -item.jamDist;
+  //       });
+  //       var theLngLatObj = addJamListMarker(jamList);
+  //       // debugger
+  //       // console.log('jamList:',jamList);
+  //       var idx = 0;
+  //       var jamRankUl = $('#jiance-top10-ul');
+  //
+  //       for (var j = 0; j < jamList.length; j++) {
+  //         // debugger
+  //         idx++;
+  //         if (idx > 10) {  // 要前10
+  //           break
+  //         }
+  //         var liData = jamList[j];
+  //         var liDetailsArray = liData.congestionDetailsArray;
+  //
+  //         // debugger
+  //         var startLngLat = liDetailsArray[0].xys.split(';')[0].split(',').map(function (t) {
+  //           return parseFloat(t)
+  //         });  // 起点经纬度
+  //         var temp = liDetailsArray[liDetailsArray.length - 1].xys.split(';');
+  //         var endLngLat = temp[temp.length - 1].split(',').map(function (t) {
+  //           return parseFloat(t)
+  //         });  // 终点经纬度
+  //         // debugger
+  //         var angle = calcAngle(startLngLat, endLngLat);  // 角度
+  //         var dir = judgeDirection(angle);  // 方向 todo 方向不准确
+  //         // debugger
+  //         // 道路中间点
+  //         // var roadCenterMarker = new AMap.Marker({
+  //         //   position: new AMap.LngLat(theLntLats[0], theLntLats[1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+  //         //   title: theName,
+  //         //   content: '<div class="' + theClassName + '"><i>' + theName + '</i></div>',
+  //         //   extData: thePlace//加入对象信息
+  //         // });
+  //         var liStr = '          <li>\n' +
+  //           '            <section><span class="idx">' + idx + '</span></section>\n' +
+  //           '            <section>' + liData.roadName + ' (' + dir + ')</section>\n' +
+  //           '            <section>' + toKM(liData.jamDist) + '</section>\n' +
+  //           '            <section>' + liData.jamSpeed + 'km/h</section>\n' +
+  //           '          </li>';
+  //
+  //         var liDom = $(liStr);
+  //         liDom[0].dataset.eventId = liData.eventId;
+  //         liDom[0].dataset.insertTime = liData.insertTime;
+  //         liDom[0].dataset.jamDist = toKM(liData.jamDist);
+  //         liDom[0].dataset.dir = dir;
+  //         liDom[0].dataset.roadName = liData.roadName;
+  //         liDom[0].dataset.lnglat = theLngLatObj[liData.roadName];
+  //
+  //         liDom.on('click', function () {
+  //           var me = this;
+  //           var theData = {
+  //             name: me.dataset.roadName,
+  //             data1: '拥堵长度: ' + me.dataset.jamDist,
+  //             data2: '方向: ' + me.dataset.dir
+  //           }
+  //           clearCenterMarker();
+  //           // console.log(this.dataset);
+  //           var theEventId = this.dataset.eventId;
+  //           var theInsertTime = this.dataset.insertTime;
+  //           var xy = this.dataset.lnglat;
+  //           // var theMiddlePointArr = pointArr[parseInt(pointArr.length / 2)];
+  //           var theMiddlePointArr = xy.split(',').map(function (t) {
+  //             return parseFloat(t)
+  //           });
+  //           // debugger
+  //           addLuWangMarker(theMiddlePointArr, theData);
+  //
+  //           // var url = 'highSpeed/selectGsCongestionDetails.do';
+  //           // var data = {
+  //           //   eventId: theEventId,
+  //           //   insertTime: theInsertTime
+  //           // };
+  //           // $.axpost(url, data, function (data) {
+  //           //   // console.log('dtlData:',data);
+  //           //   var rows = data.data.rows;
+  //           //   var eve = data.data.event;
+  //           //   // console.log('row',rows)
+  //           //   var theRows = [];
+  //           //   var pointArr = [];
+  //           //   for (var i = 0; i < rows.length; i++) {
+  //           //     var r = rows[i].xys.split(';');
+  //           //     for (var k = 0; k < r.length; k++) {
+  //           //       var ritem = r[k].split(',');
+  //           //       pointArr.push(ritem);
+  //           //     }
+  //           //     // console.log('r',r);
+  //           //     // debugger
+  //           //     theRows.push(r);
+  //           //   }
+  //           //   // debugger
+  //           //   // console.log('theRow:',theRows);
+  //           //   // console.log('pointArr:',pointArr);
+  //           //
+  //           //   // var centerRow = rows[parseInt(rows.length/2)];
+  //           //   // var lnglat = xy.split(',').map(function (t) { return parseFloat(t) });
+  //           //
+  //           //   traffic.drawRoads(theRows, nowTab);
+  //           //   var theMiddlePointArr = pointArr[parseInt(pointArr.length / 2)];
+  //           //   // debugger
+  //           //   addLuWangMarker(theMiddlePointArr, theData);
+  //           //
+  //           //   // theMap.remove(mList);
+  //           //   // var mIdx = 'm';
+  //           //   // for (var i = 0; i < rows.length; i++) {
+  //           //   //   // debugger
+  //           //   //   var p = rows[i].xy.split(',');
+  //           //   //   mIdx+=i;
+  //           //   //
+  //           //   //   mIdx = new AMap.Marker({
+  //           //   //     position: new AMap.LngLat(parseFloat(p[0]),parseFloat(p[1])),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+  //           //   //     title: '中间点',
+  //           //   //     content: '<div style="color:#fff;font-size:20px">'+i+'</div>'
+  //           //   //   });
+  //           //   //   mList.push(mIdx)
+  //           //   // }
+  //           //   // theMap.add(mList);
+  //           //
+  //           // })
+  //         });
+  //         jamRankUl.append(liDom);
+  //       }
+  //     }
+  //   })
+  // }
+
+
+  function refreshJamList() {
+    var timeToR = canRefresh(myTime,5);
+    if(timeToR) {
+      reqJamList();
+    } else {
+      renderJamList();
+    }
+  }
+  /**
+   * 渲染高速拥堵列表
+   */
+  function renderJamList() {
+    clearJamList();
+
+    var theLngLatObj = addJamListMarker(jamList);
+    // debugger
+    // console.log('jamList:',jamList);
+    var idx = 0;
+    var jamRankUl = $('#jiance-top10-ul');
+
+    for (var j = 0; j < jamList.length; j++) {
+      // debugger
+      idx++;
+      if (idx > 10) {  // 要前10
+        break
+      }
+      var liData = jamList[j];
+      var liDetailsArray = liData.congestionDetailsArray;
+      // debugger
+      var startLngLat = liDetailsArray[0].xys.split(';')[0].split(',').map(function (t) {
+        return parseFloat(t)
+      });  // 起点经纬度
+      var temp = liDetailsArray[liDetailsArray.length - 1].xys.split(';');
+      var endLngLat = temp[temp.length - 1].split(',').map(function (t) {
+        return parseFloat(t)
+      });  // 终点经纬度
+      // debugger
+      var angle = calcAngle(startLngLat, endLngLat);  // 角度
+      var dir = judgeDirection(angle);  // 方向 todo 方向不准确
+
+      var liStr = '          <li>\n' +
+        '            <section><span class="idx">' + idx + '</span></section>\n' +
+        '            <section>' + liData.roadName + ' (' + dir + ')</section>\n' +
+        '            <section>' + toKM(liData.jamDist) + '</section>\n' +
+        '            <section>' + liData.jamSpeed + 'km/h</section>\n' +
+        '          </li>';
+
+      var liDom = $(liStr);
+      liDom[0].dataset.eventId = liData.eventId;
+      liDom[0].dataset.insertTime = liData.insertTime;
+      liDom[0].dataset.jamDist = toKM(liData.jamDist);
+      liDom[0].dataset.dir = dir;
+      liDom[0].dataset.roadName = liData.roadName;
+      liDom[0].dataset.lnglat = theLngLatObj[liData.roadName];
+
+      liDom.on('click', function () {
+        var me = this;
+        var theData = {
+          name: me.dataset.roadName,
+          data1: '拥堵长度: ' + me.dataset.jamDist,
+          data2: '方向: ' + me.dataset.dir
+        }
+        clearCenterMarker();
+        // console.log(this.dataset);
+        var theEventId = this.dataset.eventId;
+        var theInsertTime = this.dataset.insertTime;
+        var xy = this.dataset.lnglat;
+        // var theMiddlePointArr = pointArr[parseInt(pointArr.length / 2)];
+        var theMiddlePointArr = xy.split(',').map(function (t) {
+          return parseFloat(t)
+        });
+        // debugger
+        addLuWangMarker(theMiddlePointArr, theData);
+      });
+      jamRankUl.append(liDom);
+    }
+  }
   /**
    * 查询高速拥堵top10事件列表
    */
   function reqJamList() {
     var url = 'highSpeed/selectGsCongestionAndDetails.do';
     $.axpost(url, {}, function (data) {
+      myTime = new Date();
+      jamList = [];
       // console.log('reqJamList:', data);
       if (data.isSuccess && data.data.rows.length) {
-        clearJamList();
-        var jamList = data.data.rows;
-        // debugger
-        // console.log('1',jamList);
+        jamList = data.data.rows;
         jamList = _.sortBy(jamList, function (item) {  // 按照拥堵距离排序
           return -item.jamDist;
         });
-        var theLngLatObj = addJamListMarker(jamList);
-        // debugger
-        // console.log('jamList:',jamList);
-        var idx = 0;
-        var jamRankUl = $('#jiance-top10-ul');
-
-        for (var j = 0; j < jamList.length; j++) {
-          // debugger
-          idx++;
-          if (idx > 10) {  // 要前10
-            break
-          }
-          var liData = jamList[j];
-          var liDetailsArray = liData.congestionDetailsArray;
-
-          // debugger
-          var startLngLat = liDetailsArray[0].xys.split(';')[0].split(',').map(function (t) {
-            return parseFloat(t)
-          });  // 起点经纬度
-          var temp = liDetailsArray[liDetailsArray.length - 1].xys.split(';');
-          var endLngLat = temp[temp.length - 1].split(',').map(function (t) {
-            return parseFloat(t)
-          });  // 终点经纬度
-          // debugger
-          var angle = calcAngle(startLngLat, endLngLat);  // 角度
-          var dir = judgeDirection(angle);  // 方向 todo 方向不准确
-          // debugger
-          // 道路中间点
-          // var roadCenterMarker = new AMap.Marker({
-          //   position: new AMap.LngLat(theLntLats[0], theLntLats[1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-          //   title: theName,
-          //   content: '<div class="' + theClassName + '"><i>' + theName + '</i></div>',
-          //   extData: thePlace//加入对象信息
-          // });
-          var liStr = '          <li>\n' +
-            '            <section><span class="idx">' + idx + '</span></section>\n' +
-            '            <section>' + liData.roadName + ' (' + dir + ')</section>\n' +
-            '            <section>' + toKM(liData.jamDist) + '</section>\n' +
-            '            <section>' + liData.jamSpeed + 'km/h</section>\n' +
-            '          </li>';
-
-          var liDom = $(liStr);
-          liDom[0].dataset.eventId = liData.eventId;
-          liDom[0].dataset.insertTime = liData.insertTime;
-          liDom[0].dataset.jamDist = toKM(liData.jamDist);
-          liDom[0].dataset.dir = dir;
-          liDom[0].dataset.roadName = liData.roadName;
-          liDom[0].dataset.lnglat = theLngLatObj[liData.roadName];
-
-          liDom.on('click', function () {
-            var me = this;
-            var theData = {
-              name: me.dataset.roadName,
-              data1: '拥堵长度: ' + me.dataset.jamDist,
-              data2: '方向: ' + me.dataset.dir
-            }
-            clearCenterMarker();
-            // console.log(this.dataset);
-            var theEventId = this.dataset.eventId;
-            var theInsertTime = this.dataset.insertTime;
-            var xy = this.dataset.lnglat;
-            // var theMiddlePointArr = pointArr[parseInt(pointArr.length / 2)];
-            var theMiddlePointArr = xy.split(',').map(function (t) { return parseFloat(t) });
-            // debugger
-            addLuWangMarker(theMiddlePointArr, theData);
-
-            // var url = 'highSpeed/selectGsCongestionDetails.do';
-            // var data = {
-            //   eventId: theEventId,
-            //   insertTime: theInsertTime
-            // };
-            // $.axpost(url, data, function (data) {
-            //   // console.log('dtlData:',data);
-            //   var rows = data.data.rows;
-            //   var eve = data.data.event;
-            //   // console.log('row',rows)
-            //   var theRows = [];
-            //   var pointArr = [];
-            //   for (var i = 0; i < rows.length; i++) {
-            //     var r = rows[i].xys.split(';');
-            //     for (var k = 0; k < r.length; k++) {
-            //       var ritem = r[k].split(',');
-            //       pointArr.push(ritem);
-            //     }
-            //     // console.log('r',r);
-            //     // debugger
-            //     theRows.push(r);
-            //   }
-            //   // debugger
-            //   // console.log('theRow:',theRows);
-            //   // console.log('pointArr:',pointArr);
-            //
-            //   // var centerRow = rows[parseInt(rows.length/2)];
-            //   // var lnglat = xy.split(',').map(function (t) { return parseFloat(t) });
-            //
-            //   traffic.drawRoads(theRows, nowTab);
-            //   var theMiddlePointArr = pointArr[parseInt(pointArr.length / 2)];
-            //   // debugger
-            //   addLuWangMarker(theMiddlePointArr, theData);
-            //
-            //   // theMap.remove(mList);
-            //   // var mIdx = 'm';
-            //   // for (var i = 0; i < rows.length; i++) {
-            //   //   // debugger
-            //   //   var p = rows[i].xy.split(',');
-            //   //   mIdx+=i;
-            //   //
-            //   //   mIdx = new AMap.Marker({
-            //   //     position: new AMap.LngLat(parseFloat(p[0]),parseFloat(p[1])),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-            //   //     title: '中间点',
-            //   //     content: '<div style="color:#fff;font-size:20px">'+i+'</div>'
-            //   //   });
-            //   //   mList.push(mIdx)
-            //   // }
-            //   // theMap.add(mList);
-            //
-            // })
-          });
-          jamRankUl.append(liDom);
+        if(nowTab!==tabArr[2]) {
+          return
         }
+        renderJamList()
       }
     })
   }
-
   var keyRoadDataArr = [], pageOneNum = 6;
 
   /**
@@ -2166,10 +2269,10 @@ $(function () {
     infoWindow.open(theMap);
     // theMap.setFitView(luWangMarker, theMap.RoadPaths);
     var theZoom = thePlaceZoomObj[title];
-    if(nowTab===tabArr[2]) {
+    if (nowTab === tabArr[2]) {
       theZoom = 13;
     }
-    theMap.setFitView(luWangMarker,null,null,theZoom);
+    theMap.setFitView(luWangMarker, null, null, theZoom);
   }
 
   //构建自定义信息窗体
@@ -2195,7 +2298,7 @@ $(function () {
     titleD.className = 'infoTitle';
     titleD.innerHTML = content.name;
     p.className = 'infoContent';
-    $(p).attr('id','infoContent');
+    $(p).attr('id', 'infoContent');
     // p.innerHTML = '方向:' + content.dir + ' ' + '长度:' + content.jamDist;
     p.innerHTML = content.data1 + ' ' + content.data2;
     closeX.className = 'amap-info-close';
@@ -2209,10 +2312,10 @@ $(function () {
 
     // info.appendChild(titleD);
     info.appendChild(roadNameContainer);
-    if(nowTab===tabArr[2]) {  // 高速监测要显示
+    if (nowTab === tabArr[2]) {  // 高速监测要显示
       // info.appendChild(camImg);
-      var theResultArr = createCamDom(content,theRoadCamObj);
-      if(theResultArr) {
+      var theResultArr = createCamDom(content, theRoadCamObj);
+      if (theResultArr) {
         for (var i = 0; i < theResultArr.length; i++) {
           var theImgDom = theResultArr[i];
           $(roadNameContainer).append(theImgDom)
@@ -2233,14 +2336,14 @@ $(function () {
    * @param content
    * @param camObj
    */
-  function createCamDom(content,camObj) {
+  function createCamDom(content, camObj) {
     var theContent = content;
     var theCamObj = camObj;
     var idx = 0;
     var resultArr = [];
 
     var theCamArr = theCamObj[theContent.name];
-    if(!theCamArr) {
+    if (!theCamArr) {
       console.log('没有摄像头id!');
       return
     }
@@ -2250,12 +2353,12 @@ $(function () {
       var theCamId = theCamArr[i];
       var theImgDom = $('<img>');
       var titleData = theContent.name + idx + '号摄像头';
-      theImgDom.attr('title',titleData);
-      theImgDom.data('id',theCamId);
-      theImgDom.attr('src','yjzx/img/cam_active.png');
-      theImgDom.on('click',function () {
+      theImgDom.attr('title', titleData);
+      theImgDom.data('id', theCamId);
+      theImgDom.attr('src', 'yjzx/img/cam_active.png');
+      theImgDom.on('click', function () {
         var theId = $(this).data('id');
-        window.location.href='SHWGOIE:http://14.23.164.13:7001/video/?vid=' + theId;
+        window.location.href = 'SHWGOIE:http://14.23.164.13:7001/video/?vid=' + theId;
       });
       resultArr.push(theImgDom);
     }
@@ -2309,25 +2412,26 @@ $(function () {
    */
   function clickRoadCam() {
     // debugger
-    console.log(123,this.dataset.roadName);
+    console.log(123, this.dataset.roadName);
     var theName = this.dataset.roadName;
     var theID = theRoadCamObj[theName][0];
-    if(!theID) {
+    if (!theID) {
       console.log('没有道路Id!');
       return
     }
-    window.location.href='SHWGOIE:http://14.23.164.13:7001/video/?vid=' + theID;
+    window.location.href = 'SHWGOIE:http://14.23.164.13:7001/video/?vid=' + theID;
   }
+
   function clickRoadCam2() {
     // debugger
-    console.log(123,this.dataset.roadName);
+    console.log(123, this.dataset.roadName);
     var theName = this.dataset.roadName;
     var theID = theRoadCamObj[theName][1];
-    if(!theID) {
+    if (!theID) {
       console.log('没有道路Id!');
       return
     }
-    window.location.href='SHWGOIE:http://14.23.164.13:7001/video/?vid=' + theID;
+    window.location.href = 'SHWGOIE:http://14.23.164.13:7001/video/?vid=' + theID;
   }
 
 //关闭信息窗体
@@ -2403,9 +2507,9 @@ $(function () {
     var liArr = jiancePanel.find('li');
     for (var i = 0; i < liArr.length; i++) {
       var liDom = liArr[i];
-      $(liDom).on('click',function () {
+      $(liDom).on('click', function () {
         var theText = $(this).text();
-        if(theText==='高速路段') {
+        if (theText === '高速路段') {
           pointControl.hideMarkers();
           showJamMarkers()
         } else {
@@ -2540,7 +2644,7 @@ $(function () {
   function refreshInfoWindow(num) {
     // debugger
     var infoC = $('#infoContent');
-    infoC.text('当前人数: '+num+'人');
+    infoC.text('当前人数: ' + num + '人');
   }
 
   /**
@@ -2697,10 +2801,10 @@ $(function () {
    */
   function clearCamLi() {
     var theDom;
-    if(nowTab===tabArr[0]) {
+    if (nowTab === tabArr[0]) {
       theDom = $('#tab2')
     }
-    else if(nowTab===tabArr[1]) {
+    else if (nowTab === tabArr[1]) {
       theDom = $('#tab2')
     } else {
       return
@@ -2708,16 +2812,17 @@ $(function () {
     var theUl = theDom.find('.camera-box').find('ul');
     theUl.empty();
   }
+
   /**
    * 添加摄像头Li
    */
   function addCamLi() {
     clearCamLi();
-    var theDom,theCamData;
-    if(nowTab===tabArr[0]) {
+    var theDom, theCamData;
+    if (nowTab === tabArr[0]) {
       theDom = $('#tab2')
     }
-    else if(nowTab===tabArr[1]) {
+    else if (nowTab === tabArr[1]) {
       theDom = $('#tab2')
     } else {
       return
@@ -2727,18 +2832,18 @@ $(function () {
     for (var k = 0; k < theCamArr.length; k++) {
       var camObj = theCamArr[k];
       var thePlaceName = camObj.name;
-      if(thePlaceName===curPosition) {
+      if (thePlaceName === curPosition) {
         console.log('找到摄像头数据了');
         theCamData = camObj.data;
         break
       }
     }
-    if(!theCamData) {
+    if (!theCamData) {
       return
     }
     var idx = 0;
     for (var i = 0; i < theCamData.length; i++) {
-      if(i>=4) {  // 最多展示4个
+      if (i >= 4) {  // 最多展示4个
         return
       }
       var idItem = theCamData[i];
@@ -2748,7 +2853,7 @@ $(function () {
       var otherData = idItem[2];
       for (var j = 0; j < camNameData.length; j++) {
         var item = camNameData[j];
-        if(!item) {
+        if (!item) {
           continue
         }
         theFullName += item;
@@ -2758,13 +2863,13 @@ $(function () {
         '              <section>\n' +
         '                <img src="yjzx/img/cam_nor.png" alt="">\n' +
         '              </section>\n' +
-        '              <span>'+theFullName+'</span>\n' +
+        '              <span>' + theFullName + '</span>\n' +
         '            </li>';
       var liDom = $(liStr);
-      liDom.data('id',theId);
-      liDom.on('click',function () {
+      liDom.data('id', theId);
+      liDom.on('click', function () {
         var theId = $(this).data('id');
-        window.location.href='SHWGOIE:http://14.23.164.13:7001/video/?vid=' + theId;
+        window.location.href = 'SHWGOIE:http://14.23.164.13:7001/video/?vid=' + theId;
       });
       theUl.append(liDom);
     }
@@ -2788,48 +2893,210 @@ $(function () {
   }
 
   var getYJDataAjax = null;
+  var TerminalWarningList = [],ServiceAreaWarningList = [];
 
   /**
    * 获取3级预警数据
    */
-  function getYJData(theTab) {
+  // function getYJData(theTab) {
+  //   var url, keyName, theNumKey;
+  //   if (nowTab === tabArr[0]) {
+  //     url = 'terminal/getTerminalWarningList.do';
+  //     keyName = 'listTerminal';
+  //     theNumKey = 'userCnt'
+  //   }
+  //   else if (nowTab === tabArr[1]) {
+  //     url = 'serviceArea/getServiceAreaWarningList.do';
+  //     keyName = 'listServiceArea';
+  //     theNumKey = 'userCnt'
+  //   }
+  //   else if (nowTab === tabArr[2]) {
+  //     url = 'toll/getTollWarningList.do';
+  //     keyName = 'listToll';
+  //     theNumKey = 'pepValue';
+  //     pointControl.showPoints(nowTab, []);
+  //     markerBindClick();
+  //     addStation2();
+  //     return
+  //   } else {
+  //     return
+  //   }
+  //
+  //   var top3 = $('#top3');
+  //   var isLoading = top3.data('isLoading');
+  //   // if(isLoading) {
+  //   //   return
+  //   // }
+  //   top3.data('isLoading', true);
+  //
+  //   // if (getYJDataAjax) {
+  //   //   // debugger
+  //   //   clearYjUL();
+  //   //   getYJDataAjax.abort();
+  //   // }
+  //   var data = {};
+  //   $.ajax({
+  //     type: "POST",
+  //     url: serviceBase + url,
+  //     data: {},
+  //     dataType: "json",
+  //     theTab: nowTab,
+  //     success: function (data) {
+  //       // console.log('reqRoadData',data)
+  //       top3.data('isLoading', false);
+  //       // clearYjUL();
+  //       if (data && data.isSuccess) {
+  //
+  //         getYJDataAjax = null;
+  //         var yongji = $('#yongji');
+  //         var shizhong = $('#shizhong');
+  //         var shushi = $('#shushi');
+  //         var ss = {
+  //           name: '舒适',
+  //           dom: shushi,
+  //           icon: 'top3-icon3',
+  //           pointClass: 'point3',
+  //           data: data.data[keyName + '_ss'],
+  //         };
+  //         var sz = {
+  //           name: '适中',
+  //           dom: shizhong,
+  //           icon: 'top3-icon2',
+  //           pointClass: 'point2',
+  //           data: data.data[keyName + '_sz'],
+  //
+  //         };
+  //         var yj = {
+  //           name: '拥挤',
+  //           dom: yongji,
+  //           icon: 'top3-icon1',
+  //           pointClass: 'point1',
+  //           data: data.data[keyName + '_yj']
+  //         };
+  //
+  //         var dataArr = [ss, sz, yj];
+  //         if (this.theTab === nowTab) {
+  //           // debugger
+  //           pointControl.showPoints(nowTab, dataArr); // 刷新了markers
+  //           markerBindClick();
+  //           addStation2();
+  //         }
+  //
+  //         for (var i = 0; i < dataArr.length; i++) {
+  //           var item = dataArr[i];
+  //           // debugger
+  //           for (var j = 0; j < item.data.length; j++) {
+  //             var temp = item.data[j];
+  //             var num;
+  //             // if(temp.userCnt>=10000) {
+  //             // num = temp.userCnt.toString();
+  //             // num = num.slice(0, num.length - 4);
+  //             // temp.userCnt = parseInt(num);
+  //             temp.userCnt = toWan2(temp[theNumKey]);
+  //             // }
+  //           }
+  //           if (nowTab !== tabArr[2] && this.theTab === nowTab) {
+  //             // debugger
+  //             addYjLi(item)
+  //           }
+  //         }
+  //
+  //       }
+  //     }
+  //   });
+  //
+  //   // $.axpost(url, data, function (data) {
+  //   //   // console.log('c',curAjax);
+  //   //   top3.data('isLoading',false);
+  //   //   clearYjUL();
+  //   //   if (data && data.isSuccess) {
+  //   //
+  //   //     getYJDataAjax = null;
+  //   //     var yongji = $('#yongji');
+  //   //     var shizhong = $('#shizhong');
+  //   //     var shushi = $('#shushi');
+  //   //     var ss = {
+  //   //       name: '舒适',
+  //   //       dom: shushi,
+  //   //       icon: 'top3-icon3',
+  //   //       pointClass: 'point3',
+  //   //       data: data.data[keyName + '_ss'],
+  //   //     };
+  //   //     var sz = {
+  //   //       name: '适中',
+  //   //       dom: shizhong,
+  //   //       icon: 'top3-icon2',
+  //   //       pointClass: 'point2',
+  //   //       data: data.data[keyName + '_sz'],
+  //   //
+  //   //     };
+  //   //     var yj = {
+  //   //       name: '拥挤',
+  //   //       dom: yongji,
+  //   //       icon: 'top3-icon1',
+  //   //       pointClass: 'point1',
+  //   //       data: data.data[keyName + '_yj']
+  //   //     };
+  //   //
+  //   //     var dataArr = [ss, sz, yj];
+  //   //     pointControl.showPoints(nowTab, dataArr); // 刷新了markers
+  //   //     markerBindClick();
+  //   //     addStation2();
+  //   //
+  //   //     for (var i = 0; i < dataArr.length; i++) {
+  //   //       var item = dataArr[i];
+  //   //       // debugger
+  //   //       for (var j = 0; j < item.data.length; j++) {
+  //   //         var temp = item.data[j];
+  //   //         var num;
+  //   //         // if(temp.userCnt>=10000) {
+  //   //         // num = temp.userCnt.toString();
+  //   //         // num = num.slice(0, num.length - 4);
+  //   //         // temp.userCnt = parseInt(num);
+  //   //         temp.userCnt = toWan2(temp[theNumKey]);
+  //   //         // }
+  //   //       }
+  //   //       if(nowTab!==tabArr[2]) {
+  //   //         addYjLi(item)
+  //   //       }
+  //   //     }
+  //   //
+  //   //   }
+  //   // });
+  //
+  //   function addYjLi(item) {
+  //     var index = 0;
+  //     for (var i = 0; i < item.data.length; i++) {
+  //       var liData = item.data[i];
+  //       index++;
+  //       var liDom = '<li class="top3-li" title="' + liData.postionName + '">\n' +
+  //         '<i class="' + item.icon + '">' + index + '</i>\n' +
+  //         '<p><label class="p-name ellipsis">' + liData.postionName + '</label> <span>当前客流 <i class="num">' + liData.userCnt + '</i>人</span></p>\n' +
+  //         '</li>';
+  //       var temp = $(liDom);
+  //
+  //       temp.on('click', function () {
+  //         // debugger
+  //         var name = $(this).find('.p-name').text();
+  //         curPosition = name;
+  //         goToPointByName(name);
+  //         hideTabs(name);
+  //         pointControl.hideMarkers();
+  //         hideLiTabBox();
+  //       });
+  //       item.dom.append(temp)
+  //     }
+  //
+  //     item.dom.parent().find('.yj-num').text(item.data.length + '处');
+  //   }
+  // }
+
+  function reqTerminalWarningList() {
     var url, keyName, theNumKey;
-    var temp = ''
-    if (nowTab === tabArr[0]) {
-      url = 'terminal/getTerminalWarningList.do';
-      keyName = 'listTerminal';
-      theNumKey = 'userCnt'
-    }
-    else if (nowTab === tabArr[1]) {
-      url = 'serviceArea/getServiceAreaWarningList.do';
-      keyName = 'listServiceArea';
-      theNumKey = 'userCnt'
-    }
-    else if (nowTab === tabArr[2]) {
-      url = 'toll/getTollWarningList.do';
-      keyName = 'listToll';
-      theNumKey = 'pepValue';
-      pointControl.showPoints(nowTab,[]);
-      markerBindClick();
-      addStation2();
-      return
-    } else {
-      return
-    }
+    url = 'terminal/getTerminalWarningList.do';
+    keyName = 'listTerminal';
+    theNumKey = 'userCnt';
 
-    var top3 = $('#top3');
-    var isLoading =  top3.data('isLoading');
-    // if(isLoading) {
-    //   return
-    // }
-    top3.data('isLoading',true);
-
-    // if (getYJDataAjax) {
-    //   // debugger
-    //   clearYjUL();
-    //   getYJDataAjax.abort();
-    // }
-    var data = {};
     $.ajax({
       type: "POST",
       url: serviceBase + url,
@@ -2838,11 +3105,11 @@ $(function () {
       theTab: nowTab,
       success: function (data) {
         // console.log('reqRoadData',data)
-        top3.data('isLoading',false);
         // clearYjUL();
+        tab0Time = new Date();
+        TerminalWarningList = [];
         if (data && data.isSuccess) {
 
-          getYJDataAjax = null;
           var yongji = $('#yongji');
           var shizhong = $('#shizhong');
           var shushi = $('#shushi');
@@ -2870,7 +3137,8 @@ $(function () {
           };
 
           var dataArr = [ss, sz, yj];
-          if(this.theTab===nowTab) {
+          TerminalWarningList = dataArr;
+          if (nowTab === tabArr[0]) {
             // debugger
             pointControl.showPoints(nowTab, dataArr); // 刷新了markers
             markerBindClick();
@@ -2882,15 +3150,9 @@ $(function () {
             // debugger
             for (var j = 0; j < item.data.length; j++) {
               var temp = item.data[j];
-              var num;
-              // if(temp.userCnt>=10000) {
-              // num = temp.userCnt.toString();
-              // num = num.slice(0, num.length - 4);
-              // temp.userCnt = parseInt(num);
               temp.userCnt = toWan2(temp[theNumKey]);
-              // }
             }
-            if(nowTab!==tabArr[2] && this.theTab===nowTab) {
+            if (nowTab === tabArr[0]) {
               // debugger
               addYjLi(item)
             }
@@ -2900,91 +3162,170 @@ $(function () {
       }
     });
 
-    // $.axpost(url, data, function (data) {
-    //   // console.log('c',curAjax);
-    //   top3.data('isLoading',false);
-    //   clearYjUL();
-    //   if (data && data.isSuccess) {
-    //
-    //     getYJDataAjax = null;
-    //     var yongji = $('#yongji');
-    //     var shizhong = $('#shizhong');
-    //     var shushi = $('#shushi');
-    //     var ss = {
-    //       name: '舒适',
-    //       dom: shushi,
-    //       icon: 'top3-icon3',
-    //       pointClass: 'point3',
-    //       data: data.data[keyName + '_ss'],
-    //     };
-    //     var sz = {
-    //       name: '适中',
-    //       dom: shizhong,
-    //       icon: 'top3-icon2',
-    //       pointClass: 'point2',
-    //       data: data.data[keyName + '_sz'],
-    //
-    //     };
-    //     var yj = {
-    //       name: '拥挤',
-    //       dom: yongji,
-    //       icon: 'top3-icon1',
-    //       pointClass: 'point1',
-    //       data: data.data[keyName + '_yj']
-    //     };
-    //
-    //     var dataArr = [ss, sz, yj];
-    //     pointControl.showPoints(nowTab, dataArr); // 刷新了markers
-    //     markerBindClick();
-    //     addStation2();
-    //
-    //     for (var i = 0; i < dataArr.length; i++) {
-    //       var item = dataArr[i];
-    //       // debugger
-    //       for (var j = 0; j < item.data.length; j++) {
-    //         var temp = item.data[j];
-    //         var num;
-    //         // if(temp.userCnt>=10000) {
-    //         // num = temp.userCnt.toString();
-    //         // num = num.slice(0, num.length - 4);
-    //         // temp.userCnt = parseInt(num);
-    //         temp.userCnt = toWan2(temp[theNumKey]);
-    //         // }
-    //       }
-    //       if(nowTab!==tabArr[2]) {
-    //         addYjLi(item)
-    //       }
-    //     }
-    //
-    //   }
-    // });
+  }
+  function renderTerminalWarningList() {
+    clearYjUL();
+    var theNumKey = 'userCnt';
 
-    function addYjLi(item) {
-      var index = 0;
-      for (var i = 0; i < item.data.length; i++) {
-        var liData = item.data[i];
-        index++;
-        var liDom = '<li class="top3-li" title="' + liData.postionName + '">\n' +
-          '<i class="' + item.icon + '">' + index + '</i>\n' +
-          '<p><label class="p-name ellipsis">' + liData.postionName + '</label> <span>当前客流 <i class="num">' + liData.userCnt + '</i>人</span></p>\n' +
-          '</li>';
-        var temp = $(liDom);
+    if (nowTab === tabArr[0]) {
+      pointControl.showPoints(nowTab, TerminalWarningList); // 刷新了markers
+      markerBindClick();
+      addStation2();
+    }
 
-        temp.on('click', function () {
-          // debugger
-          var name = $(this).find('.p-name').text();
-          curPosition = name;
-          goToPointByName(name);
-          hideTabs(name);
-          pointControl.hideMarkers();
-          hideLiTabBox();
-        });
-        item.dom.append(temp)
+    for (var i = 0; i < TerminalWarningList.length; i++) {
+      var item = TerminalWarningList[i];
+      // debugger
+      for (var j = 0; j < item.data.length; j++) {
+        var temp = item.data[j];
+        temp.userCnt = toWan2(temp[theNumKey]);
       }
-
-      item.dom.parent().find('.yj-num').text(item.data.length + '处');
+      if (nowTab === tabArr[0]) {
+        // debugger
+        addYjLi(item)
+      }
     }
   }
+
+  function renderServiceAreaWarningList() {
+    clearYjUL();
+    var theNumKey = 'userCnt';
+    if (nowTab === tabArr[1]) {
+      pointControl.showPoints(nowTab, ServiceAreaWarningList); // 刷新了markers
+      markerBindClick();
+      addStation2();
+    }
+    for (var i = 0; i < ServiceAreaWarningList.length; i++) {
+      var item = ServiceAreaWarningList[i];
+      // debugger
+      for (var j = 0; j < item.data.length; j++) {
+        var temp = item.data[j];
+        temp.userCnt = toWan2(temp[theNumKey]);
+      }
+      if (nowTab === tabArr[1]) {
+        // debugger
+        addYjLi(item)
+      }
+    }
+  }
+
+  function reqServiceAreaWarningList() {
+    var url, keyName, theNumKey;
+    url = 'serviceArea/getServiceAreaWarningList.do';
+    keyName = 'listServiceArea';
+    theNumKey = 'userCnt';
+
+    $.ajax({
+      type: "POST",
+      url: serviceBase + url,
+      data: {},
+      dataType: "json",
+      theTab: nowTab,
+      success: function (data) {
+        // console.log('reqRoadData',data)
+        // clearYjUL();
+        tab1Time = new Date();
+        ServiceAreaWarningList = [];
+        if (data && data.isSuccess) {
+
+          var yongji = $('#yongji');
+          var shizhong = $('#shizhong');
+          var shushi = $('#shushi');
+          var ss = {
+            name: '舒适',
+            dom: shushi,
+            icon: 'top3-icon3',
+            pointClass: 'point3',
+            data: data.data[keyName + '_ss'],
+          };
+          var sz = {
+            name: '适中',
+            dom: shizhong,
+            icon: 'top3-icon2',
+            pointClass: 'point2',
+            data: data.data[keyName + '_sz'],
+
+          };
+          var yj = {
+            name: '拥挤',
+            dom: yongji,
+            icon: 'top3-icon1',
+            pointClass: 'point1',
+            data: data.data[keyName + '_yj']
+          };
+
+          var dataArr = [ss, sz, yj];
+          ServiceAreaWarningList = dataArr;
+          if (nowTab === tabArr[1]) {
+            // debugger
+            pointControl.showPoints(nowTab, dataArr); // 刷新了markers
+            markerBindClick();
+            addStation2();
+          }
+
+          for (var i = 0; i < dataArr.length; i++) {
+            var item = dataArr[i];
+            // debugger
+            for (var j = 0; j < item.data.length; j++) {
+              var temp = item.data[j];
+              temp.userCnt = toWan2(temp[theNumKey]);
+            }
+            if (nowTab === tabArr[1]) {
+              // debugger
+              addYjLi(item)
+            }
+          }
+
+        }
+      }
+    });
+
+  }
+
+  function refreshTerminalWarningList() {
+    var timeToRefresh = canRefresh(tab0Time,5);
+    if(timeToRefresh) {
+      reqTerminalWarningList()
+    } else {
+      renderTerminalWarningList()
+    }
+  }
+
+  function refreshServiceAreaWarningList() {
+    var timeToRefresh = canRefresh(tab1Time,5);
+    if(timeToRefresh) {
+      reqServiceAreaWarningList()
+    } else {
+      renderServiceAreaWarningList()
+    }
+  }
+
+  function addYjLi(item) {
+    var index = 0;
+    for (var i = 0; i < item.data.length; i++) {
+      var liData = item.data[i];
+      index++;
+      var liDom = '<li class="top3-li" title="' + liData.postionName + '">\n' +
+        '<i class="' + item.icon + '">' + index + '</i>\n' +
+        '<p><label class="p-name ellipsis">' + liData.postionName + '</label> <span>当前客流 <i class="num">' + liData.userCnt + '</i>人</span></p>\n' +
+        '</li>';
+      var temp = $(liDom);
+
+      temp.on('click', function () {
+        // debugger
+        var name = $(this).find('.p-name').text();
+        curPosition = name;
+        goToPointByName(name);
+        hideTabs(name);
+        pointControl.hideMarkers();
+        hideLiTabBox();
+      });
+      item.dom.append(temp)
+    }
+
+    item.dom.parent().find('.yj-num').text(item.data.length + '处');
+  }
+
 
   // 清空位置图片
   function initCenterBG() {
@@ -3006,7 +3347,7 @@ $(function () {
     var ssklInArr = $('.sskl-in');
     var ssklOutArr = $('.sskl-out');
     var ssklHourAddArr = $('.sskl-hour-add');
-    var theArr = [ssklNumArr,ssklInArr,ssklOutArr,ssklHourAddArr];
+    var theArr = [ssklNumArr, ssklInArr, ssklOutArr, ssklHourAddArr];
     $('.total-psg').empty();
     $('.arrival-psg').empty();
     $('.leave-psg').empty();
@@ -3034,7 +3375,7 @@ $(function () {
       for (var j = 0; j < temp; j++) {
         var newImage = new Image();
         // newImage.src = img.src;
-          newImage.src = 'yjzx/img/menu/icon_lower_center.png';
+        newImage.src = 'yjzx/img/menu/icon_lower_center.png';
 
         // console.log('temp:',temp)
         imgBox.append(newImage)
@@ -3295,7 +3636,7 @@ $(function () {
   function addSexNum(domObj, keyName, arrName) {
     // debugger
     if (arrName[keyName].length) {
-      var manNum,womenNum;
+      var manNum, womenNum;
       for (var j = 0; j < arrName[keyName].length; j++) {
         var obj1 = arrName[keyName][j];
         // debugger
@@ -4934,7 +5275,7 @@ $(function () {
         // console.log('tab2Li3Echart3', data);
         var tempArr = [];
         var dataArr = [];
-        var name,snNum;
+        var name, snNum;
         var isAir = isAirport();
 
         if (!isEmptyObject(data.data.originMap)) {
@@ -4964,13 +5305,13 @@ $(function () {
                 color: colors[i]
               }
             };
-            if(name==='境外' && !isAir) {
+            if (name === '境外' && !isAir) {
               continue
             }
             dataArr.push(theData);
 
           }
-          correctDongChaNum(dataArr,snNum)
+          correctDongChaNum(dataArr, snNum)
 
           // console.log('tempArr:', dataArr,tempArr);
 
@@ -4993,8 +5334,8 @@ $(function () {
     })
   }
 
-  function correctDongChaNum(arr,snNum) {
-    if(arr.length>2) {
+  function correctDongChaNum(arr, snNum) {
+    if (arr.length > 2) {
       return
     }
     var swNum;
@@ -5002,7 +5343,7 @@ $(function () {
     // debugger
     for (var i = 0; i < arr.length; i++) {
       var item = arr[i];
-      if(item.name==='省外') {
+      if (item.name === '省外') {
         item.value = swNum;
       }
     }
@@ -5103,7 +5444,7 @@ $(function () {
         // console.log('tab2Li3Echart4', data);
         var tempArr = [];
         var dataArr = [];
-        var name,snNum;
+        var name, snNum;
         var isAir = isAirport();
 
         if (!isEmptyObject(data.data.leaveMap)) {
@@ -5125,7 +5466,7 @@ $(function () {
             if (obj.type === 'forgeinLeave') {
               name = '境外'
             }
-            if(name==='境外' && !isAir) {
+            if (name === '境外' && !isAir) {
               continue
             }
             dataArr.push({
@@ -5136,7 +5477,7 @@ $(function () {
               }
             });
           }
-          correctDongChaNum(dataArr,snNum)
+          correctDongChaNum(dataArr, snNum)
 
           // console.log('tempArr:', dataArr,tempArr);
         }
@@ -5934,7 +6275,7 @@ $(function () {
         formatter: "{a} <br/>{b}: {c} ({d}%)"
       },
       legend: {
-        show:true,
+        show: true,
         // orient: 'horizontal',
         // x: 'left',
         top: '90%',
@@ -5997,9 +6338,9 @@ $(function () {
       if (data.isSuccess) {
         var dataArr = [];
         var myObj = {
-          1:'省内',
-          2:'省外',
-          3:'境外'
+          1: '省内',
+          2: '省外',
+          3: '境外'
         }
         if (data.data.length) {
           for (var i = 0; i < data.data.length; i++) {
