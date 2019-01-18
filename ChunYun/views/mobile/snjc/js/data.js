@@ -129,7 +129,8 @@ function PlacePointView(theMap) {
   //   '公路|高速|机场高速|机场高速:113.285256,23.350941;\n';
 
 
-  var placeData = theStr + theStr2;
+  // var placeData = theStr + theStr2;
+  var placeData = theStr;
 
   var theGroups = placeData.split(';');
   var theDataObject = [];
@@ -203,6 +204,22 @@ PlacePointView.prototype.getPlacePoints = function (pointType) {
   }
   return thePlaces;
 }
+PlacePointView.prototype.getPointType = function (pointName) {
+  var theName = pointName;
+  var theType;
+  for (var i = 0; i < this.PlacePoints.length; i++) {
+    var thePlace = this.PlacePoints[i];
+    if (thePlace['枢纽名称'] == theName) {
+      theType = thePlace['枢纽类别']
+    }
+  }
+  if(!theType) {
+    console.warn('没有找到点的类别')
+    return
+  }
+  return theType;
+}
+
 PlacePointView.prototype.removePoints = function () {
   this.theMap.remove(this.markes);
   // this.theMap.remove(this.unMatchYJMarkers);

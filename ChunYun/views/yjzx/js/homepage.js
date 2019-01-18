@@ -1,4 +1,6 @@
 var pointControl;
+var jamListMarkers = [];
+
 $(function () {
   var hourArr = ['0-1', '1-2', '2-3', '3-4', '4-5', '5-6', '6-7', '7-8', '8-24'];
 
@@ -1682,7 +1684,6 @@ $(function () {
   }
 
   var mList = [];
-  var jamListMarkers = [];
 
   /**
    * 隐藏拥堵路段markers
@@ -1723,6 +1724,7 @@ $(function () {
    */
   function addJamListMarker(theJamList) {
     var theIdx = 0;
+    var resultArr = {};
     for (var i = 0; i < theJamList.length; i++) {
       theIdx++;
       if(i>=10) {
@@ -1742,6 +1744,7 @@ $(function () {
       // debugger
 
       var theMidLngLat = pointArr[parseInt(pointArr.length/2)].map(function (t) { return parseFloat(t) });
+      resultArr[theName] = theMidLngLat;
       // debugger
       // 道路中间点
       // console.log(theIdx);
@@ -1754,8 +1757,9 @@ $(function () {
       jamListMarkers.push(roadCenterMarker);
       theMap.add(roadCenterMarker);
     }
+    return resultArr
   }
-
+  var jamList = [];
   /**
    * 查询高速拥堵top10事件列表
    */
@@ -1771,7 +1775,8 @@ $(function () {
         jamList = _.sortBy(jamList, function (item) {  // 按照拥堵距离排序
           return -item.jamDist;
         });
-        addJamListMarker(jamList);
+        var theLngLatObj = addJamListMarker(jamList);
+        // debugger
         // console.log('jamList:',jamList);
         var idx = 0;
         var jamRankUl = $('#jiance-top10-ul');
@@ -1817,6 +1822,7 @@ $(function () {
           liDom[0].dataset.jamDist = toKM(liData.jamDist);
           liDom[0].dataset.dir = dir;
           liDom[0].dataset.roadName = liData.roadName;
+          liDom[0].dataset.lnglat = theLngLatObj[liData.roadName];
 
           liDom.on('click', function () {
             var me = this;
@@ -1830,57 +1836,62 @@ $(function () {
             var theEventId = this.dataset.eventId;
             var theInsertTime = this.dataset.insertTime;
             var xy = this.dataset.lnglat;
-            var url = 'highSpeed/selectGsCongestionDetails.do';
-            var data = {
-              eventId: theEventId,
-              insertTime: theInsertTime
-            };
-            $.axpost(url, data, function (data) {
-              // console.log('dtlData:',data);
-              var rows = data.data.rows;
-              var eve = data.data.event;
-              // console.log('row',rows)
-              var theRows = [];
-              var pointArr = [];
-              for (var i = 0; i < rows.length; i++) {
-                var r = rows[i].xys.split(';');
-                for (var k = 0; k < r.length; k++) {
-                  var ritem = r[k].split(',');
-                  pointArr.push(ritem);
-                }
-                // console.log('r',r);
-                // debugger
-                theRows.push(r);
-              }
-              // debugger
-              // console.log('theRow:',theRows);
-              // console.log('pointArr:',pointArr);
+            // var theMiddlePointArr = pointArr[parseInt(pointArr.length / 2)];
+            var theMiddlePointArr = xy.split(',').map(function (t) { return parseFloat(t) });
+            // debugger
+            addLuWangMarker(theMiddlePointArr, theData);
 
-              // var centerRow = rows[parseInt(rows.length/2)];
-              // var lnglat = xy.split(',').map(function (t) { return parseFloat(t) });
-
-              traffic.drawRoads(theRows, nowTab);
-              var theMiddlePointArr = pointArr[parseInt(pointArr.length / 2)];
-              // debugger
-              addLuWangMarker(theMiddlePointArr, theData);
-
-              // theMap.remove(mList);
-              // var mIdx = 'm';
-              // for (var i = 0; i < rows.length; i++) {
-              //   // debugger
-              //   var p = rows[i].xy.split(',');
-              //   mIdx+=i;
-              //
-              //   mIdx = new AMap.Marker({
-              //     position: new AMap.LngLat(parseFloat(p[0]),parseFloat(p[1])),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-              //     title: '中间点',
-              //     content: '<div style="color:#fff;font-size:20px">'+i+'</div>'
-              //   });
-              //   mList.push(mIdx)
-              // }
-              // theMap.add(mList);
-
-            })
+            // var url = 'highSpeed/selectGsCongestionDetails.do';
+            // var data = {
+            //   eventId: theEventId,
+            //   insertTime: theInsertTime
+            // };
+            // $.axpost(url, data, function (data) {
+            //   // console.log('dtlData:',data);
+            //   var rows = data.data.rows;
+            //   var eve = data.data.event;
+            //   // console.log('row',rows)
+            //   var theRows = [];
+            //   var pointArr = [];
+            //   for (var i = 0; i < rows.length; i++) {
+            //     var r = rows[i].xys.split(';');
+            //     for (var k = 0; k < r.length; k++) {
+            //       var ritem = r[k].split(',');
+            //       pointArr.push(ritem);
+            //     }
+            //     // console.log('r',r);
+            //     // debugger
+            //     theRows.push(r);
+            //   }
+            //   // debugger
+            //   // console.log('theRow:',theRows);
+            //   // console.log('pointArr:',pointArr);
+            //
+            //   // var centerRow = rows[parseInt(rows.length/2)];
+            //   // var lnglat = xy.split(',').map(function (t) { return parseFloat(t) });
+            //
+            //   traffic.drawRoads(theRows, nowTab);
+            //   var theMiddlePointArr = pointArr[parseInt(pointArr.length / 2)];
+            //   // debugger
+            //   addLuWangMarker(theMiddlePointArr, theData);
+            //
+            //   // theMap.remove(mList);
+            //   // var mIdx = 'm';
+            //   // for (var i = 0; i < rows.length; i++) {
+            //   //   // debugger
+            //   //   var p = rows[i].xy.split(',');
+            //   //   mIdx+=i;
+            //   //
+            //   //   mIdx = new AMap.Marker({
+            //   //     position: new AMap.LngLat(parseFloat(p[0]),parseFloat(p[1])),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+            //   //     title: '中间点',
+            //   //     content: '<div style="color:#fff;font-size:20px">'+i+'</div>'
+            //   //   });
+            //   //   mList.push(mIdx)
+            //   // }
+            //   // theMap.add(mList);
+            //
+            // })
           });
           jamRankUl.append(liDom);
         }

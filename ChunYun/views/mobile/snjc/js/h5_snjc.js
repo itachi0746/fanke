@@ -28,6 +28,7 @@ $(function () {
     reqWeather(curPosition);
     getYJData();
     // var chartBoxH = $('#chart').height();
+    getResultListH();
 
     searchTabBindClick();
     tab2Li2InitEchart()
@@ -43,11 +44,9 @@ $(function () {
     $('#input1').val(val);
   }
   /**
-   * 显示搜索框后
+   * 显示搜索框后,加入默认的列表
    */
   function showSearchCB() {
-    getResultListH();
-
     clearResultList();
     var tabBox = $('#tab-box');
     var resultList = $('#result-list');
@@ -73,7 +72,6 @@ $(function () {
         // debugger
         break
       }
-
     }
   }
 
@@ -301,6 +299,78 @@ $(function () {
     }
   }
 
+  // 监听搜索input输入
+  $('#search').on('input', function () {
+    // console.log($(this).val());
+    var resultList = $('#result-list');
+    resultList.empty();
+    var v = $(this).val().trim();
+    console.log(v);
+
+    if (!v) {
+      console.log('搜索值不能为空');
+      // resultList.hide();
+      showSearchCB();
+      return
+    }
+    var markerArr = pointControl.PlacePoints;
+    var resultArr = [];
+    // debugger
+    for (var i = 0; i < markerArr.length; i++) {
+      var m = markerArr[i];
+      // debugger
+      if(!m['枢纽名称']) {
+        console.log('名字不对');
+        continue
+      }
+      if (v === m['枢纽名称'].substr(0, v.length)) {
+        console.log(m['枢纽名称']);
+        resultArr.push(m['枢纽名称'])
+        // debugger
+      }
+    }
+    // console.log(resultArr);
+
+    // debugger
+    if (!resultArr) {
+      console.log('没符合条件的值');
+      resultList.hide();
+      return
+    }
+    for (var j = 0; j < resultArr.length; j++) {
+      // console.log(j);
+
+      var r = resultArr[j];
+      var theLi = $('<li>' + r + '</li>');
+      var that = this;
+      theLi.on('click', function () {
+        $(that).val('');
+
+        var searchBox = $('#search-box');
+        var theText = $(this).text();
+        var type = pointControl.getPointType(theText);
+        type = tabMap[type];
+        // debugger
+        if(!type) {
+          console.log('没有找到类型');
+          return
+        }
+        positionType = type;
+        curPosition = theText;
+        changeInput1(curPosition);
+        goToPointByName(curPosition);
+        tab2Li2Echart1reqData(returnDate());
+
+        searchBox.hide();
+      });
+      // debugger
+      // console.log(resultList);
+
+      resultList.append(theLi);
+      resultList.show()
+    }
+  });
+
   /**
    * 请求热力数据
    * @param name
@@ -439,7 +509,10 @@ $(function () {
         // 分割线
         splitLine: {
           show: false
-        }
+        },
+        min: 0,
+        max: 50000,
+        interval: 10000
       },
       series: [
         {

@@ -260,6 +260,7 @@ $(function () {
                             var theKeyMap = {};
                             for (var i = 0; i < params.length; i = i + 1) {
                                 if (!theKeyMap[params[i].seriesName]) {
+                                    //debugger;
                                     var theColorText = "<span style=\"display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:" + params[i].color + ";\"></span>";
                                     theDatas.push(theColorText + params[i].seriesName + ':' + (params[i].data) + '万');
                                     theKeyMap[params[i].seriesName] = true;
@@ -385,6 +386,7 @@ $(function () {
                     type: 'line',
                     symbol: 'none',
                     smooth: true,
+                    color:color,
                     showSymbol: false,
                     tooltip: {
                         position: 'left',
@@ -420,6 +422,7 @@ $(function () {
                     name: name,
                     type: 'line',
                     symbol: 'none',
+                    color:color,
                     smooth: true,
                     showSymbol: false,
                     tooltip: {
@@ -443,6 +446,7 @@ $(function () {
                 var theOptions = {};
                 $.extend(true, theOptions, option);
                 series = getSeries(theItem.name, theItem.textStyle.color, [dataArray1[i], dataArray2[i]] || [[], []]);
+                //debugger;
                 theOptions.series = series;
                 theCharts[i].setOption(theOptions);
             }
@@ -674,7 +678,7 @@ $(function () {
             var theItemConfig = [
                 /*{name: '总旅客', textStyle: {color: "#cfccfc"}},*/
                 {name: '发送', textStyle: {color: "#6a6d06"}},
-                {name: '到达', textStyle: {color: "#0441a7"}}];
+                {name: '到达', textStyle: {color: "#22b347"}}];
             var theBeginDate = new Date('2019-01-21');
             var theXData = [];
             theXData.push(theBeginDate.getTime());

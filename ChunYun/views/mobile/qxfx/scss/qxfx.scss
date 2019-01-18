@@ -161,7 +161,8 @@ html,body {
     display: flex;
     align-items: center;
     //width: 250px;
-    margin-bottom: calRem(40);
+    margin-bottom: 0.9rem;
+    height:calRem(20);
 
     i {
       font-size: calRem(15);
@@ -207,6 +208,8 @@ html,body {
 
   li {
     text-align: center;
+    margin-bottom: 0.9rem;
+    height:calRem(20);
   }
 }
 .col3 {
@@ -231,6 +234,8 @@ html,body {
 
   li {
     display: flex;
+    margin-bottom: 0.9rem;
+    height:calRem(20);
 
     section {
       min-width: 2.5rem;
