@@ -46,9 +46,9 @@ Date.prototype.next = function (num) {
  * @param date2
  * @returns {number}
  */
-Date.daysBetween = function( date1, date2 ) {
+Date.daysBetween = function (date1, date2) {
     //Get 1 day in milliseconds
-    var one_day=1000*60*60*24;
+    var one_day = 1000 * 60 * 60 * 24;
 
     // Convert both dates to milliseconds
     var date1_ms = date1.getTime();
@@ -58,7 +58,7 @@ Date.daysBetween = function( date1, date2 ) {
     var difference_ms = date2_ms - date1_ms;
 
     // Convert back to days and return
-    return Math.round(difference_ms/one_day);
+    return Math.round(difference_ms / one_day);
 }
 /*
 概况：3号下午跑1号的数据
@@ -227,16 +227,16 @@ function PageViewBase(frameElement) {
     // this.serviceBase = "http://localhost/gdcnymot/";
     this.serviceBase = serviceBase;
     this.initExtend();
-   /* this.load("cw/initData.do",{},function () {
-        
-    });*/
+    /* this.load("cw/initData.do",{},function () {
+
+     });*/
     var theUrlMap = {
         "test": "qxjc.html",
         "insight": "qxdc.html",
         "bridge": "gzadq.html",
         "strait": "qzhx.html",
         "yxzk": 'yxzk.html',
-        "lkyw":'lkyw.html',// 'http://10.0.64.247:11000/StaticResource/Framework/Assets/global/plugins/uniform/css/uniform.default.css',//
+        "lkyw": 'lkyw.html',// 'http://10.0.64.247:11000/StaticResource/Framework/Assets/global/plugins/uniform/css/uniform.default.css',//
     };
     $('.date-action,.date-icon').unbind().click(function (e) {
         //debugger;
@@ -267,7 +267,7 @@ function PageViewBase(frameElement) {
     }
     if (parent) {
         $(function () {
-           // $(document.body).css('background-image', 'transparent');
+            // $(document.body).css('background-image', 'transparent');
         });
     }
     $('.topbutton,.topbutton_new,.topbutton_1').click(function () {
@@ -447,7 +447,7 @@ PageViewBase.prototype.bind = function (ele, data) {
     var theFieldCls = '.field';
     $(ele).find(theFieldCls).each(function () {
         var theFieldName = $(this).data('field');
-        if (theFieldName &&data&& data[theFieldName]!=undefined) {
+        if (theFieldName && data && data[theFieldName] != undefined) {
             var theText = data[theFieldName];
             if ($(this).is('input')) {
                 $(this).val(theText);
@@ -466,10 +466,11 @@ PageViewBase.prototype.bind = function (ele, data) {
 PageViewBase.prototype.loadTemplateTable = function (theTableId, data, pageindex, pagesize) {
     var theTemplate = $('#' + theTableId).find('.template');
     var theTableBody = $('#' + theTableId).find('.data');
-    var thePageSize=$('#' + theTableId).data('pagesize');
+    var thePageSize = $('#' + theTableId).data('pagesize');
     var theTemplateStr = $(theTemplate).html();
     pageindex = pageindex || 0;
-    pagesize = pagesize ||thePageSize|| 5;
+    pagesize = pagesize || thePageSize || 5;
+    $('#' + theTableId).data('pagesize',pagesize);
     var theStartIndex = pagesize * (pageindex || 0);
     var theEndIndex = pagesize * (pageindex || 0) + pagesize;
     $(theTableBody).empty();
@@ -481,8 +482,9 @@ PageViewBase.prototype.loadTemplateTable = function (theTableId, data, pageindex
             break;
         }
         var data = datas[i];
+        index=i;
         var theResultStr = eval('`' + theTemplateStr + '`');
-        index++;
+        //index++;
         theTemArrays.push(theResultStr);
     }
     var theResultString = theTemArrays.join('');
@@ -492,7 +494,8 @@ PageViewBase.prototype.loadTemplateTable = function (theTableId, data, pageindex
     return theResultStr;
 }).join('');*/
     $(theTableBody).append(theResultString);
-    $(theTableBody).data('data', datas);
+    $('#' + theTableId).data('data', datas);
+    //$(theTableBody).data('data', datas);
     var thePageNum = Math.floor(datas.length / pagesize) + (datas.length % pagesize > 0 ? 1 : 0);
     var thePageDiv = $('#' + theTableId).closest('.table-div').next('.page');
     $(thePageDiv).empty();
@@ -512,6 +515,22 @@ PageViewBase.prototype.loadTemplateTable = function (theTableId, data, pageindex
             me.loadTemplateTable(theTableId, datas, thePageIndex, pagesize);
         });
         $(thePageDiv).append(thePageItem);
+    }
+    $('#' + theTableId).data('PageCount',thePageNum);
+    $('#' + theTableId).data('PageIndex',pageindex);
+    if(me.pageTimer){
+        clearTimeout(me.pageTimer);
+    }
+    //debugger;
+    if (thePageNum > 1) {
+      me.pageTimer=  setTimeout(function () {
+          var thePageData=$('#' + theTableId).data();
+          if(thePageData&&thePageData.PageCount>1){
+              //debugger;
+              me.loadTemplateTable(theTableId, thePageData.data, ((thePageData.PageIndex+1)%2), thePageData.pagesize);
+          }
+
+        }, 2000);
     }
 }
 /*
@@ -791,6 +810,27 @@ PageViewBase.prototype.getRandomPoints = function (bounds, value, max) {
     return theShowList;
 }
 PageViewBase.prototype.drawRelis = function (reliDatas, r) {
+    return this.drawRelis3D(reliDatas, r);
+    var theShowList = [];
+
+    if (reliDatas && reliDatas.length > 0) {
+        for (var i = 0; i < reliDatas.length; i++) {
+            var theItem = reliDatas[i];
+            var theBounds = theItem.bounds;
+            var theData = theItem.data;
+            var theMaxPoint = theItem.max || 100;
+            theShowList = theShowList.concat(this.getRandomPoints(theBounds, theData, theMaxPoint));
+        }
+    }
+    var theDataList = theShowList.map(function (item) {
+        return {lng: item.coordinate[0], lat: item.coordinate[1], count: item.count};
+    });
+    //debugger;
+    this.heartMap.setDataSet({data: theDataList});
+
+}
+
+PageViewBase.prototype.drawRelis3D = function (reliDatas, r) {
     if (!this.heartLayer) {
         var map = Loca.create(this.theMap);
         this.heartLayer = Loca.visualLayer({
@@ -802,12 +842,13 @@ PageViewBase.prototype.drawRelis = function (reliDatas, r) {
         });
     }
     var theShowList = [];
+    //debugger;
     if (reliDatas && reliDatas.length > 0) {
         for (var i = 0; i < reliDatas.length; i++) {
             var theItem = reliDatas[i];
             var theBounds = theItem.bounds;
             var theData = theItem.data;
-            var theMaxPoint = theItem.max || 1000;
+            var theMaxPoint = theItem.max || 30;
             theShowList = theShowList.concat(this.getRandomPoints(theBounds, theData, theMaxPoint));
         }
     }
@@ -917,6 +958,7 @@ PageViewBase.prototype.drawReli = function (bounds, data) {
  * @param name 1 港珠澳 2 琼州海峡
  */
 PageViewBase.prototype.initMap = function (id) {
+    var me = this;
     //最大的缩放程度
     var theMaxZoom = 18;
     //现在的缩放程度
@@ -964,7 +1006,13 @@ PageViewBase.prototype.initMap = function (id) {
     else{
         theMap.setLimitBounds(theBounds2);
     }*/
-
+    theMap.plugin(["AMap.Heatmap"], function () {
+        //初始化heatmap对象
+        me.heartMap = new AMap.Heatmap(theMap, {
+            radius: 10, //给定半径
+            opacity: [0, 0.8]
+        });
+    });
     //地图加载完成事件
     theMap.on('complete', function () {
         var bounds = theMap.getBounds();
@@ -1000,15 +1048,15 @@ PageViewBase.prototype.initMap = function (id) {
  * @param argment
  * @param callback
  */
-PageViewBase.prototype.load = function (url, argment, callback,emal) {
+PageViewBase.prototype.load = function (url, argment, callback, emal) {
     console.log("访问地址：" + url);
     console.log("访问参数:" + argment);
     if (!url) {
         console.log("访问地址不能为空：");
         return;
     }
-    if(emal){
-        callback&&callback();
+    if (emal) {
+        callback && callback();
         return;
     }
     url = this.serviceBase + url;
@@ -1028,6 +1076,7 @@ PageViewBase.prototype.loadInner = function (url, argment, callback) {
         url: url,
         cache: false,
         type: 'post',
+        timeout: 10000,
         data: argment,
         success: function (r) {
             if (typeof(r) == "string") {
@@ -1119,16 +1168,16 @@ PageViewBase.prototype.loadWeather = function (name) {
  * @param clockwise
  * @returns {string}
  */
-PageViewBase.prototype. drawArcByRadiusDeg=function(startX, startY, r, deg, clockwise) {
+PageViewBase.prototype.drawArcByRadiusDeg = function (startX, startY, r, deg, clockwise) {
     var cw = typeof clockwise !== 'undefined' ? clockwise : 1;
-    var x = startX - r + r*Math.cos((deg+90)*Math.PI/180);
-    var y = startY + (1===cw ? 1 : -1)*r*Math.sin((deg+90)*Math.PI/180);
-    var x1 = startX - r + r*Math.cos(90*Math.PI/180);
-    var y1 = startY + (1===cw ? 1 : -1)*r*Math.sin(90*Math.PI/180);
+    var x = startX - r + r * Math.cos((deg + 90) * Math.PI / 180);
+    var y = startY + (1 === cw ? 1 : -1) * r * Math.sin((deg + 90) * Math.PI / 180);
+    var x1 = startX - r + r * Math.cos(90 * Math.PI / 180);
+    var y1 = startY + (1 === cw ? 1 : -1) * r * Math.sin(90 * Math.PI / 180);
 
     var bigOrSmall = deg > 180 ? 1 : 0;
-    var line = " L" + 59 + " " + 59 + " L"+x1 + " " + y1 + "Z";
-    return "M " + x1 +" "+ y1 + " A "+ r +" " + r + " 0 " + bigOrSmall + " " +cw+ " " + x + " " + y + line;
+    var line = " L" + 59 + " " + 59 + " L" + x1 + " " + y1 + "Z";
+    return "M " + x1 + " " + y1 + " A " + r + " " + r + " 0 " + bigOrSmall + " " + cw + " " + x + " " + y + line;
 }
 /***
  * 加载天气表格数据
@@ -1160,13 +1209,13 @@ PageViewBase.prototype.loadWeatherView = function (data) {
             //debugger;
             if (!theImage) {
                 var theImage = theItem['WEATHER_TYPE_12'];
-                if(theImage.indexOf('-')>0){
-                    theNames=theImage.split('-');
+                if (theImage.indexOf('-') > 0) {
+                    theNames = theImage.split('-');
                     theImage = theNames[theImage.length - 1]
                 }
-                theImage+= '.png';
-                var theImageE=$(this).find('.weather-icon.change');
-                theImageE.attr('src',theImageE.data('base')+theImage);
+                theImage += '.png';
+                var theImageE = $(this).find('.weather-icon.change');
+                theImageE.attr('src', theImageE.data('base') + theImage);
             }
         }
 

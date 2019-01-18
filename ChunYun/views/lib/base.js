@@ -4,6 +4,8 @@ if(window.location.hostname==='localhost') {
     serviceBase = "http://localhost/gdcnymot/";///gdcnymot/";
     hostbase="http://localhost";
 } else {
+    //serviceBase = "http://123.207.31.17/gdcnymot/";
+    //hostbase="http://123.207.31.17";
     serviceBase = "http://14.23.164.13:7001/gdcnymot/";
     hostbase="http://14.23.164.13:7001";
 }

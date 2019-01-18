@@ -49,9 +49,22 @@ $(function () {
 
         tooltip: {
             trigger: 'axis',
-            backgroundColor: 'transparent',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            position: function (point, params, dom, rect, size) {
+                // 固定在顶部
+                return [point[0], '10%'];
+            },
             formatter: function (params) {
-                return params[params.length - 1].data + '万';
+                //debugger;
+                var theTimeValue = parseInt(params[params.length - 1].name);
+                var theHours = Math.floor(theTimeValue / 12) + "点" + (theTimeValue % 12) * 5 + '分';
+                //debugger;
+                var theColorText="<span style=\"display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:"+params[params.length - 1].color+";\"></span>";
+
+                //var theDate = new Date();
+                //theDate.setTime(arg.value);
+                //return theHours;//theDate.getMonth() + 1 + "月" + theDate.getDate() + "日";
+                return theHours+'<br/>'+theColorText+params[params.length - 1].data + '万';
             }
         },
         grid: {
@@ -89,7 +102,7 @@ $(function () {
                     }
                 }
             },
-            axisPointer: {
+            /*axisPointer: {
                 label: {
                     show: true,
                     color: '#05cffa',
@@ -109,11 +122,11 @@ $(function () {
                         shadowBlur: 10
                     }
                 }
-            },
+            },*/
             boundaryGap: false,
             axisLine: {
                 lineStyle: {
-                    color: '#557398'
+                    color:'white'// '#557398'
                 }
             },
             data: theXData
@@ -125,7 +138,7 @@ $(function () {
             splitLine: {show: false},
             axisLine: {
                 lineStyle: {
-                    color: '#557398'
+                    color:'white'// '#557398'
                 }
             }
         }
@@ -525,6 +538,7 @@ $(function () {
                 data: data1.map(function (item) {
                     return (item / 10000).toFixed(2);
                 }),
+                color: '#ffdc6f',
                 areaStyle: {
                     normal: {
                         color: {
@@ -543,20 +557,22 @@ $(function () {
                         }
                     }
                 },
-                lineStyle: {
+                /*lineStyle: {
                     normal: {
                         color: '#ffdc6f'
                     }
-                }
+                }*/
             },
             {
                 //name: '搜索引擎',
                 type: 'line',
+                color: '#ffdc6f',
+                symbol: 'none',
                 itemStyle: {
                     normal: {
                         lineStyle: {
                             width: 2,
-                            color: '#ffdc6f',
+
                             type: 'dotted'  //'dotted'虚线 'solid'实线
                         }
                     }
@@ -654,12 +670,13 @@ $(function () {
                 //stack: '总量',
                 smooth: true,
                 symbol: 'none',
+                color: '#32ff4b',
                 data: data1.map(function (item) {
                     return (item / 10000).toFixed(2);
                 }),
                 lineStyle: {
                     normal: {
-                        color: '#32ff4b'//rgba(50,255,75
+                       //rgba(50,255,75
                     }
                 },
 
@@ -685,11 +702,12 @@ $(function () {
             {
                 //name: '搜索引擎',
                 type: 'line',
+                color: '#32ff4b',
                 itemStyle: {
                     normal: {
                         lineStyle: {
                             width: 2,
-                            color: '#32ff4b',
+
                             type: 'dotted'  //'dotted'虚线 'solid'实线
                         }
                     }
@@ -754,11 +772,12 @@ $(function () {
 
         var theBeginDate = new Date('2019-01-21');
         var theXData = [];
-        var theColors = ['#32ff4b', '#4293f2'];
+        var theColors = ['#32ff4b',
+            '#4293f2'];
 
         var theLegends = [
-            {name: '人口总量', textStyle: {color: "#32ff4b"}},
-            {name: '常驻人口', textStyle: {color: "#4293f2"}},
+            {name: '人口总量', textStyle: {color: "#32ff4b",fontSize:16}},
+            {name: '常驻人口', textStyle: {color: "#4293f2",fontSize:16}},
         ];
         var theName1 = "人口总量";
         var theName2 = "常驻人口";
@@ -766,8 +785,8 @@ $(function () {
             theName1 = "迁出";
             theName2 = "迁入";
             theLegends = [
-                {name: '迁出', textStyle: {color: "#32ff4b"}},
-                {name: '迁入', textStyle: {color: "#4293f2"}}
+                {name: '迁出', textStyle: {color: "#32ff4b",fontSize:16}},
+                {name: '迁入', textStyle: {color: "#4293f2",fontSize:16}}
             ];
         }
         theXData.push(theBeginDate.getTime());
@@ -783,29 +802,42 @@ $(function () {
                     type: 'line',
                     show: true,
                     label: {
-                        show: true
+                       // show: true
                     }
                 },
-                backgroundColor: 'transparent',
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                position: function (point, params, dom, rect, size) {
+                    // 固定在顶部
+                    return [point[0], '10%'];
+                },
                 formatter: function (params) {
                     var theIndex = 0;
                     var theDatas = [];
                     //var theText = "";
                     if (params.length > 4) {
                         for (var i = 0; i < params.length; i = i + 2) {
-                            theDatas.push(params[i].seriesName + ':' + (params[i].data || params[i + 1].data) + '万');
+
+                            var theColorText="<span style=\"display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:"+params[i].color+";\"></span>";
+                            theDatas.push(theColorText+params[i].seriesName + ':' + (params[i].data || params[i + 1].data) + '万');
                         }
                     }
                     else {
                         for (var i = 0; i < params.length; i = i + 1) {
-                            theDatas.push(params[i].seriesName + ':' + (params[i].data || params[i + 1].data) + '万');
+                           // debugger;
+                            var theColorText="<span style=\"display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:"+params[i].color+";\"></span>";
+                            theDatas.push(theColorText+params[i].seriesName + ':' + (params[i].data || params[i + 1].data) + '万');
                         }
                     }
-                    return theDatas.join('<br />');
+                    var theDate=new Date();
+                    theDate.setTime(params[0].name);
+                    var theNameText= theDate.getMonth() + 1 + "月" + theDate.getDate() + "日";
+                    //debugger;
+                    return   theNameText+"<br/>"+theDatas.join('<br />');
                 }
             },
-            color: theColors,
+
             legend: theLegends,
+            color: theColors,
             grid: {
                 left: 0,
                 right: 30,
@@ -821,10 +853,10 @@ $(function () {
                 name: '(日期)',
                 axisLine: {
                     lineStyle: {
-                        color: '#557398'
+                        color:'white'// '#557398'
                     }
                 },
-                axisPointer: {
+                /*axisPointer: {
                     label: {
                         color: '#05cffa',
                         formatter: function (arg) {
@@ -841,7 +873,7 @@ $(function () {
                             shadowBlur: 10
                         }
                     }
-                },
+                },*/
                 axisLabel: {
                     rotate: 30,
                     formatter: function (value, idx) {
@@ -864,7 +896,7 @@ $(function () {
                 splitLine: {show: false},
                 axisLine: {
                     lineStyle: {
-                        color: '#557398'
+                        color:'white'// '#557398'
                     }
                 }
             },
@@ -875,13 +907,14 @@ $(function () {
                     type: 'line',
                     symbol: 'none',
                     //stack: '总量',
+                    color: '#32ff4b',
                     smooth: true,
                     data: data11.map(function (item) {
                         return (item / 10000).toFixed(2)
                     }),
                     lineStyle: {
                         normal: {
-                            color: '#32ff4b' //rgba(66,147,242
+                            //rgba(66,147,242
                         }
                     },
                     areaStyle: {
@@ -907,11 +940,12 @@ $(function () {
                     name: theName1,
                     type: 'line',
                     symbol: 'none',
+                    color: '#32ff4b',
                     itemStyle: {
                         normal: {
                             lineStyle: {
                                 width: 2,
-                                color: '#32ff4b',
+
                                 type: 'dotted'  //'dotted'虚线 'solid'实线
                             }
                         }
@@ -927,6 +961,7 @@ $(function () {
                     type: 'line',
                     symbol: 'none',
                     z: 1,
+                    color: '#4293f2',
                     //stack: '总量',
                     smooth: true,
                     data: data21.map(function (item) {
@@ -934,7 +969,7 @@ $(function () {
                     }),
                     lineStyle: {
                         normal: {
-                            color: '#4293f2'//rgba(55,255,75
+                           //rgba(55,255,75
                         }
                     },
                     areaStyle: {
@@ -961,11 +996,12 @@ $(function () {
                     symbol: 'none',
                     z: 2,
                     type: 'line',
+                    color: '#4293f2',
                     itemStyle: {
                         normal: {
                             lineStyle: {
                                 width: 2,
-                                color: '#4293f2',
+
                                 type: 'dotted'  //'dotted'虚线 'solid'实线
                             }
                         }
@@ -978,7 +1014,7 @@ $(function () {
                 },
             ]
         };
-        //debugger;
+       // debugger;
         this.Chart4.setOption(option);
     }
     PageViewModel.prototype.loadChart5 = function (xData, data1) {
@@ -998,13 +1034,14 @@ $(function () {
                 type: 'line',
                 //stack: '总量',
                 smooth: true,
+                color: '#4293f2',
                 symbol: 'none',
                 data: data1.map(function (item) {
                     return (item / 10000).toFixed(2);
                 }),
                 lineStyle: {
                     normal: {
-                        color: '#4293f2' //rgba(66,147,242
+                       // color: '#4293f2' //rgba(66,147,242
                     }
                 },
                 areaStyle: {
@@ -1158,6 +1195,11 @@ $(function () {
                         dataPopulationGd1.push(theDataItem.populationGd || 0);
                         dataResi1.push(theDataItem.populationResi || 0);
                     }
+                    /*dataMigOut2.push('-');
+                    dataMigIn2.push('-');
+                    dataPopulationGd2.push('-');
+                    dataResi2.push('-');*/
+
                     dataMigOut2.push(theDataItem.migOut || 0);
                     dataMigIn2.push(theDataItem.migIn || 0);
                     dataPopulationGd2.push(theDataItem.populationGd || 0);

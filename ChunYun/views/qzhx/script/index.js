@@ -24,19 +24,25 @@ $(function () {
         },*/
         tooltip: {
             trigger: 'axis',
-            backgroundColor: 'transparent',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            position: function (point, params, dom, rect, size) {
+                // 固定在顶部
+                return [point[0], '10%'];
+            },
             formatter: function (params) {
                 var theDatas = [];
                 if (params.length > 1) {
                     for (var i = 0; i < params.length; i++) {
-                        theDatas.push(params[i].seriesName + ':' + params[i].data + "万");
+                        var theColorText="<span style=\"display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:"+params[i].color+";\"></span>";
+                        theDatas.push(theColorText+params[i].seriesName + ':' + params[i].data + "万");
                     }
                 } else {
                     for (var i = 0; i < params.length; i++) {
-                        theDatas.push(params[i].data + "万");
+                        var theColorText="<span style=\"display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:"+params[i].color+";\"></span>";
+                        theDatas.push(theColorText+params[i].data + "万");
                     }
                 }
-                return theDatas.join('<br />');
+                return params[0].name+'<br/>'+theDatas.join('<br />');
             }
         },
         grid: {
@@ -64,10 +70,10 @@ $(function () {
 
             axisLine: {
                 lineStyle: {
-                    color: '#557398'
+                    color: 'white',//'#557398'
                 }
             },
-            axisPointer: {
+            /*axisPointer: {
                 label: {
                     show: true,
                     color: '#05cffa',
@@ -82,7 +88,7 @@ $(function () {
                         shadowBlur: 10
                     }
                 }
-            },
+            },*/
             data: ['0', '12-28', '12-29', '12-30', '1-01', '1-02', '1-03', '1-04']
             //data: theXData
         },
@@ -96,7 +102,7 @@ $(function () {
 
             axisLine: {
                 lineStyle: {
-                    color: '#557398'
+                    color: 'white'//'#557398'
                 }
             }
         }
@@ -337,7 +343,7 @@ $(function () {
                     }
                 }
             },
-            axisPointer: {
+            /*axisPointer: {
                 label: {
                     show: true,
                     color: '#05cffa',
@@ -352,11 +358,11 @@ $(function () {
                         shadowBlur: 10
                     }
                 }
-            },
+            },*/
             boundaryGap: false,
             axisLine: {
                 lineStyle: {
-                    color: '#557398'
+                    color: 'white'//'#557398'
                 }
             },
             data: theXData
@@ -365,12 +371,12 @@ $(function () {
         theCurrentOption.legend = {
             data: [{
                 name: '粤海铁路北港',
-                textStyle: {color: "#d1b96b"}
+                textStyle: {color: "#d1b96b",fontSize:16}
 //                textStyle: {color: "#85a8b8"}
             },
                 {
                     name: '海安港',
-                    textStyle: {color: "#32ff4b"}
+                    textStyle: {color: "#32ff4b",fontSize:16}
                     //textStyle: {color: "#85a8b8"}
                 }],
             x: 'center',
@@ -512,10 +518,11 @@ $(function () {
 
             axisLine: {
                 lineStyle: {
-                    color: '#557398'
+                    color:'white'// '#557398'
                 }
             }
         }]
+        theCurrentOption.color='#d1b96b';
         theCurrentOption.series = [
             {
                 // name: '搜索引擎',
@@ -606,6 +613,7 @@ $(function () {
             theBeginDate.setDate(theBeginDate.getDate() + 1);
         }
         data1 = theValidData;
+        theCurrentOption.color='#357acb';
         theCurrentOption.xAxis.data = theXData;
         theCurrentOption.series = [
             {
@@ -618,7 +626,7 @@ $(function () {
                 data: data1.map(function (item) {
                     return (item / 10000).toFixed(2);
                 }),// || [11, 14, 22, 15, 7, 8],
-                itemStyle: {color: '#d1b96b'},
+                itemStyle: {color: '#357acb'},
                 lineStyle: {
                     normal: {
                         color: '#357acb'//rgba(50,255,75
@@ -691,6 +699,7 @@ $(function () {
         }
         data1 = theValidData;
         theCurrentOption.xAxis.data = theXData;
+        theCurrentOption.color='#32ff4b';
         theCurrentOption.series = [
             {
                 // name: '搜索引擎',
@@ -753,7 +762,7 @@ $(function () {
             },
             xAxis: [
                 {
-//                        type : 'category',
+//                 type : 'category',
                     data: ['0-1', '1-2', '2-3', '3-4', '4-5', '5-6', '6-7', '7-8', '8-24',],
                     "axisTick": {       //X轴刻度线
                         "show": false
@@ -765,7 +774,7 @@ $(function () {
                     axisLine: {
 //                    show:false,
                         lineStyle: {
-                            color: '#557398'
+                            color: 'white',//'#557398'
                         }
 
                     }
@@ -787,7 +796,7 @@ $(function () {
                     axisLine: {
 //                    show:false,
                         lineStyle: {
-                            color: '#557398'
+                            color:'white'// '#557398'
 
                         }
 
@@ -1192,7 +1201,7 @@ $(function () {
                         theReliArrays.push({
                             bounds: haianBounds,
                             data: theItem.subscribercount || 0,
-                            max: 10000,
+                            max: 50,
                         });
                     }
                     if (theItem.positionName == "铁路北港" || "铁路北港" == theItem.positionName) {
@@ -1200,7 +1209,7 @@ $(function () {
                         theReliArrays.push({
                             bounds: yhbgBounds,
                             data: theItem.subscribercount || 0,
-                            max: 10000,
+                            max: 50,
                         });
                     }
                 }
@@ -1307,7 +1316,7 @@ $(function () {
                     axisLine: {
                         show: false,
                         lineStyle: {
-                            color: '#d9f1ff',
+                            color: 'white'//'#d9f1ff',
 
                         }
 

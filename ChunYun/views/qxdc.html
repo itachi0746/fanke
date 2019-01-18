@@ -78,11 +78,11 @@
                         迁出渠道
                     </div>
                     <div class="chart-panel">
-                        <div class="chart-item" data-name="铁路" data-id="4" data-color="#faeebe" data-value="20">
+                        <div class="chart-item" data-name="铁路" data-id="4" data-r="140" data-color="#ff8155" data-value="20">
                         </div>
-                        <div class="chart-item" data-name="公路" data-id="1" data-color="#bcb9e7" data-value="40"></div>
-                        <div class="chart-item" data-name="水路" data-id="3" data-color="#20e3df" data-value="60"></div>
-                        <div class="chart-item" data-name="民航" data-id="2" data-color="#acebd5" data-value="80"></div>
+                        <div class="chart-item" data-name="公路" data-id="1" data-r="140"  data-color="#ffc955" data-value="40"></div>
+                        <div class="chart-item" data-name="水路" data-id="3" data-r="140"  data-color="#4fe2fd" data-value="60"></div>
+                        <div class="chart-item" data-name="民航" data-id="2" data-r="140"  data-color="#644cdb" data-value="80"></div>
                         <!--<div class="chart-item" data-name="其他" data-id="5" data-color="#6fc1dc" data-value="100"></div>-->
                     </div>
                 </div>
@@ -95,6 +95,7 @@
                     <table class="table" id="table-2">
                         <thead>
                         <tr class="hd1">
+                            <td style="background-color:#2e307f;width: 1em; "></td>
                             <th style="background-color:#2e307f ">
                                 目的地
                             </th>
@@ -122,7 +123,8 @@
                         </thead>
                         <tbody class="template" style="display: none;">
                         <tr>
-                            <td>${data.area}</td>
+                            <td><span class="row-index">${index+1}</span></td>
+                            <td >${data.area}</td>
                             <td>${data.num||0}</td>
                             <td style="">
                                 <div class="round-div tielu_bg" style="width: ${data.tielu/2}px;"></div>
@@ -161,11 +163,11 @@
                         迁入渠道
                     </div>
                     <div class="chart-panel">
-                        <div class="chart-item" data-name="铁路" data-id="4" data-color="#faeebe" data-value="20">
+                        <div class="chart-item" data-name="铁路" data-id="4" data-r="140" data-color="#ff8155" data-value="20">
                         </div>
-                        <div class="chart-item" data-name="公路" data-id="1" data-color="#bcb9e7" data-value="40"></div>
-                        <div class="chart-item" data-name="水路" data-id="3" data-color="#20e3df" data-value="60"></div>
-                        <div class="chart-item" data-name="民航" data-id="2" data-color="#acebd5" data-value="80"></div>
+                        <div class="chart-item" data-name="公路" data-id="1" data-r="140"  data-color="#ffc955" data-value="40"></div>
+                        <div class="chart-item" data-name="水路" data-id="3" data-r="140"  data-color="#4fe2fd" data-value="60"></div>
+                        <div class="chart-item" data-name="民航" data-id="2" data-r="140"  data-color="#644cdb" data-value="80"></div>
                         <!--<div class="chart-item" data-name="其他" data-id="5" data-color="#6fc1dc" data-value="100"></div>-->
                     </div>
                 </div>
@@ -178,6 +180,7 @@
                     <table class="table" id="table-1">
                         <thead>
                         <tr class="hd1">
+                            <td style="background-color:#2e307f;width: 1em; "></td>
                             <th style="background-color: #2e307f">
                                 来源地
                             </th>
@@ -205,7 +208,8 @@
                         </thead>
                         <tbody class="template" style="display: none">
                         <tr>
-                            <td>${data.area}</td>
+                            <td><span class="row-index">${index+1}</span></td>
+                            <td >${data.area}</td>
                             <td>${data.num||0}</td>
                             <td style="">
                                 <div class="round-div tielu_bg" style="width: ${data.tielu/2}px;"></div>
@@ -274,11 +278,11 @@
                 <div style="display: none" class="chart-div">
 
                     <div class="chart-panel">
-                        <div class="chart-item" data-name="铁路" data-id="4" data-color="#faeebe" data-value="20">
+                        <div class="chart-item" data-name="铁路" data-id="4" data-r="140" data-color="#ff8155" data-value="20">
                         </div>
-                        <div class="chart-item" data-name="公路" data-id="1" data-color="#bcb9e7" data-value="40"></div>
-                        <div class="chart-item" data-name="水路" data-id="3" data-color="#20e3df" data-value="60"></div>
-                        <div class="chart-item" data-name="民航" data-id="2" data-color="#acebd5" data-value="80"></div>
+                        <div class="chart-item" data-name="公路" data-id="1" data-r="140"  data-color="#ffc955" data-value="40"></div>
+                        <div class="chart-item" data-name="水路" data-id="3" data-r="140"  data-color="#4fe2fd" data-value="60"></div>
+                        <div class="chart-item" data-name="民航" data-id="2" data-r="140"  data-color="#644cdb" data-value="80"></div>
                       <!--  <div class="chart-item" data-name="其他" data-id="5" data-color="#6fc1dc" data-value="100"></div>-->
                     </div>
                 </div>
@@ -291,6 +295,7 @@
                     <table class="table" id="table-3" data-pagesize="10">
                         <thead>
                         <tr class="hd1">
+                            <td style="background-color:#2e307f;width: 1em; "></td>
                             <th style="background-color:#2e307f ">
                                 迁徙路线
                             </th>
@@ -318,7 +323,8 @@
                         </thead>
                         <tbody class="template" style="display: none;">
                         <tr>
-                            <td class=""><span class="row-index">${index+1}</span>${data.area}</td>
+                            <td><span class="row-index">${index+1}</span></td>
+                            <td class="" ><!--<span class="row-index">${index+1}</span>-->${data.area}</td>
                             <td>${data.num||0}</td>
                             <td style="">
                                 <div class="round-div tielu_bg" style="width: ${data.tielu/2}px;"></div>
@@ -359,6 +365,18 @@
         <span class="title">省外迁出人数</span><br/><span class="num">235.2万</span>
     </div>
 </div>
+
+<div style="    position: absolute;
+    left: 28px;
+    bottom: 50px;
+    font-size: 12px;
+    color: #b0b0b0;">
+    迁出人数：当天在广东停留大于等于3小时，且后一天不在广东的移动用户数/0.7<br/>
+    迁入人数：当天在广东停留大于等于3小时，且前一天未在广东出现的移动用户数/0.7<br/>
+    省内迁徙：当天最早在省内A城市，后一天最早在省内B城市的移动用户数/0.7<br/>
+    迁徙渠道：当天迁徙用户在机场停留超过30分钟的为民航出行，在火车站停留<br/>
+    超过半小时的为铁路出行，在港口停留超过半小时的为水路出行，其余为公路出行<br/></div>
+
 <script type="text/javascript">
 
 </script>
