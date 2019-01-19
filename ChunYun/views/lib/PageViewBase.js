@@ -219,7 +219,7 @@ var AreaMap = [
 function PageViewBase(frameElement) {
     var frameElement = frameElement;
     this.timer = null;
-    this.interval = 1000 * 60 * 5;
+    this.interval =  60 ;
     this.currentTick = 0;
     this.isPause = false;
     this.eventListens = {}; //事件监听器

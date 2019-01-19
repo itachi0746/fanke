@@ -25,16 +25,16 @@ $(function () {
     '东莞东': 19,
     '虎门站': 17,
     '潮汕站': 17,
-    '深圳市龙岗汽车客运站':19,
-    '深圳罗湖汽车客运站':19,
-    '深圳汽车站':19,
-    '芳村汽车客运站':19,
-    '广州汽车客运站':19,
-    '佛山汽车站':19,
-    '河源汽车总站':19,
-    '东莞汽车总站':17,
-    '潮州汽车客运站':19,
-    '潮汕国际机场':15,
+    '深圳市龙岗汽车客运站': 19,
+    '深圳罗湖汽车客运站': 19,
+    '深圳汽车站': 19,
+    '芳村汽车客运站': 19,
+    '广州汽车客运站': 19,
+    '佛山汽车站': 19,
+    '河源汽车总站': 19,
+    '东莞汽车总站': 17,
+    '潮州汽车客运站': 19,
+    '潮汕国际机场': 15,
     '惠州站': 19
   };
   // var tabArr = ['客运站,铁路,机场,港口', '服务区', '收费站', '高速监测'];
@@ -51,7 +51,7 @@ $(function () {
   var tab2Li3Date, tab3Li3Date;
   var tab2Li2DefaultDate, tab3Li2DefaultDate, tab4Li2DefaultDate;  // 枢纽,服务区,收费站-洞察部分,默认日期
   var myTime;  // 记录高速监测初始化时间
-  var tab0Time,tab1Time;  // 记录枢纽,服务区预警初始化时间
+  var tab0Time, tab1Time;  // 记录枢纽,服务区预警初始化时间
   var nowTab = tabArr[0];
   window.nowTab = nowTab;
   //postionType-位置类别：1场站，2服务区，3收费站
@@ -701,17 +701,17 @@ $(function () {
    * @returns {*}
    */
   function getPeopleNum(name) {
-    var theList,result;
-    if(nowTab===tabArr[0]) {
+    var theList, result;
+    if (nowTab === tabArr[0]) {
       theList = TerminalWarningList;
-    } else if(nowTab===tabArr[1]) {
+    } else if (nowTab === tabArr[1]) {
       theList = ServiceAreaWarningList;
     }
     for (var i = 0; i < theList.length; i++) {
       var obj = theList[i];
       for (var j = 0; j < obj.data.length; j++) {
         var dataObj = obj.data[j];
-        if(name===dataObj.postionName) {
+        if (name === dataObj.postionName) {
           result = dataObj.userCnt;
           return result
         }
@@ -839,6 +839,8 @@ $(function () {
     clearFlightList(status);
     clearFooter(status);
 
+    $('#flight-list-tab').addClass('active');
+    $('#flight-trend-tab').removeClass('active');
     var nameStr;
     if (name === '广州白云国际机场') {
       nameStr = 'byjc'
@@ -1945,13 +1947,14 @@ $(function () {
 
 
   function refreshJamList() {
-    var timeToR = canRefresh(myTime,5);
-    if(timeToR) {
+    var timeToR = canRefresh(myTime, 5);
+    if (timeToR) {
       reqJamList();
     } else {
       renderJamList();
     }
   }
+
   /**
    * 渲染高速拥堵列表
    */
@@ -2021,6 +2024,7 @@ $(function () {
       jamRankUl.append(liDom);
     }
   }
+
   /**
    * 查询高速拥堵top10事件列表
    */
@@ -2035,13 +2039,14 @@ $(function () {
         jamList = _.sortBy(jamList, function (item) {  // 按照拥堵距离排序
           return -item.jamDist;
         });
-        if(nowTab!==tabArr[2]) {
+        if (nowTab !== tabArr[2]) {
           return
         }
         renderJamList()
       }
     })
   }
+
   var keyRoadDataArr = [], pageOneNum = 6;
 
   /**
@@ -2861,7 +2866,7 @@ $(function () {
       }
     }
     var tgt = tabArrDom.filter(function (t) {
-      return t.name===nowTab
+      return t.name === nowTab
     });
     if (!theCamData) {
       console.log('没有摄像头数据');
@@ -2931,7 +2936,7 @@ $(function () {
   }
 
   var getYJDataAjax = null;
-  var TerminalWarningList = [],ServiceAreaWarningList = [];
+  var TerminalWarningList = [], ServiceAreaWarningList = [];
 
   /**
    * 获取3级预警数据
@@ -3331,8 +3336,8 @@ $(function () {
   }
 
   function refreshTerminalWarningList() {
-    var timeToRefresh = canRefresh(tab0Time,5);
-    if(timeToRefresh) {
+    var timeToRefresh = canRefresh(tab0Time, 5);
+    if (timeToRefresh) {
       reqTerminalWarningList()
     } else {
       renderTerminalWarningList()
@@ -3340,8 +3345,8 @@ $(function () {
   }
 
   function refreshServiceAreaWarningList() {
-    var timeToRefresh = canRefresh(tab1Time,5);
-    if(timeToRefresh) {
+    var timeToRefresh = canRefresh(tab1Time, 5);
+    if (timeToRefresh) {
       reqServiceAreaWarningList()
     } else {
       renderServiceAreaWarningList()
