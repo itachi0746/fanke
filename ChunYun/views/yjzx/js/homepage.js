@@ -14,16 +14,34 @@ $(function () {
     6: '55岁以上'
   };
   var thePlaceZoomObj = {  // 不同地点的缩放级别
-    '深圳西站': 20,
+    '深圳西站': 19,
     '湛江机场': 19,
     '三元里收费站': 20,
     '莞佛高速虎门大桥': 15,
-  }
+    '潮州汽车客运站': 19,
+    '广州北站': 20,
+    '广州火车站': 19,
+    '深圳站': 19,
+    '东莞东': 19,
+    '虎门站': 17,
+    '潮汕站': 17,
+    '深圳市龙岗汽车客运站':19,
+    '深圳罗湖汽车客运站':19,
+    '深圳汽车站':19,
+    '芳村汽车客运站':19,
+    '广州汽车客运站':19,
+    '佛山汽车站':19,
+    '河源汽车总站':19,
+    '东莞汽车总站':17,
+    '潮州汽车客运站':19,
+    '潮汕国际机场':15,
+    '惠州站': 19
+  };
   // var tabArr = ['客运站,铁路,机场,港口', '服务区', '收费站', '高速监测'];
   var tabArr = ['客运站,铁路,机场,港口', '服务区', '高速监测'];
   var tieluArr, gongluArr;
-  var tabDomNameArr = ['#tab2', '#tab3', '#tab4', '#tab5', '#tab6'];
-  var newTabArr = tabArr.map(function (item, index) {
+  var tabDomNameArr = ['#tab2', '#tab3', '#tab4'];
+  var tabArrDom = tabArr.map(function (item, index) {
     return {
       name: item,
       class: tabDomNameArr[index]
@@ -40,7 +58,7 @@ $(function () {
   var positionType = 1;
   var curPosition;  // 目前位置 点击marker 预警 变化
 
-  // console.log(newTabArr)
+  // console.log(tabArrDom)
   var tabBoxes = $('.tab-box');
   var tabBoxes2 = $('#tab2 .tab-box2-li');
   var tabBoxes3 = $('#tab3 .tab-box2-li');
@@ -202,7 +220,6 @@ $(function () {
     }
     arrowBindClick();
     dongchaTabBindClick();
-    // addStation();
     // getYJData();
     reqTerminalWarningList();
     reqServiceAreaWarningList();
@@ -302,7 +319,6 @@ $(function () {
         var lnglat = pointControl.findPointPosition(curPosition).split(',').map(function (t) {
           return parseFloat(t)
         });
-
         // debugger
         // return
         if (isCLickFloor) {
@@ -336,6 +352,9 @@ $(function () {
           infoWindow.open(theMap);
         }
         mapbase.drawReli(name, pepNum);
+        // var theZoom = thePlaceZoomObj[name] || 18;
+        // debugger
+        // pointControl.MoveToPoint(arg, theZoom);
       }
     })
   }
@@ -614,6 +633,7 @@ $(function () {
    * @param name 地点名称
    */
   function goToPointByName(name) {
+    // debugger
     curPosition = name;
     changePosText(name);
     hideSpecialData();
@@ -642,7 +662,6 @@ $(function () {
       // debugger
       pointControl.MoveToPoint(arg, theZoom);
       isDefaultView = false;
-      // reqWeather(name);
       showFlightDom();
       removeDongChaTab();
       if (nowTab === tabArr[0] || nowTab === tabArr[1] || nowTab === tabArr[2]) {
@@ -651,8 +670,51 @@ $(function () {
       if (nowTab === tabArr[0] || nowTab === tabArr[1]) {
         // debugger
         reqWeather(name);
-        reqReliData(name);
+        // reqReliData(name,false);
+        var thePeopleNum = getPeopleNum(name);
+
+        var theData = {
+          name: name,
+          data1: '当前人数: ' + thePeopleNum + '人',
+          data2: ''
+        };
+        var lnglat = pointControl.findPointPosition(name).split(',').map(function (t) {
+          return parseFloat(t)
+        });
+        var infoWindow = new AMap.InfoWindow({
+          isCustom: true,  //使用自定义窗体
+          content: createInfoWindow(theData),
+          // content: createInfoWindow2(theData),
+          offset: new AMap.Pixel(11, 0),
+          position: new AMap.LngLat(lnglat[0], lnglat[1])
+        });
+        infoWindow.open(theMap);
+        mapbase.drawReli(name, thePeopleNum);
         addCamLi(name);
+      }
+    }
+  }
+
+  /**
+   * 遍历预警数据数组,得到人数
+   * @param name
+   * @returns {*}
+   */
+  function getPeopleNum(name) {
+    var theList,result;
+    if(nowTab===tabArr[0]) {
+      theList = TerminalWarningList;
+    } else if(nowTab===tabArr[1]) {
+      theList = ServiceAreaWarningList;
+    }
+    for (var i = 0; i < theList.length; i++) {
+      var obj = theList[i];
+      for (var j = 0; j < obj.data.length; j++) {
+        var dataObj = obj.data[j];
+        if(name===dataObj.postionName) {
+          result = dataObj.userCnt;
+          return result
+        }
       }
     }
   }
@@ -817,24 +879,6 @@ $(function () {
         if (theArrFlightArr) {
           handleFlightData(theArrFlightArr, num, false);
         }
-        // for (var i = 0; i < theArrFlightArr.length; i++) {
-        //   if (i >= num) {
-        //     break
-        //   }
-        //   var arrItem = theArrFlightArr[i];
-        //   var h = arrItem.arrTime.hours;
-        //   var m = arrItem.arrTime.minutes;
-        //   m = m < 10 ? '0' + m : m;
-        //   h = h < 10 ? '0' + h : h;
-        //   var theArrTime = h + ':' + m;
-        //   var sendLiStr = '                <li>\n' +
-        //     '                  <span title="' + arrItem.fltno + '">' + arrItem.fltno + '</span>\n' +
-        //     '                  <span>' + theArrTime + '</span>\n' +
-        //     '                  <span title="' + arrItem.endCity + '">' + arrItem.fromCity + '</span>\n' +
-        //     '                  <span title="' + arrItem.passenger + '">' + arrItem.passenger + '</span>\n' +
-        //     '                </li>';
-        //   arrListUl.append($(sendLiStr));
-        // }
       }
     })
   }
@@ -1007,10 +1051,6 @@ $(function () {
     //   });
     //   footer.append(theFooter);
     // }
-  }
-
-  function perPage() {
-
   }
 
   /**
@@ -2403,10 +2443,6 @@ $(function () {
     return result
   }
 
-
-  // var theRoadCamObj = {
-  //   '机场高速': ['18052906511310019734','18052906511310019786']
-  // }
   /**
    * 道路摄像头点击
    */
@@ -2422,26 +2458,12 @@ $(function () {
     window.location.href = 'SHWGOIE:http://14.23.164.13:7001/video/?vid=' + theID;
   }
 
-  function clickRoadCam2() {
-    // debugger
-    console.log(123, this.dataset.roadName);
-    var theName = this.dataset.roadName;
-    var theID = theRoadCamObj[theName][1];
-    if (!theID) {
-      console.log('没有道路Id!');
-      return
-    }
-    window.location.href = 'SHWGOIE:http://14.23.164.13:7001/video/?vid=' + theID;
-  }
 
 //关闭信息窗体
   function closeInfoWindow() {
     theMap.clearInfoWindow();
   }
 
-  // var sb3 = $('#station-box-3');
-  // var sb2 = $('#station-box-2');
-  // var sb1 = $('#station-box-1');
   /**
    * 清空搜索框下的站点
    */
@@ -2838,13 +2860,28 @@ $(function () {
         break
       }
     }
+    var tgt = tabArrDom.filter(function (t) {
+      return t.name===nowTab
+    });
     if (!theCamData) {
+      console.log('没有摄像头数据');
+      var theTgtTab = $(tgt[0].class);
+      // theTgtTab.find('.tab-box2-li1').hide();
+      // var liTabBoxArr = theTgtTab.find('.li-tab-box');
+      // for (var i = 0; i < liTabBoxArr.length; i++) {
+      //   var litabbox = liTabBoxArr[i];
+      //   // console.log($(litabbox).css('top'));
+      //   var oldTop = parseInt($(litabbox).css('top'));
+      //
+      //   $(litabbox).css('top',oldTop + 150 + 'px')
+      // }
+      // debugger
       return
     }
     var idx = 0;
     for (var i = 0; i < theCamData.length; i++) {
       if (i >= 4) {  // 最多展示4个
-        return
+        break
       }
       var idItem = theCamData[i];
       var theFullName = '';
@@ -2873,6 +2910,7 @@ $(function () {
       });
       theUl.append(liDom);
     }
+    $(tgt[0].class).find('.tab-box2-li1').show();
 
   }
 
@@ -3091,7 +3129,11 @@ $(function () {
   //   }
   // }
 
+  /**
+   * 请求枢纽预警数据
+   */
   function reqTerminalWarningList() {
+    var isLoading = layer.load();
     var url, keyName, theNumKey;
     url = 'terminal/getTerminalWarningList.do';
     keyName = 'listTerminal';
@@ -3138,6 +3180,7 @@ $(function () {
 
           var dataArr = [ss, sz, yj];
           TerminalWarningList = dataArr;
+          // debugger
           if (nowTab === tabArr[0]) {
             // debugger
             pointControl.showPoints(nowTab, dataArr); // 刷新了markers
@@ -3157,63 +3200,22 @@ $(function () {
               addYjLi(item)
             }
           }
-
+          layer.close(isLoading)
         }
       }
     });
 
   }
-  function renderTerminalWarningList() {
-    clearYjUL();
-    var theNumKey = 'userCnt';
 
-    if (nowTab === tabArr[0]) {
-      pointControl.showPoints(nowTab, TerminalWarningList); // 刷新了markers
-      markerBindClick();
-      addStation2();
-    }
-
-    for (var i = 0; i < TerminalWarningList.length; i++) {
-      var item = TerminalWarningList[i];
-      // debugger
-      for (var j = 0; j < item.data.length; j++) {
-        var temp = item.data[j];
-        temp.userCnt = toWan2(temp[theNumKey]);
-      }
-      if (nowTab === tabArr[0]) {
-        // debugger
-        addYjLi(item)
-      }
-    }
-  }
-
-  function renderServiceAreaWarningList() {
-    clearYjUL();
-    var theNumKey = 'userCnt';
-    if (nowTab === tabArr[1]) {
-      pointControl.showPoints(nowTab, ServiceAreaWarningList); // 刷新了markers
-      markerBindClick();
-      addStation2();
-    }
-    for (var i = 0; i < ServiceAreaWarningList.length; i++) {
-      var item = ServiceAreaWarningList[i];
-      // debugger
-      for (var j = 0; j < item.data.length; j++) {
-        var temp = item.data[j];
-        temp.userCnt = toWan2(temp[theNumKey]);
-      }
-      if (nowTab === tabArr[1]) {
-        // debugger
-        addYjLi(item)
-      }
-    }
-  }
-
+  /**
+   * 请求服务区预警数据
+   */
   function reqServiceAreaWarningList() {
     var url, keyName, theNumKey;
     url = 'serviceArea/getServiceAreaWarningList.do';
     keyName = 'listServiceArea';
     theNumKey = 'userCnt';
+    var isLoading2 = layer.load();
 
     $.ajax({
       type: "POST",
@@ -3275,11 +3277,57 @@ $(function () {
               addYjLi(item)
             }
           }
-
+          layer.close(isLoading2);
         }
       }
     });
 
+  }
+
+  function renderTerminalWarningList() {
+    clearYjUL();
+    var theNumKey = 'userCnt';
+
+    if (nowTab === tabArr[0]) {
+      pointControl.showPoints(nowTab, TerminalWarningList); // 刷新了markers
+      markerBindClick();
+      addStation2();
+    }
+
+    for (var i = 0; i < TerminalWarningList.length; i++) {
+      var item = TerminalWarningList[i];
+      // debugger
+      for (var j = 0; j < item.data.length; j++) {
+        var temp = item.data[j];
+        temp.userCnt = toWan2(temp[theNumKey]);
+      }
+      if (nowTab === tabArr[0]) {
+        // debugger
+        addYjLi(item)
+      }
+    }
+  }
+
+  function renderServiceAreaWarningList() {
+    clearYjUL();
+    var theNumKey = 'userCnt';
+    if (nowTab === tabArr[1]) {
+      pointControl.showPoints(nowTab, ServiceAreaWarningList); // 刷新了markers
+      markerBindClick();
+      addStation2();
+    }
+    for (var i = 0; i < ServiceAreaWarningList.length; i++) {
+      var item = ServiceAreaWarningList[i];
+      // debugger
+      for (var j = 0; j < item.data.length; j++) {
+        var temp = item.data[j];
+        temp.userCnt = toWan2(temp[theNumKey]);
+      }
+      if (nowTab === tabArr[1]) {
+        // debugger
+        addYjLi(item)
+      }
+    }
   }
 
   function refreshTerminalWarningList() {
@@ -3789,7 +3837,7 @@ $(function () {
       var a2 = arrows[j];
       $(a2).toggleClass('dn')
     }
-    var n = newTabArr[tabName];
+    var n = tabArrDom[tabName];
 
     var tabBox2LiArr = $(n).find('.tab-box2-li');
     // var tabBox2LiArr = $('.tab-box2 .tab-box2-li');
@@ -8615,7 +8663,8 @@ $(function () {
         data: [],
         textStyle: {
           color: '#fff'
-        }
+        },
+        top: 20
       },
       color: ['#f9d76f', 'rgb(62,139,230)'],
       series: [
@@ -8826,6 +8875,7 @@ $(function () {
         }
       },
       legend: {
+        top: 20,
         data: [],
         textStyle: {
           color: '#fff'

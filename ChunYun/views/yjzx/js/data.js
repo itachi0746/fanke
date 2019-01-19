@@ -22,7 +22,7 @@ function PlacePointView(theMap) {
     "公路|客运站|天河汽车客运站|天河汽车客运站:113.342309,23.170892;\n" +
     "铁路|铁路|广州火车站|广州火车站:113.257908,23.148532;\n" +
     "公路|客运站|茂名客运中心站|茂名客运中心站:110.925976,21.645277;\n" +
-    "民航|机场|湛江机场|湛江机场0:110.366211,21.212227;\n" +
+    "民航|机场|湛江机场|湛江机场0:110.366257,21.212231;\n" +
     // "水路|港口|湛江徐闻海安港|海安港0:110.235751,20.265909;\n" +
     "公路|客运站|香洲长途站|香洲长途站:113.567377,22.279407;\n" +
     "公路|客运站|佛山汽车站|佛山汽车站:113.110902,23.041469;\n" +
@@ -32,7 +32,7 @@ function PlacePointView(theMap) {
     "公路|客运站|中山小榄客运站|小榄车站:113.257901,22.671356;\n" +
     "公路|客运站|江门汽车客运站|广东省江门汽车总站:113.066064,22.630537;\n" +
     "公路|客运站|惠州汽车总站|惠阳汽车客运总站:114.460283,22.8141;\n" +
-    "铁路|铁路|惠州站|惠州站0:114.416115,23.151307;\n" +
+    "铁路|铁路|惠州站|惠州站0:114.416426,23.151534;\n" +
     "铁路|铁路|东莞东|东莞东站0:114.039076,22.967182;\n" +
     "公路|客运站|东莞汽车总站|东莞总站:113.716865,23.031193;\n" +
     "铁路|铁路|东莞站|东莞站0:113.859736,23.088778;\n" +
@@ -230,16 +230,16 @@ PlacePointView.prototype.MoveToPoint = function (lntlat, maxZoom) {
 
   // console.log(lntlat, maxZoom)
   var theZoom = this.theMap.getZoom();
-  // var thePitchTimer = window.setInterval(function () {
-  //   if (theZoom > maxZoom) {
-  //     window.clearInterval(thePitchTimer);
-  //     this.theMap.setPitch(45);
-  //     console.log("结束导航到指定点!");
-  //     return;
-  //   }
-  //   this.theMap.setZoomAndCenter(theZoom++, lntlat);
-  //   console.log(theZoom,maxZoom)
-  // }, 10);
+  var thePitchTimer = window.setInterval(function () {
+    if (theZoom > maxZoom) {
+      window.clearInterval(thePitchTimer);
+      this.theMap.setPitch(45);
+      // console.log("结束导航到指定点!");
+      return;
+    }
+    this.theMap.setZoomAndCenter(theZoom++, lntlat);
+    // console.log(theZoom,maxZoom)
+  }, 10);
   // debugger
   this.theMap.setZoomAndCenter(maxZoom, lntlat);
 
