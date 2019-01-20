@@ -841,6 +841,8 @@ $(function () {
 
     $('#flight-list-tab').addClass('active');
     $('#flight-trend-tab').removeClass('active');
+    $('#flight-data-box2').hide();
+    $('#flight-data-box').show();
     var nameStr;
     if (name === '广州白云国际机场') {
       nameStr = 'byjc'
@@ -859,17 +861,12 @@ $(function () {
       arrivalTime = $('#arr-time-box').val();
       sendTime = '';
     }
-
-    // var arrivalTime = '23:00-24:00';
-    // var sendTime = '15:00-16:00';
     // debugger
     var url = 'terminal/selectAirInfo.do?sendTime=' + sendTime + '&arrivalTime=' + arrivalTime + '&airport=' + nameStr;
     // debugger
     $.axpost(url, {}, function (data) {
       console.log('航班信息:', data);
       if (data.isSuccess && !isEmptyObject(data.data)) {
-        var sendListUl = $('#send-list-ul');
-        var arrListUl = $('#arr-list-ul');
         var num = 4;
 
         theSendFlightArr = data.data.sendList;
@@ -959,16 +956,6 @@ $(function () {
         var theRenderList = [];
         theRenderList = theDataArr.slice(theText * 4 - 4, theText * 4);
 
-        // if (theText === '1') {
-        //   theRenderList = theDataArr.slice(0, 4)
-        // } else if (theText === '2') {
-        //   theRenderList = theDataArr.slice(4, 8)
-        // } else if (theText === '3') {
-        //   theRenderList = theDataArr.slice(8, 12)
-        // }
-
-        // console.log(theRenderList);
-        // console.log(cityKey,timeKey);
         // debugger
         for (var k = 0; k < theRenderList.length; k++) {
           var theDataItem = theRenderList[k];
@@ -2935,6 +2922,17 @@ $(function () {
     }
   }
 
+  /**
+   * 两个预警列表是否已加载
+   * @returns {Number}
+   */
+  function YJIsLoaded() {
+    var tLen = TerminalWarningList.length;
+    var sLen = ServiceAreaWarningList.length;
+    // debugger
+    return tLen && sLen
+  }
+
   var getYJDataAjax = null;
   var TerminalWarningList = [], ServiceAreaWarningList = [];
 
@@ -3205,7 +3203,11 @@ $(function () {
               addYjLi(item)
             }
           }
-          layer.close(isLoading)
+          var isLoaded = YJIsLoaded();
+          if(isLoaded) {
+          //   debugger
+            layer.closeAll()
+          }
         }
       }
     });
@@ -3282,7 +3284,12 @@ $(function () {
               addYjLi(item)
             }
           }
-          layer.close(isLoading2);
+          var isLoaded = YJIsLoaded();
+          // debugger
+          if(isLoaded) {
+
+            layer.closeAll()
+          }
         }
       }
     });
