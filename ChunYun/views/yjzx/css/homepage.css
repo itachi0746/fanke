@@ -113,7 +113,7 @@ html, body {
   position: absolute;
   left: 45px;
   top: 0;
-  background-color: #12508f;
+  background-color: #0a214b;
   color: #fff;
   text-align: center;
   z-index: 2;
@@ -529,7 +529,7 @@ html, body {
 .top3 {
   height: 97px;
   position: absolute;
-  top: 20px;
+  top: 22px;
   right: 65px;
   z-index: 20; }
   .top3 .p-name {
@@ -559,15 +559,16 @@ html, body {
       white-space: nowrap; }
     .top3 .list li .num {
       font-weight: bold; }
+  .top3 .top3-outer {
+    width: 405px; }
   .top3 .yongji {
     float: left;
-    width: 430px;
     height: 97px;
-    background-color: rgba(234, 72, 130, 0.8);
+    background-color: rgba(255, 94, 196, 0.8);
     -webkit-transition: all .3s;
     transition: all .3s;
     overflow: hidden;
-    padding: 0 20px 0 55px;
+    padding: 0 20px 0 20px;
     color: #ffffff;
     margin-right: 2px; }
     .top3 .yongji .head {
@@ -605,7 +606,6 @@ html, body {
   .top3 .shizhong {
     margin-right: 2px; }
   .top3 .shizhong, .top3 .shushi {
-    width: 394px;
     height: 97px;
     -webkit-transition: all .3s;
     transition: all .3s;
@@ -637,9 +637,9 @@ html, body {
         .top3 .shizhong .head .head-p span, .top3 .shushi .head .head-p span {
           font-weight: bold; }
   .top3 .shizhong {
-    background-color: rgba(232, 175, 53, 0.8); }
+    background-color: rgba(255, 195, 81, 0.8); }
   .top3 .shushi {
-    background-color: rgba(39, 214, 211, 0.8); }
+    background-color: rgba(43, 255, 255, 0.8); }
   .top3 .yongji::-webkit-scrollbar {
     /*滚动条整体样式*/
     width: 10px;
@@ -928,7 +928,7 @@ html, body {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background-color: #27d6d3;
+  background-color: #1ba8a6;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1318,16 +1318,16 @@ html, body {
     text-align: center; }
     .header2 div .title-name {
       font-size: 16px;
-      color: #ddf3ff; }
+      color: #ffffff; }
     .header2 div p {
       font-size: 16px;
-      color: #ddf3ff; }
+      color: #ffffff; }
     .header2 div label {
       font-size: 34px;
-      color: #ddf3ff; }
+      color: #ffffff; }
       .header2 div label span {
         font-size: 16px;
-        color: #ddf3ff; }
+        color: #ffffff; }
 
 .tab-box2 .tab-box2-li2 {
   background: url("../img/4icon_left_2_nor.png") no-repeat; }
@@ -1347,7 +1347,7 @@ html, body {
               align-items: baseline; }
       .tab-box2 .tab-box2-li2 .li-tab-box header label {
         font-size: 26px;
-        color: #ddf3ff;
+        color: #ffffff;
         margin-right: 20px; }
       .tab-box2 .tab-box2-li2 .li-tab-box header span {
         font-size: 50px;
@@ -1369,11 +1369,11 @@ html, body {
                 justify-content: space-between; }
         .tab-box2 .tab-box2-li2 .li-tab-box .chart-box .header label {
           font-size: 18px;
-          color: #ddf3ff; }
+          color: #ffffff; }
       .tab-box2 .tab-box2-li2 .li-tab-box .chart-box .SSKL-cld-box {
         width: 130px;
         height: 30px;
-        background-color: #12508f;
+        background-color: #0a214b;
         position: absolute;
         top: 0;
         right: 44px;
@@ -1382,9 +1382,9 @@ html, body {
       .tab-box2 .tab-box2-li2 .li-tab-box .chart-box .tab-li2-cld {
         width: 100px;
         height: 100%;
-        background-color: #12508f;
+        background-color: #0a214b;
         font-size: 16px;
-        color: #ddf3ff;
+        color: #ffffff;
         padding-left: 10px;
         cursor: pointer; }
       .tab-box2 .tab-box2-li2 .li-tab-box .chart-box .arrow {
@@ -1404,7 +1404,7 @@ html, body {
       margin-bottom: 20px; }
       .tab-box2 .tab-box2-li2 .li-tab-box .chart-box2 .header label {
         font-size: 18px;
-        color: #ddf3ff; }
+        color: #ffffff; }
 
 .tab-box3 .tab-box2-li2 {
   background: url("../img/4icon_left_2_nor.png") no-repeat; }
@@ -1422,7 +1422,7 @@ html, body {
             align-items: baseline; }
     .tab-box3 .tab-box2-li2 .header1 label {
       font-size: 26px;
-      color: #ddf3ff;
+      color: #ffffff;
       margin-right: 20px; }
     .tab-box3 .tab-box2-li2 .header1 span {
       font-size: 50px;
@@ -1444,7 +1444,7 @@ html, body {
       .tab-box3 .tab-box2-li2 .li-tab-box header div {
         width: 200px;
         font-size: 16px;
-        color: #ddf3ff;
+        color: #ffffff;
         text-align: center; }
         .tab-box3 .tab-box2-li2 .li-tab-box header div i {
           font-size: 34px; }
@@ -1461,7 +1461,7 @@ html, body {
     .tab-box3 .tab-box2-li2 .li-tab-box .calendar-box {
       width: 130px;
       height: 30px;
-      background-color: #12508f;
+      background-color: #0a214b;
       position: absolute;
       top: 0;
       right: 44px;
@@ -1470,7 +1470,7 @@ html, body {
     .tab-box3 .tab-box2-li2 .li-tab-box .sskl-cld2 {
       width: 100px;
       height: 100%;
-      background-color: #12508f;
+      background-color: #0a214b;
       font-size: 16px;
       color: #ddf3ff;
       padding-left: 10px; }
@@ -1515,7 +1515,7 @@ html, body {
     padding: 30px 100px 25px; }
     .tab-box4 .tab-box2-li2 .header1 label {
       font-size: 26px;
-      color: #ddf3ff;
+      color: #ffffff;
       margin-right: 20px; }
     .tab-box4 .tab-box2-li2 .header1 span {
       font-size: 50px;
@@ -1545,13 +1545,13 @@ html, body {
         line-height: 45px; }
       .tab-box4 .tab-box2-li2 .header2 div p {
         font-size: 16px;
-        color: #ddf3ff; }
+        color: #ffffff; }
       .tab-box4 .tab-box2-li2 .header2 div label {
         font-size: 34px;
-        color: #ddf3ff; }
+        color: #ffffff; }
         .tab-box4 .tab-box2-li2 .header2 div label span {
           font-size: 16px;
-          color: #ddf3ff; }
+          color: #ffffff; }
   .tab-box4 .tab-box2-li2 .li-tab-box {
     width: 600px;
     top: -200px;
@@ -1559,7 +1559,7 @@ html, body {
   .tab-box4 .tab-box2-li2 .calendar-box {
     width: 130px;
     height: 30px;
-    background-color: #12508f;
+    background-color: #0a214b;
     position: absolute;
     top: 5px;
     right: 44px;
@@ -1568,7 +1568,7 @@ html, body {
     .tab-box4 .tab-box2-li2 .calendar-box .sskl-cld2 {
       width: 100px;
       height: 100%;
-      background-color: #12508f;
+      background-color: #0a214b;
       font-size: 16px;
       color: #ddf3ff;
       padding-left: 10px; }
@@ -1602,7 +1602,7 @@ html, body {
   .tab-box5 .tab-box2-li2 .calendar-box {
     width: 130px;
     height: 30px;
-    background-color: #12508f;
+    background-color: #0a214b;
     position: absolute;
     top: 5px;
     right: 44px;
@@ -1611,7 +1611,7 @@ html, body {
     .tab-box5 .tab-box2-li2 .calendar-box .sskl-cld2 {
       width: 100px;
       height: 100%;
-      background-color: #12508f;
+      background-color: #0a214b;
       font-size: 16px;
       color: #ddf3ff;
       padding-left: 10px; }
@@ -1641,7 +1641,7 @@ html, body {
     position: absolute;
     left: 154px;
     top: 20px;
-    background-color: #12508f;
+    background-color: #0a214b;
     color: #fff;
     text-align: center;
     z-index: 1; }
@@ -1677,7 +1677,7 @@ html, body {
     .tab-box2 .tab-box2-li3 .li-tab-box .calendar {
       width: 380px;
       height: 40px;
-      background-color: #12508f;
+      background-color: #0a214b;
       position: relative; }
     .tab-box2 .tab-box2-li3 .li-tab-box .chart-box {
       height: 250px;
@@ -1696,7 +1696,7 @@ html, body {
     top: 20px;
     text-align: center;
     color: #fff;
-    background-color: #12508f;
+    background-color: #0a214b;
     z-index: 1; }
   .tab-box3 .tab-box2-li3 .arrow {
     position: absolute;
@@ -1728,7 +1728,7 @@ html, body {
     .tab-box3 .tab-box2-li3 .li-tab-box .calendar {
       width: 380px;
       height: 40px;
-      background-color: #12508f;
+      background-color: #0a214b;
       position: relative; }
   .tab-box3 .tab-box2-li3 .chart1 {
     width: 100%;
@@ -1750,7 +1750,7 @@ html, body {
     text-align: center;
     color: #ffffff;
     z-index: 1;
-    background-color: #12508f; }
+    background-color: #0a214b; }
   .tab-box4 .tab-box2-li3 .arrow {
     position: absolute;
     right: 0;
@@ -1780,7 +1780,7 @@ html, body {
     .tab-box4 .tab-box2-li3 .li-tab-box .calendar {
       width: 380px;
       height: 40px;
-      background-color: #12508f;
+      background-color: #0a214b;
       position: relative; }
   .tab-box4 .tab-box2-li3 .chart-box {
     height: 250px;
@@ -1796,7 +1796,7 @@ html, body {
     top: 20px;
     text-align: center;
     color: #ffffff;
-    background-color: #12508f; }
+    background-color: #0a214b; }
   .tab-box5 .tab-box2-li3 .arrow {
     position: absolute;
     right: 0;
@@ -1827,7 +1827,7 @@ html, body {
     .tab-box5 .tab-box2-li3 .li-tab-box .calendar {
       width: 380px;
       height: 40px;
-      background-color: #12508f;
+      background-color: #0a214b;
       position: relative; }
   .tab-box5 .tab-box2-li3 .chart-box {
     height: 250px;
@@ -1900,15 +1900,15 @@ html, body {
               justify-content: center; }
       .tab-box4 .tab-box2-li4 header div .title-name {
         font-size: 24px;
-        color: #ddf3ff;
+        color: #ffffff;
         margin-right: 10px;
         line-height: 45px; }
       .tab-box4 .tab-box2-li4 header div p {
         font-size: 16px;
-        color: #ddf3ff; }
+        color: #ffffff; }
       .tab-box4 .tab-box2-li4 header div label {
         font-size: 34px;
-        color: #ddf3ff; }
+        color: #ffffff; }
   .tab-box4 .tab-box2-li4 .tab4-zlsc {
     width: 100%;
     height: 250px; }
@@ -1943,7 +1943,7 @@ html, body {
     .tab-box4 .tab-box2-li4 .calendar .m-cld {
       width: 195px;
       height: 40px;
-      background-color: #114d8a;
+      background-color: #0a214b;
       position: absolute;
       right: 30px;
       top: 0;
@@ -1982,7 +1982,7 @@ html, body {
     .tab-box2 .tab-box2-li4 .li-tab-box .tab-li4-cld {
       width: 195px;
       height: 40px;
-      background-color: #114d8a;
+      background-color: #0a214b;
       position: absolute;
       right: 30px;
       top: 0;
@@ -2002,16 +2002,16 @@ html, body {
         text-align: center; }
         .tab-box2 .tab-box2-li4 .li-tab-box header div .title-name {
           font-size: 16px;
-          color: #ddf3ff; }
+          color: #ffffff; }
         .tab-box2 .tab-box2-li4 .li-tab-box header div p {
           font-size: 16px;
-          color: #ddf3ff; }
+          color: #ffffff; }
         .tab-box2 .tab-box2-li4 .li-tab-box header div label {
           font-size: 34px;
-          color: #ddf3ff; }
+          color: #ffffff; }
           .tab-box2 .tab-box2-li4 .li-tab-box header div label span {
             font-size: 16px;
-            color: #ddf3ff; }
+            color: #ffffff; }
     .tab-box2 .tab-box2-li4 .li-tab-box .chart-box1 {
       width: 100%;
       height: 160px;
@@ -2049,7 +2049,7 @@ html, body {
         line-height: 35px; }
       .data-box .header .container .active {
         border-color: #05cffa;
-        color: #ddf3ff; }
+        color: #ffffff; }
   .data-box .container2-1 {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -2063,10 +2063,10 @@ html, body {
           -ms-flex: 1;
               flex: 1;
       font-size: 18px;
-      color: #ddf3ff; }
+      color: #ffffff; }
       .data-box .container2-1 .from-chart .header, .data-box .container2-1 .to-chart .header {
         font-size: 18px;
-        color: #ddf3ff;
+        color: #ffffff;
         margin-bottom: 5px; }
       .data-box .container2-1 .from-chart .body, .data-box .container2-1 .to-chart .body {
         padding-right: 10px; }
@@ -2142,7 +2142,7 @@ html, body {
     .tab-box3 .tab-box2-li4 header div {
       width: 200px;
       font-size: 16px;
-      color: #ddf3ff;
+      color: #ffffff;
       text-align: center; }
       .tab-box3 .tab-box2-li4 header div i {
         font-size: 34px; }
@@ -2175,7 +2175,7 @@ html, body {
     .tab-box3 .tab-box2-li4 .li-tab-box .tab-li4-cld {
       width: 195px;
       height: 40px;
-      background-color: #114d8a;
+      background-color: #0a214b;
       position: absolute;
       right: 30px;
       top: 0;
@@ -2209,7 +2209,7 @@ html, body {
             align-items: center;
     font-size: 16px; }
     .cur-pos-data-box .key-pos .name {
-      color: #ddf3ff; }
+      color: #ffffff; }
     .cur-pos-data-box .key-pos ul {
       display: -webkit-box;
       display: -ms-flexbox;
@@ -2275,7 +2275,7 @@ html, body {
       width: 220px; }
     .cur-pos-data-box .station-box header {
       font-size: 20px;
-      color: #ddf3ff;
+      color: #ffffff;
       width: 100%;
       display: -webkit-box;
       display: -ms-flexbox;
@@ -2615,7 +2615,7 @@ input:focus {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    color: #d9f1ff; }
+    color: #ffffff; }
     .weather-box ul li:nth-child(1) {
       width: 224px; }
     .weather-box ul li:nth-child(2) {
@@ -2769,6 +2769,27 @@ input:focus {
     border-radius: 10px;
     background: rgba(0, 0, 0, 0); }
 
+.tab-box2 .tab-box2-li1 .li-tab-box::-webkit-scrollbar,
+.tab-box3 .tab-box2-li1 .li-tab-box::-webkit-scrollbar, .tab-box4 .tab-box2-li1 .li-tab-box::-webkit-scrollbar {
+  /*滚动条整体样式*/
+  width: 10px;
+  /*高宽分别对应横竖滚动条的尺寸*/
+  height: 1px; }
+
+.tab-box2 .tab-box2-li1 .li-tab-box::-webkit-scrollbar-thumb,
+.tab-box3 .tab-box2-li1 .li-tab-box::-webkit-scrollbar-thumb, .tab-box4 .tab-box2-li1 .li-tab-box::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: #28eefb; }
+
+.tab-box2 .tab-box2-li1 .li-tab-box::-webkit-scrollbar-track,
+.tab-box3 .tab-box2-li1 .li-tab-box::-webkit-scrollbar-track, .tab-box4 .tab-box2-li1 .li-tab-box::-webkit-scrollbar-track {
+  /*滚动条里面轨道*/
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0); }
+
 .btm-part {
   position: absolute;
   right: 40px;
@@ -2830,15 +2851,15 @@ input:focus {
       .flight-box .flight-data-box2 .chart-tab span:nth-child(2) {
         margin-left: 10px; }
       .flight-box .flight-data-box2 .chart-tab span.active {
-        border: 1px solid #4ab6d3;
+        border: 1px solid #fff;
         border-radius: 5px;
-        background-color: #0e6694; }
+        background-color: #0e97dd; }
     .flight-box .flight-data-box2 .chart-box {
       width: 1032px;
       height: 100%; }
   .flight-box .flight-tab {
     font-size: 24px;
-    color: #1776af;
+    color: #18b1fa;
     width: 160px;
     height: 115px;
     position: absolute;
@@ -2910,7 +2931,7 @@ input:focus {
         height: 30px;
         font-size: 16px;
         color: #d9f1ff;
-        background-color: #1c5390; }
+        background-color: #1e73d7; }
   .flight-box .r-part {
     height: 100%;
     -webkit-box-flex: 7.5;
@@ -3016,7 +3037,7 @@ input:focus {
     white-space: nowrap; }
 
 .camera-box li:hover {
-  background: url("../../yjzx/img/camera_active.png"); }
+  background: url("../../yjzx/img/camera_active2.png"); }
 
 .camera-box::-webkit-scrollbar {
   /*滚动条整体样式*/

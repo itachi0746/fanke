@@ -3,11 +3,18 @@
 
 $tabTop: 130px;
 $tab2Top: -150px;
+//$lightBoxBc: rgba(16,75,179,.9);  // 框 底色
+$lightBoxBc: rgba(12,57,140,.95);  // 框 底色
+//$lightBoxBc: rgba(14,59,140,.9);  // 框 底色
+$bdColor: #28eefb;  // 边框
+$white: #ffffff;
+$cldColor: #0a214b; // 日历
 
 html,body{
   height: 1080px;
   width: 1920px;
   position: relative;
+  //background-color: #0c398c;
 }
 
 @font-face {
@@ -30,7 +37,7 @@ html,body{
   position: absolute;
   left: 45px;
   top: 0;
-  background-color: rgb(18,80,143);
+  background-color: $cldColor;
   color: #fff;
   text-align: center;
   z-index: 2;
@@ -521,7 +528,7 @@ html,body{
 .top3 {
   height: 97px;
   position: absolute;
-  top: 20px;
+  top: 22px;
   right: 65px;
   z-index: 20;
   //display: none;
@@ -562,14 +569,20 @@ html,body{
     }
   }
 
+  .top3-outer {
+    width: 405px;
+
+  }
+
   .yongji {
     float: left;
-    width: 430px;
+    //width: 394px;
     height: 97px;
-    background-color: rgba(234,72,130,.8);
+    background-color: rgba(255,94,196,.8);
+    //background-color: #ff5ec4;
     transition: all .3s;
     overflow: hidden;
-    padding: 0 20px 0 55px;
+    padding: 0 20px 0 20px;
     color: #ffffff;
     margin-right: 2px;
 
@@ -614,7 +627,7 @@ html,body{
   }
 
   .shizhong,.shushi {
-    width: 394px;
+    //width: 394px;
     height: 97px;
 
     transition: all .3s;
@@ -646,10 +659,12 @@ html,body{
 
   }
   .shizhong {
-    background-color: rgba(232,175,53,.8);
+    background-color: rgba(255,195,81,.8);
+    //background-color: #ffc351;
   }
   .shushi {
-    background-color: rgba(39,214,211,.8);
+    background-color: rgba(43,255,255,.8);
+    //background-color: #2bffff;
   }
 
   .yongji::-webkit-scrollbar {/*滚动条整体样式*/
@@ -923,7 +938,8 @@ html,body{
   @include num-icon(rgb(250,129,64));
 }
 .top3-icon3 {
-  @include num-icon(rgb(39,214,211));
+  //@include num-icon(rgb(39,214,211));
+  @include num-icon(#1ba8a6);
 }
 
 #container2 {
@@ -1338,18 +1354,18 @@ html,body{
     text-align: center;
     .title-name {
       font-size: 16px;
-      color: rgb(221,243,255);
+      color: $white;
     }
     p {
       font-size: 16px;
-      color: rgb(221,243,255);
+      color: $white;
     }
     label {
       font-size: 34px;
-      color: rgb(221,243,255);
+      color: $white;
       span {
         font-size: 16px;
-        color: rgb(221,243,255);
+        color: $white;
 
       }
     }
@@ -1372,7 +1388,7 @@ html,body{
 
       label {
         font-size: 26px;
-        color: rgb(221,243,255);
+        color: $white;
         margin-right: 20px;
       }
       span {
@@ -1396,13 +1412,13 @@ html,body{
         justify-content: space-between;
         label {
           font-size: 18px;
-          color: rgb(221,243,255);
+          color: $white;
         }
       }
       .SSKL-cld-box {
         width: 130px;
         height: 30px;
-        background-color: rgb(18,80,143);
+        background-color: $cldColor;
         position: absolute;
         top: 0;
         right: 44px;
@@ -1412,9 +1428,9 @@ html,body{
       .tab-li2-cld {
         width: 100px;
         height: 100%;
-        background-color: rgb(18,80,143);
+        background-color: $cldColor;
         font-size: 16px;
-        color: rgb(221,243,255);
+        color: $white;
         padding-left: 10px;
         cursor: pointer;
         //display: none;
@@ -1441,7 +1457,7 @@ html,body{
       .header {
         label {
           font-size: 18px;
-          color: rgb(221,243,255);
+          color: $white;
         }
       }
     }
@@ -1460,7 +1476,7 @@ html,body{
 
     label {
       font-size: 26px;
-      color: rgb(221,243,255);
+      color: $white;
       margin-right: 20px;
     }
     span {
@@ -1485,7 +1501,7 @@ html,body{
       div {
         width: 200px;
         font-size: 16px;
-        color: rgb(221,243,255);
+        color: $white;
         text-align: center;
         i {
           font-size: 34px;
@@ -1510,7 +1526,7 @@ html,body{
     .calendar-box {
       width: 130px;
       height: 30px;
-      background-color: #12508f;
+      background-color: $cldColor;
       position: absolute;
       top: 0;
       right: 44px;
@@ -1520,7 +1536,7 @@ html,body{
     .sskl-cld2 {
       width: 100px;
       height: 100%;
-      background-color: #12508f;
+      background-color: $cldColor;
       font-size: 16px;
       color: #ddf3ff;
       padding-left: 10px;
@@ -1575,7 +1591,7 @@ html,body{
 
     label {
       font-size: 26px;
-      color: rgb(221,243,255);
+      color: $white;
       margin-right: 20px;
     }
     span {
@@ -1609,14 +1625,14 @@ html,body{
       }
       p {
         font-size: 16px;
-        color: rgb(221,243,255);
+        color: $white;
       }
       label {
         font-size: 34px;
-        color: rgb(221,243,255);
+        color: $white;
         span {
           font-size: 16px;
-          color: rgb(221,243,255);
+          color: $white;
 
         }
       }
@@ -1633,7 +1649,7 @@ html,body{
   .calendar-box {
     width: 130px;
     height: 30px;
-    background-color: #12508f;
+    background-color: $cldColor;
     position: absolute;
     top: 5px;
     right: 44px;
@@ -1642,7 +1658,7 @@ html,body{
     .sskl-cld2 {
       width: 100px;
       height: 100%;
-      background-color: #12508f;
+      background-color: $cldColor;
       font-size: 16px;
       color: #ddf3ff;
       padding-left: 10px;
@@ -1685,7 +1701,7 @@ html,body{
   .calendar-box {
     width: 130px;
     height: 30px;
-    background-color: #12508f;
+    background-color: $cldColor;
     position: absolute;
     top: 5px;
     right: 44px;
@@ -1694,7 +1710,7 @@ html,body{
     .sskl-cld2 {
       width: 100px;
       height: 100%;
-      background-color: #12508f;
+      background-color: $cldColor;
       font-size: 16px;
       color: #ddf3ff;
       padding-left: 10px;
@@ -1731,7 +1747,7 @@ html,body{
     position: absolute;
     left: 154px;
     top: 20px;
-    background-color: rgb(18,80,143);
+    background-color: $cldColor;
     color: #fff;
     text-align: center;
     z-index: 1;
@@ -1773,7 +1789,7 @@ html,body{
     .calendar {
       width: 380px;
       height: 40px;
-      background-color: rgb(18,80,143);
+      background-color: $cldColor;
       position: relative;
     }
     .chart-box {
@@ -1802,7 +1818,7 @@ html,body{
     top: 20px;
     text-align: center;
     color: #fff;
-    background-color: rgb(18,80,143);
+    background-color: $cldColor;
     z-index: 1;
   }
   .arrow {
@@ -1839,7 +1855,7 @@ html,body{
     .calendar {
       width: 380px;
       height: 40px;
-      background-color: rgb(18,80,143);
+      background-color: $cldColor;
       position: relative;
     }
 
@@ -1869,7 +1885,7 @@ html,body{
     text-align: center;
     color: #ffffff;
     z-index: 1;
-    background-color: rgb(18,80,143);
+    background-color: $cldColor;
   }
   .arrow {
     position: absolute;
@@ -1905,7 +1921,7 @@ html,body{
     .calendar {
       width: 380px;
       height: 40px;
-      background-color: rgb(18,80,143);
+      background-color: $cldColor;
       position: relative;
     }
 
@@ -1928,7 +1944,7 @@ html,body{
     top: 20px;
     text-align: center;
     color: #ffffff;
-    background-color: rgb(18,80,143);
+    background-color: $cldColor;
   }
   .arrow {
     position: absolute;
@@ -1964,7 +1980,7 @@ html,body{
     .calendar {
       width: 380px;
       height: 40px;
-      background-color: rgb(18,80,143);
+      background-color: $cldColor;
       position: relative;
     }
 
@@ -2042,17 +2058,17 @@ html,body{
       justify-content: center;
       .title-name {
         font-size: 24px;
-        color: rgb(221,243,255);
+        color: $white;
         margin-right: 10px;
         line-height: 45px;
       }
       p {
         font-size: 16px;
-        color: rgb(221,243,255);
+        color: $white;
       }
       label {
         font-size: 34px;
-        color: rgb(221,243,255);
+        color: $white;
       }
     }
   }
@@ -2096,7 +2112,7 @@ html,body{
     .m-cld {
       width: 195px;
       height: 40px;
-      background-color: #114d8a;
+      background-color: $cldColor;
       position: absolute;
       right: 30px;
       top: 0;
@@ -2147,7 +2163,7 @@ html,body{
     .tab-li4-cld {
       width: 195px;
       height: 40px;
-      background-color: #114d8a;
+      background-color: $cldColor;
       position: absolute;
       right: 30px;
       top: 0;
@@ -2167,18 +2183,18 @@ html,body{
         text-align: center;
         .title-name {
           font-size: 16px;
-          color: rgb(221,243,255);
+          color: $white;
         }
         p {
           font-size: 16px;
-          color: rgb(221,243,255);
+          color: $white;
         }
         label {
           font-size: 34px;
-          color: rgb(221,243,255);
+          color: $white;
           span {
             font-size: 16px;
-            color: rgb(221,243,255);
+            color: $white;
           }
         }
       }
@@ -2227,7 +2243,7 @@ html,body{
     //
     //      .active {
     //        border-color: rgb(5,207,250);
-    //        color: rgb(221,243,255);
+    //        color: $white;
     //      }
     //      //div:hover{
     //      //  border-color: rgb(5,207,250);
@@ -2243,12 +2259,12 @@ html,body{
     //    .from-chart,.to-chart {
     //      flex: 1;
     //      font-size: 18px;
-    //      color: rgb(221,243,255);
+    //      color: $white;
     //
     //
     //      .header {
     //        font-size: 18px;
-    //        color: rgb(221,243,255);
+    //        color: $white;
     //
     //      }
     //      .body {
@@ -2310,7 +2326,7 @@ html,body{
 
       .active {
         border-color: rgb(5,207,250);
-        color: rgb(221,243,255);
+        color: $white;
       }
       //div:hover{
       //  border-color: rgb(5,207,250);
@@ -2327,12 +2343,12 @@ html,body{
     .from-chart,.to-chart {
       flex: 1;
       font-size: 18px;
-      color: rgb(221,243,255);
+      color: $white;
 
 
       .header {
         font-size: 18px;
-        color: rgb(221,243,255);
+        color: $white;
         margin-bottom: 5px;
       }
       .body {
@@ -2394,7 +2410,7 @@ html,body{
     div {
       width: 200px;
       font-size: 16px;
-      color: rgb(221,243,255);
+      color: $white;
       text-align: center;
       i {
         font-size: 34px;
@@ -2436,7 +2452,7 @@ html,body{
     .tab-li4-cld {
       width: 195px;
       height: 40px;
-      background-color: #114d8a;
+      background-color: $cldColor;
       position: absolute;
       right: 30px;
       top: 0;
@@ -2481,7 +2497,7 @@ html,body{
     font-size: 16px;
 
     .name {
-      color: rgb(221,243,255);
+      color: $white;
     }
 
     ul {
@@ -2567,7 +2583,7 @@ html,body{
 
     header {
       font-size: 20px;
-      color: rgb(221,243,255);
+      color: $white;
       width: 100%;
       //text-align: left;
       display: flex;
@@ -2942,7 +2958,7 @@ input:focus {
     width: 100%;
     height: 100%;
     display: flex;
-    color: #d9f1ff;
+    color: $white;
 
     li:nth-child(1){
       width: 224px;
@@ -3099,6 +3115,25 @@ input:focus {
   }
 
 }
+
+.tab-box2 .tab-box2-li1 .li-tab-box,
+.tab-box3 .tab-box2-li1 .li-tab-box,.tab-box4 .tab-box2-li1 .li-tab-box {
+  &::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+  }
+  &::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: $bdColor;
+  }
+  &::-webkit-scrollbar-track {/*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    background: rgba(0,0,0,0);
+  }
+}
+
 .btm-part {
   position: absolute;
   right: 40px;
@@ -3163,9 +3198,9 @@ input:focus {
         margin-left: 10px;
       }
       span.active {
-        border: 1px solid #4ab6d3;
+        border: 1px solid #fff;
         border-radius: 5px;
-        background-color: #0e6694;
+        background-color: #0e97dd;
       }
     }
     .chart-box {
@@ -3175,7 +3210,8 @@ input:focus {
   }
   .flight-tab {
     font-size: 24px;
-    color: #1776af;
+    //color: #1776af;
+    color: #18b1fa;
     width: 160px;
     height: 115px;
     position: absolute;
@@ -3235,7 +3271,7 @@ input:focus {
         height: 30px;
         font-size: 16px;
         color: #d9f1ff;
-        background-color: #1c5390;
+        background-color: #1e73d7;
       }
 
     }
@@ -3333,7 +3369,7 @@ input:focus {
     }
   }
   li:hover {
-    background: url("../../yjzx/img/camera_active.png");
+    background: url("../../yjzx/img/camera_active2.png");
   }
 }
 .camera-box::-webkit-scrollbar {/*滚动条整体样式*/

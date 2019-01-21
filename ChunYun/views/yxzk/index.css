@@ -12,7 +12,7 @@ html, body {
     width: 1920px;
     height: 1080px;
     overflow: hidden;
-    /* background-image: url("img/bg.png");*/
+    background-image: url("img/bg.png");
 }
 
 .part1 {
@@ -45,7 +45,7 @@ html, body {
 
 .title {
     margin-left: 40px;
-    color: #d9f1ff;
+    color: white;
     font-size: 24px;
     line-height: 33px;
     display: inline-block;
@@ -61,7 +61,7 @@ html, body {
     /* border: none; */
     border-width: 0px;
     font-size: 18px;
-    color: #ddf3ff;
+    /*color: #ddf3ff;*/
     height: 30px;
     line-height: 33px;
     /* padding-right: 32px; */
@@ -162,11 +162,11 @@ html, body {
     padding-left: 24px;
     background: transparent;
     background: url(img/icon_down.png) no-repeat transparent;
-    background-position-x: 217px;
+    background-position-x: 218px;
     background-position-y: 13px;
     background-size: 14px 8px;
     font-size: 24px;
-    /*background: #0e6694;*/
+    /* background: #0e6694; */
     border-radius: 5px;
     border: #3296b9 solid 1px;
     z-index: 1000;
@@ -194,7 +194,7 @@ html, body {
     /* padding-right: 15px; */
     /* margin-left: 20px; */
     width: 237px;
-    color: #289ee5;
+    color: #3bffff;
     display: inline-block;
     cursor: pointer;
     float: right;
@@ -205,25 +205,29 @@ html, body {
 }
 
 .part2.active .right-title1 {
-    color: #289ee5;
+    color: #3bffff;
 
 }
 
 .right-title1.active, .right-title2.active {
     /*background: url("img/btn_01.png");
     background-repeat: no-repeat;*/
-    background: #0e6694;
+    background: #12c2ff ;
     border-radius: 5px;
-    border: #3296b9 solid 1px;
+    font-weight:bolder ;
+    color: white;
+    border: white solid 1px;
 }
 
 .part2.active .right-title2 {
     color: #d9f1ff;
+    font-weight:bolder ;
+    color: white;
     /*background: url("img/btn_01.png");
     background-repeat: no-repeat;*/
-    background: #0e6694;
+    background: #12c2ff;
     border-radius: 5px;
-    border: #3296b9 solid 1px;
+    border: white solid 1px;
     margin-right: 39px;
 }
 
@@ -252,7 +256,7 @@ html, body {
     text-align: center;
     z-index: 10;
     right: 0px;
-    left: 608px;
+    left: 453px;
     position: relative;
 }
 
@@ -276,9 +280,9 @@ html, body {
 
 .btn.active {
     /*background: url("img/btn_01.png");*/
-    background: #0e6694;
+    background: #12c2ff;
     border-radius: 5px;
-    border: #3296b9 solid 1px;
+    border: white solid 1px;
 }
 
 .btn2 {
@@ -404,7 +408,7 @@ select option {
 
 .part1-content > div {
     width: 350px;
-    height: 254px;
+    height: 255px;
     float: left;
 }
 
@@ -422,11 +426,12 @@ select option {
 .part1-content .small-title {
     /*padding-left: 34px;*/
     font-size: 16px;
-    color: rgba(221, 243, 255, 0.6);
+    color:white;/* rgba(221, 243, 255, 0.6);*/
 }
 
 .part1-content .field {
     font-size: 26px;
+    line-height: 26px;
     color: white;
     padding-top: 10px;
     /*padding-left: 34px;*/
@@ -488,6 +493,9 @@ select option {
     padding-left: 26px;
     color: white;
     width: 100%;
+    /*width:200px;*/
+    font-size: 26px;
+    display: inline-block;
 }
 
 .part1-new {
@@ -496,7 +504,7 @@ select option {
 }
 
 .part1-new .part1-content {
-    margin-top: 30px;
+    margin-top: 15px;
     margin-left: 48px;
 }
 
@@ -512,7 +520,7 @@ select option {
 }
 
 .chart-small {
-    width: 230px;
+    width: 270px;
     height: 240px;
     float: left;
     margin-top: 10px;
@@ -524,7 +532,7 @@ select option {
 }
 .chart-big {
     height: 240px !important;
-    width: 914px !important;
+    width: 752px !important;
     background: transparent !important;
     background-repeat: no-repeat;
 }
@@ -567,13 +575,13 @@ select option {
 
 .chart-big .chart-title {
     /*background: transparent;*/
-    margin-left: 829px !important;
+    margin-left: 682px !important;
 }
 
 .part3 .title1-new {
     /* margin-top: 5px; */
     margin-bottom: 5px;
-    width: 129px;
+    width: 300px;
 }
 
 .part22-btn {
@@ -590,12 +598,17 @@ select option {
 
 }
 .chart-group2 .chart-big{
-    width: 793px !important;
+    width: 719px !important;
 
 }
 .chart-group2 .chart-big .chart{
     top:28px;
 }
 .chart-group2 .chart-big .chart-title{
-    margin-left: 700px !important;
+    margin-left: 650px !important;
+}
+.field>*{
+    display: inline-block;
+    height: 26px;
+    overflow: hidden;
 }

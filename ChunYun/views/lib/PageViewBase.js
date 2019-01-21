@@ -1238,8 +1238,8 @@ PageViewBase.prototype.addMarker = function (name, lng, lat, value) {
     if (value > 1000) {
         theNumText = (value / 10000).toFixed(2) + "万";
     }
-    var content = '<div class="marker-route marker-marker-point"></div><div class="infowindow" style="color:#ddf3ff">' +
-        '<div class="first">实时客流</div><div class="second">' + theNumText + '</div></div><div style="text-align: center;color: #ddf3ff;    margin-left: -52px;\n' +
+    var content = '<div class="marker-route marker-marker-point"></div><div class="infowindow" style="color:white">' +
+        '<div class="first">实时客流</div><div class="second">' + theNumText + '</div></div><div style="text-align: center;color: white;    margin-left: -52px;\n' +
         '    width: 198px;\n' +
         '    display: inline-block;font-size: 24px;\n' +
         '    margin-top: 5px;">' + name + '</div>';
@@ -1266,8 +1266,8 @@ PageViewBase.prototype.addMarker2 = function (name, lng, lat, value) {
         theNumText = (value / 10000).toFixed(2) + "万";
     }
 
-    var content = '<div class="infowindow" style="color:#ddf3ff">' +
-        '<div class="first">实时客流</div><div class="second">' + theNumText + '</div></div><div class="marker-route marker-marker-point"></div><div style="text-align: center;color: #ddf3ff;    margin-left: -52px;\n' +
+    var content = '<div class="infowindow" style="color:white">' +
+        '<div class="first">实时客流</div><div class="second">' + theNumText + '</div></div><div class="marker-route marker-marker-point"></div><div style="text-align: center;color: white;    margin-left: -52px;\n' +
         '    width: 198px;\n' +
         '    display: inline-block;font-size: 24px;\n' +
         '    margin-top: 5px;">' + name + '</div>';

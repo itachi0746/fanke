@@ -221,7 +221,7 @@ html body {
     line-height: 64px;
     text-align: center;
     margin-top: 10px;
-    color: #27d2f5;
+    color: #13ffff;
 
 }
 
@@ -241,6 +241,7 @@ html body {
     margin-left: 4px;
     height: 69px;
     line-height: 69px;
+    background: #1573e0;
 }
 
 .numpart .content2 {
@@ -426,10 +427,29 @@ html body {
     position: absolute;
     margin-left: 93px;
     margin-top: 19px;
+    font-size: 16px;
 }
 
 .chart-big .chart-title {
     /*background: transparent;*/
     margin-left: 829px !important;
-    margin-top: 35px;
+    margin-top: 31px;
+}
+
+.sr-ul {
+    width: 100%;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+.sr-num {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+.sr-li {
+    width: 52px;
+    height: 69px;
 }

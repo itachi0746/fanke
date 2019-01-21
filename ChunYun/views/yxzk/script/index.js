@@ -14,6 +14,7 @@ $(function () {
                 return theResult;
             }
         };
+
         var formateDateNumText = function (ele, date) {
             var theDateText = date.year + '-' + FormateDateNum(date.month) + '-' + FormateDateNum(date.date);
             var theDate = new Date(theDateText);
@@ -85,6 +86,7 @@ $(function () {
          */
         PageViewModel.prototype.onTimer = function () {
             console.log("开始刷新数据!");
+            this.loadData1();
         }
         PageViewModel.prototype.updateDate = function () {
             $('.date').val(formateDate1());
@@ -334,7 +336,7 @@ $(function () {
                         bottom:
                             20,
                         width:
-                            814,
+                            680,
                         height:
                             190,
                         containLabel:
@@ -589,7 +591,7 @@ $(function () {
                         bottom:
                             10,
                         width:
-                            1740,
+                            630,
                         height:
                             210,
                         containLabel:
@@ -968,8 +970,8 @@ $(function () {
             //debugger;
             var theItemConfig = [
                 /*{name: '总旅客', textStyle: {color: "#cfccfc"}},*/
-                {name: '发送', textStyle: {color1: "#f0d94b", color2: "#6a6d06"}},
-                {name: '到达', textStyle: {color1: "#1bf955", color2: "#22b347"}}];
+                {name: '发送', textStyle: {color1: "#ffff88", color2: "#c9ce07"}},
+                {name: '到达', textStyle: {color1: "#4ffeff", color2: "#058fff"}}];
             var theBeginDate = new Date('2019-01-21');
             var theXData = [];
             theXData.push(theBeginDate.getTime());
@@ -1320,13 +1322,29 @@ $(function () {
 
             var fromateNum = function (num1) {
                 var theNum1 = "";
+                var theEndStr="<div>万</div>";
                 if (num1 > 1000) {
-                    var theNum1 = (num1 / 10000).toFixed(2) + '万';
+                    var theNum1 = (num1 / 10000).toFixed(2) ;
                 }
                 else {
-                    var theNum1 = num1;
+                    var theNum1 = num1+"";
+                    theEndStr="";
                 }
-                return theNum1;
+                var theNumberStrArray = [];
+                for (var i = 0; i < theNum1.length; i++) {
+                    theNumberStrArray.push(theNum1[i]);
+                }
+                var theTemplate = "";
+                for (var i = 0; i < theNumberStrArray.length; i++) {
+                    var theCurrent = theNumberStrArray[i];
+                    if (theCurrent == '.') {
+                        theTemplate += '<div>'+theCurrent+'</div>';
+                    }
+                    else {
+                        theTemplate += "<div class='num-contain' data-num='"+theCurrent+"'>" + theCurrent + "</div>";
+                    }
+                }
+                return theTemplate+theEndStr;
             }
             var formateLeft1 = function (data) {
                 data.postion_type1_total_text = formateText(data.postion_type1_total, data.send_count_total);
@@ -1353,8 +1371,16 @@ $(function () {
                 data.postion_type2_shuilu = fromateNum(data.postion_type2_shuilu, data.send_count_shuilu);
                 data.postion_type2_minhang = fromateNum(data.postion_type2_minhang, data.send_count_minhang);
             }
+            //debugger;
             formateLeft1(theLeft1);
             this.bind('.part1-content', theLeft1);
+            if(!this.NumbersEffect){
+                this.NumbersEffect=  new NumbersEffect(document.body);
+            }
+            else{
+                this.NumbersEffect.restart();
+            }
+
 
         }
         /**

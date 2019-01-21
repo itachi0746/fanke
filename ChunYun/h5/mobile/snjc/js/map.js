@@ -239,7 +239,7 @@ $(function () {
     });
 
     AMap.plugin(['AMap.IndoorMap', 'AMap.OverView'], function () {
-      var indoorMap = new AMap.IndoorMap({alwaysShow: true,hideFloorBar:true});
+      var indoorMap = new AMap.IndoorMap({alwaysShow: true,hideFloorBar:false});
       theMap.add(indoorMap);
 
       // 在图面添加鹰眼控件，在地图右下角显示地图的缩略图
@@ -336,7 +336,7 @@ $(function () {
       var theLayer = theLayers[i];
       if (theLayer.CLASS_NAME == 'AMap.IndoorMap') {
         console.log("找到室内图");
-        theLayer.hideFloorBar();
+        // theLayer.hideFloorBar();
         theInnerLayer = theLayer;
 
         theInnerLayer.off('complete');

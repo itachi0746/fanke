@@ -8,7 +8,7 @@ $(function () {
   var defaultZoom = 16;
   var positionType = 1;
   var curPosition = '广州南站';
-  var lnglat = lntlat = new AMap.LngLat(113.269391,22.988766);
+  var lnglat = lntlat = new AMap.LngLat(113.269391, 22.988766);
   // mapbase.drawReli(name, pepNum);
   // theMap.setZoomAndCenter(defaultZoom, lnglat);
 
@@ -16,16 +16,16 @@ $(function () {
     '深圳西站': 18,
     '湛江机场': 18,
     '潮汕国际机场': 14,
-    '广州北站':18
+    '广州北站': 18
   };
 
   function init() {
     // layer.load();
-    $('#back-icon').on('click',function () {
+    $('#back-icon').on('click', function () {
       $('#search-box').hide();
       $('#basepage').show();
     });
-    $('#place-sel').on('click',function () {
+    $('#place-sel').on('click', function () {
       $('#search-box').show();
       showSearchCB()
     });
@@ -46,6 +46,7 @@ $(function () {
   function changeInput1(val) {
     $('#input1').val(val);
   }
+
   /**
    * 显示搜索框后,加入默认的列表
    */
@@ -59,16 +60,16 @@ $(function () {
     var theTabLi = tabBox.find('li');
     for (var i = 0; i < theTabLi.length; i++) {
       var liDom = theTabLi[i];
-      if($(liDom).hasClass('active')) {
+      if ($(liDom).hasClass('active')) {
         // console.log(i)
         var theText = $(liDom).text();
         var theArr = pointControl.getPlacePoints(theText);
         for (var j = 0; j < theArr.length; j++) {
           var point = theArr[j];
           var theName = point['枢纽名称'];
-          var liStr = '<li>'+theName+'</li>';
+          var liStr = '<li>' + theName + '</li>';
           var theLiDom = $(liStr);
-          theLiDom.data('name',theText);
+          theLiDom.data('name', theText);
           // console.log(theLiDom.attr('name'));
           // debugger
           resultLiClick(theLiDom);
@@ -93,13 +94,13 @@ $(function () {
    * 点击搜索结果li
    */
   function resultLiClick(dom) {
-    dom.on('click',function () {
+    dom.on('click', function () {
       var searchBox = $('#search-box');
       var theText = $(this).text();
       var theTabName = $(this).data('name');
       var type = tabMap[theTabName];
       // debugger
-      if(!type) {
+      if (!type) {
         console.log('没有找到类型');
         return
       }
@@ -142,7 +143,7 @@ $(function () {
       reqWeather(name);
       reqReliData(name);
       var resultObj = getStatus(name);
-      $('#color-div').attr('class',resultObj.color);
+      $('#color-div').attr('class', resultObj.color);
       $('#status-font').text(resultObj.status);
       // getYJData()
     }
@@ -163,6 +164,7 @@ $(function () {
     rlOuter.height(theH);
     // console.log(rlOuter.height())
   }
+
   /**
    * 清空搜索列表
    */
@@ -177,7 +179,7 @@ $(function () {
    */
   function getStatus(name) {
     var theList;
-    if(positionType===1) {
+    if (positionType === 1) {
       theList = TerminalWarningList;
     } else {
       theList = ServiceAreaWarningList;
@@ -188,7 +190,7 @@ $(function () {
       for (var j = 0; j < obj.data.length; j++) {
         var dataObj = obj.data[j];
         // debugger
-        if(dataObj.postionName==name) {
+        if (dataObj.postionName == name) {
           var resultObj = {
             status: obj.name,
             color: obj.color
@@ -236,8 +238,8 @@ $(function () {
     })
   }
 
-  var TerminalWarningList = [],ServiceAreaWarningList = [];
-  var tab0Time,tab1Time;  // 记录枢纽,服务区预警初始化时间
+  var TerminalWarningList = [], ServiceAreaWarningList = [];
+  var tab0Time, tab1Time;  // 记录枢纽,服务区预警初始化时间
 
   /**
    * 请求枢纽预警数据
@@ -340,6 +342,7 @@ $(function () {
     });
 
   }
+
   /**
    * 获取3级预警数据
    */
@@ -385,9 +388,9 @@ $(function () {
           var obj = dataArr[i];
           for (var j = 0; j < obj.data.length; j++) {
             var theData = obj.data[j];
-            if(theData.postionName===curPosition) {
+            if (theData.postionName === curPosition) {
               // debugger
-              $('#color-div').attr('class',obj.color);
+              $('#color-div').attr('class', obj.color);
               $('#status-font').text(obj.name);
               break
             }
@@ -397,6 +400,7 @@ $(function () {
       }
     });
   }
+
   /**
    * tab绑定点击
    */
@@ -407,7 +411,7 @@ $(function () {
     // debugger
     for (var i = 0; i < theTabLi.length; i++) {
       var tab = theTabLi[i];
-      $(tab).on('click',function () {
+      $(tab).on('click', function () {
         for (var k = 0; k < theTabLi.length; k++) {
           var theTab = theTabLi[k];
           $(theTab).removeClass('active');
@@ -423,15 +427,26 @@ $(function () {
         for (var j = 0; j < theArr.length; j++) {
           var point = theArr[j];
           var theName = point['枢纽名称'];
-          var liStr = '<li>'+theName+'</li>';
+          var liStr = '<li>' + theName + '</li>';
           var theLiDom = $(liStr);
-          theLiDom.data('name',tabName);
+          theLiDom.data('name', tabName);
           resultLiClick(theLiDom);
           resultList.append(theLiDom)
         }
       })
     }
   }
+
+  MapBase.OnFloorClick = function (name) {
+    //debugger;
+    mapbase.hideReli();
+  };
+
+  theMap.once('floorchanged',function(){
+    debugger
+    mapbase.hideReli()
+    // console.log(map.getFloor());
+  })
 
   // 监听搜索input输入
   $('#search').on('input', function () {
@@ -453,7 +468,7 @@ $(function () {
     for (var i = 0; i < markerArr.length; i++) {
       var m = markerArr[i];
       // debugger
-      if(!m['枢纽名称']) {
+      if (!m['枢纽名称']) {
         console.log('名字不对');
         continue
       }
@@ -485,7 +500,7 @@ $(function () {
         var type = pointControl.getPointType(theText);
         type = tabMap[type];
         // debugger
-        if(!type) {
+        if (!type) {
           console.log('没有找到类型');
           return
         }
@@ -567,6 +582,7 @@ $(function () {
   }
 
   var tab2Li2Echart1;
+
   function tab2Li2InitEchart() {
     var SSKL = $('#chart');
     if (!tab2Li2Echart1) {
@@ -606,7 +622,7 @@ $(function () {
             color: '#68e5ff'
           }
         },
-        show:false
+        show: false
       },
       grid: {
         left: '5%',
@@ -700,7 +716,7 @@ $(function () {
   function tab2Li2Echart1reqData(date) {
     var url;
     tab2Li2Echart1.showLoading();    //加载动画
-    if(positionType==1) {
+    if (positionType == 1) {
       url = 'terminal/selectTerminalFlowTrend.do?postionType=' + positionType + '&postionName=' + curPosition + '&countDate=' + date;
     } else {
       url = 'serviceArea/selectServiceFlowTrend.do?postionType=' + positionType + '&postionName=' + curPosition + '&countDate=' + date;

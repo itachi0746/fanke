@@ -188,7 +188,7 @@ $(function () {
                 theTemplate += theCurrent;
             }
             else {
-                theTemplate += "<div>" + theCurrent + "</div>";
+                theTemplate += "<div class='num-contain' data-num='"+theCurrent+"'>" + theCurrent + "</div>";
             }
         }
         // theTemplate = theTemplate + "<span class=\"last\">万</span>";
@@ -383,6 +383,8 @@ $(function () {
                     emphasis: {
                         color: 'white',
                         fontSize: 20,
+                        fontWeight:'bold',
+
                         show: false
                     }
                 },
@@ -402,8 +404,8 @@ $(function () {
                              }],
                              globalCoord: false // 缺省为 false
                          },*/
-                        areaColor: '#0040a3',
-                        borderColor: '#49ffff'
+                        areaColor: '#00a5ff',
+                        borderColor: '#13ffff'
                     },
                     emphasis: {//选取后颜色
                         label: {
@@ -416,9 +418,9 @@ $(function () {
                             x2: 0,
                             y2: 1,
                             colorStops: [{
-                                offset: 1, color: '#2b7fcd'//'#2b7ecc00' // 0% 处的颜色
+                                offset: 1, color: '#13ffff'//'#2b7ecc00' // 0% 处的颜色
                             }, {
-                                offset: 0, color: '#1ee6ff'//'#2b7ecc' // 100% 处的颜色
+                                offset: 0, color: '#3fefff'//'#2b7ecc' // 100% 处的颜色
                             }],
                             globalCoord: false // 缺省为 false
                         },//'#24b1e5'
@@ -548,7 +550,7 @@ $(function () {
                 data: data1.map(function (item) {
                     return (item / 10000).toFixed(2);
                 }),
-                color: '#ffdc6f',
+                color: '#ffff8b',
                 areaStyle: {
                     normal: {
                         color: {
@@ -558,11 +560,11 @@ $(function () {
                             x2: 0,
                             y2: 1,
                             colorStops: [{
-                                offset: 0, color: 'rgba(255,220,111,0.3)'
+                                offset: 0, color: formateRgba('#ffff8b',0.3)// 'rgba(255,220,111,0.3)'
                             }, {
-                                offset: 0.5, color: 'rgba(255,220,111,0.15)'
+                                offset: 0.5, color:formateRgba('#ffff8b',0.15)// 'rgba(255,220,111,0.15)'
                             }, {
-                                offset: 1, color: 'rgba(255,220,111,0)'
+                                offset: 1, color: formateRgba('#ffff8b',0)//'rgba(255,220,111,0)'
                             }]
                         }
                     }
@@ -785,12 +787,12 @@ $(function () {
 
         var theBeginDate = new Date('2019-01-21');
         var theXData = [];
-        var theColors = ['#32ff4b',
-            '#4293f2'];
+        var theColors = ['#ff8155',
+            '#4ffd5f'];
 
         var theLegends = [
-            {name: '人口总量', textStyle: {color: "#32ff4b", fontSize: 16}},
-            {name: '常驻人口', textStyle: {color: "#4293f2", fontSize: 16}},
+            {name: '人口总量', textStyle: {color: "#ff8155", fontSize: 16}},
+            {name: '常驻人口', textStyle: {color: "#4ffd5f", fontSize: 16}},
         ];
         var theName1 = "人口总量";
         var theName2 = "常驻人口";
@@ -925,7 +927,7 @@ $(function () {
                     type: 'line',
                     symbol: 'none',
                     //stack: '总量',
-                    color: '#32ff4b',
+                    color: '#ff8155',
                     smooth: true,
                     data: data11.map(function (item) {
                         return (item / 10000).toFixed(2)
@@ -958,7 +960,7 @@ $(function () {
                     name: theName1,
                     type: 'line',
                     symbol: 'none',
-                    color: '#32ff4b',
+                    color: '#ff8155',
                     itemStyle: {
                         normal: {
                             lineStyle: {
@@ -979,7 +981,7 @@ $(function () {
                     type: 'line',
                     symbol: 'none',
                     z: 1,
-                    color: '#4293f2',
+                    color: '#4ffd5f',
                     //stack: '总量',
                     smooth: true,
                     data: data21.map(function (item) {
@@ -1014,7 +1016,7 @@ $(function () {
                     symbol: 'none',
                     z: 2,
                     type: 'line',
-                    color: '#4293f2',
+                    color: '#4ffd5f',
                     itemStyle: {
                         normal: {
                             lineStyle: {
@@ -1049,15 +1051,15 @@ $(function () {
 
         var theBeginDate = new Date('2019-01-21');
         var theXData = [];
-        var theColors = ['#32ff4b',
-            '#4293f2'];
+        var theColors = ['#ff8155',
+            '#4ffd5f'];
 
         theName1 = "迁出";
         theName2 = "迁入";
         theLegends = [
 
-            {name: '迁出', textStyle: {color: "#32ff4b", fontSize: 16}},
-            {name: '迁入', textStyle: {color: "#4293f2", fontSize: 16}}
+            {name: '迁出', textStyle: {color: "#ff8155", fontSize: 16}},
+            {name: '迁入', textStyle: {color: "#4ffd5f", fontSize: 16}}
         ];
         theXData.push(theBeginDate.getTime());
         for (var i = 1; i < 40; i++) {
@@ -1166,7 +1168,7 @@ $(function () {
                     type: 'line',
                     symbol: 'none',
                     //stack: '总量',
-                    color: '#32ff4b',
+                    color: '#ff8155',
                     smooth: true,
                     data: data11.map(function (item) {
                         return (item / 10000).toFixed(2)
@@ -1199,7 +1201,7 @@ $(function () {
                     name: theName1,
                     type: 'line',
                     symbol: 'none',
-                    color: '#32ff4b',
+                    color: '#ff8155',
                     itemStyle: {
                         normal: {
                             lineStyle: {
@@ -1220,7 +1222,7 @@ $(function () {
                     type: 'line',
                     symbol: 'none',
                     z: 1,
-                    color: '#4293f2',
+                    color: '#4ffd5f',
                     //stack: '总量',
                     smooth: true,
                     data: data21.map(function (item) {
@@ -1255,7 +1257,7 @@ $(function () {
                     symbol: 'none',
                     z: 2,
                     type: 'line',
-                    color: '#4293f2',
+                    color: '#4ffd5f',
                     itemStyle: {
                         normal: {
                             lineStyle: {
@@ -1296,7 +1298,7 @@ $(function () {
                 type: 'line',
                 //stack: '总量',
                 smooth: true,
-                color: '#4293f2',
+                color: '#13ffff',
                 symbol: 'none',
                 data: data1.map(function (item) {
                     return (item / 10000).toFixed(2);
@@ -1315,11 +1317,11 @@ $(function () {
                             x2: 0,
                             y2: 1,
                             colorStops: [{
-                                offset: 0, color: 'rgba(66,147,242,0.3)'
+                                offset: 0, color: formateRgba('#13ffff',0.3),// 'rgba(66,147,242,0.3)'
                             }, {
-                                offset: 0.5, color: 'rgba(66,147,242,0.15)'
+                                offset: 0.5, color:formateRgba('#13ffff',0.15),//
                             }, {
-                                offset: 1, color: 'rgba(66,147,242,0)'
+                                offset: 1, color: formateRgba('#13ffff',0),//
                             }]
                         }
                     }
@@ -1396,6 +1398,11 @@ $(function () {
                     theViewData.populationOut = theSuStr + Math.abs(theViewData.populationOut);
                 }
                 me.bind('.numpart', theViewData);
+                //
+                if(!me.NumbersEffect){
+                    me.NumbersEffect= new NumbersEffect('.numpart');
+                }
+                me.NumbersEffect.restart();
             }
             else {
                 console.log("loadCurrent错误:" + data);
