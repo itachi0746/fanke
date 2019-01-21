@@ -293,7 +293,7 @@ header {
   height: 100%; }
 
 .search-box {
-  position: absolute;
+  position: fixed;
   z-index: 10;
   top: 0;
   left: 0;
@@ -375,7 +375,11 @@ header {
     border-bottom: 2px solid #095d9d; }
 
 .result-list {
-  padding: 0 1.2rem; }
+  padding: 0 1.2rem;
+  overflow-y: auto;
+  /* 或者scroll */
+  -webkit-overflow-scrolling: touch;
+  /* 解决ios滑动不流畅问题 */ }
   .result-list li {
     height: 1.6rem;
     border-bottom: 1px solid #efefef;

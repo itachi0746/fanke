@@ -17,8 +17,8 @@ var config = {
   server: "views", // 服务器根目录
   target: "index.html" // 要监视(执行)的html文件
 
-  // scss: "h5/mobile/qxfx",  // 要编译的scss目录
-  // dest: "h5/mobile/qxfx",  // 编译scss输出的目录
+  // scss: "h5/mobile/snjc",  // 要编译的scss目录
+  // dest: "h5/mobile/snjc",  // 编译scss输出的目录
   // server: "h5", // 服务器根目录
   // target: "index.html" // 要监视(执行)的html文件
 

@@ -1186,7 +1186,7 @@ html, body {
       position: absolute;
       left: 178px;
       z-index: 10;
-      background-color: rgba(10, 33, 75, 0.9);
+      background-color: rgba(16, 75, 179, 0.9);
       border: 1px solid #28eefb;
       width: 600px;
       visibility: hidden; }
@@ -2601,7 +2601,7 @@ input:focus {
 .weather-box {
   width: 1211px;
   height: 90px;
-  background: url("../img/weather/bg_02_2.png");
+  background: url("../img/weather/bg_03.png");
   position: absolute;
   top: 132px;
   right: 65px;

@@ -210,7 +210,7 @@ header {
 }
 
 .search-box {
-  position: absolute;
+  position: fixed;
   z-index: 10;
   top: 0;
   left: 0;
@@ -305,6 +305,8 @@ header {
 
 .result-list {
   padding: 0 calRem(60);
+  overflow-y: auto;/* 或者scroll */
+  -webkit-overflow-scrolling: touch;/* 解决ios滑动不流畅问题 */
 
   li {
     height:calRem(80);

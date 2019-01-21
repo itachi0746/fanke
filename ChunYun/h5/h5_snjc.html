@@ -33,78 +33,80 @@
     </ul>
   </div>
 </div>
-<header>
-  <div class="header-box">
-    <div class="place-sel" id="place-sel">
-      <input type="text" class="input1" id="input1" value="广州南站">
-      <div class="switch">
-        <span>切换</span>
-        <img src="mobile/snjc/img/icon_down.png" alt="">
+<div id="basepage">
+  <header>
+    <div class="header-box">
+      <div class="place-sel" id="place-sel">
+        <input type="text" class="input1" id="input1" value="广州南站" readonly>
+        <div class="switch">
+          <span>切换</span>
+          <img src="mobile/snjc/img/icon_down.png" alt="">
+        </div>
+      </div>
+      <div class="weather-box">
+        <ul>
+          <li>
+            <section>
+              <img src="mobile/snjc/img/icon_1.png" alt="">
+            </section>
+            <section>
+              <p class="p1">平均温度</p>
+              <p class="p2" id="temperature"></p>
+            </section>
+          </li>
+          <li>
+            <section>
+              <img src="mobile/snjc/img/icon_2.png" alt="">
+            </section>
+            <section>
+              <p class="p1">风速</p>
+              <p class="p2" id="wind-speed"></p>
+            </section>
+          </li>
+          <li>
+            <section>
+              <img id="weather-img" src="mobile/snjc/img/icon_3.png" alt="">
+            </section>
+            <section>
+              <p class="p1">天气</p>
+              <p class="p2" id="weather"></p>
+            </section>
+          </li>
+
+        </ul>
       </div>
     </div>
-    <div class="weather-box">
-      <ul>
-        <li>
-          <section>
-            <img src="mobile/snjc/img/icon_1.png" alt="">
-          </section>
-          <section>
-            <p class="p1">平均温度</p>
-            <p class="p2" id="temperature"></p>
-          </section>
-        </li>
-        <li>
-          <section>
-            <img src="mobile/snjc/img/icon_2.png" alt="">
-          </section>
-          <section>
-            <p class="p1">风速</p>
-            <p class="p2" id="wind-speed"></p>
-          </section>
-        </li>
-        <li>
-          <section>
-            <img id="weather-img" src="mobile/snjc/img/icon_3.png" alt="">
-          </section>
-          <section>
-            <p class="p1">天气</p>
-            <p class="p2" id="weather"></p>
-          </section>
-        </li>
+    <div class="status-box">
+      <div class="status-l">
+        <div class="l1">
+          <img src="mobile/snjc/img/icon_4.png" alt="" class="status-icon">
+          <span>当前枢纽拥堵等级</span>
+        </div>
+        <div class="l2">
+          <div class="color-div" id="color-div"></div>
+          <div class="status-font" id="status-font"></div>
+        </div>
 
-      </ul>
-    </div>
-  </div>
-  <div class="status-box">
-    <div class="status-l">
-      <div class="l1">
-        <img src="mobile/snjc/img/icon_4.png" alt="" class="status-icon">
-        <span>当前枢纽拥堵等级</span>
       </div>
-      <div class="l2">
-        <div class="color-div" id="color-div"></div>
-        <div class="status-font" id="status-font"></div>
+      <div class="status-r">
+        <ul>
+          <li>舒适</li>
+          <li>适中</li>
+          <li>拥堵</li>
+        </ul>
       </div>
-
     </div>
-    <div class="status-r">
-      <ul>
-        <li>舒适</li>
-        <li>适中</li>
-        <li>拥堵</li>
-      </ul>
-    </div>
-  </div>
-</header>
-<!--地图-->
-<div class="container" id="container"></div>
+  </header>
+  <!--地图-->
+  <div class="container" id="container"></div>
 
-<div class="btm-box">
-  <div class="btm-box-header">
-    <span>实时客流</span>
-  </div>
-  <div class="btm-box-body">
-    <div class="chart" id="chart"></div>
+  <div class="btm-box">
+    <div class="btm-box-header">
+      <span>实时客流</span>
+    </div>
+    <div class="btm-box-body">
+      <div class="chart" id="chart"></div>
+    </div>
   </div>
 </div>
 

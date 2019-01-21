@@ -332,6 +332,7 @@ html, body {
     .col3 li .pillar {
       border-radius: 0.2rem;
       height: 0.3rem;
-      width: 30px; }
+      width: 30px;
+      display: none; }
 
 /*# sourceMappingURL=qxfx.css.map */

@@ -23,6 +23,7 @@ $(function () {
     // layer.load();
     $('#back-icon').on('click',function () {
       $('#search-box').hide();
+      $('#basepage').show();
     });
     $('#place-sel').on('click',function () {
       $('#search-box').show();
@@ -31,10 +32,6 @@ $(function () {
     reqTerminalWarningList();
     reqServiceAreaWarningList();
     reqWeather(curPosition);
-    // getYJData();
-    // var chartBoxH = $('#chart').height();
-    getResultListH();
-
     searchTabBindClick();
     tab2Li2InitEchart()
   }
@@ -53,7 +50,9 @@ $(function () {
    * 显示搜索框后,加入默认的列表
    */
   function showSearchCB() {
-    $('#search').focus();
+    getResultListH();
+    $('#input1').blur();
+    $('#basepage').hide();
     clearResultList();
     var tabBox = $('#tab-box');
     var resultList = $('#result-list');
@@ -111,6 +110,7 @@ $(function () {
       tab2Li2Echart1reqData(returnDate());
 
       searchBox.hide();
+      $('#basepage').show();
 
     })
   }
@@ -496,6 +496,8 @@ $(function () {
         tab2Li2Echart1reqData(returnDate());
 
         searchBox.hide();
+        $('#basepage').show();
+
       });
       // debugger
       // console.log(resultList);
@@ -644,9 +646,9 @@ $(function () {
         splitLine: {
           show: false
         },
-        min: 0,
-        max: 50000,
-        interval: 10000
+        // min: 0,
+        // max: 50000,
+        // interval: 10000
       },
       series: [
         {

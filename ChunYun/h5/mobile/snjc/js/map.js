@@ -239,7 +239,7 @@ $(function () {
     });
 
     AMap.plugin(['AMap.IndoorMap', 'AMap.OverView'], function () {
-      var indoorMap = new AMap.IndoorMap({alwaysShow: true});
+      var indoorMap = new AMap.IndoorMap({alwaysShow: true,hideFloorBar:true});
       theMap.add(indoorMap);
 
       // 在图面添加鹰眼控件，在地图右下角显示地图的缩略图
@@ -261,76 +261,76 @@ $(function () {
       //  theMap.DirectionLight = new AMap.Lights.DirectionLight([-6, -2, 14], [1, 1, 1], 0.5);
     });
 //监听放大缩小事件
-    theMap.on('zoom', function (arg) {
-      var theZoom = theMap.getZoom();
-      if (theZoom >= 14) {
-        $('#container2').hide()
-      } else {
-        // console.log(window.nowTab);
-        // if(window.nowTab!=='高速监测') {
-          $('#container2').show()
-        // }
-      }
-      if(window.nowTab==='高速监测') {
-        $('#container2').hide()
-      }
-      if (theZoom >= 12) {
-        // console.log("显示点");
-        // console.log()
-        // debugger
-        if (me.isGaoSuLuWang || me.isGaoSuLuDuan) {
-          // debugger
-          theMap.setFeatures(['bg', 'road','point']);
-        }
-        else {
-          // debugger
-          theMap.setFeatures(['bg', 'building', 'point', 'road']);
-          // theMap.add(roadNet);
-          // theMap.add(traffic);
-          theMap.add(building);
-        }
-
-        theMap.setPitch(45);
-        theInnerLayer && theInnerLayer.setzIndex(1000);
-        //theMap.add(satellite);
-        //theMap.setMapStyle("normal");
-
-      }
-      else {
-        // console.log("隐藏点");
-        if (me.isGaoSuLuWang || me.isGaoSuLuDuan) {
-          theMap.setFeatures(['bg']);
-          // console.log(1)
-
-        } else {
-          // console.log(2)
-          theMap.setFeatures(['bg']);
-
-        }
-
-        //theHeartLayer && theHeartLayer.setMap(null);
-        this.theHeartLayer && this.theHeartLayer.remove();
-        this.theHeartLayer = null;
-        // theMap.setFeatures(['bg', 'building']);
-        theMap.remove(roadNet);
-        theMap.remove(building);
-        // theMap.remove(traffic);
-        theMap.setPitch(0);
-        //theMap.setMapStyle("amap://styles/grey");
-      }
-      if (!theMakerLayer) {
-        return;
-      }
-      if (!theMakerLayer['show']) {
-        return;
-      }
-      if (theZoom >= 10) {
-        theMakerLayer.hide();
-      }
-      else {
-        theMakerLayer.show();
-      }
-    });
+//     theMap.on('zoom', function (arg) {
+//       var theZoom = theMap.getZoom();
+//       if (theZoom >= 14) {
+//         $('#container2').hide()
+//       } else {
+//         // console.log(window.nowTab);
+//         // if(window.nowTab!=='高速监测') {
+//           $('#container2').show()
+//         // }
+//       }
+//       if(window.nowTab==='高速监测') {
+//         $('#container2').hide()
+//       }
+//       if (theZoom >= 12) {
+//         // console.log("显示点");
+//         // console.log()
+//         // debugger
+//         if (me.isGaoSuLuWang || me.isGaoSuLuDuan) {
+//           // debugger
+//           theMap.setFeatures(['bg', 'road','point']);
+//         }
+//         else {
+//           // debugger
+//           theMap.setFeatures(['bg', 'building', 'point', 'road']);
+//           // theMap.add(roadNet);
+//           // theMap.add(traffic);
+//           theMap.add(building);
+//         }
+//
+//         theMap.setPitch(45);
+//         theInnerLayer && theInnerLayer.setzIndex(1000);
+//         //theMap.add(satellite);
+//         //theMap.setMapStyle("normal");
+//
+//       }
+//       else {
+//         // console.log("隐藏点");
+//         if (me.isGaoSuLuWang || me.isGaoSuLuDuan) {
+//           theMap.setFeatures(['bg']);
+//           // console.log(1)
+//
+//         } else {
+//           // console.log(2)
+//           theMap.setFeatures(['bg']);
+//
+//         }
+//
+//         //theHeartLayer && theHeartLayer.setMap(null);
+//         this.theHeartLayer && this.theHeartLayer.remove();
+//         this.theHeartLayer = null;
+//         // theMap.setFeatures(['bg', 'building']);
+//         theMap.remove(roadNet);
+//         theMap.remove(building);
+//         // theMap.remove(traffic);
+//         theMap.setPitch(0);
+//         //theMap.setMapStyle("amap://styles/grey");
+//       }
+//       if (!theMakerLayer) {
+//         return;
+//       }
+//       if (!theMakerLayer['show']) {
+//         return;
+//       }
+//       if (theZoom >= 10) {
+//         theMakerLayer.hide();
+//       }
+//       else {
+//         theMakerLayer.show();
+//       }
+//     });
     var theLayers = theMap.getLayers();
     for (var i = 0; i < theLayers.length; i++) {
       var theLayer = theLayers[i];
@@ -347,58 +347,58 @@ $(function () {
 
       }
     }
-    theInnerLayer && theInnerLayer.on('complete', function (arg) {
-      console.log('室内图层加载完!');
-      $('#DivButton').empty();
-      //debugger;
-      var theBuilding = null;
-      setInterval(function () {
-        var theZoom = theMap.getZoom();
-        if (theZoom < 16) {
-          theBuilding = null;
-          $('#DivButton').empty();
-          return;
-        }
-        var theLastBuilding = theBuilding;
-        theBuilding = theInnerLayer.getSelectedBuilding();
-        // console.log(theBuilding)
-        if (theBuilding != theLastBuilding) {
-
-          if (!theBuilding) {
-            console.log('未找到建筑物!');
-            $('#DivButton').empty();
-            return;
-          }
-          //找到图层了
-          console.log('jiazaiwancheng@!1');
-          $('#DivButton').empty();
-          // if(!MapBase.IsFloorVisible()){
-          //   return;
-          // }
-          //floor_complete
-          var theFloors = theBuilding.floor_details.floor_nonas;
-          var theFloorIndex = theBuilding.floor_details.floor_indexs;
-
-          for (var i = 0; i < theFloors.length; i++) {
-            var theName = theFloors[i];
-            var theIndex = theFloorIndex[i];
-            $('<div data-index=' + theIndex + '>' + theName + '</div>').click(function () {
-              var theCurrentIndex = $(this).data('index');
-              theInnerLayer.showFloor(theCurrentIndex,true);
-              var theCurrentBuild = theInnerLayer.getSelectedBuilding();
-              var theLnt = theCurrentBuild.lnglat;
-              // me.drawReli(theLnt.lng, theLnt.lat);  // 热力图
-
-            }).appendTo($('#DivButton'));
-            console.log(theFloors[i]);
-            //开始显示楼层
-            //theBuilding.showFloor();
-          }
-
-          floorBindClick();
-        }
-      }, 500);
-    });
+    // theInnerLayer && theInnerLayer.on('complete', function (arg) {
+    //   console.log('室内图层加载完!');
+    //   $('#DivButton').empty();
+    //   //debugger;
+    //   var theBuilding = null;
+    //   setInterval(function () {
+    //     var theZoom = theMap.getZoom();
+    //     if (theZoom < 16) {
+    //       theBuilding = null;
+    //       $('#DivButton').empty();
+    //       return;
+    //     }
+    //     var theLastBuilding = theBuilding;
+    //     theBuilding = theInnerLayer.getSelectedBuilding();
+    //     // console.log(theBuilding)
+    //     if (theBuilding != theLastBuilding) {
+    //
+    //       if (!theBuilding) {
+    //         console.log('未找到建筑物!');
+    //         $('#DivButton').empty();
+    //         return;
+    //       }
+    //       //找到图层了
+    //       console.log('jiazaiwancheng@!1');
+    //       $('#DivButton').empty();
+    //       // if(!MapBase.IsFloorVisible()){
+    //       //   return;
+    //       // }
+    //       //floor_complete
+    //       var theFloors = theBuilding.floor_details.floor_nonas;
+    //       var theFloorIndex = theBuilding.floor_details.floor_indexs;
+    //
+    //       for (var i = 0; i < theFloors.length; i++) {
+    //         var theName = theFloors[i];
+    //         var theIndex = theFloorIndex[i];
+    //         $('<div data-index=' + theIndex + '>' + theName + '</div>').click(function () {
+    //           var theCurrentIndex = $(this).data('index');
+    //           theInnerLayer.showFloor(theCurrentIndex,true);
+    //           var theCurrentBuild = theInnerLayer.getSelectedBuilding();
+    //           var theLnt = theCurrentBuild.lnglat;
+    //           // me.drawReli(theLnt.lng, theLnt.lat);  // 热力图
+    //
+    //         }).appendTo($('#DivButton'));
+    //         console.log(theFloors[i]);
+    //         //开始显示楼层
+    //         //theBuilding.showFloor();
+    //       }
+    //
+    //       // floorBindClick();
+    //     }
+    //   }, 500);
+    // });
   }
 
   MapBase.prototype.hideReli=function(){

@@ -164,7 +164,8 @@
                             textStyle: {
                                 color: 'white',
                             }
-                        }
+                        },
+//                        fontSize: 10,
                     },
                     itemStyle: {
                         normal: {
@@ -181,7 +182,8 @@
                                     color: 'white'
                                 },
                             },
-                        }
+                        },
+
                     },
                     data: [],
                     markLine: {
@@ -210,9 +212,10 @@
                     geoCoord: theCitys,
                     markPoint: {
                         symbol: 'emptyCircle',
-                        symbolSize: function (v) {
-                            return Math.min( 10 + v / 10000,40);
-                        },
+//                        symbolSize: function (v) {
+//                            return Math.min( 10 + v / 10000,40);
+//                        },
+                        symbolSize: 15,
                         effect: {
                             show: true,
                             // type: 'bounce',
