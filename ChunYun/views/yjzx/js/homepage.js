@@ -796,8 +796,10 @@ $(function () {
     var theTimeArr = calTimeArr();
     var timeBoxArr = $('.time-box');
     var treDate = $('#tre-date');
+    var treDate2 = $('#tre-date2');
     var nowDate = moment().format('YYYY/MM/DD');
     treDate.text(nowDate);
+    treDate2.text(nowDate);
     var nowHour = moment().format('HH');
     var afterHourNum = parseInt(nowHour) + 1;
     afterHourNum = afterHourNum < 10 ? '0' + afterHourNum : afterHourNum;
@@ -1120,12 +1122,27 @@ $(function () {
    * 显示航班,铁路表,请求数据
    */
   function showFlightDom() {
+    var flightBox = $('#flight-box');
+    flightBox.show();
+
     if (curPosition === '广州白云国际机场' || curPosition === '深圳宝安国际机场') {
-      $('#flight-box').show();
-      var theName = curPosition;
-      clearFlightList();
-      clearFooter();
-      reqFlightData(theName, 'all');
+      if(curPosition === '广州白云国际机场') {
+        $('#flight-tab-box').hide();
+        $('#flight-tab-box2').removeClass('dn');
+        flightBox.find('.flight-data-box').hide();
+        flightBox.find('.flight-data-box2').show();
+        fliTrendInitChart1();
+      } else {
+        $('#flight-tab-box').show();
+        $('#flight-tab-box2').addClass('dn');
+        flightBox.find('.flight-data-box').show();
+        flightBox.find('.flight-data-box2').hide();
+        clearFlightList();
+        clearFooter();
+        reqFlightData(curPosition, 'all');
+      }
+
+
     }
   }
 

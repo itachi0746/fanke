@@ -3165,6 +3165,22 @@ input:focus {
     //display: flex;
     //align-items: center;
   }
+  .flight-tab-box2 {
+    width: 160px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #fff;
+    font-size: 24px;
+    //display: none;
+    border-right: 1px solid #1b70a1;
+
+    .tre-date {
+      font-size: 20px;
+    }
+  }
   .flight-data-box {
     width: 1032px;
     height: 100%;

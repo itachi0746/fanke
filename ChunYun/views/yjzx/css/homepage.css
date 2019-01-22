@@ -2819,6 +2819,27 @@ input:focus {
   cursor: default; }
   .flight-box .flight-tab-box {
     width: 160px; }
+  .flight-box .flight-tab-box2 {
+    width: 160px;
+    height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    color: #fff;
+    font-size: 24px;
+    border-right: 1px solid #1b70a1; }
+    .flight-box .flight-tab-box2 .tre-date {
+      font-size: 20px; }
   .flight-box .flight-data-box {
     width: 1032px;
     height: 100%;
