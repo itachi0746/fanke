@@ -3,6 +3,7 @@ var jamListMarkers = [];
 
 $(function () {
   var hourArr = ['0-1', '1-2', '2-3', '3-4', '4-5', '5-6', '6-7', '7-8', '8-24'];
+  var serHourArr = ['0-1', '1-2', '2-3', '3-4'];
 
   var ageObj = {  // 年龄组
     0: '',
@@ -14,28 +15,28 @@ $(function () {
     6: '55岁以上'
   };
   var thePlaceZoomObj = {  // 不同地点的缩放级别
-    '深圳西站': 19,
-    '湛江机场': 19,
-    '三元里收费站': 20,
-    '莞佛高速虎门大桥': 15,
-    '潮州汽车客运站': 19,
-    '广州北站': 20,
-    '广州火车站': 19,
-    '深圳站': 19,
-    '东莞东': 19,
-    '虎门站': 17,
-    '潮汕站': 17,
-    '深圳市龙岗汽车客运站': 19,
-    '深圳罗湖汽车客运站': 19,
-    '深圳汽车站': 19,
-    '芳村汽车客运站': 19,
-    '广州汽车客运站': 19,
-    '佛山汽车站': 19,
-    '河源汽车总站': 19,
-    '东莞汽车总站': 17,
-    '潮州汽车客运站': 19,
-    '潮汕国际机场': 15,
-    '惠州站': 19
+  //   '深圳西站': 19,
+  //   '湛江机场': 19,
+  //   '三元里收费站': 20,
+  //   '莞佛高速虎门大桥': 15,
+  //   '潮州汽车客运站': 19,
+  //   '广州北站': 20,
+  //   '广州火车站': 19,
+  //   '深圳站': 19,
+  //   '东莞东': 19,
+  //   '虎门站': 17,
+  //   '潮汕站': 17,
+  //   '深圳市龙岗汽车客运站': 19,
+  //   '深圳罗湖汽车客运站': 19,
+  //   '深圳汽车站': 19,
+  //   '芳村汽车客运站': 19,
+  //   '广州汽车客运站': 19,
+  //   '佛山汽车站': 19,
+  //   '河源汽车总站': 19,
+  //   '东莞汽车总站': 17,
+  //   '潮州汽车客运站': 19,
+  //   '潮汕国际机场': 15,
+  //   '惠州站': 19
   };
   // var tabArr = ['客运站,铁路,机场,港口', '服务区', '收费站', '高速监测'];
   var tabArr = ['客运站,铁路,机场,港口', '服务区', '高速监测'];
@@ -287,7 +288,6 @@ $(function () {
       }
       reqReliData(theMapName, true);
     }
-
   }
 
   /**
@@ -3185,7 +3185,6 @@ $(function () {
             icon: 'top3-icon2',
             pointClass: 'point2',
             data: data.data[keyName + '_sz'],
-
           };
           var yj = {
             name: '拥挤',
@@ -5349,6 +5348,7 @@ $(function () {
         // console.log('tab2Li3Echart3', data);
         var tempArr = [];
         var dataArr = [];
+        var legendArr = ['省内', '省外'];
         var name, snNum;
         var isAir = isAirport();
 
@@ -5383,27 +5383,33 @@ $(function () {
               continue
             }
             dataArr.push(theData);
-
           }
-          correctDongChaNum(dataArr, snNum)
+          if(!isAir) {
+            correctDongChaNum(dataArr, snNum);
+          }
+          if(isAir) {
+            legendArr = ['省内', '省外', '境外']
+          }
 
           // console.log('tempArr:', dataArr,tempArr);
 
         }
 
         tab2Li3Echart3.hideLoading();    //隐藏加载动画
-        tab2Li3Echart3.setOption({
-          series: [
-            {
-              name: '来源洞察',
-              data: dataArr
+        tab2Li3Echart3.setOption(
+          {
+            series: [
+              {
+                name: '来源洞察',
+                data: dataArr
+              }
+            ],
+            legend: {
+              data: legendArr
+              // data: ['省内', '省外']
             }
-          ],
-          legend: {
-            // data: ['境外', '省内', '省外']
-            data: ['省内', '省外']
           }
-        })
+        )
       }
     })
   }
@@ -5518,6 +5524,7 @@ $(function () {
         // console.log('tab2Li3Echart4', data);
         var tempArr = [];
         var dataArr = [];
+        var legendArr = ['省内', '省外'];
         var name, snNum;
         var isAir = isAirport();
 
@@ -5543,6 +5550,7 @@ $(function () {
             if (name === '境外' && !isAir) {
               continue
             }
+
             dataArr.push({
               name: name,
               value: formatDecimal(obj.value.travelerZb),
@@ -5551,15 +5559,19 @@ $(function () {
               }
             });
           }
-          correctDongChaNum(dataArr, snNum)
-
+          if(isAir) {
+            legendArr = ['省内', '省外', '境外']
+          }
+          if(!isAir) {
+            correctDongChaNum(dataArr, snNum);
+          }
           // console.log('tempArr:', dataArr,tempArr);
         }
 
         tab2Li3Echart4.hideLoading();    //隐藏加载动画
         tab2Li3Echart4.setOption({
           legend: {
-            data: ['省内', '省外']
+            data: legendArr
             // data: ['境外', '省内', '省外']
           },
           series: [

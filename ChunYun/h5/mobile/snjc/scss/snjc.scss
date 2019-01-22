@@ -15,6 +15,7 @@ html,body {
 .container {
   width: 100%;
   height: calRem(600);
+  position: relative;
 }
 header {
   margin: 0 calRem(34);
@@ -318,3 +319,28 @@ header {
   }
 }
 
+.DivButton {
+  position: absolute;
+  right:calRem(10);
+  bottom: calRem(10);
+  z-index: 10!important;
+  cursor: pointer;
+
+  div {
+    width: 1.4rem;
+    height: 1rem;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+  }
+
+  div.active {
+    border: 1px solid rgb(181, 226, 254);
+    color: rgb(181, 226, 254);
+    //background: url("") no-repeat;
+
+  }
+}

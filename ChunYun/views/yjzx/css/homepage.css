@@ -1001,7 +1001,8 @@ html, body {
     right: 110%;
     width: 250px;
     font-size: 12px;
-    text-align: right; }
+    text-align: right;
+    display: none; }
 
 .point4 {
   width: 18px;
@@ -2456,7 +2457,7 @@ input:focus {
 
 .amap-info-content2 {
   background: black;
-  color: #00aeef;
+  color: #28eefb;
   border-radius: 5px;
   border: 1px solid #00aeef;
   padding: 15px 18px 10px 10px;
@@ -3062,7 +3063,8 @@ input:focus {
   position: absolute;
   right: 650px;
   bottom: 40px;
-  z-index: 20; }
+  z-index: 20;
+  color: #28eefb; }
   .jiance_panel .jiance_title {
     left: 100%;
     -webkit-transform: translateX(-100%);
@@ -3106,12 +3108,12 @@ input:focus {
     display: flex;
     -webkit-box-pack: justify;
         -ms-flex-pack: justify;
-            justify-content: space-between; }
+            justify-content: space-between;
+    border: 1px solid #00aeef; }
     .jiance_panel ul li {
       -webkit-box-flex: 1;
           -ms-flex: 1;
               flex: 1;
-      color: #00aeef;
       font-size: 20px;
       display: -webkit-box;
       display: -ms-flexbox;
@@ -3123,6 +3125,8 @@ input:focus {
           -ms-flex-align: center;
               align-items: center;
       cursor: pointer; }
+    .jiance_panel ul li:nth-child(1) {
+      border-right: 1px solid #00aeef; }
 
 .amap-maps {
   z-index: 1 !important; }

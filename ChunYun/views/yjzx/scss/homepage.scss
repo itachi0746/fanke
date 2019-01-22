@@ -1014,6 +1014,8 @@ html,body{
     width: 250px;
     font-size: 12px;
     text-align: right;
+    display: none;
+
   }
 }
 .point4 {
@@ -2794,7 +2796,7 @@ input:focus {
 }
 .amap-info-content2 {
   background: rgb(0, 0, 0);
-  color: #00aeef;
+  color: $bdColor;
   border-radius: 5px;
   border: 1px solid #00aeef;
   padding: 15px 18px 10px 10px;
@@ -3160,6 +3162,8 @@ input:focus {
 
   .flight-tab-box {
     width: 160px;
+    //display: flex;
+    //align-items: center;
   }
   .flight-data-box {
     width: 1032px;
@@ -3393,6 +3397,7 @@ input:focus {
   right: 650px;
   bottom: 40px;
   z-index: 20;
+  color: $bdColor;
 
   .jiance_title {
     left: 100%;
@@ -3437,14 +3442,18 @@ input:focus {
     height: 100%;
     display: flex;
     justify-content: space-between;
+    border: 1px solid #00aeef;
     li {
       flex: 1;
-      color: #00aeef;
+      //color: #00aeef;
       font-size: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
       cursor: pointer;
+    }
+    li:nth-child(1) {
+      border-right: 1px solid #00aeef;
     }
   }
 }

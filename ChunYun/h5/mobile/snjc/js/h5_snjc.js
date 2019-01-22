@@ -13,10 +13,11 @@ $(function () {
   // theMap.setZoomAndCenter(defaultZoom, lnglat);
 
   var thePlaceZoomObj = {  // 不同地点的缩放级别
-    '深圳西站': 18,
-    '湛江机场': 18,
-    '潮汕国际机场': 14,
-    '广州北站': 18
+    // '深圳西站': 18,
+    // '湛江机场': 18,
+    // '潮汕国际机场': 14,
+    // '广州北站': 18
+    '广州白云国际机场': 17
   };
 
   function init() {
@@ -121,6 +122,7 @@ $(function () {
    * @param name 地点名称
    */
   function goToPointByName(name) {
+    // debugger
     var clickTarget = pointControl.findPointByName(name);
     if (!clickTarget) {
       console.log('没有匹配的地点:', clickTarget);
@@ -437,16 +439,89 @@ $(function () {
     }
   }
 
-  MapBase.OnFloorClick = function (name) {
+  MapBase.IsFloorVisible = function () {
+    var theName = ['深圳北站', '广州南站', '广州白云国际机场', '深圳宝安国际机场', '广州站'];
     //debugger;
-    mapbase.hideReli();
+    for (var i = 0; i < theName.length; i++) {
+      if (curPosition == theName[i]) {
+        return true;
+      }
+    }
+    return false;
   };
 
-  theMap.once('floorchanged',function(){
-    debugger
-    mapbase.hideReli()
-    // console.log(map.getFloor());
-  })
+  MapBase.OnFloorClick = function (name) {
+    //debugger;
+
+    var isTheReliFloor = filterFloor(name);
+    if (!isTheReliFloor) {
+      mapbase.hideReli();
+      return;
+    }
+    floorClick(name);
+  };
+
+  var theFloorMap = {
+    '深圳北站F1': '深圳北站1-2F',
+    '深圳北站F2': '深圳北站1-2F',
+    '广州南站B1': '广州南站B1F',
+    '广州南站1F': '广州南站1F',
+    '广州南站2F': '广州南站2F',
+    '广州南站3F': '广州南站3F',
+    '深圳宝安国际机场F1': '深圳宝安国际机场1F',
+    '深圳宝安国际机场F2': '深圳宝安国际机场2F',
+    '深圳宝安国际机场F3': '深圳宝安国际机场3F',
+    '深圳宝安国际机场F4': '深圳宝安国际机场4-5F',
+    '深圳宝安国际机场F5': '深圳宝安国际机场4-5F',
+    '广州白云国际机场1F': '广州白云区机场-1F',
+    '广州白云国际机场2F': '广州白云区机场-2F',
+    '广州白云国际机场3F': '广州白云区机场-3F',
+    '广州白云国际机场4F': '广州白云区机场-4F',
+    '广州白云国际机场F1': '广州白云区机场-1F',
+    '广州白云国际机场F2': '广州白云区机场-2F',
+    '广州白云国际机场F3': '广州白云区机场-3F',
+    '广州白云国际机场F4': '广州白云区机场-4F',
+
+  };
+
+  /**
+   * 处理楼层点击
+   * name 楼层名,例如1F
+   */
+  function floorClick(name) {
+    // var fullName;
+    var fullName = curPosition + name;
+    var theMapName;
+    console.log('楼层:',fullName);
+    // debugger
+    // return
+    theMapName = theFloorMap[fullName];
+    if(!theMapName) {
+      console.log('没有对应的楼层名字!');
+      return
+    }
+    reqReliData(theMapName, true);
+
+  }
+
+  /**
+   * 区分不用显示热力楼层
+   * floorName 楼层名字
+   */
+  function filterFloor(floorName) {
+
+    // 不显示热力的楼层
+    var hideReliFloorOArr = ['广州南站2F', '广州南站3A', '广州南站B2', '深圳北站-1F', '广州白云国际机场B1'];
+    // debugger
+    var theName = curPosition + floorName;
+    for (var i = 0; i < hideReliFloorOArr.length; i++) {
+      var nameItem = hideReliFloorOArr[i];
+      if (nameItem === theName) {
+        return false
+      }
+    }
+    return true
+  }
 
   // 监听搜索input输入
   $('#search').on('input', function () {
