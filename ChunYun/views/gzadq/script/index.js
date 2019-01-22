@@ -40,6 +40,7 @@ $(function () {
         });
         this.drawRoad(thePaths);
         this.loadData();
+        this.start();
 
     }
 
@@ -264,6 +265,12 @@ $(function () {
      */
     PageViewModel.prototype.onTimer = function () {
         console.log("开始刷新数据！");
+       // debugger;
+        this.loadBridgeFlow();
+        this.loadBridgeBus();
+        this.loadBridgeRealTimeNumber();
+        this.loadWeather('珠海/珠海');
+
     }
 
     PageViewModel.prototype.initEvent = function () {

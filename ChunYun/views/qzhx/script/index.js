@@ -158,6 +158,7 @@ $(function () {
         this.initCharts();
         this.initMap(2);
         this.loadData();
+        this.start();
     }
 
 
@@ -167,6 +168,10 @@ $(function () {
      */
     PageViewModel.prototype.onTimer = function () {
         console.log("开始刷新数据!");
+        this.loadzFlow();
+        this.loadSelectNewOne();
+        this.loadWeather('湛江/徐闻');
+        //this.loadWeatherView();
     }
 
     PageViewModel.prototype.initEvent = function () {
