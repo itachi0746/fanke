@@ -400,8 +400,7 @@ header {
   z-index: 10 !important;
   cursor: pointer; }
   .DivButton div {
-    width: 1.4rem;
-    height: 1rem;
+    padding: .2rem .3rem;
     font-size: 0.7rem;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -416,6 +415,15 @@ header {
     color: #ffffff; }
   .DivButton div.active {
     border: 1px solid #b5e2fe;
-    color: #b5e2fe; }
+    color: #68e5ff; }
+
+.floor-msg {
+  position: absolute;
+  bottom: 2%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  color: #000; }
 
 /*# sourceMappingURL=snjc.css.map */

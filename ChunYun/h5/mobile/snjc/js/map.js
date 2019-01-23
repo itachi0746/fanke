@@ -42,6 +42,7 @@ $(function () {
    */
   function floorBindClick() {
     var floors = $('#DivButton div');
+
     for (var i = 0; i < floors.length; i++) {
       var f = floors[i];
       $(f).on('click', function () {
@@ -53,8 +54,8 @@ $(function () {
           var f = floors[j];
           $(f).removeClass('active');
         }
+        $(this).addClass('active');
 
-        $(this).addClass('active')
       })
     }
   }
@@ -402,6 +403,15 @@ $(function () {
     //   }, 500);
     // });
   }
+
+  // 不在楼层切换控件展示的楼层
+  var theHideFloor = ['广州南站B2','广州南站2F','广州南站3A'];
+  var theFloorMap = {
+    '广州南站1F': '一楼进出站层',
+    '广州南站3F': '候车层',
+    '广州南站B1': '地铁站厅',
+  };
+
   function theComp() {
     console.log('室内图层加载完!');
     $('#DivButton').empty();
@@ -416,6 +426,7 @@ $(function () {
       }
       var theLastBuilding = theBuilding;
       theBuilding = theInnerLayer.getSelectedBuilding();
+      // debugger
       // console.log(theBuilding)
       if (theBuilding != theLastBuilding) {
 
@@ -433,10 +444,28 @@ $(function () {
         //floor_complete
         var theFloors = theBuilding.floor_details.floor_nonas;
         var theFloorIndex = theBuilding.floor_details.floor_indexs;
+        var buildingName = theBuilding.name;
 
+        outer:
         for (var i = 0; i < theFloors.length; i++) {
           var theName = theFloors[i];
           var theIndex = theFloorIndex[i];
+          var theFullName = buildingName + theName;
+
+          for (var j = 0; j < theHideFloor.length; j++) {
+            var fName = theHideFloor[j];
+            if(theFullName===fName) {
+              continue outer
+            }
+          }
+
+          // if(buildingName==='广州南站') {
+          //   theName = theFloorMap[theFullName];
+          //   if(!theName) {
+          //     console.log('没有对应名字',theName);
+          //     return
+          //   }
+          // }
           $('<div data-index=' + theIndex + '>' + theName + '</div>').click(function () {
             var theCurrentIndex = $(this).data('index');
             theInnerLayer.showFloor(theCurrentIndex,true);

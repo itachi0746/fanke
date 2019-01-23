@@ -122,6 +122,8 @@ $(function () {
    * @param name 地点名称
    */
   function goToPointByName(name) {
+    var floorMsg = $('#floor-msg');
+    floorMsg.hide();
     // debugger
     var clickTarget = pointControl.findPointByName(name);
     if (!clickTarget) {
@@ -452,7 +454,6 @@ $(function () {
 
   MapBase.OnFloorClick = function (name) {
     //debugger;
-
     var isTheReliFloor = filterFloor(name);
     if (!isTheReliFloor) {
       mapbase.hideReli();
@@ -464,10 +465,15 @@ $(function () {
   var theFloorMap = {
     '深圳北站F1': '深圳北站1-2F',
     '深圳北站F2': '深圳北站1-2F',
+    // '广州南站地铁站厅': '广州南站B1F',
+    // '广州南站一楼进出站层': '广州南站1F',
+    // '广州南站2F': '广州南站2F',
+    // '广州南站候车层': '广州南站3F',
     '广州南站B1': '广州南站B1F',
     '广州南站1F': '广州南站1F',
     '广州南站2F': '广州南站2F',
     '广州南站3F': '广州南站3F',
+
     '深圳宝安国际机场F1': '深圳宝安国际机场1F',
     '深圳宝安国际机场F2': '深圳宝安国际机场2F',
     '深圳宝安国际机场F3': '深圳宝安国际机场3F',
@@ -483,6 +489,11 @@ $(function () {
     '广州白云国际机场F4': '广州白云区机场-4F',
 
   };
+  var theFloorMsg = {
+    '广州南站1F': '一楼进出站层',
+    '广州南站3F': '候车层',
+    '广州南站B1': '地铁站厅',
+  };
 
   /**
    * 处理楼层点击
@@ -491,6 +502,8 @@ $(function () {
   function floorClick(name) {
     // var fullName;
     var fullName = curPosition + name;
+    var floorMsg = $('#floor-msg');
+
     var theMapName;
     console.log('楼层:',fullName);
     // debugger
@@ -500,6 +513,11 @@ $(function () {
       console.log('没有对应的楼层名字!');
       return
     }
+    if(curPosition==='广州南站') {
+      floorMsg.show();
+      floorMsg.text(theFloorMsg[fullName]);
+    }
+
     reqReliData(theMapName, true);
 
   }

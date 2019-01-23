@@ -53,6 +53,7 @@ $(function(){
     var theAjax = $.ajax({
       type: "post",
       data: data,
+      timeout: 20000,          // 设置超时时间
       url: serviceBase + url,
       dataType: "json",
       success: function(d){
@@ -61,9 +62,16 @@ $(function(){
         successfn(d);
       },
       error: function(e){
-        handleErr(e)
+        handleErr(e);
         // errorfn(e);
-      }
+      },
+      // complete: function (XMLHttpRequest,status) {
+      //   if(status == 'timeout') {
+      //     theAjax.abort();    // 超时后中断请求
+      //     alert('网络超时,请刷新')
+      //     location.reload()
+      //   }
+      // }
     });
     return theAjax
   };

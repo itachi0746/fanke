@@ -534,13 +534,15 @@ html,body{
   //display: none;
 
   .p-name {
-    width: 132px;
+    //width: 132px;
+    width: 232px;
     //display: inline-block;
   }
   .list {
     li {
       display: flex;
       align-items: center;
+      //justify-content: space-between;
       margin-bottom: 5px;
       cursor: pointer;
       //height: 22px;
@@ -555,11 +557,12 @@ html,body{
       }
       span {
         font-weight:normal;
-        width: 179px;
+        width: 100px;
+        //width: 179px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-
+        text-align: right;
       }
       .num {
         font-weight:bold;
@@ -960,7 +963,10 @@ html,body{
   //cursor: wait;
   //@include center;
 }
+.point1,.point2,.point3,.point3-1 {
+  font-size: 20px;
 
+}
 .point1{
   width: 50px;
   height: 50px;
@@ -970,7 +976,7 @@ html,body{
   animation: run2 1s  steps(15, end) infinite;  // step(帧数(就是几张图的意思))
   // -webkit-animation:run 2s steps(1, start) infinite;
   color: #ea4882;
-  font-size: 14px;
+  //font-size: 18px;
 
   i {
     position: absolute;
@@ -1012,7 +1018,7 @@ html,body{
     top: 0px;
     right: 110%;
     width: 250px;
-    font-size: 12px;
+    //font-size: 12px;
     text-align: right;
     display: none;
 
@@ -1046,7 +1052,7 @@ html,body{
     top: 0px;
     left: 110%;
     width: 250px;
-    font-size: 12px;
+    //font-size: 12px;
     //text-align: right;
   }
 }
@@ -2796,7 +2802,7 @@ input:focus {
 }
 .amap-info-content2 {
   background: rgb(0, 0, 0);
-  color: $bdColor;
+  color: #80ffff;
   border-radius: 5px;
   border: 1px solid #00aeef;
   padding: 15px 18px 10px 10px;

@@ -15,28 +15,28 @@ $(function () {
     6: '55岁以上'
   };
   var thePlaceZoomObj = {  // 不同地点的缩放级别
-  //   '深圳西站': 19,
-  //   '湛江机场': 19,
-  //   '三元里收费站': 20,
-  //   '莞佛高速虎门大桥': 15,
-  //   '潮州汽车客运站': 19,
-  //   '广州北站': 20,
-  //   '广州火车站': 19,
-  //   '深圳站': 19,
-  //   '东莞东': 19,
-  //   '虎门站': 17,
-  //   '潮汕站': 17,
-  //   '深圳市龙岗汽车客运站': 19,
-  //   '深圳罗湖汽车客运站': 19,
-  //   '深圳汽车站': 19,
-  //   '芳村汽车客运站': 19,
-  //   '广州汽车客运站': 19,
-  //   '佛山汽车站': 19,
-  //   '河源汽车总站': 19,
-  //   '东莞汽车总站': 17,
-  //   '潮州汽车客运站': 19,
-  //   '潮汕国际机场': 15,
-  //   '惠州站': 19
+    //   '深圳西站': 19,
+    //   '湛江机场': 19,
+    //   '三元里收费站': 20,
+    //   '莞佛高速虎门大桥': 15,
+    //   '潮州汽车客运站': 19,
+    //   '广州北站': 20,
+    //   '广州火车站': 19,
+    //   '深圳站': 19,
+    //   '东莞东': 19,
+    //   '虎门站': 17,
+    //   '潮汕站': 17,
+    //   '深圳市龙岗汽车客运站': 19,
+    //   '深圳罗湖汽车客运站': 19,
+    //   '深圳汽车站': 19,
+    //   '芳村汽车客运站': 19,
+    //   '广州汽车客运站': 19,
+    //   '佛山汽车站': 19,
+    //   '河源汽车总站': 19,
+    //   '东莞汽车总站': 17,
+    //   '潮州汽车客运站': 19,
+    //   '潮汕国际机场': 15,
+    //   '惠州站': 19
   };
   // var tabArr = ['客运站,铁路,机场,港口', '服务区', '收费站', '高速监测'];
   var tabArr = ['客运站,铁路,机场,港口', '服务区', '高速监测'];
@@ -225,7 +225,6 @@ $(function () {
     }
     arrowBindClick();
     dongchaTabBindClick();
-    // getYJData();
     reqTerminalWarningList();
     reqServiceAreaWarningList();
     reqJamList();
@@ -277,12 +276,12 @@ $(function () {
     // var fullName;
     var fullName = curPosition + name;
     var theMapName;
-    console.log('楼层:',fullName);
+    console.log('楼层:', fullName);
     // debugger
     // return
     if (nowTab === tabArr[0]) {
       theMapName = theFloorMap[fullName];
-      if(!theMapName) {
+      if (!theMapName) {
         console.log('没有对应的楼层名字!');
         return
       }
@@ -1123,16 +1122,18 @@ $(function () {
    */
   function showFlightDom() {
     var flightBox = $('#flight-box');
-    flightBox.show();
 
     if (curPosition === '广州白云国际机场' || curPosition === '深圳宝安国际机场') {
-      if(curPosition === '广州白云国际机场') {
+      flightBox.show();
+
+      if (curPosition === '广州白云国际机场') {
         $('#flight-tab-box').hide();
         $('#flight-tab-box2').removeClass('dn');
         flightBox.find('.flight-data-box').hide();
         flightBox.find('.flight-data-box2').show();
         fliTrendInitChart1();
       } else {
+        // debugger
         $('#flight-tab-box').show();
         $('#flight-tab-box2').addClass('dn');
         flightBox.find('.flight-data-box').show();
@@ -1966,6 +1967,12 @@ $(function () {
 
   function refreshJamList() {
     var timeToR = canRefresh(myTime, 5);
+    var emptyJamList = jamList.length === 0;
+    // debugger
+    if (emptyJamList) {
+      reqJamList();
+      return
+    }
     if (timeToR) {
       reqJamList();
     } else {
@@ -2048,6 +2055,7 @@ $(function () {
    */
   function reqJamList() {
     var url = 'highSpeed/selectGsCongestionAndDetails.do';
+
     $.axpost(url, {}, function (data) {
       myTime = new Date();
       jamList = [];
@@ -2958,9 +2966,16 @@ $(function () {
    * @returns {Number}
    */
   function YJIsLoaded() {
+    var theLen;
     var tLen = TerminalWarningList.length;
     var sLen = ServiceAreaWarningList.length;
     // debugger
+    // if(nowTab===tabArr[0]) {
+    //   theLen = tLen
+    // } else if (nowTab===tabArr[1]) {
+    //   theLen = sLen
+    // }
+    // return theLen
     return tLen && sLen
   }
 
@@ -3173,10 +3188,11 @@ $(function () {
     keyName = 'listTerminal';
     theNumKey = 'userCnt';
 
-    $.ajax({
+    var xhr = $.ajax({
       type: "POST",
       url: serviceBase + url,
       data: {},
+      timeout: 15000,          // 设置超时时间
       dataType: "json",
       theTab: nowTab,
       success: function (data) {
@@ -3185,7 +3201,6 @@ $(function () {
         tab0Time = new Date();
         TerminalWarningList = [];
         if (data && data.isSuccess) {
-
           var yongji = $('#yongji');
           var shizhong = $('#shizhong');
           var shushi = $('#shushi');
@@ -3234,14 +3249,81 @@ $(function () {
             }
           }
           var isLoaded = YJIsLoaded();
-          if(isLoaded) {
-          //   debugger
+          if (isLoaded) {
+            //   debugger
             layer.closeAll()
           }
+        }
+      },
+      complete: function (XMLHttpRequest, status) {
+        if (status == 'timeout') {
+          xhr.abort();    // 超时后中断请求
+          alert('网络超时,请刷新')
+          location.reload()
         }
       }
     });
 
+    // $.axpost(url,{},function (data) {
+    //   // console.log('reqRoadData',data)
+    //   // clearYjUL();
+    //   tab0Time = new Date();
+    //   TerminalWarningList = [];
+    //   if (data && data.isSuccess) {
+    //     var yongji = $('#yongji');
+    //     var shizhong = $('#shizhong');
+    //     var shushi = $('#shushi');
+    //     var ss = {
+    //       name: '舒适',
+    //       dom: shushi,
+    //       icon: 'top3-icon3',
+    //       pointClass: 'point3',
+    //       data: data.data[keyName + '_ss'],
+    //     };
+    //     var sz = {
+    //       name: '适中',
+    //       dom: shizhong,
+    //       icon: 'top3-icon2',
+    //       pointClass: 'point2',
+    //       data: data.data[keyName + '_sz'],
+    //     };
+    //     var yj = {
+    //       name: '拥挤',
+    //       dom: yongji,
+    //       icon: 'top3-icon1',
+    //       pointClass: 'point1',
+    //       data: data.data[keyName + '_yj']
+    //     };
+    //
+    //     var dataArr = [ss, sz, yj];
+    //     TerminalWarningList = dataArr;
+    //     // debugger
+    //     if (nowTab === tabArr[0]) {
+    //       // debugger
+    //       pointControl.showPoints(nowTab, dataArr); // 刷新了markers
+    //       markerBindClick();
+    //       addStation2();
+    //     }
+    //
+    //     for (var i = 0; i < dataArr.length; i++) {
+    //       var item = dataArr[i];
+    //       // debugger
+    //       for (var j = 0; j < item.data.length; j++) {
+    //         var temp = item.data[j];
+    //         temp.userCnt = toWan2(temp[theNumKey]);
+    //       }
+    //       if (nowTab === tabArr[0]) {
+    //         // debugger
+    //         addYjLi(item)
+    //       }
+    //     }
+    //     var isLoaded = YJIsLoaded();
+    //     if(isLoaded) {
+    //       //   debugger
+    //       layer.closeAll()
+    //     }
+    //   }
+    // })
   }
 
   /**
@@ -3258,6 +3340,8 @@ $(function () {
       type: "POST",
       url: serviceBase + url,
       data: {},
+      timeout: 15000,          // 设置超时时间
+
       dataType: "json",
       theTab: nowTab,
       success: function (data) {
@@ -3316,13 +3400,83 @@ $(function () {
           }
           var isLoaded = YJIsLoaded();
           // debugger
-          if(isLoaded) {
+          if (isLoaded) {
 
             layer.closeAll()
           }
         }
+      },
+      complete: function (XMLHttpRequest, status) {
+        if (status == 'timeout') {
+          xhr.abort();    // 超时后中断请求
+          alert('网络超时,请刷新')
+          location.reload()
+        }
       }
     });
+
+    // $.axpost(url, {}, function (data) {
+    //   // console.log('reqRoadData',data)
+    //   // clearYjUL();
+    //   tab1Time = new Date();
+    //   ServiceAreaWarningList = [];
+    //   if (data && data.isSuccess) {
+    //
+    //     var yongji = $('#yongji');
+    //     var shizhong = $('#shizhong');
+    //     var shushi = $('#shushi');
+    //     var ss = {
+    //       name: '舒适',
+    //       dom: shushi,
+    //       icon: 'top3-icon3',
+    //       pointClass: 'point3',
+    //       data: data.data[keyName + '_ss'],
+    //     };
+    //     var sz = {
+    //       name: '适中',
+    //       dom: shizhong,
+    //       icon: 'top3-icon2',
+    //       pointClass: 'point2',
+    //       data: data.data[keyName + '_sz'],
+    //
+    //     };
+    //     var yj = {
+    //       name: '拥挤',
+    //       dom: yongji,
+    //       icon: 'top3-icon1',
+    //       pointClass: 'point1',
+    //       data: data.data[keyName + '_yj']
+    //     };
+    //
+    //     var dataArr = [ss, sz, yj];
+    //     ServiceAreaWarningList = dataArr;
+    //     if (nowTab === tabArr[1]) {
+    //       // debugger
+    //       pointControl.showPoints(nowTab, dataArr); // 刷新了markers
+    //       markerBindClick();
+    //       addStation2();
+    //     }
+    //
+    //     for (var i = 0; i < dataArr.length; i++) {
+    //       var item = dataArr[i];
+    //       // debugger
+    //       for (var j = 0; j < item.data.length; j++) {
+    //         var temp = item.data[j];
+    //         temp.userCnt = toWan2(temp[theNumKey]);
+    //       }
+    //       if (nowTab === tabArr[1]) {
+    //         // debugger
+    //         addYjLi(item)
+    //       }
+    //     }
+    //     var isLoaded = YJIsLoaded();
+    //     // debugger
+    //     if (isLoaded) {
+    //
+    //       layer.closeAll()
+    //     }
+    //   }
+    // })
 
   }
 
@@ -3397,7 +3551,8 @@ $(function () {
       index++;
       var liDom = '<li class="top3-li" title="' + liData.postionName + '">\n' +
         '<i class="' + item.icon + '">' + index + '</i>\n' +
-        '<p><label class="p-name ellipsis">' + liData.postionName + '</label> <span>当前客流 <i class="num">' + liData.userCnt + '</i>人</span></p>\n' +
+        // '<p><label class="p-name ellipsis">' + liData.postionName + '</label> <span>当前客流 <i class="num">' + liData.userCnt + '</i>人</span></p>\n' +
+        '<p><label class="p-name ellipsis">' + liData.postionName + '</label> <span><i class="num">' + liData.userCnt + '</i>人</span></p>\n' +
         '</li>';
       var temp = $(liDom);
 
@@ -5401,10 +5556,10 @@ $(function () {
             }
             dataArr.push(theData);
           }
-          if(!isAir) {
+          if (!isAir) {
             correctDongChaNum(dataArr, snNum);
           }
-          if(isAir) {
+          if (isAir) {
             legendArr = ['省内', '省外', '境外']
           }
 
@@ -5576,10 +5731,10 @@ $(function () {
               }
             });
           }
-          if(isAir) {
+          if (isAir) {
             legendArr = ['省内', '省外', '境外']
           }
-          if(!isAir) {
+          if (!isAir) {
             correctDongChaNum(dataArr, snNum);
           }
           // console.log('tempArr:', dataArr,tempArr);

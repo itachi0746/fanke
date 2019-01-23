@@ -533,7 +533,7 @@ html, body {
   right: 65px;
   z-index: 20; }
   .top3 .p-name {
-    width: 132px; }
+    width: 232px; }
   .top3 .list li {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -553,10 +553,11 @@ html, body {
       display: flex; }
     .top3 .list li span {
       font-weight: normal;
-      width: 179px;
+      width: 100px;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap; }
+      white-space: nowrap;
+      text-align: right; }
     .top3 .list li .num {
       font-weight: bold; }
   .top3 .top3-outer {
@@ -958,6 +959,9 @@ html, body {
   top: 100px;
   left: 100px; }
 
+.point1, .point2, .point3, .point3-1 {
+  font-size: 20px; }
+
 .point1 {
   width: 50px;
   height: 50px;
@@ -966,8 +970,7 @@ html, body {
   /* background-size: 100% 100%; */
   -webkit-animation: run2 1s steps(15, end) infinite;
           animation: run2 1s steps(15, end) infinite;
-  color: #ea4882;
-  font-size: 14px; }
+  color: #ea4882; }
   .point1 i {
     position: absolute;
     top: 15px;
@@ -1000,7 +1003,6 @@ html, body {
     top: 0px;
     right: 110%;
     width: 250px;
-    font-size: 12px;
     text-align: right;
     display: none; }
 
@@ -1031,8 +1033,7 @@ html, body {
     position: absolute;
     top: 0px;
     left: 110%;
-    width: 250px;
-    font-size: 12px; }
+    width: 250px; }
 
 .point2 {
   background: url(../img/point2.png) no-repeat;
@@ -2457,7 +2458,7 @@ input:focus {
 
 .amap-info-content2 {
   background: black;
-  color: #28eefb;
+  color: #80ffff;
   border-radius: 5px;
   border: 1px solid #00aeef;
   padding: 15px 18px 10px 10px;
