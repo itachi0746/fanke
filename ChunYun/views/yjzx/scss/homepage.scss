@@ -219,6 +219,7 @@ html,body{
       justify-content: center;
       align-items: center;
       display: flex;
+      flex-direction: column;
     }
     section:nth-child(1) {
       width: 230px;
@@ -252,11 +253,11 @@ html,body{
     align-items: center;
 
     height: 50px;
-    padding-bottom: 18px;
+    //padding-bottom: 18px;
 
     .pagination {
       display: flex;
-      width: 72px;
+      //width: 72px;
       justify-content: space-between;
 
        span {
@@ -271,6 +272,7 @@ html,body{
          line-height: 22px;
          font-weight:bold;
          cursor: pointer;
+         margin: 0 5px;
        }
       span.active {
         background-color: #899ffb;
@@ -996,7 +998,7 @@ html,body{
     top: 0px;
     right: 110%;
     width: 250px;
-    font-size: 12px;
+    //font-size: 12px;
     text-align: right;
   }
 }
@@ -3473,6 +3475,10 @@ input:focus {
       justify-content: center;
       align-items: center;
       cursor: pointer;
+    }
+    li.no-active {
+      color: #333;
+
     }
     li:nth-child(1) {
       border-right: 1px solid #00aeef;

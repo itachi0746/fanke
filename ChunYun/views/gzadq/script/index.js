@@ -154,7 +154,7 @@ $(function () {
             name: '(时点)',
             nameLocation: 'end',
             //splitNumber: 5,
-            axisTick: {show: false},
+            axisTick: {show: true},
             axisLabel: {
                 interval: 0,
                 rotate: 40,
@@ -568,7 +568,7 @@ $(function () {
         if(xData){
             for(var i=0;i<xData.length;i++){
                 var theDate=this.parserDate(xData[i]);
-                theXData.push((theDate.getMonth() + 1) + '-' + FormateDateNum(theDate.getDate()))
+                theXData.push((theDate.getMonth() + 1) + '月' + FormateDateNum(theDate.getDate())+'日')
             }
         }
         /*while (theEndDate.getTime() > theBeginDate.getTime()) {
@@ -589,6 +589,7 @@ $(function () {
                 }
             }
         }*/
+        theCurrentOption.xAxis.axisTick.show='true';
         theCurrentOption.xAxis.data = theXData;
         theCurrentOption.xAxis.axisLabel.rotate = 0;
         theCurrentOption.legend = {
@@ -740,9 +741,10 @@ $(function () {
         if(xData){
             for(var i=0;i<xData.length;i++){
                 var theDate=this.parserDate(xData[i]);
-                theXData.push((theDate.getMonth() + 1) + '-' + FormateDateNum(theDate.getDate()))
+                theXData.push((theDate.getMonth() + 1) + '月' + FormateDateNum(theDate.getDate())+'日')
             }
         }
+        theCurrentOption.xAxis.axisTick.show='true';
         theCurrentOption.xAxis.data = theXData;
         theCurrentOption.xAxis.axisLabel.rotate = 0;
         theCurrentOption.yAxis = [{
@@ -869,10 +871,11 @@ $(function () {
         if(xData){
             for(var i=0;i<xData.length;i++){
                 var theDate=this.parserDate(xData[i]);
-                theXData.push((theDate.getMonth() + 1) + '-' + FormateDateNum(theDate.getDate()))
+                theXData.push((theDate.getMonth() + 1) + '月' + FormateDateNum(theDate.getDate())+'日')
             }
         }
         //debugger;
+        theCurrentOption.xAxis.axisTick.show='true';
         theCurrentOption.color='#32ff4b';
         theCurrentOption.xAxis.data = theXData;
         theCurrentOption.xAxis.axisLabel.rotate = 0;

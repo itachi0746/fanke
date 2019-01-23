@@ -1,5 +1,6 @@
 var pointControl;
 var jamListMarkers = [];
+// var keyRoadDataArr = [], perPageNum = 7;
 
 $(function () {
   var hourArr = ['0-1', '1-2', '2-3', '3-4', '4-5', '5-6', '6-7', '7-8', '8-24'];
@@ -225,8 +226,8 @@ $(function () {
     }
     arrowBindClick();
     dongchaTabBindClick();
-    reqTerminalWarningList();
-    reqServiceAreaWarningList();
+    // reqTerminalWarningList();
+    // reqServiceAreaWarningList();
     reqJamList();
   }
 
@@ -1589,14 +1590,10 @@ $(function () {
 
         refreshTime();
         $('#top3').hide();
-        // $('#luwang-box').show();
         mapbase.setTrafficStyle();
         mapbase.setBgRoadPoint();
-        // reqLuWangDtlData()
-        // reqJamList();
         refreshJamList();
         reqKeyRoadData();
-        // jamRankLiClick();
         $('#container2').hide();
         $('#gaosujiance').show();
         traffic.removePaths();  // 清除高速路段的线
@@ -1604,33 +1601,7 @@ $(function () {
         markerBindClick();
         addStation2();
       }
-      // if (nowTab === tabArr[2]) {
-      //   positionType = 3;  // 收费站,高速监测
-      //   clearInterval(timer);
-      //   $('#top3').show();
-      //   // $('#luwang-box').hide();
-      //   $('#container2').show();
-      //   mapbase.isGaoSuLuDuan = false;
-      //   mapbase.restoreDefaultStyle();
-      //   mapbase.setBg();
-      //   traffic.removePaths();  // 清除高速路段的线
-      //   $('#gaosujiance').hide();
-      //
-      // }
-      // if (nowTab === tabArr[3]) {  // 高速监测
-      //   mapbase.isGaoSuLuDuan = false;
-      //   refreshTime();
-      //   $('#top3').hide();
-      //   // $('#luwang-box').show();
-      //   mapbase.setTrafficStyle();
-      //   // reqLuWangDtlData()
-      //   reqJamList();
-      //   reqKeyRoadData();
-      //   // jamRankLiClick();
-      //   $('#container2').hide();
-      //   $('#gaosujiance').show();
-      //   traffic.removePaths();  // 清除高速路段的线
-      // }
+
     }
 
 
@@ -2073,135 +2044,276 @@ $(function () {
     })
   }
 
-  var keyRoadDataArr = [], pageOneNum = 6;
-
+  var keyRoadDataArr = [], perPageNum = 7;
   /**
    * 查询高速重点路段数据
    */
+  // function reqKeyRoadData() {
+  //   var pagination = $('#pagination').find('span');
+  //   for (var i = 0; i < pagination.length; i++) {
+  //     var p = pagination[i];
+  //     $(p).removeClass('active');
+  //   }
+  //   $(pagination[0]).addClass('active');
+  //   // var resultArr = [];
+  //   var url = 'http://gdjtapi.televehicle.com/gd_traffic/api/highWayKpi/AllRoadsDirTpi';
+  //
+  //   var data = {
+  //     "auth": {
+  //       "opCode": "SJT",
+  //       "opPass": "XQWPwai8XOTW",
+  //       "signature": "A2A65DED49FF531B4A38A5C8E21AA19C",
+  //       "timeStamp": "20151203220306"
+  //     }
+  //   };
+  //   var dataStr = JSON.stringify(data);
+  //   // console.log(this)
+  //   $.ajax({
+  //     type: "POST",
+  //     url: url,
+  //     data: dataStr,
+  //     success: function (data) {
+  //       keyRoadDataArr = [];
+  //       // console.log(this.roadId)
+  //       // console.log('reqKeyRoadData', data);
+  //       if (data.returnMsg === '操作成功' && data.data.length) {
+  //         var theId;
+  //         for (var j = 0; j < LuDuanDataArr.length; j++) {
+  //           var roadObj = LuDuanDataArr[j];
+  //           for (var i = 0; i < data.data.length; i++) {
+  //             var dataObj = data.data[i];
+  //             // theId = roadObj.roadId;
+  //             if (roadObj.roadId === dataObj.roadId) {
+  //               dataObj.name = roadObj.name;
+  //               var newObj = {}, theAvgSpeed, temp = 0;
+  //
+  //               for (var key in dataObj) {
+  //                 newObj[key] = dataObj[key]
+  //               }
+  //               for (var k = 0; k < newObj.dirs.length; k++) {
+  //                 var dir = newObj.dirs[k];
+  //                 temp += parseFloat(dir.speed)
+  //               }
+  //               var theSpeed = temp / 2;
+  //               newObj['avgSpeed'] = theSpeed.toFixed(0);
+  //               keyRoadDataArr.push(newObj);
+  //               break;
+  //             }
+  //           }
+  //           // debugger
+  //         }
+  //         // console.log(resultArr);
+  //
+  //         handleKeyRoadArr();
+  //       } else {
+  //         console.log('请求高速路段出行指数失败!', data.returnMsg)
+  //       }
+  //     }
+  //   });
+  //
+  //   // console.log(resultArr)
+  //
+  // }
   function reqKeyRoadData() {
-    var pagination = $('#pagination').find('span');
-    for (var i = 0; i < pagination.length; i++) {
-      var p = pagination[i];
-      $(p).removeClass('active');
-    }
-    $(pagination[0]).addClass('active');
-    // var resultArr = [];
-    var url = 'http://gdjtapi.televehicle.com/gd_traffic/api/highWayKpi/AllRoadsDirTpi';
+    var url = 'http://gdjtapi.televehicle.com/gd_traffic/api/highWayKpi/RoadLinksTpi';
 
-    var data = {
-      "auth": {
-        "opCode": "SJT",
-        "opPass": "XQWPwai8XOTW",
-        "signature": "A2A65DED49FF531B4A38A5C8E21AA19C",
-        "timeStamp": "20151203220306"
-      }
-    };
-    var dataStr = JSON.stringify(data);
-    // console.log(this)
-    $.ajax({
-      type: "POST",
-      url: url,
-      data: dataStr,
-      success: function (data) {
-        keyRoadDataArr = [];
-        // console.log(this.roadId)
-        console.log('reqKeyRoadData', data);
-        if (data.returnMsg === '操作成功' && data.data.length) {
-          var theId;
-          for (var j = 0; j < LuDuanDataArr.length; j++) {
-            var roadObj = LuDuanDataArr[j];
-            for (var i = 0; i < data.data.length; i++) {
-              var dataObj = data.data[i];
-              // theId = roadObj.roadId;
-              if (roadObj.roadId === dataObj.roadId) {
-                dataObj.name = roadObj.name;
-                var newObj = {}, theAvgSpeed, temp = 0;
+    var keyIdx = 0;
+    for (var i = 0; i < LuDuanDataArr.length; i++) {
+      var data = {
+        "auth": {
+          "opCode": "SJT",
+          "opPass": "XQWPwai8XOTW",
+          "signature": "A2A65DED49FF531B4A38A5C8E21AA19C",
+          "timeStamp": "20151203220306"
+        }
+      };
+      var lObj = LuDuanDataArr[i];
+      var theRoadID = lObj.roadId;
+      data['roadId'] = theRoadID;
+      data = JSON.stringify(data);
 
-                for (var key in dataObj) {
-                  newObj[key] = dataObj[key]
-                }
-                for (var k = 0; k < newObj.dirs.length; k++) {
-                  var dir = newObj.dirs[k];
-                  temp += parseFloat(dir.speed)
-                }
-                var theSpeed = temp / 2;
-                newObj['avgSpeed'] = theSpeed.toFixed(0);
-                keyRoadDataArr.push(newObj);
-                break;
+      $.ajax({
+        type: "POST",
+        url: url,
+        data: data,
+        lObj: lObj,
+        success: function (data) {
+          if (data.returnMsg === '操作成功' && data.data.length) {
+            keyIdx++;
+            console.log(keyIdx, data);
+            var linksArr = [];
+            var dirs = data.data[0].dirs;
+            for (var j = 0; j < dirs.length; j++) {
+              var d = dirs[j];
+              for (var k = 0; k < d.links.length; k++) {
+                var theLink = d.links[k];
+                theLink['name'] = this.lObj.name;
+                linksArr.push(theLink);
+                // keyRoadDataArr.push(theLink);
               }
             }
-            // debugger
+            linksArr = _.sortBy(linksArr, function (item) {
+              return -item.tpi;
+            });
+            for (var i = 0; i < linksArr.length; i++) {
+              if (i >= 3) {
+                break
+              }
+              var l = linksArr[i];
+              console.log(l.name)
+              keyRoadDataArr.push(l);
+            }
+            if (keyIdx >= 12) {
+              keyRoadDataArr = _.sortBy(keyRoadDataArr, function (item) {
+                return -item.tpi;
+              });
+              handleKeyRoadArr()
+            }
           }
-          // console.log(resultArr);
-
-          handleKeyRoadArr();
-        } else {
-          console.log('请求高速路段出行指数失败!', data.returnMsg)
         }
-      }
-    });
+      })
+    }
 
-    // console.log(resultArr)
+  }
 
+  function keyRoadIsLoad() {
+    var theLen = keyRoadDataArr.length;
+    var ok = theLen >= 10;
+    return ok
   }
 
   /**
    * 处理重点路段数据
    */
-  function handleKeyRoadArr() {
-    keyRoadDataArr = _.sortBy(keyRoadDataArr, function (item) {
-      return -item.tpi;
-    });
-    // debugger
-    var theUl = $('#jiance-key-ul');
-    theUl.empty();
-    for (var i = 0; i < keyRoadDataArr.length; i++) {
-      if (i > pageOneNum) {
-        break
-      }
-      var dataObj = keyRoadDataArr[i];
-      var theStatusClass = tpiToClass(dataObj.tpi);
-      var liStr = '          <li>\n' +
-        '            <section>' + dataObj.name + '</section>\n' +
-        '            <section>' + dataObj.tpi + '</section>\n' +
-        '            <section>\n' +
-        '              <div class="tips-font ' + theStatusClass + '">' + dataObj.status + '</div>\n' +
-        '            </section>\n' +
-        '            <section>' + dataObj.avgSpeed + 'km/h</section>\n' +
-        '          </li>';
-      var theLiDom = $(liStr);
-      theLiDom.data('theName', dataObj.name);
-      theLiDom.data('theStatus', dataObj.status);
-      theLiDom.data('theSpeed', dataObj.avgSpeed);
-      keyRoadClick(theLiDom);
-      theUl.append(theLiDom)
-    }
-
-    paginationClick();
-    // console.log(keyRoadDataArr)
-    // debugger
-    // for (var i = 0; i < theRepeatItem.length; i++) {
-    //   var repeatObj = theRepeatItem[i];
-    //   for (var j = 0; j < keyRoadDataArr.length; j++) {
-    //     var dataObj = keyRoadDataArr[j];
-    //     // console.log(i,j)
-    //     // debugger
-    //     if(dataObj.roadId===repeatObj.roadId) {
-    //       var newObj = {};
-    //       dataObj.name = repeatObj.name;
-    //       for (var key in dataObj) {
-    //         newObj[key] = dataObj[key]
-    //       }
-    //
-    //       console.log(newObj)
-    //       keyRoadDataArr[j] = newObj;
-    //       debugger
+    // function handleKeyRoadArr() {
+    //   keyRoadDataArr = _.sortBy(keyRoadDataArr, function (item) {
+    //     return -item.tpi;
+    //   });
+    //   // debugger
+    //   var theUl = $('#jiance-key-ul');
+    //   theUl.empty();
+    //   for (var i = 0; i < keyRoadDataArr.length; i++) {
+    //     if (i > perPageNum) {
     //       break
     //     }
+    //     var dataObj = keyRoadDataArr[i];
+    //     var theStatusClass = tpiToClass(dataObj.tpi);
+    //     var liStr = '          <li>\n' +
+    //       '            <section>' + dataObj.name + '</section>\n' +
+    //       '            <section>' + dataObj.tpi + '</section>\n' +
+    //       '            <section>\n' +
+    //       '              <div class="tips-font ' + theStatusClass + '">' + dataObj.status + '</div>\n' +
+    //       '            </section>\n' +
+    //       '            <section>' + dataObj.avgSpeed + 'km/h</section>\n' +
+    //       '          </li>';
+    //     var theLiDom = $(liStr);
+    //     theLiDom.data('theName', dataObj.name);
+    //     theLiDom.data('theStatus', dataObj.status);
+    //     theLiDom.data('theSpeed', dataObj.avgSpeed);
+    //     keyRoadClick(theLiDom);
+    //     theUl.append(theLiDom)
     //   }
+    //
+    //   paginationClick();
+    //   // console.log(keyRoadDataArr)
+    //   // debugger
+    //   // for (var i = 0; i < theRepeatItem.length; i++) {
+    //   //   var repeatObj = theRepeatItem[i];
+    //   //   for (var j = 0; j < keyRoadDataArr.length; j++) {
+    //   //     var dataObj = keyRoadDataArr[j];
+    //   //     // console.log(i,j)
+    //   //     // debugger
+    //   //     if(dataObj.roadId===repeatObj.roadId) {
+    //   //       var newObj = {};
+    //   //       dataObj.name = repeatObj.name;
+    //   //       for (var key in dataObj) {
+    //   //         newObj[key] = dataObj[key]
+    //   //       }
+    //   //
+    //   //       console.log(newObj)
+    //   //       keyRoadDataArr[j] = newObj;
+    //   //       debugger
+    //   //       break
+    //   //     }
+    //   //   }
+    //   // }
+    //   // console.log('new',keyRoadDataArr)
+    //   // debugger
     // }
-    // console.log('new',keyRoadDataArr)
-    // debugger
+
+  var perRoadNum = 3; // 每条路要展示的条数
+  var keyRoadRenderList = [];
+
+  function handleKeyRoadArr() {
+
+    // console.log(keyRoadDataArr)
+    addKeyRoadLi(keyRoadDataArr);
+    addKeyRoadPgn();
+  }
+
+  function addKeyRoadLi(arr) {
+    var theUl = $('#jiance-key-ul');
+    theUl.empty();
+    for (var i = 0; i < arr.length; i++) {
+      if (i >= perPageNum) {
+        break
+      }
+      var dataObj = arr[i];
+      var theRoadName = dataObj.name;
+      var ftMsg = '(从' + dataObj.from + '到' + dataObj.to + ')';
+
+      var theStatusClass = tpiToClass(dataObj.tpi);
+      var theTpi = dataObj.tpi;
+      var theStatus = dataObj.status;
+      var theSpeed = dataObj.speed;
+      var liStr = '          <li>\n' +
+        '            <section>' + '<span>' + theRoadName + '</span>' + '<span>' + ftMsg + '</span>' + '</section>\n' +
+        '            <section>' + theTpi + '</section>\n' +
+        '            <section>\n' +
+        '              <div class="tips-font ' + theStatusClass + '">' + theStatus + '</div>\n' +
+        '            </section>\n' +
+        '            <section>' + theSpeed + 'km/h</section>\n' +
+        '          </li>';
+      var theLiDom = $(liStr);
+      theLiDom.data('theName', theRoadName);
+      theLiDom.data('theStatus', theStatus);
+      theLiDom.data('theSpeed', theSpeed);
+      keyRoadClick(theLiDom);
+      theUl.append(theLiDom);
+    }
+  }
+
+  /**
+   * 重点路段列表--分页
+   */
+  function addKeyRoadPgn() {
+    var theLen = keyRoadDataArr.length;
+    var pgnNum = Math.ceil(theLen/7);
+    var pagination = $('#pagination');
+    for (var i = 0; i < pgnNum; i++) {
+      var idx = i + 1,theSpan;
+      if(i === 0) {
+        theSpan = '<span class="active">'+idx+'</span>';
+      } else {
+        theSpan = '<span>'+idx+'</span>';
+      }
+      var theSpanDom = $(theSpan);
+      theSpanDom.on('click',function () {
+        var theSpanArr = pagination.find('span');
+        for (var j = 0; j < theSpanArr.length; j++) {
+          var span = theSpanArr[j];
+          $(span).removeClass('active');
+        }
+        $(this).addClass('active');
+
+        var theText = parseInt($(this).text());
+        var theRenderList = keyRoadDataArr.slice(theText * 7 - 7, theText * 7);
+        addKeyRoadLi(theRenderList)
+
+      });
+      pagination.append(theSpanDom);
+    }
+
   }
 
   /**
@@ -2561,6 +2673,11 @@ $(function () {
     for (var i = 0; i < liArr.length; i++) {
       var liDom = liArr[i];
       $(liDom).on('click', function () {
+        for (var j = 0; j < liArr.length; j++) {
+          var li = liArr[j];
+          $(li).removeClass('no-active');
+        }
+        $(this).addClass('no-active');
         var theText = $(this).text();
         if (theText === '高速路段') {
           pointControl.hideMarkers();

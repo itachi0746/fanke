@@ -147,8 +147,13 @@ $(function () {
       reqWeather(name);
       reqReliData(name);
       var resultObj = getStatus(name);
-      $('#color-div').attr('class', resultObj.color);
-      $('#status-font').text(resultObj.status);
+      try {
+        $('#color-div').attr('class', resultObj.color);
+        $('#status-font').text(resultObj.status);
+      }
+      catch (err) {
+        console.log('没有预警数据');
+      }
       // getYJData()
     }
   }
