@@ -81,27 +81,7 @@ $(function () {
       ]
     });
     window.theMap = theMap;
-// 模拟鹰眼
-//     theMap2 = new AMap.Map('container2', {
-//       mapStyle: theDefaultMapStyle,
-//       center: theCenterPoint,
-//       features: ['bg'],
-//       zoom: 5,
-//       dragEnable: false,
-//       zoomEnable: true,
-//       scrollWheel: false,
-//       doubleClickZoom: false,
-//       keyboardEnable: false,
-//       layers: [
-//         //disCountry,
-//         //indoorMap,
-//         //innerRoom
-//         // satellite,
-//         // building
-//         // object3Dlayer
-//         //roadNet
-//       ]
-//     });
+
     AMap.plugin('AMap.DistrictSearch', function () {
       // 创建行政区查询对象
       var district = new AMap.DistrictSearch({
@@ -405,12 +385,7 @@ $(function () {
   }
 
   // 不在楼层切换控件展示的楼层
-  var theHideFloor = ['广州南站B2','广州南站2F','广州南站3A'];
-  var theFloorMap = {
-    '广州南站1F': '一楼进出站层',
-    '广州南站3F': '候车层',
-    '广州南站B1': '地铁站厅',
-  };
+  var theHideFloor = ['广州南站B2','广州南站2F','广州南站3A','深圳北站-1F','广州白云国际机场B1','广州白云国际机场T1航站楼B1','广州白云国际机场T1航站楼F4'];
 
   function theComp() {
     console.log('室内图层加载完!');
@@ -451,7 +426,7 @@ $(function () {
           var theName = theFloors[i];
           var theIndex = theFloorIndex[i];
           var theFullName = buildingName + theName;
-
+          // debugger
           for (var j = 0; j < theHideFloor.length; j++) {
             var fName = theHideFloor[j];
             if(theFullName===fName) {

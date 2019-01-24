@@ -982,7 +982,7 @@ html,body{
 
   i {
     position: absolute;
-    top: 15px;
+    top: 10px;
     left: 70%;
     width: 250px;
   }
@@ -995,7 +995,7 @@ html,body{
   position: relative;
   i {
     position: absolute;
-    top: 0px;
+    top: -6px;
     right: 110%;
     width: 250px;
     //font-size: 12px;
@@ -1051,7 +1051,7 @@ html,body{
   position: relative;
   i {
     position: absolute;
-    top: 0px;
+    top: -6px;
     left: 110%;
     width: 250px;
     //font-size: 12px;
@@ -2607,8 +2607,10 @@ html,body{
       padding-bottom: 15px;
       li {
         font-size: 18px;
-        color: rgb(181,226,254);
+        //color: rgb(181,226,254);
+        color: $white;
         cursor: pointer;
+        position: relative;
         //height: 24px;
       }
     }
@@ -3375,6 +3377,16 @@ input:focus {
 }
 .tab-box2-li5 {
   background: url("../../yjzx/img/icon_03.png");
+}
+.cam-icon {
+  width: 16px;
+  height: 18px;
+  background: url("../img/cam_nor.png") no-repeat;
+  background-size: 100% 100%;
+  position: absolute;
+  top: 4px;
+  right: 0;
+
 }
 .camera-box {
   li {

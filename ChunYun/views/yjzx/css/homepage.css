@@ -976,7 +976,7 @@ html, body {
   color: #ea4882; }
   .point1 i {
     position: absolute;
-    top: 15px;
+    top: 10px;
     left: 70%;
     width: 250px; }
 
@@ -988,7 +988,7 @@ html, body {
   position: relative; }
   .point3-1 i {
     position: absolute;
-    top: 0px;
+    top: -6px;
     right: 110%;
     width: 250px;
     text-align: right; }
@@ -1033,7 +1033,7 @@ html, body {
   position: relative; }
   .point2 i {
     position: absolute;
-    top: 0px;
+    top: -6px;
     left: 110%;
     width: 250px; }
 
@@ -2294,8 +2294,9 @@ html, body {
       padding-bottom: 15px; }
       .cur-pos-data-box .station-box ul li {
         font-size: 18px;
-        color: #b5e2fe;
-        cursor: pointer; }
+        color: #ffffff;
+        cursor: pointer;
+        position: relative; }
 
 ::-webkit-input-placeholder {
   /* WebKit, Blink, Edge */
@@ -3037,6 +3038,15 @@ input:focus {
 
 .tab-box2-li5 {
   background: url("../../yjzx/img/icon_03.png"); }
+
+.cam-icon {
+  width: 24px;
+  height: 24px;
+  background: url("../img/cam_nor.png") no-repeat;
+  background-size: 100% 100%;
+  position: absolute;
+  top: 0;
+  right: 0; }
 
 .camera-box li {
   border-bottom: 1px  solid #345f8b;

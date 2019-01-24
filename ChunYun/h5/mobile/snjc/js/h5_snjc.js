@@ -256,7 +256,8 @@ $(function () {
   function reqTerminalWarningList() {
     var isLoading = layer.load();
     var url, keyName, theNumKey;
-    url = 'terminal/getTerminalWarningList.do';
+    // url = 'terminal/getTerminalWarningList.do';
+    url = 'terminal/getTerminalWarningListApp.do';
     keyName = 'listTerminal';
     theNumKey = 'userCnt';
 
@@ -306,7 +307,8 @@ $(function () {
    */
   function reqServiceAreaWarningList() {
     var url, keyName, theNumKey;
-    url = 'serviceArea/getServiceAreaWarningList.do';
+    // url = 'serviceArea/getServiceAreaWarningList.do';
+    url = 'serviceArea/getServiceAreaWarningListApp.do';
     keyName = 'listServiceArea';
     theNumKey = 'userCnt';
 
@@ -355,60 +357,60 @@ $(function () {
   /**
    * 获取3级预警数据
    */
-  function getYJData() {
-    var url, keyName, theNumKey;
-    if (positionType === 1) {
-      url = 'terminal/getTerminalWarningList.do';
-      keyName = 'listTerminal';
-    }
-    else if (positionType === 2) {
-      url = 'serviceArea/getServiceAreaWarningList.do';
-      keyName = 'listServiceArea';
-    } else {
-      return
-    }
-
-    var data = {};
-    $.axpost(url, data, function (data) {
-      if (data && data.isSuccess) {
-        // debugger
-        var ss = {
-          name: '舒适',
-          color: 'color-div1',
-          pointClass: 'point3',
-          data: data.data[keyName + '_ss'],
-        };
-        var sz = {
-          name: '适中',
-          color: 'color-div2',
-          pointClass: 'point2',
-          data: data.data[keyName + '_sz'],
-
-        };
-        var yj = {
-          name: '拥挤',
-          color: 'color-div3',
-          pointClass: 'point1',
-          data: data.data[keyName + '_yj']
-        };
-
-        var dataArr = [ss, sz, yj];
-        for (var i = 0; i < dataArr.length; i++) {
-          var obj = dataArr[i];
-          for (var j = 0; j < obj.data.length; j++) {
-            var theData = obj.data[j];
-            if (theData.postionName === curPosition) {
-              // debugger
-              $('#color-div').attr('class', obj.color);
-              $('#status-font').text(obj.name);
-              break
-            }
-          }
-        }
-
-      }
-    });
-  }
+  // function getYJData() {
+  //   var url, keyName, theNumKey;
+  //   if (positionType === 1) {
+  //     url = 'terminal/getTerminalWarningList.do';
+  //     keyName = 'listTerminal';
+  //   }
+  //   else if (positionType === 2) {
+  //     url = 'serviceArea/getServiceAreaWarningList.do';
+  //     keyName = 'listServiceArea';
+  //   } else {
+  //     return
+  //   }
+  //
+  //   var data = {};
+  //   $.axpost(url, data, function (data) {
+  //     if (data && data.isSuccess) {
+  //       // debugger
+  //       var ss = {
+  //         name: '舒适',
+  //         color: 'color-div1',
+  //         pointClass: 'point3',
+  //         data: data.data[keyName + '_ss'],
+  //       };
+  //       var sz = {
+  //         name: '适中',
+  //         color: 'color-div2',
+  //         pointClass: 'point2',
+  //         data: data.data[keyName + '_sz'],
+  //
+  //       };
+  //       var yj = {
+  //         name: '拥挤',
+  //         color: 'color-div3',
+  //         pointClass: 'point1',
+  //         data: data.data[keyName + '_yj']
+  //       };
+  //
+  //       var dataArr = [ss, sz, yj];
+  //       for (var i = 0; i < dataArr.length; i++) {
+  //         var obj = dataArr[i];
+  //         for (var j = 0; j < obj.data.length; j++) {
+  //           var theData = obj.data[j];
+  //           if (theData.postionName === curPosition) {
+  //             // debugger
+  //             $('#color-div').attr('class', obj.color);
+  //             $('#status-font').text(obj.name);
+  //             break
+  //           }
+  //         }
+  //       }
+  //
+  //     }
+  //   });
+  // }
 
   /**
    * tab绑定点击
@@ -458,7 +460,7 @@ $(function () {
   };
 
   MapBase.OnFloorClick = function (name) {
-    //debugger;
+    // debugger;
     var isTheReliFloor = filterFloor(name);
     if (!isTheReliFloor) {
       mapbase.hideReli();
@@ -494,10 +496,27 @@ $(function () {
     '广州白云国际机场F4': '广州白云区机场-4F',
 
   };
-  var theFloorMsg = {
+  var theFloorMsg = {  // 楼层别名map
     '广州南站1F': '一楼进出站层',
     '广州南站3F': '候车层',
     '广州南站B1': '地铁站厅',
+    '深圳北站F1': '一楼进出站层',
+    '深圳北站F2': '商业区',
+    '深圳宝安国际机场F1': '国际到达厅',
+    '深圳宝安国际机场F2': '国内到达厅',
+    '深圳宝安国际机场F3': '候机厅',
+    '深圳宝安国际机场F4': '值机厅',
+    '深圳宝安国际机场F5': '餐饮区',
+
+    '广州白云国际机场1F': '到达接机厅',
+    '广州白云国际机场2F': '到达中转厅',
+    '广州白云国际机场3F': '出发候机厅',
+    '广州白云国际机场4F': '贵宾服务',
+    '广州白云国际机场F1': '到达接机厅',
+    '广州白云国际机场F2': '到达中转厅',
+    '广州白云国际机场F3': '出发候机厅',
+    '广州白云国际机场F4': '贵宾服务',
+
   };
 
   /**
@@ -518,12 +537,16 @@ $(function () {
       console.log('没有对应的楼层名字!');
       return
     }
-    if(curPosition==='广州南站') {
-      floorMsg.show();
-      floorMsg.text(theFloorMsg[fullName]);
-    }
-
     reqReliData(theMapName, true);
+
+    var floorName = theFloorMsg[fullName];
+    if(!floorName) {
+      console.log('没有楼层别名!');
+      return
+    }
+    floorMsg.show();
+    floorMsg.text(floorName);
+
 
   }
 
