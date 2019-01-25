@@ -746,10 +746,11 @@ $(function () {
   }
 
   /**
-   * 铁路-客运站 删除境外tab
+   * 铁路-客运站 删除境外tab   机场-删除省内tab
    */
   function removeDongChaTab() {
     showDongChaTab();
+    var dongchaTab = $('#tab2').find('.data-box').find('.dongcha-tab');
     var theName = curPosition, theMarkers = pointControl.markes;
     for (var i = 0; i < theMarkers.length; i++) {
       var m = theMarkers[i];
@@ -757,9 +758,6 @@ $(function () {
         // console.log(theName)
         var mType = m.C.extData['枢纽类别'];
         if (mType !== '机场') {
-          // if (mType === '客运站' || mType === '铁路') {
-          var dongchaTab = $('#tab2').find('.data-box').find('.dongcha-tab');
-          // console.log(dongchaTab)
           // debugger
           for (var j = 0; j < dongchaTab.length; j++) {
             var tab = dongchaTab[j];
@@ -767,6 +765,16 @@ $(function () {
             // console.log(theText)
             if (theText === '境外') {
               $(tab).hide();
+            }
+          }
+        }
+        if(mType === '机场') {
+          for (var k = 0; k < dongchaTab.length; k++) {
+            var tab2 = dongchaTab[k];
+            var theText2 = $(tab2).text().trim();
+            // console.log(theText)
+            if (theText2 === '省内') {
+              $(tab2).hide();
             }
           }
         }

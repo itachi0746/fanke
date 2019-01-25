@@ -1087,7 +1087,7 @@ $(function () {
                     var theIndex = 0;
                     var theDatas = [];
                     //var theText = "";
-                    if (params.length > 4) {
+                    if (params.length >= 4) {
                         for (var i = 0; i < params.length; i = i + 2) {
 
                             var theColorText = "<span style=\"display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:" + params[i].color + ";\"></span>";
@@ -1396,7 +1396,9 @@ $(function () {
                     if (theSuStr == '↓') {
                         $('#populationOut').addClass('green');
                     }
-                    theViewData.populationOut = theSuStr + Math.abs(theViewData.populationOut);
+                    var theUnitText="<span\n" +
+                        "                    class=\"last\" style='color:white'>万</span>";
+                    theViewData.populationOut =  Math.abs(theViewData.populationOut)+theUnitText+" "+theSuStr;
                 }
                 me.bind('.numpart', theViewData);
                 //

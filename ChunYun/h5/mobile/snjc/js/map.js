@@ -82,40 +82,40 @@ $(function () {
     });
     window.theMap = theMap;
 
-    AMap.plugin('AMap.DistrictSearch', function () {
-      // 创建行政区查询对象
-      var district = new AMap.DistrictSearch({
-        // 返回行政区边界坐标等具体信息
-        extensions: 'all',
-        // 设置查询行政区级别为 区
-        level: 'province'
-      });
-
-      district.search('广东省', function (status, result) {
-        // 获取朝阳区的边界信息
-        var bounds = result.districtList[0].boundaries
-        if (!bounds) {
-          console.log("未获取到数据!");
-          return;
-        }
-
-        var theBigBounds = null;
-        window.theMap = theMap;
-        for (var i = 0, l = bounds.length; i < l; i++) {
-
-          var theBound = bounds[i];
-          var polygon = {};
-
-          if (theBound.length >= 10000) {
-            theBigBounds = theBound;
-          }
-
-        }
-        // console.log('theBigBounds',theBigBounds);
-
-
-      })
-    });
+    // AMap.plugin('AMap.DistrictSearch', function () {
+    //   // 创建行政区查询对象
+    //   var district = new AMap.DistrictSearch({
+    //     // 返回行政区边界坐标等具体信息
+    //     extensions: 'all',
+    //     // 设置查询行政区级别为 区
+    //     level: 'province'
+    //   });
+    //
+    //   district.search('广东省', function (status, result) {
+    //     // 获取朝阳区的边界信息
+    //     var bounds = result.districtList[0].boundaries
+    //     if (!bounds) {
+    //       console.log("未获取到数据!");
+    //       return;
+    //     }
+    //
+    //     var theBigBounds = null;
+    //     window.theMap = theMap;
+    //     for (var i = 0, l = bounds.length; i < l; i++) {
+    //
+    //       var theBound = bounds[i];
+    //       var polygon = {};
+    //
+    //       if (theBound.length >= 10000) {
+    //         theBigBounds = theBound;
+    //       }
+    //
+    //     }
+    //     // console.log('theBigBounds',theBigBounds);
+    //
+    //
+    //   })
+    // });
     this.initEvent();
     //  标注城市
     var theCitys = {
@@ -234,12 +234,6 @@ $(function () {
 //地图加载完成事件
     theMap.on('complete', function () {
       console.log("地图加载完成!");
-      //获取
-      // var ambientLight = theMap.AmbientLight;   //获取环境光
-      // var directionLight = theMap.DirectionLight; //获取平行光
-      //修改
-      // theMap.AmbientLight = new AMap.Lights.AmbientLight([1, 1, 1], 0.5);
-      //  theMap.DirectionLight = new AMap.Lights.DirectionLight([-6, -2, 14], [1, 1, 1], 0.5);
     });
 //监听放大缩小事件
 //     theMap.on('zoom', function (arg) {
@@ -434,13 +428,6 @@ $(function () {
             }
           }
 
-          // if(buildingName==='广州南站') {
-          //   theName = theFloorMap[theFullName];
-          //   if(!theName) {
-          //     console.log('没有对应名字',theName);
-          //     return
-          //   }
-          // }
           $('<div data-index=' + theIndex + '>' + theName + '</div>').click(function () {
             var theCurrentIndex = $(this).data('index');
             theInnerLayer.showFloor(theCurrentIndex,true);
@@ -854,7 +841,7 @@ $(function () {
       '潮州汽车客运站':[[116.63459,23.664453],[116.634539,23.66529],[116.635343,23.665742],[116.636027,23.66493]],
       '清远汽车客运站':[[113.004829,23.72219],[113.002531,23.722397],[113.002687,23.724632],[113.00399,23.72448],[113.003966,23.723913],[113.004909,23.723792]],
       '湛江机场':[[110.366151,21.21142],[110.366056,21.211578],[110.36569,21.212832],[110.366198,21.212984],[110.366393,21.21243],[110.366481,21.212437],[110.366575,21.212116],[110.366519,21.212031],[110.366679,21.211528]],
-      '潮汕国际机场':[[116.513792,23.540878],[116.509401,23.54037],[116.507085,23.538051],[116.505263,23.535873],[116.503285,23.533935],[116.498575,23.537926],[116.497404,23.536678],[116.494984,23.538557],[116.499465,23.543631],[116.500286,23.543189],[116.507878,23.551471],[116.513164,23.557734],[116.513108,23.558581],[116.516865,23.562778],[116.51904,23.561219],[116.51851,23.560218],[116.51828,23.558538],[116.519566,23.557492],[116.518664,23.55652],[116.51789,23.557032],[116.514445,23.553468],[116.520734,23.548478]],
+      '潮汕国际机场':[[116.509711,23.546987],[116.514106,23.551198],[116.519517,23.547137],[116.515465,23.542488]],
       '湛江徐闻海安港':[[110.234299,20.266591],[110.235046,20.266973],[110.236036,20.266228],[110.2357,20.265696]],
 
       '梁金山服务区-向东北':[[112.68436,22.449872],[112.683965,22.449723],[112.683848,22.449805],[112.683841,22.449962],[112.683984,22.450102],[112.683366,22.4507],[112.685747,22.452235],[112.686012,22.451401],[112.685979,22.451248],[112.68564,22.450971]],

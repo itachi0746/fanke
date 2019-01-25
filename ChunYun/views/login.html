@@ -7,7 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>登录</title>
   <link rel="stylesheet" href="login/css/login.css">
-  <script src="lib/base.js"></script>
+  <script src="lib/jquery-1.8.2.min.js"></script>
+  <!--<script src="lib/base.js"></script>-->
 </head>
 <body>
   <div class="title">广东省春运交通大数据预测分析平台</div>
@@ -15,7 +16,7 @@
     <div class="tips">
 
     </div>
-    <form action="" method="post" id="login-form" onsubmit="return sb1()">
+    <!--<form action="" method="post" id="login-form" onsubmit="return sb1()">-->
       <div class="input-box">
         <div class="icon1"></div>
         <input type="text" name="name" id="username" placeholder="请输入账号" autocomplete="off">
@@ -42,11 +43,10 @@
         </div>
       </div>
       <div class="btn-box">
-        <input type="submit" value="登录" id="submit">
+        <input type="submit" value="登录" id="submit" onclick="sb1()">
       </div>
-    </form>
+    <!--</form>-->
   </div>
-  <script src="lib/jquery-1.8.2.min.js"></script>
   <script>
     function sb1(e){
 //      e.preventDefault();

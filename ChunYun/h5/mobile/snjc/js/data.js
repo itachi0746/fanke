@@ -27,7 +27,7 @@ function PlacePointView(theMap) {
     "公路|客运站|香洲长途站|香洲长途站:113.567377,22.279407;\n" +
     "公路|客运站|佛山汽车站|佛山汽车站:113.110902,23.041469;\n" +
     "公路|客运站|河源汽车总站|河源汽车总站:114.692044,23.737577;\n" +
-    "民航|机场|潮汕国际机场|潮汕国际机场:116.509274,23.546361;\n" +
+    "民航|机场|潮汕国际机场|潮汕国际机场:116.514158,23.546987;\n" +
     "公路|客运站|中山汽车总站|中山汽车总站:113.342613,22.521965;\n" +
     "公路|客运站|中山小榄客运站|小榄车站:113.257901,22.671356;\n" +
     "公路|客运站|江门汽车客运站|广东省江门汽车总站:113.066064,22.630537;\n" +
@@ -246,16 +246,16 @@ PlacePointView.prototype.MoveToPoint = function (lntlat, maxZoom) {
 
   // console.log(lntlat, maxZoom)
   var theZoom = this.theMap.getZoom();
-  // var thePitchTimer = window.setInterval(function () {
-  //   if (theZoom > maxZoom) {
-  //     window.clearInterval(thePitchTimer);
-  //     this.theMap.setPitch(45);
-  //     console.log("结束导航到指定点!");
-  //     return;
-  //   }
-  //   this.theMap.setZoomAndCenter(theZoom++, lntlat);
-  //   console.log(theZoom,maxZoom)
-  // }, 10);
+  var thePitchTimer = window.setInterval(function () {
+    if (theZoom > maxZoom) {
+      window.clearInterval(thePitchTimer);
+      // this.theMap.setPitch(45);
+      console.log("结束导航到指定点!");
+      return;
+    }
+    this.theMap.setZoomAndCenter(theZoom++, lntlat);
+    console.log(theZoom,maxZoom)
+  }, 10);
   // debugger
   this.theMap.setZoomAndCenter(maxZoom, lntlat);
 

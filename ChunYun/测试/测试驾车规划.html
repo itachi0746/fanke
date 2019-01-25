@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="jquery-1.8.2.min.js"></script>
+</head>
+<body>
+
+
+<script>
+//  var url = 'https://restapi.amap.com/v3/direction/transit/integrated?origin=116.481499,39.990475&destination=116.465063,39.999538&city=010&output=xml&key=8d3ac117e5e739d89d425f8c6798b781';
+  var url = 'https://restapi.amap.com/v3/direction/driving?key=8d3ac117e5e739d89d425f8c6798b781&origin=116.481028,39.989643&destination=116.434446,39.90816&originid=&destinationid=&extensions=base&strategy=0&waypoints=116.357483,39.907234&avoidpolygons=&avoidroad='
+
+  $.ajax({
+    type: "GET",
+    url:  url,
+    data: {},
+    dataType: "json",
+    success: function (data) {
+      console.log(data)
+    }
+  })
+
+
+
+</script>
+</body>
+</html>

@@ -15,13 +15,14 @@ $(function () {
   var thePlaceZoomObj = {  // 不同地点的缩放级别
     // '深圳西站': 18,
     // '湛江机场': 18,
-    // '潮汕国际机场': 14,
+    '潮汕国际机场': 16,
     // '广州北站': 18
     '广州白云国际机场': 17
   };
+  var theAllList;  // 存放全部预警数据
 
   function init() {
-    // layer.load();
+    layer.load();
     $('#back-icon').on('click', function () {
       $('#search-box').hide();
       $('#basepage').show();
@@ -33,7 +34,7 @@ $(function () {
     reqTerminalWarningList();
     reqServiceAreaWarningList();
     reqWeather(curPosition);
-    searchTabBindClick();
+    // searchTabBindClick();
     tab2Li2InitEchart()
   }
 
@@ -63,20 +64,41 @@ $(function () {
       var liDom = theTabLi[i];
       if ($(liDom).hasClass('active')) {
         // console.log(i)
-        var theText = $(liDom).text();
-        var theArr = pointControl.getPlacePoints(theText);
+        var tabName = $(liDom).text();
+        var theArr = pointControl.getPlacePoints(tabName);
         for (var j = 0; j < theArr.length; j++) {
           var point = theArr[j];
           var theName = point['枢纽名称'];
-          var liStr = '<li>' + theName + '</li>';
-          var theLiDom = $(liStr);
-          theLiDom.data('name', theText);
-          // console.log(theLiDom.attr('name'));
-          // debugger
-          resultLiClick(theLiDom);
-
-          resultList.append(theLiDom)
+          outer:
+            for (var h = 0; h < theAllList.length; h++) {
+              var obj = theAllList[h];
+              for (var l = 0; l < obj.data.length; l++) {
+                var objData = obj.data[l];
+                // debugger
+                if(objData.postionName===theName) {
+                  // debugger
+                  var liStr = '<li>' + theName + '</li>';
+                  var theLiDom = $(liStr);
+                  theLiDom.data('name', tabName);
+                  resultLiClick(theLiDom);
+                  resultList.append(theLiDom);
+                  break outer
+                }
+              }
+            }
         }
+        // for (var j = 0; j < theArr.length; j++) {
+        //   var point = theArr[j];
+        //   var theName = point['枢纽名称'];
+        //   var liStr = '<li>' + theName + '</li>';
+        //   var theLiDom = $(liStr);
+        //   theLiDom.data('name', theText);
+        //   // console.log(theLiDom.attr('name'));
+        //   // debugger
+        //   resultLiClick(theLiDom);
+        //
+        //   resultList.append(theLiDom)
+        // }
         // debugger
         break
       }
@@ -181,6 +203,23 @@ $(function () {
     var resultList = $('#result-list');
     resultList.empty();
   }
+  /**
+   * 两个预警列表是否已加载
+   * @returns {Number}
+   */
+  function YJIsLoaded() {
+    var theLen;
+    var tLen = TerminalWarningList.length;
+    var sLen = ServiceAreaWarningList.length;
+    // debugger
+    // if(nowTab===tabArr[0]) {
+    //   theLen = tLen
+    // } else if (nowTab===tabArr[1]) {
+    //   theLen = sLen
+    // }
+    // return theLen
+    return tLen && sLen
+  }
 
   /**
    * 获取地点的状态
@@ -254,7 +293,7 @@ $(function () {
    * 请求枢纽预警数据
    */
   function reqTerminalWarningList() {
-    var isLoading = layer.load();
+    // var isLoading = layer.load();
     var url, keyName, theNumKey;
     // url = 'terminal/getTerminalWarningList.do';
     url = 'terminal/getTerminalWarningListApp.do';
@@ -296,7 +335,13 @@ $(function () {
           var dataArr = [ss, sz, yj];
           TerminalWarningList = dataArr;
           goToPointByName(curPosition);
-          layer.close(isLoading)
+          var isLoaded = YJIsLoaded();
+          if (isLoaded) {
+            //   debugger
+            theAllList = ServiceAreaWarningList.concat(TerminalWarningList);
+            searchTabBindClick();
+            layer.closeAll();
+          }
         }
       }
     });
@@ -347,7 +392,13 @@ $(function () {
 
           var dataArr = [ss, sz, yj];
           ServiceAreaWarningList = dataArr;
-
+          var isLoaded = YJIsLoaded();
+          if (isLoaded) {
+            //   debugger
+            theAllList = ServiceAreaWarningList.concat(TerminalWarningList);
+            searchTabBindClick();
+            layer.closeAll()
+          }
         }
       }
     });
@@ -416,6 +467,7 @@ $(function () {
    * tab绑定点击
    */
   function searchTabBindClick() {
+    // debugger
     var tabBox = $('#tab-box');
     var resultList = $('#result-list');
     var theTabLi = tabBox.find('li');
@@ -438,11 +490,23 @@ $(function () {
         for (var j = 0; j < theArr.length; j++) {
           var point = theArr[j];
           var theName = point['枢纽名称'];
-          var liStr = '<li>' + theName + '</li>';
-          var theLiDom = $(liStr);
-          theLiDom.data('name', tabName);
-          resultLiClick(theLiDom);
-          resultList.append(theLiDom)
+          outer:
+          for (var h = 0; h < theAllList.length; h++) {
+            var obj = theAllList[h];
+            for (var l = 0; l < obj.data.length; l++) {
+              var objData = obj.data[l];
+              // debugger
+              if(objData.postionName===theName) {
+                // debugger
+                var liStr = '<li>' + theName + '</li>';
+                var theLiDom = $(liStr);
+                theLiDom.data('name', tabName);
+                resultLiClick(theLiDom);
+                resultList.append(theLiDom);
+                break outer
+              }
+            }
+          }
         }
       })
     }

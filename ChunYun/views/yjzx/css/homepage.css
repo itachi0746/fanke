@@ -3040,12 +3040,12 @@ input:focus {
   background: url("../../yjzx/img/icon_03.png"); }
 
 .cam-icon {
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 18px;
   background: url("../img/cam_nor.png") no-repeat;
   background-size: 100% 100%;
   position: absolute;
-  top: 0;
+  top: 4px;
   right: 0; }
 
 .camera-box li {
