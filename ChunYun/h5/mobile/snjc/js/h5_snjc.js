@@ -3,14 +3,15 @@ var pointControl;
 $(function () {
   window.mapbase = new MapBase();
   pointControl = new PlacePointView(theMap);
-  var name = '广州南站';
+  var name =localStorage['posname'] ||'广州南站';
+  $('#input1').val(name);
   var pepNum = 1000;
   var defaultZoom = 16;
   var positionType = 1;
-  var curPosition = '广州南站';
-  var lnglat = lntlat = new AMap.LngLat(113.269391, 22.988766);
+  var curPosition = localStorage['posname'] ||'广州南站';
+  var lnglat = lntlat = localStorage['pos_1']&&new AMap.LngLat(localStorage['pos_1'],localStorage['pos_2']) ||new AMap.LngLat(113.269391, 22.988766);
   // mapbase.drawReli(name, pepNum);
-  // theMap.setZoomAndCenter(defaultZoom, lnglat);
+  theMap.setZoomAndCenter(defaultZoom, lnglat);
 
   var thePlaceZoomObj = {  // 不同地点的缩放级别
     // '深圳西站': 18,
@@ -21,20 +22,31 @@ $(function () {
   };
   var theAllList;  // 存放全部预警数据
 
+
+
   function init() {
-    layer.load();
+    //localStorage.setItem('thePos','深圳北站');
+    // layer.load();
+    searchOnInput();
     $('#back-icon').on('click', function () {
       $('#search-box').hide();
       $('#basepage').show();
     });
     $('#place-sel').on('click', function () {
+      console.log(123);
       $('#search-box').show();
-      showSearchCB()
+      console.log(234);
+
+      try{
+
+        showSearchCB()
+      } catch (e) {
+        console.log('11',e);
+      }
     });
     reqTerminalWarningList();
     reqServiceAreaWarningList();
     reqWeather(curPosition);
-    // searchTabBindClick();
     tab2Li2InitEchart()
   }
 
@@ -66,9 +78,12 @@ $(function () {
         // console.log(i)
         var tabName = $(liDom).text();
         var theArr = pointControl.getPlacePoints(tabName);
+        // console.log(i)
+        // return
         for (var j = 0; j < theArr.length; j++) {
           var point = theArr[j];
           var theName = point['枢纽名称'];
+          // console.log(theName);
           outer:
             for (var h = 0; h < theAllList.length; h++) {
               var obj = theAllList[h];
@@ -80,23 +95,29 @@ $(function () {
                   var liStr = '<li>' + theName + '</li>';
                   var theLiDom = $(liStr);
                   theLiDom.data('name', tabName);
-                  resultLiClick(theLiDom);
+
+
+                  //localStorage['pos_1']=1;
+                  //localStorage['pos_2']=1;
+                  resultLiClick(theLiDom,point);
                   resultList.append(theLiDom);
+                  // console.log('break');
                   break outer
                 }
               }
             }
         }
+
         // for (var j = 0; j < theArr.length; j++) {
         //   var point = theArr[j];
         //   var theName = point['枢纽名称'];
+        //   console.log(theName)
         //   var liStr = '<li>' + theName + '</li>';
         //   var theLiDom = $(liStr);
-        //   theLiDom.data('name', theText);
+        //   theLiDom.data('name', tabName);
         //   // console.log(theLiDom.attr('name'));
         //   // debugger
         //   resultLiClick(theLiDom);
-        //
         //   resultList.append(theLiDom)
         // }
         // debugger
@@ -116,8 +137,13 @@ $(function () {
   /**
    * 点击搜索结果li
    */
-  function resultLiClick(dom) {
+  function resultLiClick(dom,point) {
     dom.on('click', function () {
+      localStorage['posname']=point['枢纽名称'];
+      //debugger;
+      localStorage['pos']=point['地址'][0]['lnglat'];
+      location.reload();
+      return;
       var searchBox = $('#search-box');
       var theText = $(this).text();
       var theTabName = $(this).data('name');
@@ -140,10 +166,32 @@ $(function () {
   }
 
   /**
+   * 遍历预警数据数组,得到人数
+   * @param name
+   * @returns {*}
+   */
+  function getPeopleNum(name) {
+    var theList, result;
+    theList = theAllList;
+
+    for (var i = 0; i < theList.length; i++) {
+      var obj = theList[i];
+      for (var j = 0; j < obj.data.length; j++) {
+        var dataObj = obj.data[j];
+        if (name === dataObj.postionName) {
+          result = dataObj.userCnt;
+          return result
+        }
+      }
+    }
+  }
+
+  /**
    * 根据名字移动到地点
    * @param name 地点名称
    */
   function goToPointByName(name) {
+    mapbase.hideReli();
     var floorMsg = $('#floor-msg');
     floorMsg.hide();
     // debugger
@@ -164,10 +212,14 @@ $(function () {
         lng: lng
       };
       var theZoom = thePlaceZoomObj[name] || 17;
+      var thePeopleNum = getPeopleNum(name);
       // debugger
-      pointControl.MoveToPoint(arg, theZoom);
+       pointControl.MoveToPoint(arg, theZoom);
+
+      mapbase.drawReli(name, thePeopleNum);
+
       reqWeather(name);
-      reqReliData(name);
+      // reqReliData(name);
       var resultObj = getStatus(name);
       try {
         $('#color-div').attr('class', resultObj.color);
@@ -334,13 +386,15 @@ $(function () {
 
           var dataArr = [ss, sz, yj];
           TerminalWarningList = dataArr;
-          goToPointByName(curPosition);
+          // goToPointByName(curPosition);
           var isLoaded = YJIsLoaded();
           if (isLoaded) {
             //   debugger
             theAllList = ServiceAreaWarningList.concat(TerminalWarningList);
             searchTabBindClick();
             layer.closeAll();
+            goToPointByName(curPosition);
+
           }
         }
       }
@@ -405,63 +459,6 @@ $(function () {
 
   }
 
-  /**
-   * 获取3级预警数据
-   */
-  // function getYJData() {
-  //   var url, keyName, theNumKey;
-  //   if (positionType === 1) {
-  //     url = 'terminal/getTerminalWarningList.do';
-  //     keyName = 'listTerminal';
-  //   }
-  //   else if (positionType === 2) {
-  //     url = 'serviceArea/getServiceAreaWarningList.do';
-  //     keyName = 'listServiceArea';
-  //   } else {
-  //     return
-  //   }
-  //
-  //   var data = {};
-  //   $.axpost(url, data, function (data) {
-  //     if (data && data.isSuccess) {
-  //       // debugger
-  //       var ss = {
-  //         name: '舒适',
-  //         color: 'color-div1',
-  //         pointClass: 'point3',
-  //         data: data.data[keyName + '_ss'],
-  //       };
-  //       var sz = {
-  //         name: '适中',
-  //         color: 'color-div2',
-  //         pointClass: 'point2',
-  //         data: data.data[keyName + '_sz'],
-  //
-  //       };
-  //       var yj = {
-  //         name: '拥挤',
-  //         color: 'color-div3',
-  //         pointClass: 'point1',
-  //         data: data.data[keyName + '_yj']
-  //       };
-  //
-  //       var dataArr = [ss, sz, yj];
-  //       for (var i = 0; i < dataArr.length; i++) {
-  //         var obj = dataArr[i];
-  //         for (var j = 0; j < obj.data.length; j++) {
-  //           var theData = obj.data[j];
-  //           if (theData.postionName === curPosition) {
-  //             // debugger
-  //             $('#color-div').attr('class', obj.color);
-  //             $('#status-font').text(obj.name);
-  //             break
-  //           }
-  //         }
-  //       }
-  //
-  //     }
-  //   });
-  // }
 
   /**
    * tab绑定点击
@@ -634,78 +631,81 @@ $(function () {
   }
 
   // 监听搜索input输入
-  $('#search').on('input', function () {
-    // console.log($(this).val());
-    var resultList = $('#result-list');
-    resultList.empty();
-    var v = $(this).val().trim();
-    console.log(v);
+  function searchOnInput() {
+    $('#search').on('input', function () {
+      // console.log($(this).val());
+      var resultList = $('#result-list');
+      resultList.empty();
+      var v = $(this).val().trim();
+      console.log(v);
 
-    if (!v) {
-      console.log('搜索值不能为空');
-      // resultList.hide();
-      showSearchCB();
-      return
-    }
-    var markerArr = pointControl.PlacePoints;
-    var resultArr = [];
-    // debugger
-    for (var i = 0; i < markerArr.length; i++) {
-      var m = markerArr[i];
+      if (!v) {
+        console.log('搜索值不能为空');
+        // resultList.hide();
+        showSearchCB();
+        return
+      }
+      var markerArr = pointControl.PlacePoints;
+      var resultArr = [];
       // debugger
-      if (!m['枢纽名称']) {
-        console.log('名字不对');
-        continue
-      }
-      if (v === m['枢纽名称'].substr(0, v.length)) {
-        console.log(m['枢纽名称']);
-        resultArr.push(m['枢纽名称'])
+      for (var i = 0; i < markerArr.length; i++) {
+        var m = markerArr[i];
         // debugger
-      }
-    }
-    // console.log(resultArr);
-
-    // debugger
-    if (!resultArr) {
-      console.log('没符合条件的值');
-      resultList.hide();
-      return
-    }
-    for (var j = 0; j < resultArr.length; j++) {
-      // console.log(j);
-
-      var r = resultArr[j];
-      var theLi = $('<li>' + r + '</li>');
-      var that = this;
-      theLi.on('click', function () {
-        $(that).val('');
-
-        var searchBox = $('#search-box');
-        var theText = $(this).text();
-        var type = pointControl.getPointType(theText);
-        type = tabMap[type];
-        // debugger
-        if (!type) {
-          console.log('没有找到类型');
-          return
+        if (!m['枢纽名称']) {
+          console.log('名字不对');
+          continue
         }
-        positionType = type;
-        curPosition = theText;
-        changeInput1(curPosition);
-        goToPointByName(curPosition);
-        tab2Li2Echart1reqData(returnDate());
+        if (v === m['枢纽名称'].substr(0, v.length)) {
+          console.log(m['枢纽名称']);
+          resultArr.push(m['枢纽名称'])
+          // debugger
+        }
+      }
+      // console.log(resultArr);
 
-        searchBox.hide();
-        $('#basepage').show();
-
-      });
       // debugger
-      // console.log(resultList);
+      if (!resultArr) {
+        console.log('没符合条件的值');
+        resultList.hide();
+        return
+      }
+      for (var j = 0; j < resultArr.length; j++) {
+        // console.log(j);
 
-      resultList.append(theLi);
-      resultList.show()
-    }
-  });
+        var r = resultArr[j];
+        var theLi = $('<li>' + r + '</li>');
+        var that = this;
+        theLi.on('click', function () {
+          $(that).val('');
+
+          var searchBox = $('#search-box');
+          var theText = $(this).text();
+          var type = pointControl.getPointType(theText);
+          type = tabMap[type];
+          // debugger
+          if (!type) {
+            console.log('没有找到类型');
+            return
+          }
+          positionType = type;
+          curPosition = theText;
+          changeInput1(curPosition);
+          goToPointByName(curPosition);
+          tab2Li2Echart1reqData(returnDate());
+
+          searchBox.hide();
+          $('#basepage').show();
+
+        });
+        // debugger
+        // console.log(resultList);
+
+        resultList.append(theLi);
+        resultList.show()
+      }
+    });
+
+  }
 
   /**
    * 请求热力数据
@@ -761,7 +761,12 @@ $(function () {
         //   });
         //   infoWindow.open(theMap);
         // }
+        try {
         mapbase.drawReli(name, pepNum);
+
+        }catch (err) {
+          console.log('reli:',err);
+        }
       }
     })
   }
@@ -939,3 +944,7 @@ $(function () {
     });
   }
 });
+
+window.onerror = function (e) {
+  console.log(e)
+};

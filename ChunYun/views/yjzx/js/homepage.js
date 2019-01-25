@@ -1,6 +1,6 @@
 var pointControl;
 var jamListMarkers = [];
-var keyRoadDataArr = [], perPageNum = 7;
+var keyRoadDataArr = [], perPageNum = 7;var keyRoadDataArr2 = [];
 
 $(function () {
   var hourArr = ['0-1', '1-2', '2-3', '3-4', '4-5', '5-6', '6-7', '7-8', '8-24'];
@@ -114,6 +114,7 @@ $(function () {
    * 初始化应用
    */
   function init() {
+    checkLS();
     myTime = tab0Time = tab1Time = new Date();
 
     moment.locale('zh-cn');
@@ -130,6 +131,7 @@ $(function () {
     });
     panelBindClick();
     flightBindClick();
+    trainBindClick();
     fliTrendTabBindClick();
     backDivBandClick();
     weatherClick();
@@ -604,6 +606,7 @@ $(function () {
     // }
     hideWeather();
     hideFlightDom();
+    hideTrainDom();
     showTabs();
     hideTab2();
     hideCurLocaction();
@@ -654,6 +657,7 @@ $(function () {
     hideSpecialData();
     hideTabArrow();
     hideFlightDom();
+    hideTrainDom();
     initRealTimeNum();
     $('#tab-box-cur').show();
 
@@ -678,7 +682,9 @@ $(function () {
       pointControl.MoveToPoint(arg, theZoom);
       isDefaultView = false;
       showFlightDom();
+      showTrainDom();
       removeDongChaTab();
+      removeCamTab();
       if (nowTab === tabArr[0] || nowTab === tabArr[1] || nowTab === tabArr[2]) {
         drawTheRectangle(name);
       }
@@ -742,6 +748,50 @@ $(function () {
     for (var i = 0; i < dongchaTab.length; i++) {
       var tab = dongchaTab[i];
       $(tab).show();
+    }
+  }
+
+  /**
+   * 没有摄像头的地点
+   */
+  function removeCamTab() {
+    var nowName = curPosition;
+    var n = tabArrDom.filter(function (t) {
+      return t.name === nowTab
+    });
+
+    // debugger
+    var tgtTab = $(n[0].class).find('.tab-box2-li1');
+    var liTabBoxArr = tgtTab.find('.li-tab-box');
+    for (var i = 0; i < theCamArr.length; i++) {
+      var camObj = theCamArr[i];
+      var camName = camObj.name;
+      // console.log(nowName,camName);
+      if(nowName===camName) {
+        // debugger
+        console.log('有摄像头')
+        // tgtTab.css('visibility','visible');
+        // for (var j = 0; j < liTabBoxArr.length; j++) {
+        //   var li = liTabBoxArr[j];
+        //   debugger
+        //   var oldH = $(li).css('top');
+        //   oldH = parseInt(oldH);
+        //   $(li).css('top',oldH-150+'px');
+        // }
+        return
+      }
+        console.log('没摄像头')
+        // tgtTab.hide();
+        // tgtTab.css('visibility','hidden');
+
+        // for (var j = 0; j < liTabBoxArr.length; j++) {
+        //   var li = liTabBoxArr[j];
+        //   var oldH = $(li).css('top');
+        //   oldH = parseInt(oldH);
+        //   $(li).css('top',oldH+150+'px');
+        // }
+
+
     }
   }
 
@@ -828,8 +878,14 @@ $(function () {
         $(timeBoxDom).find('select').append($(optionDom));
       }
     }
-    flightTimeBindClick();
-    flightTimeBindClick2();
+    if(curPosition==='广州白云国际机场' || curPosition==='深圳宝安国际机场') {
+      flightTimeBindClick();
+      flightTimeBindClick2();
+    }else {
+      trainTimeBindClick();
+      trainTimeBindClick2();
+    }
+
   }
 
   /**
@@ -853,7 +909,26 @@ $(function () {
     })
   }
 
+  function trainTimeBindClick() {
+    var sendTimeBox = $('#send-time-box2');
+    $(sendTimeBox).on('change', function () {
+      console.log($(this).val());
+      reqTrainData(curPosition, 'send');
+    })
+  }
+
+  function trainTimeBindClick2() {
+    var arrTimeBox = $('#arr-time-box2');
+    // var sendListUl = $('#send-list-ul');
+    // var sendFooter = $('#send-paging');
+    $(arrTimeBox).on('change', function () {
+      console.log($(this).val());
+      reqTrainData(curPosition, 'arr');
+    })
+  }
+
   var theSendFlightArr = [], theArrFlightArr = [];
+  var theSendTrainArr = [], theArrTrainArr = [];
 
   /**
    * 请求航班数据
@@ -907,6 +982,53 @@ $(function () {
     })
   }
 
+  function reqTrainData(name, status) {
+    clearTrainList(status);
+    clearTrainFooter(status);
+
+    $('#train-list-tab').addClass('active');
+    $('#train-trend-tab').removeClass('active');
+    $('#train-data-box2').hide();
+    $('#train-data-box').show();
+    // var nameStr;
+    // if (name === '广州白云国际机场') {
+    //   nameStr = 'byjc'
+    // }
+    // if (name === '深圳宝安国际机场') {
+    //   nameStr = 'bajc'
+    // }
+    var arrivalTime, sendTime,theName = name;
+    if (status === 'all') {
+      arrivalTime = $('#arr-time-box2').val();
+      sendTime = $('#send-time-box2').val();
+    } else if (status === 'send') {
+      sendTime = $('#send-time-box2').val();
+      arrivalTime = '';
+    } else {
+      arrivalTime = $('#arr-time-box2').val();
+      sendTime = '';
+    }
+    // debugger
+    var url = 'terminal/selectTrainInfo.do?sendTime=' + sendTime + '&arrivalTime=' + arrivalTime + '&postionName=' + theName;
+    // debugger
+    $.axpost(url, {}, function (data) {
+      console.log('列车信息:', data);
+      if (data.isSuccess && !isEmptyObject(data.data)) {
+        var num = 4;
+        // debugger
+        theSendTrainArr = data.data.sendList;
+        theArrTrainArr = data.data.arrivalList;
+        // debugger
+        if (theSendFlightArr) {
+          handleTrainData(theSendTrainArr, num, true);
+        }
+        if (theArrFlightArr) {
+          handleTrainData(theArrTrainArr, num, false);
+        }
+      }
+    })
+  }
+
   /**
    * 处理航班数据渲染
    * @param dataArr
@@ -916,6 +1038,9 @@ $(function () {
   function handleFlightData(dataArr, num, isSend) {
     var cityKey, timeKey, theTgtUl, footer, theMaxNum = 12;
     var theDataArr = dataArr;
+    if(!theDataArr) {
+      console.log('没有航班数据')
+    }
     // debugger
     if (isSend) {
       cityKey = 'endCity';
@@ -946,7 +1071,7 @@ $(function () {
         '                  <span title="' + theDataItem.fltno + '">' + theDataItem.fltno + '</span>\n' +
         '                  <span>' + theTimeVal + '</span>\n' +
         '                  <span title="' + theDataItem[cityKey] + '">' + theDataItem[cityKey] + '</span>\n' +
-        '                  <span title="' + theDataItem.passenger + '">' + theDataItem.passenger + '</span>\n' +
+        // '                  <span title="' + theDataItem.passenger + '">' + theDataItem.passenger + '</span>\n' +
         '                </li>';
       theTgtUl.append($(theLiStr));
     }
@@ -994,77 +1119,101 @@ $(function () {
             '                  <span title="' + theDataItem.fltno + '">' + theDataItem.fltno + '</span>\n' +
             '                  <span>' + theTimeVal + '</span>\n' +
             '                  <span title="' + theDataItem[cityKey] + '">' + theDataItem[cityKey] + '</span>\n' +
-            '                  <span title="' + theDataItem.passenger + '">' + theDataItem.passenger + '</span>\n' +
+            // '                  <span title="' + theDataItem.passenger + '">' + theDataItem.passenger + '</span>\n' +
             '                </li>';
           theTgtUl.append($(theLiStr));
         }
       });
       footer.append(theFooter);
     }
+  }
 
-    // var pagingNum;  // 页数
-    // if (theDataArr.length >= theMaxNum) {
-    //   pagingNum = 3;
-    // } else if (theDataArr.length >= 8) {
-    //   pagingNum = 2;
-    // } else if (theDataArr.length >= 4) {
-    //   pagingNum = 1;
-    // }
-    // for (var j = 0; j < pagingNum; j++) {
-    //   var theNum = j + 1;
-    //   var theSpanStr;
-    //   if (theNum === 1) {
-    //     theSpanStr = '<span class="active">' + theNum + '</span>';
-    //   } else {
-    //     theSpanStr = '<span>' + theNum + '</span>';
-    //   }
-    //   var theFooter = $(theSpanStr);
-    //   theFooter.on('click', function () {  // 分页点击
-    //     var id = $(this).parent().attr('id');
-    //     if (id === 'arr-paging') {
-    //       clearFlightList();
-    //     } else {
-    //       clearFlightList('send');
-    //     }
-    //     // debugger
-    //     var fSpan = footer.find('span');
-    //     for (var z = 0; z < fSpan.length; z++) {
-    //       var spanDom = fSpan[z];
-    //       $(spanDom).removeClass('active')
-    //     }
-    //     $(this).addClass('active');
-    //
-    //     var theText = $(this).text();
-    //     var theRenderList = [];
-    //     if (theText === '1') {
-    //       theRenderList = theDataArr.slice(0, 4)
-    //     } else if (theText === '2') {
-    //       theRenderList = theDataArr.slice(4, 8)
-    //     } else if (theText === '3') {
-    //       theRenderList = theDataArr.slice(8, 12)
-    //     }
-    //     // console.log(theRenderList);
-    //     // console.log(cityKey,timeKey);
-    //     // debugger
-    //     for (var k = 0; k < theRenderList.length; k++) {
-    //       var theDataItem = theRenderList[k];
-    //       // debugger
-    //       var h = theDataItem[timeKey].hours;
-    //       var m = theDataItem[timeKey].minutes;
-    //       m = m < 10 ? '0' + m : m;
-    //       h = h < 10 ? '0' + h : h;
-    //       var theTimeVal = h + ':' + m;
-    //       var theLiStr = '                <li>\n' +
-    //         '                  <span title="' + theDataItem.fltno + '">' + theDataItem.fltno + '</span>\n' +
-    //         '                  <span>' + theTimeVal + '</span>\n' +
-    //         '                  <span title="' + theDataItem[cityKey] + '">' + theDataItem[cityKey] + '</span>\n' +
-    //         '                  <span title="' + theDataItem.passenger + '">' + theDataItem.passenger + '</span>\n' +
-    //         '                </li>';
-    //       theTgtUl.append($(theLiStr));
-    //     }
-    //   });
-    //   footer.append(theFooter);
-    // }
+  function handleTrainData(dataArr, num, isSend) {
+    var cityKey, timeKey, theTgtUl, footer, theMaxNum = 12;
+    var theDataArr = dataArr;
+    if(!theDataArr) {
+      console.log('没有列车数据');
+      return
+    }
+    // debugger
+    if (isSend) {
+      cityKey = 'ZDZ';
+      timeKey = 'SFSJ';
+      theTgtUl = $('#send-list-ul2');
+      footer = $('#send-paging2')
+    } else {
+      cityKey = 'SFZ';
+      timeKey = 'ZDSJ';
+      theTgtUl = $('#arr-list-ul2');
+      footer = $('#arr-paging2')
+    }
+
+    for (var i = 0; i < theDataArr.length; i++) {
+      if (i >= num) {
+        break
+      }
+      var theDataItem = theDataArr[i];
+      // debugger
+      var thePos = theDataItem[cityKey].trim();
+      var theNO = theDataItem.SFCC.trim();
+      var theTimeVal = theDataItem[timeKey].trim();
+      var theLiStr = '                <li>\n' +
+        '                  <span title="' + theNO + '">' + theNO + '</span>\n' +
+        '                  <span>' + theTimeVal + '</span>\n' +
+        '                  <span title="' + thePos + '">' + thePos + '</span>\n' +
+        // '                  <span title="' + theDataItem.passenger + '">' + theDataItem.passenger + '</span>\n' +
+        '                </li>';
+      theTgtUl.append($(theLiStr));
+    }
+
+    var pagingNum;
+    pagingNum = Math.ceil(theDataArr.length / 4);
+    for (var j = 0; j < pagingNum; j++) {
+      var theNum = j + 1;
+      var theSpanStr;
+      if (theNum === 1) {
+        theSpanStr = '<span class="active">' + theNum + '</span>';
+      } else {
+        theSpanStr = '<span>' + theNum + '</span>';
+      }
+      var theFooter = $(theSpanStr);
+      theFooter.on('click', function () {  // 分页点击
+        var id = $(this).parent().attr('id');
+        if (id === 'arr-paging2') {
+          clearTrainList();
+        } else {
+          clearTrainList('send');
+        }
+        // debugger
+        var fSpan = footer.find('span');
+        for (var z = 0; z < fSpan.length; z++) {
+          var spanDom = fSpan[z];
+          $(spanDom).removeClass('active')
+        }
+        $(this).addClass('active');
+
+        var theText = parseInt($(this).text());
+        var theRenderList = [];
+        theRenderList = theDataArr.slice(theText * 4 - 4, theText * 4);
+
+        // debugger
+        for (var k = 0; k < theRenderList.length; k++) {
+          var theDataItem = theRenderList[k];
+          // debugger
+          var thePos = theDataItem[cityKey].trim();
+          var theNO = theDataItem.SFCC.trim();
+          var theTimeVal = theDataItem[timeKey].trim();
+          var theLiStr = '                <li>\n' +
+            '                  <span title="' + theNO + '">' + theNO + '</span>\n' +
+            '                  <span>' + theTimeVal + '</span>\n' +
+            '                  <span title="' + thePos + '">' + thePos + '</span>\n' +
+            // '                  <span title="' + theDataItem.passenger + '">' + theDataItem.passenger + '</span>\n' +
+            '                </li>';
+          theTgtUl.append($(theLiStr));
+        }
+      });
+      footer.append(theFooter);
+    }
   }
 
   /**
@@ -1073,6 +1222,18 @@ $(function () {
   function clearFlightList(status) {
     var sendListUl = $('#send-list-ul');
     var arrListUl = $('#arr-list-ul');
+    if (status === 'all') {
+      sendListUl.empty();
+      arrListUl.empty();
+    } else if (status === 'send') {
+      sendListUl.empty();
+    } else {
+      arrListUl.empty();
+    }
+  }
+  function clearTrainList(status) {
+    var sendListUl = $('#send-list-ul2');
+    var arrListUl = $('#arr-list-ul2');
     if (status === 'all') {
       sendListUl.empty();
       arrListUl.empty();
@@ -1126,6 +1287,62 @@ $(function () {
       arrFooter.empty();
     }
   }
+  function clearTrainFooter(status) {
+    var sendFooter = $('#send-paging2');
+    var arrFooter = $('#arr-paging2');
+    if (status === 'all') {
+      sendFooter.empty();
+      arrFooter.empty();
+    } else if (status === 'send') {
+      sendFooter.empty();
+    } else {
+      arrFooter.empty();
+    }
+  }
+
+  function hideTrainDom() {
+    var trainBox = $('#train-box');
+    trainBox.hide();
+  }
+
+  /**
+   * 显示航班,铁路表,请求数据
+   */
+  function showTrainDom() {
+    if(nowTab===tabArr[0]) {
+      var trainBox = $('#train-box');
+      var theName = curPosition;
+      var theArr = pointControl.markes;
+      for (var i = 0; i < theArr.length; i++) {
+        var m = theArr[i];
+        // debugger
+        var mName = m.C.extData['枢纽名称'];
+        if(theName===mName) {
+          var mType = m.C.extData['枢纽类别'];
+          if(mType==='铁路') {
+            trainBox.show();
+            $('#train-tab-box').show();
+            $('#train-tab-box2').addClass('dn');
+            trainBox.find('.flight-data-box').show();
+            trainBox.find('.flight-data-box2').hide();
+            clearFlightList();
+            clearFooter();
+            // reqFlightData(curPosition, 'all');
+            reqTrainData(curPosition, 'all');
+          }
+        }
+
+      }
+    }
+
+  }
+
+  /**
+   * 请求铁路数据
+   */
+  function reqTrainTrendData() {
+
+  }
 
   /**
    * 显示航班,铁路表,请求数据
@@ -1152,9 +1369,8 @@ $(function () {
         clearFooter();
         reqFlightData(curPosition, 'all');
       }
-
-
     }
+
   }
 
   function hideFlightDom() {
@@ -1209,6 +1425,33 @@ $(function () {
       }
       $(this).addClass('active');
       reqFlightData(curPosition, 'all');
+      // fliTrendInitChart2()
+    })
+  }
+
+  function trainBindClick() {
+    var trainBox = $('#train-box');
+    var trainArr = trainBox.find('.flight-tab');
+
+    $('#train-trend-tab').on('click', function () {
+      trainBox.find('.flight-data-box').hide();
+      trainBox.find('.flight-data-box2').show();
+      for (var f = 0; f < trainArr.length; f++) {
+        var ftab = trainArr[f];
+        $(ftab).removeClass('active')
+      }
+      $(this).addClass('active');
+      trainTrendInitChart1();
+    });
+    $('#train-list-tab').on('click', function () {
+      trainBox.find('.flight-data-box').show();
+      trainBox.find('.flight-data-box2').hide();
+      for (var f = 0; f < trainArr.length; f++) {
+        var ftab = trainArr[f];
+        $(ftab).removeClass('active')
+      }
+      $(this).addClass('active');
+      // reqFlightData(curPosition, 'all');
       // fliTrendInitChart2()
     })
   }
@@ -2168,7 +2411,7 @@ $(function () {
       data['roadId'] = theRoadID;
       data = JSON.stringify(data);
 
-      $.ajax({
+      var xhr = $.ajax({
         type: "POST",
         url: url,
         data: data,
@@ -2186,7 +2429,7 @@ $(function () {
                 var theLink = d.links[k];
                 theLink['name'] = this.lObj.name;
                 linksArr.push(theLink);
-                // keyRoadDataArr.push(theLink);
+                keyRoadDataArr2.push(theLink);
               }
             }
             linksArr = _.sortBy(linksArr, function (item) {
@@ -2201,6 +2444,20 @@ $(function () {
               keyRoadDataArr.push(l);
             }
             if (keyIdx >= 12) {
+              layer.closeAll();
+              keyRoadDataArr = _.sortBy(keyRoadDataArr, function (item) {
+                return -item.tpi;
+              });
+              handleKeyRoadArr()
+            }
+          }
+        },
+        complete: function (XMLHttpRequest, status) {
+          if (status == 'timeout') {
+            xhr.abort();    // 超时后中断请求
+            // alert('网络超时,请刷新')
+            // location.reload
+            if (keyIdx >= 9) {
               layer.closeAll();
               keyRoadDataArr = _.sortBy(keyRoadDataArr, function (item) {
                 return -item.tpi;
@@ -9412,5 +9669,211 @@ $(function () {
     })
   }
 
+  var trainTrendChart1;
+  function trainTrendInitChart1() {
+    var cbox = $('#train-chart-box1');
+    // var cbox2 = $('#flight-chart-box2');
+    cbox.show();
+    // cbox2.hide();
+    if (!trainTrendChart1) {
+      trainTrendChart1 = echarts.init(cbox[0]);
+    }
+    option = null;
+    var date = [];
+    for (var i = 0; i < 24; i++) {  // 时间(小时)
+      date.push(i);
+    }
+    option = {
+      title: {
+        show: false,
+        text: '列车趋势',
+        textStyle: {
+          color: 'rgb(221,243,255)',
+          fontSize: 18,
+          fontFamily: 'Microsoft YaHei',
+          // fontWeight:400
+        }
+      },
+      tooltip: {  // 提示框样式
+        trigger: 'axis',
+        // formatter: "{a} <br/>{b}: {c} ({d}%)"
+        // formatter: "{c}人",
+        // formatter: function (params) {
+        //   console.log(params)
+        //   return params[params.length - 1].data[1] + '人';
+        // },
+        backgroundColor: '#065f89',
+        padding: 10,
+        borderColor: '#28eefb',
+        borderWidth: 1,
+        axisPointer: {
+          lineStyle: {
+            color: '#68e5ff'
+          }
+        }
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        name: '时点',
+        data: date,
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: whiteColor
+          }
+        },
+        axisLabel: {
+          interval: 3
+        }
+      },
+      yAxis: {
+        boundaryGap: [0, '50%'],
+        type: 'value',
+        name: '车次',
+        // 轴 样式
+        axisLine: {
+          onZero: false,
+          lineStyle: {
+            color: whiteColor
+          }
+        },
+        // 分割线
+        splitLine: {
+          show: false
+        }
+      },
+      legend: {
+        data: [],
+        textStyle: {
+          color: '#fff'
+        },
+        top: 20
+      },
+      color: ['#f9d76f', bdColor],
+      series: [
+        {
+          name: '出发列车',
+          type: 'line',
+          smooth: true,
+          symbol: 'none',
+          // stack: 'a',
+          label: {
+            normal: {
+              show: false
+            }
+          },
+          // 填充区域样式
+          areaStyle: {
+            normal: {
+              // color: bdColor,
+              // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: '#183d74' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
+                }],
+                globalCoord: false // 缺省为 false
+              }
+            }
+          },
+          lineStyle: {
+            color: '#f9d76f',
+          },
+          data: [],
+        },
+        {
+          name: '到达列车',
+          type: 'line',
+          smooth: true,
+          symbol: 'none',
+          // stack: 'a',
+          label: {
+            normal: {
+              show: false
+            }
+          },
+          // 填充区域样式
+          areaStyle: {
+            normal: {
+              // color: bdColor,
+              // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: '#183d74' // 0% 处的颜色
+                }, {
+                  offset: 1, color: 'rgba(0,0,0,0)' // 100% 处的颜色
+                }],
+                globalCoord: false // 缺省为 false
+              }
+            }
+          },
+          lineStyle: {
+            color: bdColor,
+          },
+          data: [],
+        }
+      ]
+    };
+
+    trainTrendChart1reqData();
+
+    if (option && typeof option === "object") {
+      trainTrendChart1.setOption(option, true);
+    }
+  }
+  function trainTrendChart1reqData() {
+    trainTrendChart1.showLoading();
+    $('#train-chart-tab').hide();
+    var theName = curPosition;
+
+    // var trendType = 0;
+    var url = 'terminal/selectTrainTrend.do?postionName=' + theName;
+    $.axpost(url, {}, function (data) {
+      if (data) {
+        console.log('列车趋势:', data);
+        trainTrendChart1.hideLoading();    //隐藏加载动画
+        $('#train-chart-tab').show();
+        var tData = data;
+        var leaArr = [], ariArr = [];
+        for (var i = 0; i < tData.arrivalTrendList.length; i++) {
+          var tItem = tData.arrivalTrendList[i];
+          ariArr.push(tItem.passenger)
+        }
+        for (var j = 0; j < tData.sendTrendList.length; j++) {
+          var tItem2 = tData.sendTrendList[j];
+          leaArr.push(tItem2.passenger)
+        }
+
+        trainTrendChart1.setOption({
+          legend: {
+            data: ['出发列车', '到达列车']
+          },
+          series: [
+            {
+              name: '出发列车',
+              data: leaArr
+            },
+            {
+              name: '到达列车',
+              data: ariArr
+            }
+          ]
+        })
+      }
+
+    })
+  }
 
 });

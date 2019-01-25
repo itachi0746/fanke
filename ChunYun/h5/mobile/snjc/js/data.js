@@ -246,17 +246,19 @@ PlacePointView.prototype.MoveToPoint = function (lntlat, maxZoom) {
 
   // console.log(lntlat, maxZoom)
   var theZoom = this.theMap.getZoom();
-  var thePitchTimer = window.setInterval(function () {
-    if (theZoom > maxZoom) {
-      window.clearInterval(thePitchTimer);
-      // this.theMap.setPitch(45);
-      console.log("结束导航到指定点!");
-      return;
-    }
-    this.theMap.setZoomAndCenter(theZoom++, lntlat);
-    console.log(theZoom,maxZoom)
-  }, 10);
+  // var thePitchTimer = window.setInterval(function () {
+  //   if (theZoom > maxZoom) {
+  //     window.clearInterval(thePitchTimer);
+  //     // this.theMap.setPitch(45);
+  //     console.log("结束导航到指定点!");
+  //     return;
+  //   }
+  //   this.theMap.setZoomAndCenter(theZoom++, lntlat);
+  //   // console.log(theZoom,maxZoom)
+  // }, 10);
+  // alert(111)
   // debugger
+  // alert(JSON.stringify([maxZoom,lntlat]));
   this.theMap.setZoomAndCenter(maxZoom, lntlat);
 
 };

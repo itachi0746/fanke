@@ -134,7 +134,7 @@ html, body {
     width: 80px;
     height: 80px;
     top: 32px;
-    left: 32px; }
+    left: 513px; }
 
 .gaosujiance {
   display: none;
@@ -2810,7 +2810,7 @@ input:focus {
   .btm-part img {
     margin-left: 16px; }
 
-.flight-box {
+.flight-box, .train-box {
   background: url("../img/bg_03.png");
   width: 1192px;
   height: 230px;
@@ -2821,9 +2821,9 @@ input:focus {
   color: #ddf3ff;
   display: none;
   cursor: default; }
-  .flight-box .flight-tab-box {
+  .flight-box .flight-tab-box, .train-box .flight-tab-box {
     width: 160px; }
-  .flight-box .flight-tab-box2 {
+  .flight-box .flight-tab-box2, .train-box .flight-tab-box2 {
     width: 160px;
     height: 100%;
     display: -webkit-box;
@@ -2842,9 +2842,9 @@ input:focus {
     color: #fff;
     font-size: 24px;
     border-right: 1px solid #1b70a1; }
-    .flight-box .flight-tab-box2 .tre-date {
+    .flight-box .flight-tab-box2 .tre-date, .train-box .flight-tab-box2 .tre-date {
       font-size: 20px; }
-  .flight-box .flight-data-box {
+  .flight-box .flight-data-box, .train-box .flight-data-box {
     width: 1032px;
     height: 100%;
     position: absolute;
@@ -2854,14 +2854,14 @@ input:focus {
     display: -ms-flexbox;
     display: flex;
     padding-top: 8px; }
-  .flight-box .flight-data-box2 {
+  .flight-box .flight-data-box2, .train-box .flight-data-box2 {
     width: 1032px;
     height: 100%;
     position: absolute;
     top: 0;
     right: 0;
     display: none; }
-    .flight-box .flight-data-box2 .chart-tab {
+    .flight-box .flight-data-box2 .chart-tab, .train-box .flight-data-box2 .chart-tab {
       position: absolute;
       top: 20px;
       right: 20px;
@@ -2871,19 +2871,19 @@ input:focus {
       height: 40px;
       font-weight: bold;
       z-index: 10; }
-      .flight-box .flight-data-box2 .chart-tab span {
+      .flight-box .flight-data-box2 .chart-tab span, .train-box .flight-data-box2 .chart-tab span {
         padding: 5px 15px;
         cursor: pointer; }
-      .flight-box .flight-data-box2 .chart-tab span:nth-child(2) {
+      .flight-box .flight-data-box2 .chart-tab span:nth-child(2), .train-box .flight-data-box2 .chart-tab span:nth-child(2) {
         margin-left: 10px; }
-      .flight-box .flight-data-box2 .chart-tab span.active {
+      .flight-box .flight-data-box2 .chart-tab span.active, .train-box .flight-data-box2 .chart-tab span.active {
         border: 1px solid #fff;
         border-radius: 5px;
         background-color: #0e97dd; }
-    .flight-box .flight-data-box2 .chart-box {
+    .flight-box .flight-data-box2 .chart-box, .train-box .flight-data-box2 .chart-box {
       width: 1032px;
       height: 100%; }
-  .flight-box .flight-tab {
+  .flight-box .flight-tab, .train-box .flight-tab {
     font-size: 24px;
     color: #18b1fa;
     width: 160px;
@@ -2906,16 +2906,16 @@ input:focus {
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column; }
-    .flight-box .flight-tab .tre-date {
+    .flight-box .flight-tab .tre-date, .train-box .flight-tab .tre-date {
       font-size: 20px; }
-  .flight-box .flight-tab.active {
+  .flight-box .flight-tab.active, .train-box .flight-tab.active {
     color: #FFFFFF;
     background: url("../img/bg_03_active.png"); }
-  .flight-box .flight-trend-tab {
+  .flight-box .flight-trend-tab, .train-box .flight-trend-tab {
     top: 0px; }
-  .flight-box .flight-list-tab {
+  .flight-box .flight-list-tab, .train-box .flight-list-tab {
     top: 115px; }
-  .flight-box .flight-data-container-outer {
+  .flight-box .flight-data-container-outer, .train-box .flight-data-container-outer {
     -webkit-box-flex: 1;
         -ms-flex: 1;
             flex: 1;
@@ -2927,9 +2927,9 @@ input:focus {
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column; }
-  .flight-box .flight-data-container-outer:nth-child(1) {
+  .flight-box .flight-data-container-outer:nth-child(1), .train-box .flight-data-container-outer:nth-child(1) {
     border-right: 1px solid #1b70a1; }
-  .flight-box .flight-data-container {
+  .flight-box .flight-data-container, .train-box .flight-data-container {
     -webkit-box-flex: 1;
         -ms-flex: 1;
             flex: 1;
@@ -2937,41 +2937,41 @@ input:focus {
     display: -ms-flexbox;
     display: flex;
     height: 90%; }
-  .flight-box .l-part {
+  .flight-box .l-part, .train-box .l-part {
     -webkit-box-flex: 2;
         -ms-flex: 2;
             flex: 2;
     height: 100%; }
-    .flight-box .l-part header {
+    .flight-box .l-part header, .train-box .l-part header {
       margin-top: 16px;
       font-size: 22px;
       color: #FFFFFF;
       text-align: center;
       font-weight: bold;
       margin-bottom: 20px; }
-    .flight-box .l-part .time-box {
+    .flight-box .l-part .time-box, .train-box .l-part .time-box {
       margin-top: 20px;
       width: 100%;
       padding: 0 5px; }
-      .flight-box .l-part .time-box select {
+      .flight-box .l-part .time-box select, .train-box .l-part .time-box select {
         height: 30px;
         font-size: 16px;
         color: #d9f1ff;
         background-color: #1e73d7; }
-  .flight-box .r-part {
+  .flight-box .r-part, .train-box .r-part {
     height: 100%;
     -webkit-box-flex: 7.5;
         -ms-flex: 7.5;
             flex: 7.5;
     margin-right: 5px; }
-    .flight-box .r-part .header {
+    .flight-box .r-part .header, .train-box .r-part .header {
       width: 100%;
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
       margin-top: 18px;
       margin-bottom: 15px; }
-    .flight-box .r-part li {
+    .flight-box .r-part li, .train-box .r-part li {
       -webkit-box-flex: 1;
           -ms-flex: 1;
               flex: 1;
@@ -2979,21 +2979,21 @@ input:focus {
       font-size: 18px;
       font-weight: bold;
       text-align: center; }
-  .flight-box .r-list li {
+  .flight-box .r-list li, .train-box .r-list li {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     margin-bottom: 13px; }
-    .flight-box .r-list li span {
+    .flight-box .r-list li span, .train-box .r-list li span {
       -webkit-box-flex: 1;
           -ms-flex: 1;
               flex: 1;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
-  .flight-box .r-list li:nth-last-child(1) {
+  .flight-box .r-list li:nth-last-child(1), .train-box .r-list li:nth-last-child(1) {
     margin-bottom: 0; }
-  .flight-box footer {
+  .flight-box footer, .train-box footer {
     width: 100%;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -3004,7 +3004,7 @@ input:focus {
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center; }
-    .flight-box footer .paging {
+    .flight-box footer .paging, .train-box footer .paging {
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
@@ -3014,7 +3014,7 @@ input:focus {
       -webkit-box-align: center;
           -ms-flex-align: center;
               align-items: center; }
-      .flight-box footer .paging span {
+      .flight-box footer .paging span, .train-box footer .paging span {
         width: 20px;
         height: 20px;
         margin-right: 10px;
@@ -3032,7 +3032,7 @@ input:focus {
             -ms-flex-align: center;
                 align-items: center;
         cursor: pointer; }
-      .flight-box footer .paging span.active {
+      .flight-box footer .paging span.active, .train-box footer .paging span.active {
         border: 1px solid #28eefb;
         color: #FFFFFF; }
 
