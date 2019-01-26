@@ -498,7 +498,7 @@ $(function () {
                 var liStr = '<li>' + theName + '</li>';
                 var theLiDom = $(liStr);
                 theLiDom.data('name', tabName);
-                resultLiClick(theLiDom);
+                resultLiClick(theLiDom,point);
                 resultList.append(theLiDom);
                 break outer
               }
