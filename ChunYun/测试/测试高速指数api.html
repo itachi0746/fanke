@@ -15,7 +15,7 @@
 <script>
   var url = 'http://gdjtapi.televehicle.com/gd_traffic/api/highWayKpi/AllRoadsDirTpi';
   var url2 = 'http://gdjtapi.televehicle.com/gd_traffic/api/highWayKpi/RoadLinksTpi';
-  var timeStamp = moment().format('YYYYMMDDhmmss') + ''
+  var timeStamp = moment().format('YYYYMMDDHHmmss') + ''
 //  console.log(timeStamp)
 //  1.1	广东省全省高速出行指数 ProvTpi
 //  1.2	高速具体出行指数折线图数据 ProvTpiChartData 只有今天的
@@ -38,7 +38,7 @@
         "opCode": "SJT",
         "opPass": "XQWPwai8XOTW",
         "signature": "A2A65DED49FF531B4A38A5C8E21AA19C",
-        "timeStamp": "20151203220306"
+        "timeStamp": "20190126210742"
       },"roadId": "24"
     }
 
@@ -60,11 +60,11 @@
   var idx = 0;
   $.ajax({
      type: "POST",
-     url: url2,
-     data: data2,
+     url: url,
+     data: data,
      success: function(data){
        idx++;
-       console.log(idx+'',data)
+       console.log(1+'',data)
      }
    });
   $.ajax({
@@ -73,99 +73,10 @@
      data: data2,
      success: function(data){
        idx++;
-       console.log(idx+'',data)
+       console.log(2+'',data)
      }
    });
-  $.ajax({
-     type: "POST",
-     url: url2,
-     data: data2,
-     success: function(data){
-       idx++;
-       console.log(idx+'',data)
-     }
-   });
-  $.ajax({
-     type: "POST",
-     url: url2,
-     data: data2,
-     success: function(data){
-       idx++;
-       console.log(idx+'',data)
-     }
-   });
-  $.ajax({
-     type: "POST",
-     url: url2,
-     data: data2,
-     success: function(data){
-       idx++;
-       console.log(idx+'',data)
-     }
-   });
-  $.ajax({
-     type: "POST",
-     url: url2,
-     data: data2,
-     success: function(data){
-       idx++;
-       console.log(idx+'',data)
-     }
-   });
-  $.ajax({
-     type: "POST",
-     url: url2,
-     data: data2,
-     success: function(data){
-       idx++;
-       console.log(idx+'',data)
-     }
-   });
-  $.ajax({
-     type: "POST",
-     url: url2,
-     data: data2,
-     success: function(data){
-       idx++;
-       console.log(idx+'',data)
-     }
-   });
-  $.ajax({
-     type: "POST",
-     url: url2,
-     data: data2,
-     success: function(data){
-       idx++;
-       console.log(idx+'',data)
-     }
-   });
-  $.ajax({
-     type: "POST",
-     url: url2,
-     data: data2,
-     success: function(data){
-       idx++;
-       console.log(idx+'',data)
-     }
-   });
-  $.ajax({
-     type: "POST",
-     url: url2,
-     data: data2,
-     success: function(data){
-       idx++;
-       console.log(idx+'',data)
-     }
-   });
-  $.ajax({
-     type: "POST",
-     url: url2,
-     data: data2,
-     success: function(data){
-       idx++;
-       console.log(idx+'',data)
-     }
-   });
+
 
 </script>
 </body>

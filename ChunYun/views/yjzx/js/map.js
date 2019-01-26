@@ -22,7 +22,7 @@ $(function () {
 //实时交通地图
   traffic = new AMap.TileLayer.Traffic({
     'autoRefresh': true,     //是否自动刷新，默认为false
-    'interval': 180,         //刷新间隔，默认180s
+    'interval': 360,         //刷新间隔，默认180s
 
   });
   var theDefaultMapStyle = 'amap://styles/9f47a75c5a80f716945988ccbc61aeb7';

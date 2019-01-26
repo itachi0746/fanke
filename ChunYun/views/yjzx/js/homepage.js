@@ -1,6 +1,7 @@
 var pointControl;
 var jamListMarkers = [];
-var keyRoadDataArr = [], perPageNum = 7;var keyRoadDataArr2 = [];
+var keyRoadDataArr = [], perPageNum = 7;
+var keyRoadDataArr2 = [];
 
 $(function () {
   var hourArr = ['0-1', '1-2', '2-3', '3-4', '4-5', '5-6', '6-7', '7-8', '8-24'];
@@ -592,21 +593,15 @@ $(function () {
   function toDefaultView() {
     isDefaultView = true;
     pointControl.ReturnDefualt();  // 默认视角
-    // if(nowTab!==tabArr[3]) {
-    //   pointControl.showMarkers();  // 显示点标记
-    // }
     pointControl.showMarkers();  // 显示点标记
 
     traffic.removePaths();  // 清除高速路段的线
     clearCenterMarker();
     mapbase.removeHeartMap();
-    // if(nowTab!=='高速路网') {
-    //   console.log(2)
-    //   mapbase.restoreDefaultStyle();
-    // }
     hideWeather();
     hideFlightDom();
     hideTrainDom();
+    hideCamTab();
     showTabs();
     hideTab2();
     hideCurLocaction();
@@ -684,7 +679,7 @@ $(function () {
       showFlightDom();
       showTrainDom();
       removeDongChaTab();
-      removeCamTab();
+      checkCamTab();
       if (nowTab === tabArr[0] || nowTab === tabArr[1] || nowTab === tabArr[2]) {
         drawTheRectangle(name);
       }
@@ -752,9 +747,21 @@ $(function () {
   }
 
   /**
+   * 隐藏实时监控tab
+   */
+  function hideCamTab() {
+    var n = tabArrDom.filter(function (t) {
+      return t.name === nowTab
+    });
+    var tgtTab = $(n[0].class).find('.tab-box2-li1');
+    tgtTab.addClass('vh');
+
+  }
+
+  /**
    * 没有摄像头的地点
    */
-  function removeCamTab() {
+  function checkCamTab() {
     var nowName = curPosition;
     var n = tabArrDom.filter(function (t) {
       return t.name === nowTab
@@ -767,9 +774,11 @@ $(function () {
       var camObj = theCamArr[i];
       var camName = camObj.name;
       // console.log(nowName,camName);
-      if(nowName===camName) {
+      if (nowName === camName) {
         // debugger
-        console.log('有摄像头')
+        console.log('有摄像头');
+        // tgtTab.show();
+        tgtTab.removeClass('vh');
         // tgtTab.css('visibility','visible');
         // for (var j = 0; j < liTabBoxArr.length; j++) {
         //   var li = liTabBoxArr[j];
@@ -780,16 +789,18 @@ $(function () {
         // }
         return
       }
-        console.log('没摄像头')
-        // tgtTab.hide();
-        // tgtTab.css('visibility','hidden');
+      console.log('没摄像头')
+      // tgtTab.hide();
+      tgtTab.addClass('vh');
 
-        // for (var j = 0; j < liTabBoxArr.length; j++) {
-        //   var li = liTabBoxArr[j];
-        //   var oldH = $(li).css('top');
-        //   oldH = parseInt(oldH);
-        //   $(li).css('top',oldH+150+'px');
-        // }
+      // tgtTab.css('visibility','hidden');
+
+      // for (var j = 0; j < liTabBoxArr.length; j++) {
+      //   var li = liTabBoxArr[j];
+      //   var oldH = $(li).css('top');
+      //   oldH = parseInt(oldH);
+      //   $(li).css('top',oldH+150+'px');
+      // }
 
 
     }
@@ -818,7 +829,7 @@ $(function () {
             }
           }
         }
-        if(mType === '机场') {
+        if (mType === '机场') {
           for (var k = 0; k < dongchaTab.length; k++) {
             var tab2 = dongchaTab[k];
             var theText2 = $(tab2).text().trim();
@@ -856,9 +867,11 @@ $(function () {
     var timeBoxArr = $('.time-box');
     var treDate = $('#tre-date');
     var treDate2 = $('#tre-date2');
+    var treDate3 = $('#tre-date3');
     var nowDate = moment().format('YYYY/MM/DD');
     treDate.text(nowDate);
     treDate2.text(nowDate);
+    treDate3.text(nowDate);
     var nowHour = moment().format('HH');
     var afterHourNum = parseInt(nowHour) + 1;
     afterHourNum = afterHourNum < 10 ? '0' + afterHourNum : afterHourNum;
@@ -878,13 +891,13 @@ $(function () {
         $(timeBoxDom).find('select').append($(optionDom));
       }
     }
-    if(curPosition==='广州白云国际机场' || curPosition==='深圳宝安国际机场') {
-      flightTimeBindClick();
-      flightTimeBindClick2();
-    }else {
-      trainTimeBindClick();
-      trainTimeBindClick2();
-    }
+    // if(curPosition==='广州白云国际机场' || curPosition==='深圳宝安国际机场') {
+    flightTimeBindClick();
+    flightTimeBindClick2();
+    // }else {
+    trainTimeBindClick();
+    trainTimeBindClick2();
+    // }
 
   }
 
@@ -997,7 +1010,7 @@ $(function () {
     // if (name === '深圳宝安国际机场') {
     //   nameStr = 'bajc'
     // }
-    var arrivalTime, sendTime,theName = name;
+    var arrivalTime, sendTime, theName = name;
     if (status === 'all') {
       arrivalTime = $('#arr-time-box2').val();
       sendTime = $('#send-time-box2').val();
@@ -1019,10 +1032,10 @@ $(function () {
         theSendTrainArr = data.data.sendList;
         theArrTrainArr = data.data.arrivalList;
         // debugger
-        if (theSendFlightArr) {
+        if (theSendTrainArr) {
           handleTrainData(theSendTrainArr, num, true);
         }
-        if (theArrFlightArr) {
+        if (theArrTrainArr) {
           handleTrainData(theArrTrainArr, num, false);
         }
       }
@@ -1038,7 +1051,7 @@ $(function () {
   function handleFlightData(dataArr, num, isSend) {
     var cityKey, timeKey, theTgtUl, footer, theMaxNum = 12;
     var theDataArr = dataArr;
-    if(!theDataArr) {
+    if (!theDataArr) {
       console.log('没有航班数据')
     }
     // debugger
@@ -1077,7 +1090,7 @@ $(function () {
     }
 
     var pagingNum;
-    pagingNum = parseInt(theDataArr.length / 4);
+    pagingNum = Math.ceil(theDataArr.length / 4);
     for (var j = 0; j < pagingNum; j++) {
       var theNum = j + 1;
       var theSpanStr;
@@ -1129,9 +1142,10 @@ $(function () {
   }
 
   function handleTrainData(dataArr, num, isSend) {
+    // debugger
     var cityKey, timeKey, theTgtUl, footer, theMaxNum = 12;
     var theDataArr = dataArr;
-    if(!theDataArr) {
+    if (!theDataArr) {
       console.log('没有列车数据');
       return
     }
@@ -1231,6 +1245,7 @@ $(function () {
       arrListUl.empty();
     }
   }
+
   function clearTrainList(status) {
     var sendListUl = $('#send-list-ul2');
     var arrListUl = $('#arr-list-ul2');
@@ -1287,6 +1302,7 @@ $(function () {
       arrFooter.empty();
     }
   }
+
   function clearTrainFooter(status) {
     var sendFooter = $('#send-paging2');
     var arrFooter = $('#arr-paging2');
@@ -1309,7 +1325,7 @@ $(function () {
    * 显示航班,铁路表,请求数据
    */
   function showTrainDom() {
-    if(nowTab===tabArr[0]) {
+    if (nowTab === tabArr[0]) {
       var trainBox = $('#train-box');
       var theName = curPosition;
       var theArr = pointControl.markes;
@@ -1317,9 +1333,9 @@ $(function () {
         var m = theArr[i];
         // debugger
         var mName = m.C.extData['枢纽名称'];
-        if(theName===mName) {
+        if (theName === mName) {
           var mType = m.C.extData['枢纽类别'];
-          if(mType==='铁路') {
+          if (mType === '铁路') {
             trainBox.show();
             $('#train-tab-box').show();
             $('#train-tab-box2').addClass('dn');
@@ -2311,7 +2327,7 @@ $(function () {
    * 检查重点路段
    */
   function checkKeyRoad() {
-    if(keyRoadDataArr.length===0) {
+    if (keyRoadDataArr.length === 0) {
       reqKeyRoadData();
       return
     }
@@ -2322,6 +2338,7 @@ $(function () {
 
     }
   }
+
   /**
    * 查询高速重点路段数据
    */
@@ -2395,6 +2412,7 @@ $(function () {
     var url = 'http://gdjtapi.televehicle.com/gd_traffic/api/highWayKpi/RoadLinksTpi';
     var loading = layer.load();
     keyRoadDataArr = [];
+    var timeStamp = moment().format('YYYYMMDDHHmmss') + '';
 
     var keyIdx = 0;
     for (var i = 0; i < LuDuanDataArr.length; i++) {
@@ -2428,6 +2446,14 @@ $(function () {
               for (var k = 0; k < d.links.length; k++) {
                 var theLink = d.links[k];
                 theLink['name'] = this.lObj.name;
+                // debugger
+                var dtlName = theLink.from + '--' + theLink.to;
+                try {
+                  theLink['fData'] = this.lObj.fData[dtlName];
+                } catch (err) {
+                  // console.log('没有路段详细坐标',err);
+                  theLink['fData'] = null
+                }
                 linksArr.push(theLink);
                 keyRoadDataArr2.push(theLink);
               }
@@ -2555,12 +2581,13 @@ $(function () {
       }
       var dataObj = arr[i];
       var theRoadName = dataObj.name;
-      var ftMsg = '(从' + dataObj.from + '到' + dataObj.to + ')';
+      var fData = dataObj.fData;
+      var ftMsg = '(' + dataObj.from + '--' + dataObj.to + '段)';
 
       var theStatusClass = tpiToClass(dataObj.tpi);
       var theTpi = dataObj.tpi;
       var theStatus = dataObj.status;
-      theStatus = theStatsMap[theStatus]?theStatsMap[theStatus]:theStatus;
+      theStatus = theStatsMap[theStatus] ? theStatsMap[theStatus] : theStatus;
       var theSpeed = dataObj.speed;
       var liStr = '          <li>\n' +
         '            <section>' + '<span>' + theRoadName + '</span>' + '<span>' + ftMsg + '</span>' + '</section>\n' +
@@ -2574,6 +2601,7 @@ $(function () {
       theLiDom.data('theName', theRoadName);
       theLiDom.data('theStatus', theStatus);
       theLiDom.data('theSpeed', theSpeed);
+      theLiDom.data('fData', fData);
       keyRoadClick(theLiDom);
       theUl.append(theLiDom);
     }
@@ -2584,18 +2612,18 @@ $(function () {
    */
   function addKeyRoadPgn() {
     var theLen = keyRoadDataArr.length;
-    var pgnNum = Math.ceil(theLen/7);
+    var pgnNum = Math.ceil(theLen / 7);
     var pagination = $('#pagination');
     pagination.empty();
     for (var i = 0; i < pgnNum; i++) {
-      var idx = i + 1,theSpan;
-      if(i === 0) {
-        theSpan = '<span class="active">'+idx+'</span>';
+      var idx = i + 1, theSpan;
+      if (i === 0) {
+        theSpan = '<span class="active">' + idx + '</span>';
       } else {
-        theSpan = '<span>'+idx+'</span>';
+        theSpan = '<span>' + idx + '</span>';
       }
       var theSpanDom = $(theSpan);
-      theSpanDom.on('click',function () {
+      theSpanDom.on('click', function () {
         var theSpanArr = pagination.find('span');
         for (var j = 0; j < theSpanArr.length; j++) {
           var span = theSpanArr[j];
@@ -2674,6 +2702,9 @@ $(function () {
       var theName = $(this).data('theName');
       var theSpeed = $(this).data('theSpeed');
       var theStatus = $(this).data('theStatus');
+      var fData = $(this).data('fData').map(function (t) {
+        return t + ''
+      });
       var theData = {
         name: theName,
         data1: '平均车速: ' + theSpeed + 'km/h',
@@ -2684,7 +2715,8 @@ $(function () {
         if (theName === roadObj.name) {
           drawKeyRoadLine(roadObj.xys);
           var xysArr = roadObj.xys.split(';');
-          var theMiddlePointArr = xysArr[parseInt(xysArr.length / 2)].split(',');
+          var theMiddlePointArr = fData ? fData : xysArr[parseInt(xysArr.length / 2)].split(',');
+          // debugger
           addLuWangMarker(theMiddlePointArr, theData);
           break
         }
@@ -2980,6 +3012,7 @@ $(function () {
       $(liDom).removeClass('no-active');
     }
   }
+
   /**
    * 高速监测-控制面板的点击
    */
@@ -3024,12 +3057,12 @@ $(function () {
 
       for (var j = 0; j < theCamArr.length; j++) {
         var camObj = theCamArr[j];
-        if(camObj.name===mName) {
+        if (camObj.name === mName) {
           hasCam = true;
           break
         }
       }
-      if(hasCam) {
+      if (hasCam) {
         stationDom = $('<li>' + mName + '<i class="cam-icon"></i></li>');
       }
 
@@ -9670,6 +9703,7 @@ $(function () {
   }
 
   var trainTrendChart1;
+
   function trainTrendInitChart1() {
     var cbox = $('#train-chart-box1');
     // var cbox2 = $('#flight-chart-box2');
@@ -9833,6 +9867,7 @@ $(function () {
       trainTrendChart1.setOption(option, true);
     }
   }
+
   function trainTrendChart1reqData() {
     trainTrendChart1.showLoading();
     $('#train-chart-tab').hide();
