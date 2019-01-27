@@ -458,7 +458,7 @@ $(function () {
     if( this.heartMap){
       this.heartMap.setMap(null);
       this.heartMap = null;
-      debugger;
+      // debugger;
     }
 
   }
@@ -995,6 +995,7 @@ $(function () {
   };
 
   MapBase.prototype.drawReliInner = function (theShowList) {
+    // debugger
     theShowList = theShowList || [];
     var theDataList = theShowList.map(function (item) {
       return {lng: item.coordinate[0], lat: item.coordinate[1], count: item.count};
@@ -1013,6 +1014,7 @@ $(function () {
     this.heartMap.setMap(null);
     //debugger;
     try{
+      // debugger
       this.heartMap.setDataSet({data: theDataList});
       this.heartMap.setMap(theMap);
     }

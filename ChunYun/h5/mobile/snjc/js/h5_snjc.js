@@ -725,44 +725,8 @@ $(function () {
       // debugger
       if (data.isSuccess && !isEmptyObject(data.data)) {
         var pepNum = data.data.userCnt;
-        // var theName = data.data.postionName;
-        // var theData,infoWindow;
-        // var lnglat = pointControl.findPointPosition(curPosition).split(',').map(function (t) { return parseFloat(t) });
-
-        // debugger
-        // return
-        // if (isCLickFloor) {
-        //   theData = {
-        //     name: theName,
-        //     data1: '当前楼层人数: ' + pepNum + '人',
-        //     data2: ''
-        //   };
-        //   infoWindow = new AMap.InfoWindow({
-        //     isCustom: true,  //使用自定义窗体
-        //     content: createInfoWindow(theData),
-        //     // content: createInfoWindow2(theData),
-        //     offset: new AMap.Pixel(11, 0),
-        //     position: new AMap.LngLat(lnglat[0],lnglat[1])
-        //   });
-        //   infoWindow.open(theMap);
-        // } else {
-        //   // debugger
-        //   theData = {
-        //     name: theName,
-        //     data1: '当前人数: ' + pepNum + '人',
-        //     data2: ''
-        //   };
-        //   infoWindow = new AMap.InfoWindow({
-        //     isCustom: true,  //使用自定义窗体
-        //     content: createInfoWindow(theData),
-        //     // content: createInfoWindow2(theData),
-        //     offset: new AMap.Pixel(11, 0),
-        //     position: new AMap.LngLat(lnglat[0],lnglat[1])
-        //   });
-        //   infoWindow.open(theMap);
-        // }
         try {
-        mapbase.drawReli(name, pepNum);
+        mapbase.drawReli(name, pepNum,true);
 
         }catch (err) {
           console.log('reli:',err);
