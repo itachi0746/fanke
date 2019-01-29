@@ -744,6 +744,7 @@ html, body {
               align-items: center; }
     .keyunzhan-data .province-in .index, .keyunzhan-data .province-out .index {
       width: 22px;
+      min-width: 22px;
       height: 22px;
       border-radius: 50%;
       background-color: #26e5e1;
@@ -894,6 +895,7 @@ html, body {
 
 .top3-icon1 {
   width: 22px;
+  min-width: 22px;
   height: 22px;
   border-radius: 50%;
   background-color: #ea4882;
@@ -912,6 +914,7 @@ html, body {
 
 .top3-icon2 {
   width: 22px;
+  min-width: 22px;
   height: 22px;
   border-radius: 50%;
   background-color: #fa8140;
@@ -930,6 +933,7 @@ html, body {
 
 .top3-icon3 {
   width: 22px;
+  min-width: 22px;
   height: 22px;
   border-radius: 50%;
   background-color: #1ba8a6;
@@ -2086,6 +2090,7 @@ html, body {
                   align-items: center; }
         .data-box .container2-1 .from-chart .body .index, .data-box .container2-1 .to-chart .body .index {
           width: 22px;
+          min-width: 22px;
           height: 22px;
           border-radius: 50%;
           background-color: #26e5e1;

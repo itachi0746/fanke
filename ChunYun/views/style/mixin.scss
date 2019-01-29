@@ -85,6 +85,7 @@ $mainColor: #f9ce04;
 
 @mixin num-icon($color) {
   width: 22px;
+  min-width: 22px;
   height: 22px;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
@@ -96,6 +97,7 @@ $mainColor: #f9ce04;
   font-size: 12px;
   color: #ffffff;
   margin-right: 10px;
+
 }
 
 @mixin num-icon-v2($color) {

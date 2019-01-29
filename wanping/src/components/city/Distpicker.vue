@@ -29,7 +29,7 @@
       </template>
     </template>
     <template v-else>
-      <div :class="addressHeader">
+      <div :class="addressHeader" ref="addressHeader">
         <ul>
           <li :class="{'active': tab === 1}" @click="resetProvince">{{ currentProvince && !staticPlaceholder ? currentProvince : placeholders.province }}</li>
           <template v-if="!onlyProvince">
@@ -38,7 +38,7 @@
           </template>
         </ul>
       </div>
-      <div :class="addressContainer">
+      <div :class="addressContainer" ref="addressContainer">
         <ul v-if="tab === 1">
           <li v-for="(item, index) in provinces"
               :class="{'active': item === currentProvince}"
@@ -135,6 +135,9 @@ export default {
       }
     }
   },
+  mounted() {
+    this.setContainerH();
+  },
   watch: {
     currentProvince(vaule) {
       this.$emit('province', this.setData(vaule))
@@ -161,6 +164,26 @@ export default {
     },
   },
   methods: {
+    //获取窗口可视范围的高度
+    getClientHeight() {
+      let clientHeight = 0;
+      if (document.body.clientHeight && document.documentElement.clientHeight) {
+        clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+      } else {
+        clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+      }
+      console.log('窗口宽度:',clientHeight);
+      return clientHeight;
+    },
+    setContainerH() {
+      let wh = this.getClientHeight();
+      let headerH = this.$refs.addressHeader.offsetHeight;
+//      debugger
+      console.log(wh,headerH);
+      this.$refs.addressContainer.style.height = wh - headerH + 'px';
+
+    },
+
     setData(value, check = '') {
       return {
         code: this.getAreaCode(value, check),
@@ -365,10 +388,13 @@ export default {
   }
   .address-container {
     background-color: #fff;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;/* 解决ios滑动不流畅问题 */
+
 
     ul {
       height: 100%;
-      overflow: auto;
+      /*overflow: auto;*/
 
       li {
         padding: 8px 10px;

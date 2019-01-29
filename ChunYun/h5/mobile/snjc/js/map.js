@@ -63,6 +63,8 @@ $(function () {
   function MapBase() {
     var me = this;
     this.theHeartLayer = null;
+    this.finishShowReli = true;
+
 //创建地图实例
     theMap = new AMap.Map('container', {
       //pitch: 0,
@@ -73,15 +75,9 @@ $(function () {
       features: ['bg', //'building',
         'point'],//['all'],// ['bg', 'building','point'],
       zoom: 8,
-      //expandZoomRange: true,  // 改变最大缩放等级
-      //zooms: [8, 18],  // 改变最大缩放等级
-      //keyboardEnable: false,
-      //layers: [
-        //satellite,
-        // building,
-        //roadNet
-      //]
+
     });
+
     window.theMap = theMap;
     theMap.plugin(["AMap.Heatmap"], function () {
       //初始化heatmap对象
@@ -238,6 +234,7 @@ $(function () {
     });
 //地图加载完成事件
     theMap.on('complete', function () {
+      me.theComp();
       console.log("地图加载完成!");
     });
 //监听放大缩小事件
@@ -328,7 +325,7 @@ $(function () {
       }
     }
 
-    theComp();
+    // theComp();
     // theInnerLayer && theInnerLayer.on('complete', function (arg) {
     //   console.log('室内图层加载完!');
     //   $('#DivButton').empty();
@@ -386,7 +383,9 @@ $(function () {
   // 不在楼层切换控件展示的楼层
   var theHideFloor = ['广州南站B2', '广州南站2F', '广州南站3A', '深圳北站-1F', '广州白云国际机场B1', '广州白云国际机场T1航站楼B1', '广州白云国际机场T1航站楼F4'];
 
-  function theComp() {
+  // function theComp() {
+  MapBase.prototype.theComp = function () {
+    var me = this;
     console.log('室内图层加载完!');
     $('#DivButton').empty();
     //debugger;
@@ -435,10 +434,18 @@ $(function () {
             }
 
             $('<div data-index=' + theIndex + '>' + theName + '</div>').click(function () {
-              var theCurrentIndex = $(this).data('index');
-              theInnerLayer.showFloor(theCurrentIndex, true);
-              var theCurrentBuild = theInnerLayer.getSelectedBuilding();
-              var theLnt = theCurrentBuild.lnglat;
+              if(me.finishShowReli) {
+
+                me.finishShowReli = false;
+                var theCurrentIndex = $(this).data('index');
+                theInnerLayer.showFloor(theCurrentIndex, true);
+                var theCurrentBuild = theInnerLayer.getSelectedBuilding();
+                var theLnt = theCurrentBuild.lnglat;
+              } else {
+                console.log('热力还未加载完成');
+                // debugger
+              }
+
               // me.drawReli(theLnt.lng, theLnt.lat);  // 热力图
 
             }).appendTo($('#DivButton'));
@@ -451,6 +458,8 @@ $(function () {
       }
     }, 500);
   }
+
+  // MapBase.prototype.theComp = theComp;
 
   MapBase.prototype.hideReli = function () {
     //this.theHeartLayer && this.theHeartLayer.remove();
@@ -754,7 +763,7 @@ $(function () {
       });
       this.theHeartLayer.setZIndex(1001)
     }
-  }
+  };
 
 
   /**
@@ -957,7 +966,7 @@ $(function () {
         });
       }
 
-    })
+    });
     /* layer.setData(theShowList, {
        lnglat: 'coordinate',
        value: 'count'
@@ -987,10 +996,7 @@ $(function () {
         me.drawReliInner(theShowList);
       }
       catch (e){
-
       }
-
-
     },500)
   };
 
@@ -1011,12 +1017,14 @@ $(function () {
       opacity: [0, 0.8]
     });
     }
-    this.heartMap.setMap(null);
+    // this.heartMap.setMap(null);
     //debugger;
     try{
       // debugger
       this.heartMap.setDataSet({data: theDataList});
       this.heartMap.setMap(theMap);
+      this.finishShowReli = true;
+      // debugger
     }
     catch(e){
       alert(e.stack);

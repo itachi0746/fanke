@@ -15,7 +15,7 @@
     </section>
     <baidu-map class="map" :center="center" :zoom="zoom" @ready="handler">
       <bm-marker :position="center" :dragging="true" animation="">
-        <bm-label ref="label" :content="name" :labelStyle="{color: 'black', fontSize : '15px'}" :offset="{width: 0, height: 30}"/>
+        <bm-label ref="label" :content="name" :labelStyle="{color: 'black', fontSize : '0.8rem'}" :offset="{width: x*-1, height: 30}"/>
       </bm-marker>
     </baidu-map>
   </div>
@@ -29,7 +29,8 @@
       return {
         center: {lng: 0, lat: 0},
         zoom: 3,
-        name: ''
+        name: '',
+        x: 0
       }
     },
 
@@ -39,7 +40,11 @@
     components: {
     },
 
-    computed: {},
+    computed: {
+      theLen() {
+        return this.name.length
+      }
+    },
 
     methods: {
       handler ({BMap, map}) {
@@ -47,6 +52,8 @@
         this.center.lng = this.coordinate.Longitude;
         this.center.lat = this.coordinate.Latitude;
         this.name = this.coordinate.Name;
+        this.x = this.coordinate.x;
+        console.log(this.x);
         this.zoom = 15;
 
 

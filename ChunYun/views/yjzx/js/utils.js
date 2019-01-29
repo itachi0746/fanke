@@ -212,21 +212,7 @@ function judgeDirection(angle) {
   if (angle >= -180 && angle < -135) {
     dir = '由东向西'
   }
-  // if (angle >= 0 && angle < 45) {
-  //   dir = '由南向北'
-  // }
-  // if (angle >= 45 && angle < 135) {
-  //   dir = '由西向东'
-  // }
-  // if (angle >= 135 && angle < 225) {
-  //   dir = '由北向南'
-  // }
-  // if (angle >= 225 && angle < 315) {
-  //   dir = '由东向西'
-  // }
-  // if (angle >= 315 && angle <= 360) {
-  //   dir = '由南向北'
-  // }
+
   return dir
 }
 

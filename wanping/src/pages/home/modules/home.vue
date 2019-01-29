@@ -10,8 +10,8 @@
     <div class="fill-div"></div>
     <!--轮播图 开始-->
     <swiper :options="swiperOption" ref="mySwiper" v-if="Ads.length">
-      <swiper-slide v-for="(item,index) in Ads" :key="item.Index" @click="">
-        <img :src="item.ImageUrl" alt="广告轮播图">
+      <swiper-slide v-for="(item,index) in Ads" :key="item.Index">
+        <img :src="item.ImageUrl" alt="广告轮播图" @click="clickBanner(item.LinkAddress)">
       </swiper-slide>
       <div class="swiper-pagination"  slot="pagination"></div>
     </swiper>
@@ -145,6 +145,14 @@
 
     },
     methods: {
+      clickBanner(address) {
+//        console.log(add);
+        if(address) {
+          window.location.href = address;
+        } else {
+          console.log('没有链接地址');
+        }
+      },
 
       toScreen(e) {
         const targetId = e.currentTarget.getAttribute('data-pid');

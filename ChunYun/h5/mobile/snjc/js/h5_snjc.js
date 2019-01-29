@@ -3,15 +3,16 @@ var pointControl;
 $(function () {
   window.mapbase = new MapBase();
   pointControl = new PlacePointView(theMap);
-  var name =localStorage['posname'] ||'广州南站';
+  var name =sessionStorage['posname'] ||'广州南站';
   $('#input1').val(name);
   var pepNum = 1000;
   var defaultZoom = 16;
   var positionType = 1;
-  var curPosition = localStorage['posname'] ||'广州南站';
-  var lnglat = lntlat = localStorage['pos_1']&&new AMap.LngLat(localStorage['pos_1'],localStorage['pos_2']) ||new AMap.LngLat(113.269391, 22.988766);
+  var curPosition = sessionStorage['posname'] ||'广州南站';
+  var lnglat = lntlat = sessionStorage['pos_1']&&new AMap.LngLat(sessionStorage['pos_1'],sessionStorage['pos_2']) ||new AMap.LngLat(113.269391, 22.988766);
   // mapbase.drawReli(name, pepNum);
   theMap.setZoomAndCenter(defaultZoom, lnglat);
+
 
   var thePlaceZoomObj = {  // 不同地点的缩放级别
     // '深圳西站': 18,
@@ -25,7 +26,7 @@ $(function () {
 
 
   function init() {
-    //localStorage.setItem('thePos','深圳北站');
+    //sessionStorage.setItem('thePos','深圳北站');
     // layer.load();
     searchOnInput();
     $('#back-icon').on('click', function () {
@@ -97,8 +98,8 @@ $(function () {
                   theLiDom.data('name', tabName);
 
 
-                  //localStorage['pos_1']=1;
-                  //localStorage['pos_2']=1;
+                  //sessionStorage['pos_1']=1;
+                  //sessionStorage['pos_2']=1;
                   resultLiClick(theLiDom,point);
                   resultList.append(theLiDom);
                   // console.log('break');
@@ -139,9 +140,9 @@ $(function () {
    */
   function resultLiClick(dom,point) {
     dom.on('click', function () {
-      localStorage['posname']=point['枢纽名称'];
+      sessionStorage['posname']=point['枢纽名称'];
       //debugger;
-      localStorage['pos']=point['地址'][0]['lnglat'];
+      sessionStorage['pos']=point['地址'][0]['lnglat'];
       location.reload();
       return;
       var searchBox = $('#search-box');
@@ -456,7 +457,6 @@ $(function () {
         }
       }
     });
-
   }
 
 
@@ -520,15 +520,22 @@ $(function () {
     return false;
   };
 
+  // var isLoadingReli = false;
+
   MapBase.OnFloorClick = function (name) {
     // debugger;
-    var isTheReliFloor = filterFloor(name);
-    if (!isTheReliFloor) {
-      mapbase.hideReli();
-      return;
-    }
-    floorClick(name);
+    console.log(mapbase.finishShowReli);
+    // if(mapbase.finishShowReli) {
+      var isTheReliFloor = filterFloor(name);
+      if (!isTheReliFloor) {
+        mapbase.hideReli();
+        return;
+      }
+      floorClick(name);
+    // }
+
   };
+
 
   var theFloorMap = {
     '深圳北站F1': '深圳北站1-2F',
@@ -725,6 +732,8 @@ $(function () {
       // debugger
       if (data.isSuccess && !isEmptyObject(data.data)) {
         var pepNum = data.data.userCnt;
+        // isLoadingReli = false;
+
         try {
         mapbase.drawReli(name, pepNum,true);
 

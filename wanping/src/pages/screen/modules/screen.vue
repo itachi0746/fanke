@@ -127,7 +127,7 @@
     <!--loading-->
     <Loading v-show="isLoading"></Loading>
     <!--地图-->
-    <Map @hide-map="handleMap" :coordinate="{'Latitude':resData.Latitude,'Longitude':resData.Longitude,'Name':resData.Name}" v-if="showMap"></Map>
+    <Map @hide-map="handleMap" :coordinate="{'Latitude':resData.Latitude,'Longitude':resData.Longitude,'Name':resData.Name,'x':resData.Name.length/2*14}" v-if="showMap"></Map>
     <!--<div class="iosBtm" v-if="isIOS"></div>-->
     <!--商品详情-->
     <div class="screen-dtl">
@@ -136,6 +136,11 @@
           大屏详情
         </div>
       </header>
+      <div class="screen-property">
+        <!--<div>使用类型: {{resData.PositionTypeName}}</div>-->
+        <div>分辨率: {{resData.ScreenParameters}}</div>
+        <!--<div>屏幕类型: {{resData.ClsName}}</div>-->
+      </div>
       <div class="dtl-main" v-html="resData.DtlDesc">
       <!--<div class="dtl-main" v-html="test">-->
         <!--{{resData.DtlDesc}}-->
@@ -475,7 +480,8 @@
 
     .head-font {
       background: #3297f5;
-      width: 92px;
+      /*width: 92px;*/
+      width: 4.2rem;
       margin-bottom: 5px;
       /*margin-left: .5rem;*/
       color: #fff;
@@ -484,10 +490,16 @@
       text-align: center;
       font-size: .8rem;
     }
+    .screen-property {
+      margin-top: 5px;
+      margin-bottom: 5px;
+      font-size: .8rem;
+      color: rgb(51, 51, 51);
+    }
     .dtl-main {
       text-indent: 2em;
       margin-top: 5px;
-      font-size: 16px;
+      font-size: .8rem;
       line-height: 25px;
       padding-top: 5px;
 
@@ -499,13 +511,13 @@
         max-width: 100%;
       }
       /deep/ p {
-        font-size: 16px;
+        font-size: .8rem;
         /*line-height: 20px;*/
         font-family: "Microsoft Yahei", Arial, sans-serif;
 
       }
       /deep/ span {
-        font-size: 16px;
+        font-size: .8rem;
         /*line-height: 24px;*/
         font-family: "Microsoft Yahei", Arial, sans-serif;
 

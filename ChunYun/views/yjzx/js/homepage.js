@@ -2249,6 +2249,7 @@ $(function () {
       var endLngLat = temp[temp.length - 1].split(',').map(function (t) {
         return parseFloat(t)
       });  // 终点经纬度
+
       // debugger
       var angle = calcAngle(startLngLat, endLngLat);  // 角度
       var dir = judgeDirection(angle);  // 方向 todo 方向不准确
@@ -2261,15 +2262,32 @@ $(function () {
         '          </li>';
 
       var liDom = $(liStr);
+      liDom.data('lnglat',[startLngLat,endLngLat]);
       liDom[0].dataset.eventId = liData.eventId;
       liDom[0].dataset.insertTime = liData.insertTime;
       liDom[0].dataset.jamDist = toKM(liData.jamDist);
       liDom[0].dataset.dir = dir;
       liDom[0].dataset.roadName = liData.roadName;
       liDom[0].dataset.lnglat = theLngLatObj[liData.roadName];
-
+      // debugger
       liDom.on('click', function () {
         var me = this;
+        var s = $(me).data('lnglat');
+        // debugger
+        // var mIdx = new AMap.Marker({
+        //   position: new AMap.LngLat(s[0][0],s[0][1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+        //   title: '1',
+        //   // content: '<div style="color:#fff;font-size:20px"></div>'
+        // });
+        //
+        // var mIdx2 = new AMap.Marker({
+        //   position: new AMap.LngLat(s[1][0],s[1][1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+        //   title: '2',
+        //   // content: '<div style="color:#fff;font-size:20px"></div>'
+        // });
+        //
+        // theMap.add(mIdx);  // 起点 终点
+        // theMap.add(mIdx2);
         var theData = {
           name: me.dataset.roadName,
           data1: '拥堵长度: ' + me.dataset.jamDist,
@@ -2702,9 +2720,14 @@ $(function () {
       var theName = $(this).data('theName');
       var theSpeed = $(this).data('theSpeed');
       var theStatus = $(this).data('theStatus');
-      var fData = $(this).data('fData').map(function (t) {
-        return t + ''
-      });
+      var fData = $(this).data('fData');
+      // debugger
+      if(fData) {
+        fData = fData.map(function (t) {
+          return t + ''
+        });
+      }
+
       var theData = {
         name: theName,
         data1: '平均车速: ' + theSpeed + 'km/h',
