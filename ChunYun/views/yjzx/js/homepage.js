@@ -290,7 +290,7 @@ $(function () {
         console.log('没有对应的楼层名字!');
         return
       }
-      reqReliData(theMapName, true);
+      reqReliData(theMapName, true, fullName);
     }
   }
 
@@ -315,10 +315,11 @@ $(function () {
 
   /**
    * 请求热力数据
-   * @param name
+   * @param name 映射后的楼层名
    * @param isCLickFloor 是否点击楼层
+   * @param originalName 原名
    */
-  function reqReliData(name, isCLickFloor) {
+  function reqReliData(name, isCLickFloor, originalName) {
     // debugger
     var url;
     if (nowTab === tabArr[0]) {
@@ -369,7 +370,7 @@ $(function () {
           });
           infoWindow.open(theMap);
         }
-        mapbase.drawReli(name, pepNum);
+        mapbase.drawReli(name, pepNum, originalName);
         // var theZoom = thePlaceZoomObj[name] || 18;
         // debugger
         // pointControl.MoveToPoint(arg, theZoom);

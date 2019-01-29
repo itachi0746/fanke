@@ -122,7 +122,9 @@
 <script src="mobile/lib/jquery-1.8.2.min.js"></script>
 <script src="mobile/lib/layer/layer.js"></script>
 <script src="mobile/snjc/js/ajax.js"></script>
-<script src="mobile/snjc/js/map.js"></script>
+<script src="mobile/lib/base.js?v=1"></script>
+
+<script src="mobile/snjc/js/map.js?v=1"></script>
 
 <script src="mobile/snjc/js/data.js"></script>
 <script src="mobile/lib/moment/moment-with-locales.min.js"></script>
@@ -131,8 +133,24 @@
 <script src="mobile/utils/rem.js"></script>
 <!--<script src="mobile/lib/echarts3.js"></script>-->
 <script src="mobile/lib/echarts4.simple.min.js"></script>
-<script src="mobile/lib/base.js"></script>
-<script src="mobile/snjc/js/h5_snjc.js"></script>
+<script src="mobile/snjc/js/h5_snjc.js?v=1"></script>
 
+<!--<script>-->
+  <!--$(function () {-->
+    <!--var sArr = $('script');-->
+    <!--for (var i = 0; i < sArr.length; i++) {-->
+      <!--var s = sArr[i];-->
+      <!--var ds = s.dataset.src;-->
+      <!--console.log(ds);-->
+      <!--if(!ds) {-->
+<!--//        console.log('没有data-src');-->
+        <!--continue-->
+      <!--}-->
+<!--//      console.log(ds);-->
+      <!--var d = new Date().getTime();-->
+      <!--$(s).attr('src',ds + '?t=' + d);-->
+    <!--}-->
+  <!--})-->
+<!--</script>-->
 </body>
 </html>

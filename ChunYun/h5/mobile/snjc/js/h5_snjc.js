@@ -605,7 +605,7 @@ $(function () {
       console.log('没有对应的楼层名字!');
       return
     }
-    reqReliData(theMapName, true);
+    reqReliData(theMapName, fullName);
 
     var floorName = theFloorMsg[fullName];
     if(!floorName) {
@@ -664,7 +664,8 @@ $(function () {
         }
         if (v === m['枢纽名称'].substr(0, v.length)) {
           console.log(m['枢纽名称']);
-          resultArr.push(m['枢纽名称'])
+          // resultArr.push(m['枢纽名称'])
+          resultArr.push(m)
           // debugger
         }
       }
@@ -678,32 +679,33 @@ $(function () {
       }
       for (var j = 0; j < resultArr.length; j++) {
         // console.log(j);
-
         var r = resultArr[j];
-        var theLi = $('<li>' + r + '</li>');
+        var theName = r['枢纽名称'];
+        var theLi = $('<li>' + theName + '</li>');
         var that = this;
-        theLi.on('click', function () {
-          $(that).val('');
-
-          var searchBox = $('#search-box');
-          var theText = $(this).text();
-          var type = pointControl.getPointType(theText);
-          type = tabMap[type];
-          // debugger
-          if (!type) {
-            console.log('没有找到类型');
-            return
-          }
-          positionType = type;
-          curPosition = theText;
-          changeInput1(curPosition);
-          goToPointByName(curPosition);
-          tab2Li2Echart1reqData(returnDate());
-
-          searchBox.hide();
-          $('#basepage').show();
-
-        });
+        resultLiClick(theLi,r);
+        // theLi.on('click', function () {
+        //   $(that).val('');
+        //
+        //   var searchBox = $('#search-box');
+        //   var theText = $(this).text();
+        //   var type = pointControl.getPointType(theText);
+        //   type = tabMap[type];
+        //   // debugger
+        //   if (!type) {
+        //     console.log('没有找到类型');
+        //     return
+        //   }
+        //   positionType = type;
+        //   curPosition = theText;
+        //   changeInput1(curPosition);
+        //   goToPointByName(curPosition);
+        //   tab2Li2Echart1reqData(returnDate());
+        //
+        //   searchBox.hide();
+        //   $('#basepage').show();
+        //
+        // });
         // debugger
         // console.log(resultList);
 
@@ -717,8 +719,9 @@ $(function () {
   /**
    * 请求热力数据
    * @param name
+   * @param originalName 原名
    */
-  function reqReliData(name) {
+  function reqReliData(name,originalName) {
     // debugger
     var url;
     if (positionType === 1) {
@@ -733,9 +736,8 @@ $(function () {
       if (data.isSuccess && !isEmptyObject(data.data)) {
         var pepNum = data.data.userCnt;
         // isLoadingReli = false;
-
         try {
-        mapbase.drawReli(name, pepNum,true);
+        mapbase.drawReli(name, pepNum,originalName);
 
         }catch (err) {
           console.log('reli:',err);
