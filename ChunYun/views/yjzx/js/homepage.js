@@ -5,7 +5,7 @@ var keyRoadDataArr2 = [];
 
 $(function () {
   var hourArr = ['0-1', '1-2', '2-3', '3-4', '4-5', '5-6', '6-7', '7-8', '8-24'];
-  var serHourArr = ['0-1', '1-2', '2-3', '3-4'];
+  var hourArr2 = ['0-1', '1-2', '2-3', '3-4', '4-5', '5-6', '6-7', '7-8'];
 
   var ageObj = {  // 年龄组
     0: '',
@@ -122,7 +122,7 @@ $(function () {
     console.log('切换到:', nowTab);
     // console.log('map:', theMap);
     // 设置洞察部分默认日期
-    tab2Li2DefaultDate = returnDate(4);  // 枢纽
+    tab2Li2DefaultDate = returnDate(1);  // 枢纽
     tab3Li2DefaultDate = returnDate(1);  // 服务区
     tab4Li2DefaultDate = returnDate(1);  // 场站
 
@@ -278,7 +278,7 @@ $(function () {
    * name 楼层名,例如1F
    */
   function floorClick(name) {
-    // var fullName;
+    //
     var fullName = curPosition + name;
     var theMapName;
     console.log('楼层:', fullName);
@@ -937,6 +937,8 @@ $(function () {
     // var sendFooter = $('#send-paging');
     $(arrTimeBox).on('change', function () {
       console.log($(this).val());
+      // $(this).attr('disabled',true);
+      // $(this).attr('cursor','not-allowed');
       reqTrainData(curPosition, 'arr');
     })
   }
@@ -981,6 +983,8 @@ $(function () {
     $.axpost(url, {}, function (data) {
       console.log('航班信息:', data);
       if (data.isSuccess && !isEmptyObject(data.data)) {
+        clearFlightList(status);
+        clearFooter(status);
         var num = 4;
 
         theSendFlightArr = data.data.sendList;
@@ -1028,6 +1032,17 @@ $(function () {
     $.axpost(url, {}, function (data) {
       console.log('列车信息:', data);
       if (data.isSuccess && !isEmptyObject(data.data)) {
+        clearTrainList(status);
+        clearTrainFooter(status);
+        // if (status === 'all') {
+        //   $('#arr-time-box2').attr('disabled',false);
+        //   $('#send-time-box2').attr('disabled',false);
+        // } else if (status === 'send') {
+        //   $('#send-time-box2').attr('disabled',false);
+        // } else {
+        //   $('#arr-time-box2').attr('disabled',false);
+        //   $('#arr-time-box2').attr('cursor','default');
+        // }
         var num = 4;
         // debugger
         theSendTrainArr = data.data.sendList;
@@ -1493,7 +1508,7 @@ $(function () {
         });
       });
       // 交通枢纽 旅客洞察
-      $('#tab2-li4-cld').val(returnDate(4));
+      $('#tab2-li4-cld').val(tab2Li2DefaultDate);
       lay('#tab2-li4-cld-box').on('click', function (e) {
         laydate.render({
           elem: '#tab2-li4-cld'
@@ -2263,7 +2278,7 @@ $(function () {
         '          </li>';
 
       var liDom = $(liStr);
-      liDom.data('lnglat',[startLngLat,endLngLat]);
+      liDom.data('lnglat', [startLngLat, endLngLat]);
       liDom[0].dataset.eventId = liData.eventId;
       liDom[0].dataset.insertTime = liData.insertTime;
       liDom[0].dataset.jamDist = toKM(liData.jamDist);
@@ -2361,72 +2376,7 @@ $(function () {
   /**
    * 查询高速重点路段数据
    */
-  // function reqKeyRoadData() {
-  //   var pagination = $('#pagination').find('span');
-  //   for (var i = 0; i < pagination.length; i++) {
-  //     var p = pagination[i];
-  //     $(p).removeClass('active');
-  //   }
-  //   $(pagination[0]).addClass('active');
-  //   // var resultArr = [];
-  //   var url = 'http://gdjtapi.televehicle.com/gd_traffic/api/highWayKpi/AllRoadsDirTpi';
-  //
-  //   var data = {
-  //     "auth": {
-  //       "opCode": "SJT",
-  //       "opPass": "XQWPwai8XOTW",
-  //       "signature": "A2A65DED49FF531B4A38A5C8E21AA19C",
-  //       "timeStamp": "20151203220306"
-  //     }
-  //   };
-  //   var dataStr = JSON.stringify(data);
-  //   // console.log(this)
-  //   $.ajax({
-  //     type: "POST",
-  //     url: url,
-  //     data: dataStr,
-  //     success: function (data) {
-  //       keyRoadDataArr = [];
-  //       // console.log(this.roadId)
-  //       // console.log('reqKeyRoadData', data);
-  //       if (data.returnMsg === '操作成功' && data.data.length) {
-  //         var theId;
-  //         for (var j = 0; j < LuDuanDataArr.length; j++) {
-  //           var roadObj = LuDuanDataArr[j];
-  //           for (var i = 0; i < data.data.length; i++) {
-  //             var dataObj = data.data[i];
-  //             // theId = roadObj.roadId;
-  //             if (roadObj.roadId === dataObj.roadId) {
-  //               dataObj.name = roadObj.name;
-  //               var newObj = {}, theAvgSpeed, temp = 0;
-  //
-  //               for (var key in dataObj) {
-  //                 newObj[key] = dataObj[key]
-  //               }
-  //               for (var k = 0; k < newObj.dirs.length; k++) {
-  //                 var dir = newObj.dirs[k];
-  //                 temp += parseFloat(dir.speed)
-  //               }
-  //               var theSpeed = temp / 2;
-  //               newObj['avgSpeed'] = theSpeed.toFixed(0);
-  //               keyRoadDataArr.push(newObj);
-  //               break;
-  //             }
-  //           }
-  //           // debugger
-  //         }
-  //         // console.log(resultArr);
-  //
-  //         handleKeyRoadArr();
-  //       } else {
-  //         console.log('请求高速路段出行指数失败!', data.returnMsg)
-  //       }
-  //     }
-  //   });
-  //
-  //   // console.log(resultArr)
-  //
-  // }
+
   function reqKeyRoadData() {
     var url = 'http://gdjtapi.televehicle.com/gd_traffic/api/highWayKpi/RoadLinksTpi';
     var loading = layer.load();
@@ -2519,61 +2469,6 @@ $(function () {
   /**
    * 处理重点路段数据
    */
-    // function handleKeyRoadArr() {
-    //   keyRoadDataArr = _.sortBy(keyRoadDataArr, function (item) {
-    //     return -item.tpi;
-    //   });
-    //   // debugger
-    //   var theUl = $('#jiance-key-ul');
-    //   theUl.empty();
-    //   for (var i = 0; i < keyRoadDataArr.length; i++) {
-    //     if (i > perPageNum) {
-    //       break
-    //     }
-    //     var dataObj = keyRoadDataArr[i];
-    //     var theStatusClass = tpiToClass(dataObj.tpi);
-    //     var liStr = '          <li>\n' +
-    //       '            <section>' + dataObj.name + '</section>\n' +
-    //       '            <section>' + dataObj.tpi + '</section>\n' +
-    //       '            <section>\n' +
-    //       '              <div class="tips-font ' + theStatusClass + '">' + dataObj.status + '</div>\n' +
-    //       '            </section>\n' +
-    //       '            <section>' + dataObj.avgSpeed + 'km/h</section>\n' +
-    //       '          </li>';
-    //     var theLiDom = $(liStr);
-    //     theLiDom.data('theName', dataObj.name);
-    //     theLiDom.data('theStatus', dataObj.status);
-    //     theLiDom.data('theSpeed', dataObj.avgSpeed);
-    //     keyRoadClick(theLiDom);
-    //     theUl.append(theLiDom)
-    //   }
-    //
-    //   paginationClick();
-    //   // console.log(keyRoadDataArr)
-    //   // debugger
-    //   // for (var i = 0; i < theRepeatItem.length; i++) {
-    //   //   var repeatObj = theRepeatItem[i];
-    //   //   for (var j = 0; j < keyRoadDataArr.length; j++) {
-    //   //     var dataObj = keyRoadDataArr[j];
-    //   //     // console.log(i,j)
-    //   //     // debugger
-    //   //     if(dataObj.roadId===repeatObj.roadId) {
-    //   //       var newObj = {};
-    //   //       dataObj.name = repeatObj.name;
-    //   //       for (var key in dataObj) {
-    //   //         newObj[key] = dataObj[key]
-    //   //       }
-    //   //
-    //   //       console.log(newObj)
-    //   //       keyRoadDataArr[j] = newObj;
-    //   //       debugger
-    //   //       break
-    //   //     }
-    //   //   }
-    //   // }
-    //   // console.log('new',keyRoadDataArr)
-    //   // debugger
-    // }
 
   var perRoadNum = 3; // 每条路要展示的条数
   var keyRoadRenderList = [];
@@ -2723,7 +2618,7 @@ $(function () {
       var theStatus = $(this).data('theStatus');
       var fData = $(this).data('fData');
       // debugger
-      if(fData) {
+      if (fData) {
         fData = fData.map(function (t) {
           return t + ''
         });
@@ -3217,7 +3112,7 @@ $(function () {
     }
     if (nowTab === tabArr[0] && tab2Name === '旅客洞察') {
       initDongchaTab();
-      getPassengerData();
+      getPassengerData(tab2Li2DefaultDate);
       getAreaData($(tabDomNameArr[0]), '省外', tab2Li2DefaultDate);  // 默认省外
 
       // tab2Li3InitEchart1();
@@ -3263,16 +3158,6 @@ $(function () {
       // tab4Li4InitEchart2();
     }
 
-    // if(nowTab===tabArr[3]&&tab2Name==='实时客流') {  // 高速路段
-    //   getRealTimeFlowDataT4();
-    //   tab5Li2initEchart1();
-    //   tab5Li2initEchart2();
-    // }
-    // if(nowTab===tabArr[3]&&tab2Name==='旅客趋势') {
-    //   tab5Li3InitEchart1();
-    //   tab5Li3InitEchart2();
-    //   tab5Li3initEchart3();
-    // }
 
   }
 
@@ -5142,13 +5027,24 @@ $(function () {
 
   var tab2Li2Echart2;
 
+  /**
+   * 检查类型
+   * @returns {boolean}
+   */
+  function checkPosType() {
+    var posType = pointControl.getPointType(curPosition);
+    return posType === '客运站' || posType === '服务区'
+  }
+
   function tab2Li2InitEchart2() {
     var dom = $('#ZLSC1');
     if (!tab2Li2Echart2) {
       tab2Li2Echart2 = echarts.init(dom[0]);
     }
     option = null;
-    var date = ['0-1', '1-2', '2-3', '3-4', '4-5', '5-6', '6-7', '7-8', '8-24'];
+    var date = hourArr;
+    var isKYorFW = checkPosType();
+    date = isKYorFW ? hourArr2 : hourArr;
 
     option = {
       title: {
@@ -5245,7 +5141,11 @@ $(function () {
 
   function tab2Li2Echart2reqData(date) {
     tab2Li2Echart2.showLoading();    //加载动画
-    var url = 'terminal/selectTerminalFlowLinger.do?postionType=' + positionType + '&postionName=' + curPosition + '&countDate=' + date;
+    var flag = '';
+    var isKYorFW = checkPosType();
+    flag = isKYorFW ? '' : true;
+
+    var url = 'terminal/selectTerminalFlowLinger.do?postionType=' + positionType + '&postionName=' + curPosition + '&countDate=' + date + '&flag=' + flag;
     $.axpost(url, {}, function (data) {
       // if(data.isSuccess&&data.data.length) {
       if (data.isSuccess) {
@@ -5259,6 +5159,7 @@ $(function () {
           }
         }
         // debugger
+        // console.log(d);
 
         tab2Li2Echart2.hideLoading();    //隐藏加载动画
 
@@ -6268,6 +6169,10 @@ $(function () {
     if (!tab3Li2Echart2) {
       tab3Li2Echart2 = echarts.init(dom);
     }
+    var date = hourArr;
+    var isKYorFW = checkPosType();
+    date = isKYorFW ? hourArr2 : hourArr;
+
     var option = null;
     option = {
       title: {
@@ -6287,7 +6192,7 @@ $(function () {
       },
       xAxis: {
         type: 'category',
-        data: hourArr,
+        data: date,
         name: '小时',
         axisLine: {
           onZero: false,
@@ -6553,29 +6458,6 @@ $(function () {
       }
     });
 
-    // $.axpost(url2,{},function (data) {
-    //   // console.log('tab2Li2InitEchart',data);
-    //   var dataArr = [];
-    //   // d = data.data;
-    //   for (var i = 0; i < data.data.length; i++) {
-    //     var obj = data.data[i];
-    //     var tempArr = obj.countTime.split('-');
-    //     var hour = strDelZero(tempArr[tempArr.length-1]);
-    //     var objArr = [hour,obj.preUserCnt];
-    //     dataArr.push(objArr);
-    //   }
-    //   // debugger
-    //   $('#tab3-cld1-box').show();
-    //   tab3Li2Echart1.hideLoading();    //隐藏加载动画
-    //   tab3Li2Echart1.setOption({
-    //     series: [
-    //       {
-    //         name: '预测客流量',
-    //         data: dataArr
-    //       }
-    //     ]
-    //   })
-    // })
   }
 
   var tab3Li3Echart2;
@@ -7143,6 +7025,10 @@ $(function () {
     if (!tab4Li2Echart1) {
       tab4Li2Echart1 = echarts.init(dom[0]);
     }
+    var date = hourArr;
+    var isKYorFW = checkPosType();
+    date = isKYorFW ? hourArr2 : hourArr;
+
 
     var option = {
       title: {
@@ -7185,7 +7071,7 @@ $(function () {
       },
       xAxis: {
         type: 'category',
-        data: hourArr,
+        data: date,
         name: '小时',
         nameGap: '5',
         // padding: [10, 10, 0, 0],
@@ -7635,24 +7521,7 @@ $(function () {
         // if(data.data.tollAgeList.length) {
         var dom = $("#tab4-klhx").parent();
         addSexNum(dom, 'tollSexList', data.data)
-        // }
 
-        // var manNum;
-        // for (var j = 0; j < data.data.tollSexList.length; j++) {
-        //   var obj1 = data.data.tollSexList[j];
-        //   debugger
-        //   if(obj1.sex===1) {
-        //     manNum = formatDecimal(obj1.manZb);
-        //     // dom.find('.hm.man span').text(formatDecimal(obj1.manZb)+'%')
-        //     dom.find('.hm.man span').text(manNum+'%')
-        //   }
-        //   if(obj1.sex===2) {
-        //     // dom.find('.hm.woman span').text(formatDecimal(obj1.manZb)+'%')
-        //     dom.find('.hm.woman span').text(100-parseFloat(manNum)+'%')
-        //   }
-        // }
-        // dom.find('.hm.man span').show();
-        // dom.find('.hm.woman span').show();
 
       }
     })
@@ -7665,6 +7534,10 @@ $(function () {
     if (!tab4Li3Echart1) {
       tab4Li3Echart1 = echarts.init(dom);
     }
+    var date = hourArr;
+    var isKYorFW = checkPosType();
+    date = isKYorFW ? hourArr2 : hourArr;
+
     option = null;
     option = {
       title: {
@@ -7684,7 +7557,7 @@ $(function () {
       },
       xAxis: {
         type: 'category',
-        data: hourArr,
+        data: date,
         name: '小时',
         axisLine: {
           onZero: false,
@@ -7930,61 +7803,6 @@ $(function () {
       }
 
     })
-
-    // $.axpost(url2,{},function (data) {
-    //   var dataArr = [];
-    //   var index = 0;
-    //   for (var key in data.data) {
-    //     var newArr = [];
-    //     for (var i = 0; i < data.data[key].length; i++) {
-    //       var obj = data.data[key][i];
-    //       // debugger
-    //       // console.log(i);
-    //
-    //       // newArr.push(obj.timeValue)
-    //
-    //       var tempArr = obj.countTime.split('-');
-    //       var hour = strDelZero(tempArr[tempArr.length-1]);
-    //       var objArr = [hour,obj.preUserCnt];
-    //       newArr.push(objArr);
-    //     }
-    //     console.log('newArr:',newArr);
-    //
-    //     dataArr.push(
-    //       {
-    //         name: hourArr[index] + '预测',
-    //         type: 'line',
-    //         smooth: true,
-    //         symbol: 'none',
-    //         // stack: 'a',
-    //         // areaStyle: {
-    //         //   normal: {
-    //         //   }
-    //         // },
-    //         itemStyle: {
-    //           normal: {
-    //             lineStyle: {
-    //               width: 1,
-    //               color: bdColor,
-    //               type: 'solid'  //'dotted'虚线 'solid'实线
-    //             }
-    //           }
-    //         },
-    //         data: newArr
-    //       }
-    //     );
-    //     index++;
-    //   }
-    //   console.log('dataArr',dataArr);
-    //   // debugger
-    //   tab4Li3Echart2.hideLoading();    //隐藏加载动画
-    //   tab4Li3Echart2.setOption({
-    //     series: dataArr,
-    //     legend: {
-    //       data: hourArr
-    //     }
-    //   })
-    // })
 
   }
 

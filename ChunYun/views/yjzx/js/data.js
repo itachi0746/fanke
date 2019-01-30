@@ -266,6 +266,26 @@ PlacePointView.prototype.ReturnDefualt = function (defaultZoom) {
   }, 10);
     // this.theMap.setZoomAndCenter(defaultZoom, lntlat);
 
+};
+/**
+ * 找点的类别
+ * @param pointName
+ * @returns {*}
+ */
+PlacePointView.prototype.getPointType = function (pointName) {
+  var theName = pointName;
+  var theType;
+  for (var i = 0; i < this.PlacePoints.length; i++) {
+    var thePlace = this.PlacePoints[i];
+    if (thePlace['枢纽名称'] == theName) {
+      theType = thePlace['枢纽类别']
+    }
+  }
+  if(!theType) {
+    console.warn('没有找到点的类别')
+    return
+  }
+  return theType;
 }
 
 /**

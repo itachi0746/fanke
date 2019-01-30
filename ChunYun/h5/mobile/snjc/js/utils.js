@@ -308,3 +308,18 @@ function canRefresh(timeStamp, interval) {
   var result = curTime - timeStamp;
   return result > interval
 }
+
+/**
+ * 切割数组
+ * @param arr
+ * @param index
+ * @returns {*}
+ */
+function sliceArr(arr,index) {
+  if(!arr.length) {
+    console.log('数组不能为空');
+    return
+  }
+  arr = arr.slice(0,index);
+  return arr
+}
