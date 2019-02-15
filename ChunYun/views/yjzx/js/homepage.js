@@ -2298,20 +2298,20 @@ $(function () {
         var me = this;
         var s = $(me).data('lnglat');
         // debugger
-        var mIdx = new AMap.Marker({
-          position: new AMap.LngLat(s[0][0],s[0][1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-          title: '1',
-          // content: '<div style="color:#fff;font-size:20px"></div>'
-        });
-
-        var mIdx2 = new AMap.Marker({
-          position: new AMap.LngLat(s[1][0],s[1][1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-          title: '2',
-          // content: '<div style="color:#fff;font-size:20px"></div>'
-        });
-
-        theMap.add(mIdx);  // 起点 终点
-        theMap.add(mIdx2);
+        // var mIdx = new AMap.Marker({
+        //   position: new AMap.LngLat(s[0][0],s[0][1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+        //   title: '1',
+        //   // content: '<div style="color:#fff;font-size:20px"></div>'
+        // });
+        //
+        // var mIdx2 = new AMap.Marker({
+        //   position: new AMap.LngLat(s[1][0],s[1][1]),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+        //   title: '2',
+        //   // content: '<div style="color:#fff;font-size:20px"></div>'
+        // });
+        //
+        // theMap.add(mIdx);  // 起点 终点
+        // theMap.add(mIdx2);
         var theData = {
           name: me.dataset.roadName,
           data1: '拥堵长度: ' + me.dataset.jamDist,
