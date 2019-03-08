@@ -5,7 +5,7 @@
     <div class="wrapper" id="wrapper" ref="wrapper">
       <ul class="order_list_ul" v-if="orderArr.length">
         <li class="order_list_li" v-for="(order,index) in orderArr" :key="order.OrderId"
-            @click="toOrderDetail($event,index)" :id="order.OrderId">
+            @click="toOrderDetail($event,order.RefundStatus,order.PaySign)" :id="order.OrderId">
           <section class="order_item_right">
             <section>
               <header class="order_item_right_header">
@@ -15,24 +15,35 @@
                   </h4>
                   <p class="order_time">{{order.OrderDate}}</p>
                 </section>
-                <p class="order_status">
+                <p class="order_status" v-if="order.RefundStatus">
+                  {{order.RefundStatusText}}
+                </p>
+                <p class="order_status" v-else>
                   {{order.OrderStatus}}
                 </p>
               </header>
               <section class="order_basket" v-for="(item) in order.Items">
                 <div class="order_img_box">
-                  <img class="order_img" :src="item.Img" alt="商品图">
+                  <img class="order_img" :src="item.Img" alt="">
                 </div>
                 <div class="order_data">
                   <div>
                     <p class="order_name ellipsis">
                       {{item.BusinessName}}
                     </p>
-                    <p class="order_name2 ellipsis">{{item.PsName}}</p>
+                    <p class="order_name2">{{item.PsName}}</p>
                   </div>
                   <div>
                     <p class="order_amount">¥{{item.Price}}</p>
                     <p class="order_total">×{{item.Total}}</p>
+                    <div v-if="order.PaySign">
+                      <p class="refund"
+                         v-if="order.RefundStatus===null || order.RefundStatus==='BD0909'"
+                         @click="clickRefund($event,order.OrderId,item.Price)">退款</p>
+                      <p class="refund"
+                         v-if="order.RefundStatus!==null && order.RefundStatus!=='BD0909'"
+                         @click="clickCheckRefund($event,order.OrderId)">查看退款</p>
+                    </div>
                   </div>
                 </div>
               </section>
@@ -67,6 +78,7 @@
   import Loading from '../../../components/common/loading.vue'
   import {postData} from '@/server'
   import BScroll from 'better-scroll'
+  import {Button,MessageBox,Message} from 'element-ui';
 
   export default {
     data() {
@@ -105,7 +117,7 @@
       isIOS() {
         let userAgent = navigator.userAgent;
         if (userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('Mac') > -1) {
-          console.log('on iphone/mac')
+          console.log('on iphone/mac');
           return true
         }
       }
@@ -120,12 +132,9 @@
         this.times++;
         console.log(h);
         this.WH -= h;
-
         if (this.times === 2) {
           this.$refs.wrapper.style.height = this.WH + 'px';
-//          console.log(this.$refs.wrapper.style.height)
         }
-
       },
 
       //获取窗口可视范围的高度
@@ -149,7 +158,7 @@
           pageindex: this.pageNum
         };
         postData(url, data).then((res) => {
-          console.log(res)
+          console.log(res);
           this.orderArr = this.orderArr.concat(res.Data.Models);
           this.pageCount = res.Data.PageCount;  // 总页数
 
@@ -164,11 +173,14 @@
         })
 
       },
-      toOrderDetail(event, i) {
-        if (this.orderArr[i].OrderStatusVal !== 'BD0901') {
-          const Tindex = event.currentTarget.id;
-          GoToPage("orderDetail", "orderDetail.html", {OrderId: Tindex});
 
+      toOrderDetail(event, refundStatus, paySign) {
+        const status = paySign;
+        if (status) { // 已付款可以去详情
+          if(refundStatus===null || refundStatus==='BD0909') { // 没申请退款或者申请退款被拒绝的可以
+            const Tindex = event.currentTarget.id;
+            GoToPage("orderDetail", "orderDetail.html", {OrderId: Tindex});
+          }
         }
       },
       init_scroll() {
@@ -194,18 +206,33 @@
           if (pos.y > 50) {
             console.log(222)
           }
-        })
+        });
         console.log(this.scroll);
       },
+      /**
+       * 点击退款
+       * @param e
+       * @param id 订单id
+       */
+      clickRefund(e,id,p) {
+        e.stopPropagation();
+//        console.log(id);
+        GoToPage('refund','refund.html',{OrderId: id, price: p});
 
+      },
+      /**
+       * 查看退款
+       */
+      clickCheckRefund(e,id) {
+        e.stopPropagation();
+        GoToPage('refundResult','refundResult.html',{OrderId: id});
+      }
     },
-
     created() {
       this.getData();
     },
     mounted() {
       this.WH = this.getClientHeight();
-
     },
 
     beforeDestroy() {
@@ -310,10 +337,19 @@
           .order_amount {
             @include sc(.65rem, $payColor);
             font-weight: bold;
+            text-align: right;
+
           }
           .order_total {
             @include sc(.65rem, #333);
             text-align: right;
+          }
+          .refund {
+            @include sc(.6rem, #a5a4a4);
+            border: 1px solid #a5a4a4;
+            border-radius: .8rem;
+            padding: .1rem .3rem;
+            white-space: nowrap;
           }
         }
         .order_again {

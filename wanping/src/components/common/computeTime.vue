@@ -39,7 +39,7 @@
           this.countNum--;
           if (this.countNum <= 0) {
             clearInterval(this.timer);
-            console.log('支付超时')
+            console.log('支付超时');
 //            MessageBox.alert('支付超时', '提示', {
 //              confirmButtonText: '确定',
 //            })
@@ -76,7 +76,7 @@
           }
           return '去支付(还剩' + minute + '分' + second + '秒)';
         } else {
-          return '支付超时';
+          return '支付超时'
         }
       },
       //订单返回已使用时间秒分 分别处理

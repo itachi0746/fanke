@@ -1,31 +1,6 @@
 <template>
   <!--  开始-->
-  <div class="filter-box">
-    <!--<city v-show="showCity"></city>-->
-    <!--筛选条件-->
-    <!--<div class="sort-container">-->
-
-      <!--<div class="sort-item" @click="sort" data-id="1" data-sortType="0">-->
-        <!--<span :class="[{span_active:'1'===activeIndex}]">-->
-          <!--距离-->
-          <!--<i class="el-icon-d-caret"></i>-->
-        <!--</span>-->
-
-      <!--</div>-->
-      <!--<div class="sort-item" @click="sort" data-id="2" data-sortType="0">-->
-        <!--<span :class="[{span_active:'2'===activeIndex}]">-->
-          <!--价格-->
-          <!--<i class="el-icon-d-caret"></i>-->
-        <!--</span>-->
-
-      <!--</div>-->
-      <!--<div class="sort-item" @click="sort" data-id="3" data-sortType="0">-->
-        <!--<span :class="[{span_active:'3'===activeIndex}]">-->
-          <!--人流量-->
-          <!--<i class="el-icon-d-caret"></i>-->
-        <!--</span>-->
-      <!--</div>-->
-    <!--</div>-->
+  <div class="filter-box" ref="filterBox">
 
     <div class="sort-container">
 
@@ -46,8 +21,8 @@
       <div class="sort-item" @click="changeCity">
         <span :class="[{span_active:'2'===activeIndex2}]">
           切换城市
-          <i class="el-icon-caret-bottom" v-show="!showShaixuan"></i>
-          <i class="el-icon-caret-top" v-show="showShaixuan"></i>
+          <i class="el-icon-caret-bottom" v-show="!showCity"></i>
+          <i class="el-icon-caret-top" v-show="showCity"></i>
         </span>
       </div>
     </div>
@@ -89,7 +64,7 @@
       return {
         isShow: false,
         showShaixuan: false,
-//        showCity: false,
+        showCity: false,
         activeIndex: '1',  // 当前的下标
         activeClsId: '',
         activeIndex2: '',
@@ -104,6 +79,9 @@
         ]
       }
     },
+    props: {
+      isShowCity: Boolean,
+    },
 
     components: {},
 
@@ -114,42 +92,21 @@
         }
       }
     },
+    watch: {
+      showCity() {
+        if(this.showCity) {
+          this.$refs.filterBox.style.position = 'fixed'
+        }
+        else {
+          this.$refs.filterBox.style.position = 'static'
+        }
+      },
+      isShowCity() {
+        this.showCity = this.isShowCity;
+      }
+    },
 
     methods: {
-//      init_scroll() {
-//        if (!this.scroll) {
-//          this.scroll = new BScroll('#category-left', {
-//            //开启点击事件 默认为false
-//            click: true
-//          });
-//          this.scroll2 = new BScroll('#category-right', {
-//            //开启点击事件 默认为false
-//            click: true
-//          });
-//        } else {
-//          this.scroll.refresh();
-//          this.scroll2.refresh();
-//        }
-//        console.log(this.scroll);
-//      },
-//
-//      toggleLi(index) {
-//        this.activeIndex = index
-//      },
-//      toggleFilter() {
-//        this.isShow = !this.isShow;
-////        this.timer1 = setTimeout(() => {
-////          this.init_scroll();
-////        },1000)
-//        this.$nextTick(() => {
-//          this.init_scroll();
-//        });
-//        console.log(this.scroll);
-//
-//      },
-//      doSelectArea() {
-//        // TODO
-//      }
 
       /**
        * @method 排序
@@ -166,7 +123,6 @@
         this.isShow = false;
         this.showShaixuan = false;
 
-        console.log('sort')
       },
       toggleFilter() {
         this.isShow = false;
@@ -177,8 +133,11 @@
        */
       fenlei() {
         this.isShow = !this.isShow;
-        this.showShaixuan = false
+        this.showShaixuan = false;
+        this.showCity = false;
         this.activeIndex2 = '0';
+        this.$emit('change-city',[this.$refs.filterBox.offsetHeight,this.showCity])
+
       },
       /**
        * @method 显示排序筛选
@@ -186,7 +145,9 @@
       shaixuan() {
         this.showShaixuan = !this.showShaixuan;
         this.isShow = false;
+        this.showCity = false;
         this.activeIndex2 = '1';
+        this.$emit('change-city',[this.$refs.filterBox.offsetHeight,this.showCity])
 
       },
       /**
@@ -200,8 +161,14 @@
         this.showShaixuan = false;
       },
       changeCity() {
-        console.log(11111)
-        this.$emit('change-city')
+//        console.log(this.$refs.filterBox.offsetHeight);
+//        debugger
+        this.activeIndex2 = '2';
+        this.showCity = !this.showCity;
+        this.isShow = false;
+        this.showShaixuan = false;
+
+        this.$emit('change-city',[this.$refs.filterBox.offsetHeight,this.showCity])
       }
 
     },

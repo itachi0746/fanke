@@ -61,7 +61,8 @@ Axios.interceptors.response.use(
       Message({
         //  饿了么的消息弹窗组件,类似toast
         showClose: true,
-        message: '请求失败',
+        // message: '请求失败',
+        message: res.ErrMsg,// 弹出错误信息
         type: "error"
       });
       return Promise.reject(res.ErrMsg);
@@ -72,7 +73,7 @@ Axios.interceptors.response.use(
     Message({
       //  饿了么的消息弹窗组件,类似toast
       showClose: true,
-      message: '出错啦',
+      message: '请求出错',
       type: "error"
     });
 

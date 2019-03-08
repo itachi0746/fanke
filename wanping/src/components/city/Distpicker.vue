@@ -78,6 +78,7 @@ const DEFAULT_CODE = 100000;
 export default {
   name: 'v-distpicker',
   props: {
+    theExtH: { type: Number, default: 0 },
     province: { type: [String, Number], default: '' },
     city: { type: [String, Number], default: '' },
     area: { type: [String, Number], default: '' },
@@ -179,8 +180,8 @@ export default {
       let wh = this.getClientHeight();
       let headerH = this.$refs.addressHeader.offsetHeight;
 //      debugger
-      console.log(wh,headerH);
-      this.$refs.addressContainer.style.height = wh - headerH + 'px';
+      console.log(wh,headerH,this.theExtH);
+      this.$refs.addressContainer.style.height = wh - headerH - this.theExtH + 'px';
 
     },
 

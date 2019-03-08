@@ -76,7 +76,7 @@
       isIOS() {
         let userAgent = navigator.userAgent;
         if (userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('Mac') > -1) {
-          console.log('on iphone/mac')
+          console.log('on iphone/mac');
           return true
         }
       }

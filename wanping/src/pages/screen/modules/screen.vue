@@ -137,9 +137,26 @@
         </div>
       </header>
       <div class="screen-property">
-        <!--<div>使用类型: {{resData.PositionTypeName}}</div>-->
-        <div>分辨率: {{resData.ScreenParameters}}</div>
-        <!--<div>屏幕类型: {{resData.ClsName}}</div>-->
+        <div v-if="resData.PositionTypeName">
+          <section>使用类型: </section>
+          <section>{{resData.PositionTypeName}}</section>
+        </div>
+        <div v-if="resData.ScreenType">
+          <section>屏幕类型: </section>
+          <section>{{resData.ScreenType}}</section>
+        </div>
+        <div v-if="resData.ScreenParameters">
+          <section>分辨率: </section>
+          <section>{{resData.ScreenParameters}}</section>
+        </div>
+        <div v-if="resData.ScreenViewSize">
+          <section>媒体面积: </section>
+          <section>{{resData.ScreenViewSize}}</section>
+        </div>
+        <div v-if="resData.CarFlowrate">
+          <section>车流: </section>
+          <section>{{resData.CarFlowrate}}</section>
+        </div>
       </div>
       <div class="dtl-main" v-html="resData.DtlDesc">
       <!--<div class="dtl-main" v-html="test">-->
@@ -494,7 +511,32 @@
       margin-top: 5px;
       margin-bottom: 5px;
       font-size: .8rem;
-      color: rgb(51, 51, 51);
+      /*color: rgb(51, 51, 51);*/
+      border: 1px solid #dadada;
+      color: #666;
+
+      &>div {
+        display: flex;
+        border-bottom: 1px solid #dadada;
+      }
+      &>div>section {
+        padding: .5rem 0;
+        white-space:nowrap;
+      }
+      &>div:nth-last-child(1) {
+        border-bottom: none;
+      }
+      &>div>section:nth-child(2) {
+        flex: 1;
+        padding-left: 1rem;
+      }
+      &>div>section:nth-child(1) {
+        width: 5rem;
+        text-align: right;
+        padding-right: 1rem;
+        border-right: 1px solid #dadada;
+
+      }
     }
     .dtl-main {
       text-indent: 2em;

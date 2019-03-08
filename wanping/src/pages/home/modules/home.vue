@@ -1,16 +1,15 @@
 <template>
   <div id="home" ref="homepage">
-    <!--<city v-if="showCity" @choose-city="handleChooseCity"></city>-->
     <div class="city-wrapper" v-if="showCity">
-      <v-distpicker type="mobile" @selected="onSelected" @city="onCity" @province="onProvince" :province="curPoisition.province.value" :city="curPoisition.city.value" :area="curPoisition.area.value"></v-distpicker>
+      <v-distpicker type="mobile" :theExtH="theExtH" @selected="onSelected" @city="onCity" @province="onProvince" :province="curPoisition.province.value" :city="curPoisition.city.value" :area="curPoisition.area.value"></v-distpicker>
     </div>
     <Loading v-show="isLoading"></Loading>
     <!--选地区-->
-    <aFilter ref="af" @sort="handleSort" @fenlei2="handleFenLei" @change-city="handleChangeCity"></aFilter>
+    <aFilter ref="af" :isShowCity="showCity" @sort="handleSort" @fenlei2="handleFenLei" @change-city="handleChangeCity"></aFilter>
     <div class="fill-div"></div>
     <!--轮播图 开始-->
     <swiper :options="swiperOption" ref="mySwiper" v-if="Ads.length">
-      <swiper-slide v-for="(item,index) in Ads" :key="item.Index">
+      <swiper-slide v-for="(item, index) in Ads" :key="item.Index">
         <img :src="item.ImageUrl" alt="广告轮播图" @click="clickBanner(item.LinkAddress)">
       </swiper-slide>
       <div class="swiper-pagination"  slot="pagination"></div>
@@ -52,11 +51,7 @@
   import Loading from 'components/common/loading'
   import Footer from 'components/footer/footer'
   import aFilter from './filter'
-//  import VDistpicker from 'v-distpicker'
   import VDistpicker from '../../../components/city/Distpicker.vue'
-//  import city from '../../../components/common/wlist.vue'
-
-  //  import BScroll from 'better-scroll'
   import {postData} from '@/server'
   import { swiper, swiperSlide } from 'vue-awesome-swiper';
   import 'swiper/dist/css/swiper.css'
@@ -72,6 +67,7 @@
         sortObj: {'id':'1','sortType':'0'},  // 排序对象
         fenleiObj: {'ClsId': ''},
         showCity: false,
+        theExtH: 0,
         cityName: {
           city:{
             value: ''
@@ -124,24 +120,13 @@
       isIOS() {
         let userAgent = navigator.userAgent;
         if (userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('Mac') > -1) {
-          console.log('on iphone/mac')
+          console.log('on iphone/mac');
           return true
         }
       }
     },
 
     mounted() {
-
-//      this.timer1 = setTimeout(() => {
-//        this.scroll = new BScroll('#category-left', {
-//          //开启点击事件 默认为false
-//          click: true
-//        });
-//        this.scroll2 = new BScroll('#category-right', {
-//          //开启点击事件 默认为false
-//          click: true
-//        })
-//      }, 30);
 
     },
     methods: {
@@ -171,34 +156,18 @@
       },
       handleFenLei(obj) {
         this.fenleiObj = obj;
-//        console.log('this.fenleiObj:',this.fenleiObj)
-//        debugger
       },
-      handleChangeCity() {
-        console.log('changecity');
-//        this.$refs.homepage.ontouchmove = function (e) {
-//          e.preventDefault();
-//          console.log('prevent move')
-//        }
-        this.showCity = !this.showCity;
+      handleChangeCity(params) {
+//        debugger
+        this.showCity = params[1];// 是否显示城市选择
+        this.theExtH = params[0];// 分类filter高度
       },
       onSelected(d) {
-        console.log(d)
+//        console.log(d)
         console.log(d.province.value + ' | ' + d.city.value + ' | ' + d.area.value);
-//        let temp = {};
-//
-//        if(d.area.value==='全部') {
-////          temp.area.value = '';
-//          for(let key in d) {
-//            temp[key] = d[key]
-//          }
-//          temp.area.value = '';
-//          console.log('temp1',temp)
-//        } else {
-//          temp = d;
-//          console.log('temp',temp)
-//        }
-        this.showCity = !this.showCity;
+
+//        this.showCity = !this.showCity;
+        this.showCity = false;
         this.cityName = d;
         this.curPoisition = d;
 
@@ -215,37 +184,6 @@
         let firstLi = ul.querySelectorAll('li')[0];
 //        let cl = firstLi.classList;
 //        console.log(cl)
-
-//        if(cl.length===0) {
-//          let newLi = document.createElement('li');
-//          newLi.innerHTML = '全部';
-//          newLi.classList.add('all-city');
-//
-//          newLi.onclick = ()=> {
-//            this.showCity = !this.showCity;
-//            let me = this;
-//            let theCity = {
-//              city: {
-//                value: d.value,
-//              },
-//              area: {
-//                value: ''
-//              },
-//              province: {
-//                value: me.curPoisition.province.value
-//              }
-//            };
-//            this.cityName = theCity;
-//            this.curPoisition = theCity;
-//          };
-//          ul.insertBefore(newLi,firstLi);
-//        }
-
-
-//        console.log(ul)
-
-
-
       },
 
     },
@@ -289,7 +227,8 @@
 
   .recommend-item-container {
     overflow-x: scroll;
-
+    -webkit-overflow-scrolling: touch;/* 解决ios滑动不流畅问题 */
+    padding-left: .5rem;
   }
 
   .recommend-title {
@@ -301,11 +240,10 @@
   .recommend-item-wrap {
     width: 100rem;
     /*width: auto;*/
-
   }
 
   .recommend-item {
-    margin-left: 0.5rem;
+    padding-right: 0.5rem;
     float: left;
     img, div, p {
       width: 5rem;
@@ -364,7 +302,8 @@
   }
   .city-wrapper {
     position: fixed;
-    top: 0;
+    /*top: 0;*/
+    top: 1.65rem;
     bottom: 0;
     width: 100%;
     z-index: 999999;
