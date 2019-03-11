@@ -170,7 +170,8 @@
 </template>
 
 <script>
-  import Calendar from 'vue-calendar-component'
+//  import Calendar from 'vue-calendar-component'
+  import Calendar from '../../../components/calendar/calendar.vue'
   import Header from '../../../components/header/header.vue'
   import Footer from '../../../components/footer/footer.vue'
   import Loading from '../../../components/common/loading.vue'
@@ -291,11 +292,13 @@
         return [yesterday, oneMonth];
       },
       findDay(data) {  // 遍历日期数组 找到点击的是哪一天
-        let arr, d, str;
+        let arr, m, d, str;
         arr = data.split('/');
         d = parseInt(arr[2]);
-        d = d < 10 ? '0' + d : d;
-        str = arr[0] + '-' + arr[1] + '-' + d;
+        d = d < 10 ? '0' + d : d;// 日子小于10在前面加上0
+        m = parseInt(arr[1]);
+        m = m < 10 ? '0' + m : m;// 月份小于10在前面加上0
+        str = arr[0] + '-' + m + '-' + d;
 
         console.log('findDay:', str);
 
@@ -401,10 +404,8 @@
       calIOSMargin() {
         let userAgent = navigator.userAgent;
         if (userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('Mac') > -1) {
-          console.log('on iphone/mac')
+          console.log('on iphone/mac');
           let MB = window.getComputedStyle(this.$refs.screen).marginBottom;
-          console.log(MB)
-          console.log(parseInt(MB))
           this.$refs.screen.style.marginBottom = parseInt(MB) + 30 + 'px';
           console.log(this.$refs.screen.style.marginBottom)
         }
@@ -446,7 +447,7 @@
         id: this.Id
       };
       postData(url, data).then((res) => {
-        console.log(res)
+        console.log(res);
         this.resData = res.Data;
         this.days = res.Data.DayStates;  // 日期数组
         this.UP = this.days[0].Price;  // 今天的产品的单价
