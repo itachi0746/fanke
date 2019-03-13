@@ -14,23 +14,26 @@
       <h5>{{resData.Name}}</h5>
       <p class="screen-desc">{{resData.Desc}}</p>
 
-      <p class="screen-desc">Step1: 点击日期查看大屏的剩余广告位</p>
+      <p class="screen-desc">Step1: 点击日期查看屏幕的剩余广告位</p>
       <p class="screen-desc">Step2: 选择广告位数量, 点击添加</p>
       <p class="screen-desc">Step3: 点击下方的购买按钮</p>
       <!--<p class="screen-desc">备注: </p>-->
     </div>
     <div class="action-bar">
       <ul>
-        <li>
-
-        </li>
-        <li>
-
-        </li>
+        <li></li>
+        <!--<li></li>-->
         <li @click="handleMap">
-          <i class="el-icon-location"></i><span>大屏位置</span>
+          <i class="el-icon-location"></i><span>屏幕位置</span>
         </li>
       </ul>
+    </div>
+    <div class="sel-mode">
+      <el-switch
+        v-model="multiMode"
+        active-text="多选模式"
+        inactive-text="单选模式">
+      </el-switch>
     </div>
     <div class="calendar">
       <Calendar v-on:choseDay="clickDay"
@@ -51,8 +54,6 @@
             ¥<span class="UP-num">{{ curDayObj.Price }}</span>
           </span>
         </p>
-
-
       </div>
 
       <div class="data-box">
@@ -63,7 +64,7 @@
         <p class="number" v-if="curDayObj">
 
           <button :class="['button','decrease', {disabled:num<=1}]" @click="reduceNum">-</button>
-          <input id="number" type="number" :value="num" readonly="readonly">
+          <input id="number" type="number" :value="num" readonly>
           <button :class="['button','increase', {disabled:num>=curDayObj.Remain}]" @click="addNum">+</button>
           <el-button size="small" type="primary" class="right" @click="addSelected" :disabled="curDayObj.Remain===0">
             添加
@@ -78,31 +79,27 @@
 
         </p>
         <section v-if="selected.length">
-          <p v-for="(item,index) in selected" :key="item.Date">
-            <span>{{item.Date}}</span>
-            广告位数量:
-            <span>{{item.Count}}</span>
-            <i class="el-icon-close right" @click="delSelected($event)" :data-date="item.Date"></i>
+          <p class="sel-p" v-for="(item,index) in selected" @click="clickSelP(index)" :class="{active:hoverNum===index}" :key="item.Date">
+            <el-row>
+              <el-col :span="16">
+                <span>{{item.Date}}</span>
+                广告位数量:
+                <span>{{item.Count}}</span>
+              </el-col>
+              <el-col :span="8">
+                <i class="el-icon-close right" @click="delSelected($event)" :data-date="item.Date"></i>
+              </el-col>
+            </el-row>
+            <!--<span>{{item.Date}}</span>-->
+            <!--广告位数量:-->
+            <!--<span>{{item.Count}}</span>-->
+            <!--<i class="el-icon-close right" @click="delSelected($event)" :data-date="item.Date"></i>-->
           </p>
         </section>
         <section v-else>
           <p>暂无</p>
         </section>
       </div>
-      <!--<div class="prize-box">-->
-        <!--&lt;!&ndash;<section>&ndash;&gt;-->
-        <!--&lt;!&ndash;<span>已选择数量: </span>&ndash;&gt;-->
-        <!--&lt;!&ndash;<span class="sum-num"> {{ sumNum }}</span>&ndash;&gt;-->
-        <!--&lt;!&ndash;<span>个</span>&ndash;&gt;-->
-        <!--&lt;!&ndash;</section>&ndash;&gt;-->
-        <!--<section>-->
-          <!--<span>应付: </span>-->
-          <!--<span> ¥</span>-->
-          <!--<span class="sum-prize">{{ sumPrice }}</span>-->
-        <!--</section>-->
-      <!--</div>-->
-
-
     </div>
     <!--操作部分-->
     <div class="actionBar">
@@ -133,28 +130,28 @@
     <div class="screen-dtl">
       <header>
         <div class="head-font">
-          大屏详情
+          屏幕详情
         </div>
       </header>
       <div class="screen-property">
         <div v-if="resData.PositionTypeName">
-          <section>使用类型: </section>
+          <section>使用类型 </section>
           <section>{{resData.PositionTypeName}}</section>
         </div>
         <div v-if="resData.ScreenType">
-          <section>屏幕类型: </section>
+          <section>屏幕类型 </section>
           <section>{{resData.ScreenType}}</section>
         </div>
         <div v-if="resData.ScreenParameters">
-          <section>分辨率: </section>
+          <section>分辨率 </section>
           <section>{{resData.ScreenParameters}}</section>
         </div>
         <div v-if="resData.ScreenViewSize">
-          <section>媒体面积: </section>
+          <section>媒体面积 </section>
           <section>{{resData.ScreenViewSize}}</section>
         </div>
         <div v-if="resData.CarFlowrate">
-          <section>车流: </section>
+          <section>车流 </section>
           <section>{{resData.CarFlowrate}}</section>
         </div>
       </div>
@@ -176,6 +173,7 @@
   import Footer from '../../../components/footer/footer.vue'
   import Loading from '../../../components/common/loading.vue'
   import Map from '../../../components/common/map.vue'
+  import {Message} from 'element-ui'
   import {postData} from '@/server'
   import {getUrlParms, IOSConfig} from '@/config/utils'
 
@@ -187,11 +185,13 @@
       return {
         headName: '屏幕详情',
         Id: '',
-        markDate: [],  // 标记日期
+//        markDate: [],  // 标记日期
+        markDay1: '', // 标记开始日期
+        markDay2: '', // 标记结束日期
         timeStampStart: 0 + '',  //日历
         timeStampOver: 0 + '',
         oneDay: 86400000,  // 一天的毫秒数
-        num: 1,  // 已选择数量
+        num: 1,  // 已选择数量(广告位)
         sumNum: 0,  // 已添加的数量
         UP: null,  // 单价
         resData: {},  // 响应返回的data
@@ -201,6 +201,8 @@
         itemId: 0,  // 所选择时段的id
         isLoading: false,
         showMap: false,
+        multiMode: false, // 多选模式
+        hoverNum: -1, // 是否点中
         swiperOption: {
           pagination: {
             el: '.swiper-pagination'
@@ -210,7 +212,6 @@
 //            disableOnInteraction: false,
 //          },
         },
-//        test: '<p>ffffff烦烦test烦烦烦烦烦烦烦方法灌灌灌灌灌灌灌灌灌灌灌灌灌红红火火恍恍惚惚</p><img src="http://tpc.googlesyndication.com/simgad/5843493769827749134" alt=""><span>nihao你好</span>'
       }
     },
 
@@ -221,10 +222,33 @@
       Footer,
       swiper,
       swiperSlide,
-      Map
+      Map,
+      Message,
+//      Row,
+//      Col
     },
 
     computed: {
+
+      markDate () {
+        let markDateArr = [], SD, ED, temp1, temp2, dValue, days;
+        if (this.markDay1 && this.markDay2) {
+          temp1 = this.getTimeStamp(this.markDay1);
+          temp2 = this.getTimeStamp(this.markDay2);
+          if (temp1 < temp2) {
+            SD = temp1;
+            ED = temp2
+          } else {
+            ED = temp1;
+            SD = temp2
+          }
+          dValue = ED - SD;
+          days = (dValue / this.oneDay);
+          days++;
+          markDateArr = this.getMarkDateArr(SD, days);
+        }
+        return markDateArr
+      },
       oneMonth() {
         return this.oneDay * 29
       },
@@ -261,8 +285,60 @@
     },
 
     methods: {
+      /**
+      * @method 点击选中的时段
+      * @param {Number} index 下标
+      */
+      clickSelP(index) {
+        this.hoverNum = index
+      },
+      /**
+      * @method 根据日期string 获得时间戳
+      * @param {String} date 日期,例如'2019/3/12'
+      */
+      getTimeStamp(date) {
+        let result = new Date(date).getTime() + '';
+//        result = parseInt(result.substr(0, 10));
+        result = parseInt(result);
+        return result
+      },
+      /**
+      * @method 得到要标记日期的数组
+      * @param {Number} startDate  开始日期的时间戳(毫秒)
+      * @param {Number} days  天数
+      */
+      getMarkDateArr(startDate, days) {
+        let theArr = [], theDateStr, dateObj, Y, M, D;
+        for (let i = 0; i < days; i++) {
+          let tempDate = startDate;
+          tempDate += this.oneDay * i;
+          dateObj = new Date(tempDate);
+          Y = dateObj.getFullYear();
+          M = dateObj.getMonth() + 1;
+          D = dateObj.getDate();
+          M = M < 10 ? '0' + M : M;// 月份小于10在前面加上0
+          D = D < 10 ? '0' + D : D;// 日子小于10在前面加上0
+
+          theDateStr = Y + '-' + M + '-' + D;
+          theArr.push(theDateStr)
+        }
+        return theArr
+      },
       clickDay(data) {  //选中某天
         console.log(data);
+        if (this.multiMode) {
+          if (this.markDay1 && this.markDay2) {
+            this.markDay1 = this.markDay2 = '';
+            this.markDay1 = data
+          }
+          else if (!this.markDay1) {
+            this.markDay1 = data
+          } else {
+            this.markDay2 = data
+          }
+        } else {
+          this.markDay1 = this.markDay2 = '';
+        }
         this.num = 1;
         this.findDay(data)
       },
@@ -312,12 +388,49 @@
         }
       },
       addSelected() {  // 选择广告位
+        if (this.multiMode) { // 多选模式
+          this.selected = [];// 先清空已选中的
+          this.sumNum = this.num; // 记录选中的广告位数量
+          let hasInconformity = false; // 是否有不符合广告位数量的项
+          for (let i = 0; i < this.markDate.length; i++) {
+            let theDate = this.markDate[i];
+            for (let j = 0; j < this.days.length; j++) {
+              let theDayObj = this.days[j];
+              if (theDate === theDayObj.Date) {
+//                console.log(i,j);
+                if (theDayObj.Remain < this.sumNum) { // 如果剩余的广告位少于用户选中的, 先排除
+//                  this.markDate[i] = ''
+                  theDate = '';
+                  hasInconformity = true
+                }
+                break
+              }
+            }
+            if (!theDate) continue;// 空日期跳过
+            let newItem = {
+              'PsId': this.Id,
+              'Date': theDate,
+              'Count': this.sumNum,  // 数量
+              'Price': this.UP,  // 单价
+              'Amount': this.UP * this.sumNum  // 总价
+            };
+            this.selected.push(newItem);
+          }
+          if (hasInconformity) {
+            Message({
+              type: 'warning',
+              message: '多选模式下,广告位不足的日期将不会被选中!'
+            });
+          }
+
+          return
+        }
         const repeated = this.isRepeated(this.curDayObj.Date);
-        this.sumNum = this.num;
+        this.sumNum = this.num; // 记录选中的广告位数量
         if (!repeated) {  // 不是重复的
           let newItem = {
-            'PsId': this.Id,
-            'Date': this.curDayObj.Date,
+            'PsId': this.Id, // 当前的产品的id
+            'Date': this.curDayObj.Date, // 日期
             'Count': this.sumNum,  // 数量
             'Price': this.UP,  // 单价
             'Amount': this.UP * this.sumNum  // 总价
@@ -328,7 +441,6 @@
           repeated.Count += this.sumNum;  // 重新计算数量
           repeated.Count = repeated.Count > this.curDayObj.Remain ? this.curDayObj.Remain : repeated.Count;  // 防止超出
           repeated.Amount = repeated.Count * repeated.Price;  // 重新计算总价
-
         }
 
       },
@@ -358,18 +470,6 @@
           }
         }
       },
-
-      buy() {  // 购买 确认下单
-
-        let data = {
-          name: this.resData.Name,
-          id: this.Id,
-          sumPrice: this.sumPrice,
-          items: this.selected
-        };
-        GoToPage('orderConfirm', 'orderConfirm.html', {})
-
-      },
       addToBasket() {  // 添加到购物车
         this.isLoading = true;
         const url = '/AddToBasket';
@@ -382,7 +482,7 @@
         });
       },
       /**
-       * @method 购买
+       * @method 购买下单,跳转订单确认
        */
       handleOrder() {
         this.isLoading = true;
@@ -414,25 +514,6 @@
       handleMap() {
         this.showMap = !this.showMap;
       },
-      /**
-       * @method 计算购物车中的项,把项的ItemId加入数组中并返回
-       */
-//      handleItems() {
-//        let arr = [];
-//        this.selected.forEach((item)=> {
-//          let newItem = {
-//            "PsId": item.PsId,  // 产品id
-//            "Count": item.Count,  // 广告位数量
-//            "Date": item.Date,  // 日期
-//            "Amount": item.Amount,  // 总价
-//            "Price": item.Price  // 价格
-//          };
-//          arr.push(newItem)
-//
-//        });
-//        return arr
-//      }
-
 
     },
 
@@ -463,6 +544,21 @@
       this.timeStampOver = this.timest()[1];
       console.log('screen  mounted',)
 //      this.calIOSMargin();
+    },
+    watch: {
+      multiMode () {
+        if (this.multiMode) {
+          this.selected = [] // 清空选中的广告位
+        } else {
+          this.selected = []; // 清空选中的广告位
+          this.markDay1 = this.markDay2 = '' // 清除标记的日期
+        }
+      },
+      selected () {
+        if (!this.selected.length) {
+          this.hoverNum = -1
+        }
+      },
     },
 
     beforeDestroy() {
@@ -611,7 +707,16 @@
           font-size: .9rem;
         }
       }
+      li:nth-child(1) {
+        flex: 2;
+      }
     }
+  }
+
+  .sel-mode {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
   }
 
   .screen-desc {
@@ -631,6 +736,16 @@
     font-size: .8rem;
     margin-top: .5rem;
 
+    .sel-p {
+      border-radius: 4px;
+      margin-top: 5px;
+      -webkit-transition: all .3s;
+      transition: all .3s;
+    }
+    .sel-p.active {
+      background-color: #f5f7fa;
+      color: #409EFF;
+    }
   }
 
   .prize-box {

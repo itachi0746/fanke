@@ -1,6 +1,6 @@
 .DS_Store
 node_modules/
-/wanping/
+wanping/
 wanping.zip
 npm-debug.log*
 yarn-debug.log*

@@ -2,50 +2,30 @@
   <div>
     <div class="foot-guide">
       <ul ref="foot" id="foot">
-        <li class="foot-guide-li" @click="toIndex" v-if="this.page==='Home'">
-          <i class="icon iconfont icon-home chosen"></i>
+        <li class="foot-guide-li" @click="toIndex">
+          <i class="icon iconfont icon-home" :class="{chosen:this.page==='Home'}"></i>
           <span>主页</span>
         </li>
-        <li class="foot-guide-li" @click="toIndex" v-else>
-          <i class="icon iconfont icon-home"></i>
-          <span>主页</span>
-        </li>
-        <li class="foot-guide-li" @click="toCart" v-if="this.page==='Cart'">
-          <i class="icon iconfont icon-gouwuche chosen"></i>
-          <span>购物车</span>
-        </li>
-        <li class="foot-guide-li" @click="toCart" v-else>
-          <i class="icon iconfont icon-gouwuche"></i>
+
+        <li class="foot-guide-li" @click="toCart">
+          <i class="icon iconfont icon-gouwuche" :class="{chosen:this.page==='Cart'}"></i>
           <span>购物车</span>
         </li>
 
-        <li class="foot-guide-li" @click="toSearch" v-if="this.page==='Search'">
-          <i class="icon iconfont icon-search chosen"></i>
-          <span>搜索</span>
-        </li>
-        <li class="foot-guide-li" @click="toSearch" v-else>
-          <i class="icon iconfont icon-search"></i>
+        <li class="foot-guide-li" @click="toSearch">
+          <i class="icon iconfont icon-search" :class="{chosen:this.page==='Search'}"></i>
           <span>搜索</span>
         </li>
 
-        <li class="foot-guide-li" @click="toOrder" v-if="this.page==='Order'">
-          <i class="icon iconfont icon-orderedlist chosen"></i>
-          <span>订单</span>
-        </li>
-        <li class="foot-guide-li" @click="toOrder" v-else>
-          <i class="icon iconfont icon-orderedlist"></i>
+        <li class="foot-guide-li" @click="toOrder">
+          <i class="icon iconfont icon-orderedlist" :class="{chosen:this.page==='Order'}"></i>
           <span>订单</span>
         </li>
 
-        <li class="foot-guide-li" @click="toProfile" v-if="this.page==='Profile'">
-          <i class="icon iconfont icon-user chosen"></i>
+        <li class="foot-guide-li" @click="toProfile">
+          <i class="icon iconfont icon-user" :class="{chosen:this.page==='Profile'}"></i>
           <span>我的</span>
         </li>
-        <li class="foot-guide-li" @click="toProfile" v-else>
-          <i class="icon iconfont icon-user"></i>
-          <span>我的</span>
-        </li>
-
       </ul>
     </div>
   </div>
@@ -53,71 +33,69 @@
 
 <script>
 
-export default {
-  props: {
-    page: {
-      type: String,
+  export default {
+    props: {
+      page: {
+        type: String,
 //      default: 'Home',
+      },
+      a: Boolean
+
     },
-    a: Boolean
+    data() {
+      return {}
+    },
 
-  },
-  data() {
-    return {
+    components: {},
 
-    }
-  },
-
-  components: {},
-
-  watch: {
-    a() {
-      if(this.a) {
+    watch: {
+      a() {
+        if (this.a) {
 //        console.log(this.$refs.foot)
-        this.$emit('footerHeight',this.$refs.foot.offsetHeight)
+          this.$emit('footerHeight', this.$refs.foot.offsetHeight)
+        }
       }
-    }
-  },
-
-  methods: {
-    toProfile() {
-      GoToPage("profile","profile.html",{});
-     // window.location.href = 'profile.html';
-    },
-    toSearch() {
-      GoToPage("search","search.html",{});
-      //window.location.href = 'search.html';
-
-    },
-    toIndex() {
-      GoToPage("index","index.html",{});
-      //window.location.href = 'index.html';
-
-    },
-    toOrder() {
-      GoToPage("order","order.html",{});
-      //window.location.href = 'order.html';
-
-    },
-    toCart() {
-      GoToPage("cart","cart.html",{});
-     // window.location.href = 'cart.html';
-
     },
 
+    methods: {
+      toProfile() {
+        GoToPage("profile", "profile.html", {});
+        // window.location.href = 'profile.html';
+      },
+      toSearch() {
+        GoToPage("search", "search.html", {});
+        //window.location.href = 'search.html';
+
+      },
+      toIndex() {
+        GoToPage("index", "index.html", {});
+        //window.location.href = 'index.html';
+
+      },
+      toOrder() {
+        GoToPage("order", "order.html", {});
+        //window.location.href = 'order.html';
+
+      },
+      toCart() {
+        GoToPage("cart", "cart.html", {});
+        // window.location.href = 'cart.html';
+
+      },
 
 
-  },
+    },
 
-  mounted() {
+    mounted() {
 
 //    console.log(this.$refs.foot.offsetHeight);
 //    this.$emit('footerHeight',this.$refs.foot.offsetHeight)
 
-  },
+    },
 
-  beforeDestroy() {}
-}
+    beforeDestroy() {
+    }
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -135,7 +113,6 @@ export default {
     @include fj;
     box-shadow: 0 -0.02667rem 0.05333rem rgba(0, 0, 0, 0.1);
 
-
   }
 
   .foot-guide-li {
@@ -152,10 +129,11 @@ export default {
       font-size: 1.2rem;
     }
     span {
-      @include sc(.6rem,#000);
+      @include sc(.6rem, #000);
     }
   }
+
   .chosen {
-    color: $mainColor!important;
+    color: $mainColor !important;
   }
 </style>

@@ -112,11 +112,17 @@ wh_content_item_tag {
   border-right: 2px solid #333;
   transform: rotate(45deg);
 }
+.wh_content_item .wh_isToday {
+  background: yellow;
+  border-radius: 100px;
+}
 .wh_content_item > .wh_isMark {
   margin: auto;
   border-radius: 100px;
-  background: #85b525;
+  background: #3297f5;
+  /*background: #85b525;*/
   z-index: 2;
+  position: relative;
 }
 .wh_content_item .wh_other_dayhide {
   color: #bfbfbf;
@@ -124,13 +130,12 @@ wh_content_item_tag {
 .wh_content_item .wh_want_dayhide {
   color: #bfbfbf;
 }
-.wh_content_item .wh_isToday {
-  background: yellow;
-  border-radius: 100px;
-}
+
 .wh_content_item .wh_chose_day {
   background: #3297f5;
   border-radius: 100px;
+  position: relative;
+  z-index: 3;
 }
 
 </style>

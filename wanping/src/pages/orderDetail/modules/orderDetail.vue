@@ -15,6 +15,54 @@
       <p class="data-head">
         <span>订单日期: {{resData.OrderDate}}</span>
       </p>
+      <div class="action-all">
+        <div class="up-box-all">
+          <!--整体上传功能 :http-request="uploadReq" 开始-->
+          <!--data是要发送的数据-->
+          <el-upload
+            ref=""
+            :show-file-list="false"
+            class="upload-demo"
+            :action="upUrl"
+            :data="IDData"
+            :before-upload="beforeUpload"
+            :before-remove="handleRemove"
+            :auto-upload="true"
+            :on-error="handleError"
+            :on-success="handleSuccess"
+          >
+            <el-button slot="trigger" size="small" type="primary" @click.native="upload()" :loading="resData.isLoading">
+              统一上传
+              <i class="el-icon-upload el-icon--right"></i>
+            </el-button>
+          </el-upload>
+          <!--整体上传功能  结束-->
+          <el-button type="primary" size="small" @click="showFile($event)" :loading="resData.isLoading2">
+            <label v-show="resData.showFiles">隐藏已上传素材</label>
+            <label v-show="!resData.showFiles">查看已上传素材</label>
+          </el-button>
+        </div>
+        <div class="file-list-all">
+          <!--已上传文件列表 开始-->
+          <section class="file-list">
+            <ul>
+              <li tabindex="0" v-if="resData.showFiles" v-for="(i,index2) in resData.Medias" :key="i.MediaId" class="el-upload-list__item is-success" style="text-align: left;">
+              <a class="el-upload-list__item-name">
+              <i class="el-icon-document"></i>{{i.MediaName}}
+              </a>
+              <label class="el-upload-list__item-status-label">
+              <i class="el-icon-upload-success el-icon-circle-check"></i>
+              </label>
+              <i class="el-icon-close" @click="handleRemove2($event, -1, index2)" :data-Mid="i.MediaId"></i>
+              <i class="el-icon-close-tip">按 delete 键可删除</i>
+              </li>
+            </ul>
+            <div slot="tip" class="el-upload__tip">统一上传, 屏幕将使用同一素材</div>
+            <div slot="tip" class="el-upload__tip">图片(jpg/png)文件不超过2M,视频(mp4/mov)文件不超过10M</div>
+          </section>
+          <!--已上传文件列表 结束-->
+        </div>
+      </div>
 
       <ul class="food_list_ul">
         <li v-for="(item,index) in resData.Items" :key="item.OrderDate" class="food_list_ul_li">
@@ -52,7 +100,8 @@
                   :auto-upload="true"
                   :on-error="handleError"
                   :on-success="handleSuccess">
-                  <el-button slot="trigger" size="small" type="primary" @click.native="upload(index)" :loading="item.isLoading">
+                  <el-button slot="trigger" size="small" type="primary" @click.native="upload(index)"
+                             :loading="item.isLoading">
                     上传广告素材
                     <i class="el-icon-upload el-icon--right"></i>
                   </el-button>
@@ -62,7 +111,8 @@
 
                 </el-upload>
                 <!--上传功能  结束-->
-                <el-button type="primary" size="small" @click="showFile($event,index)" :data-DtlId="item.DtlId" :loading="item.isLoading2">
+                <el-button type="primary" size="small" @click="showFile($event,index)" :data-DtlId="item.DtlId"
+                           :loading="item.isLoading2">
                   <label v-show="item.showFiles">隐藏已上传素材</label>
                   <label v-show="!item.showFiles">查看已上传素材</label>
                 </el-button>
@@ -71,11 +121,11 @@
 
           </div>
 
-
           <!--已上传文件列表 开始-->
           <section class="file-list">
             <ul>
-              <li tabindex="0" v-if="item.showFiles" v-for="(i,index2) in item.Medias" :key="i.MediaId" class="el-upload-list__item is-success" style="text-align: left;">
+              <li tabindex="0" v-if="item.showFiles" v-for="(i,index2) in item.Medias" :key="i.MediaId"
+                  class="el-upload-list__item is-success" style="text-align: left;">
                 <a class="el-upload-list__item-name">
                   <i class="el-icon-document"></i>{{i.MediaName}}
                 </a>
@@ -87,12 +137,8 @@
               </li>
             </ul>
             <div slot="tip" class="el-upload__tip">图片(jpg/png)文件不超过2M,视频(mp4/mov)文件不超过10M</div>
-
           </section>
           <!--已上传文件列表 结束-->
-
-
-
         </li>
 
       </ul>
@@ -107,7 +153,7 @@
 
 <script>
   import Header from '@/components/header/header.vue'
-  import {getUrlParms,IOSConfig} from '@/config/utils'
+  import {getUrlParms, IOSConfig} from '@/config/utils'
   import {postData, link} from '@/server'
   import {Message, MessageBox} from 'element-ui'
 
@@ -138,17 +184,16 @@
       /**
        * @method 删除已上传文件
        * @param {Object} e 事件对象
-       * @param {String} itemIndex 产品下标
-       * @param {String} MediaIndex 媒体文件下标
+       * @param {Number} itemIndex 产品下标
+       * @param {Number} MediaIndex 媒体文件下标
        */
       handleRemove2(e, itemIndex, MediaIndex) {
-
+//        debugger
         let mid = e.currentTarget.getAttribute('data-Mid');
         let url = '/DeleteFile';
         let data = {
           FileId: mid
         };
-
         MessageBox.confirm('确定移除？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -159,8 +204,11 @@
           postData(url, data).then((res) => {
 //            debugger
             console.log(res);
-
-            this.resData.Items[itemIndex].Medias.splice(MediaIndex, 1);
+            if (itemIndex === -1) {
+              this.resData.Medias.splice(MediaIndex, 1);
+            } else {
+              this.resData.Items[itemIndex].Medias.splice(MediaIndex, 1);
+            }
             Message({
               type: 'success',
               message: '删除成功!'
@@ -178,8 +226,13 @@
        * @param {String} i index
        */
       upload(i) {
-        this.DtlId = this.resData.Items[i].DtlId;
-        this.curItem = this.resData.Items[i];
+        if (i === undefined) { // 如果没下标,就是统一上传
+          this.DtlId = '';
+          this.curItem = this.resData;
+        } else {
+          this.DtlId = this.resData.Items[i].DtlId;
+          this.curItem = this.resData.Items[i];
+        }
         this.IDData = {
           'OrderId': this.resData.OrderId,
           'DetailId': this.DtlId
@@ -214,7 +267,6 @@
               });
             }
           });
-
         }
       },
 
@@ -224,11 +276,26 @@
        * @param {Number} i 下标
        */
       showFile(e, i) {
-
+        if (i === undefined) { // 如果不传下标,就是统一上传
+          this.resData.showFiles = !this.resData.showFiles;
+          if (this.resData.showFiles) {
+            this.curItem = this.resData;
+            this.curItem.isLoading2 = true;
+            const url = '/GetFiles';
+            const data = {
+              'OrderId': this.resData.OrderId,
+              'DetailId': '',
+            };
+            postData(url, data).then((res) => {
+              console.log(res);
+              this.resData.Medias = res.Data;
+              this.curItem.isLoading2 = false;
+            })
+          }
+          return
+        }
         const dtlId = e.currentTarget.getAttribute('data-DtlId');
-//        console.log(dtlId);
         this.resData.Items[i].showFiles = !this.resData.Items[i].showFiles;
-//        this.showFiles = !this.showFiles;
         if (this.resData.Items[i].showFiles) {
           this.curItem = this.resData.Items[i];
           this.curItem.isLoading2 = true;
@@ -242,7 +309,6 @@
             this.curItem.isLoading2 = false;
           })
         }
-
       },
       handleChange(file, fileList) {
 //      this.fileList3 = fileList.slice(-3);
@@ -282,7 +348,6 @@
           });
           this.curItem.isLoading = false;
           return false
-
         }
         if ((isMP4 || isMOv) && !isLt10M) {
           Message({
@@ -298,7 +363,7 @@
       handleSuccess(res, file, fileList) {
 //        console.log(res, file, fileList)
         if (res.Success) {
-          console.log('上传成功',res);
+          console.log('上传成功', res);
           this.file = res.Data;
           this.curItem.Medias.unshift(this.file);
 
@@ -322,7 +387,7 @@
         console.log('上传失败，请重试！');
         Message({
           showClose: true,
-          message: '上传失败,请重试',
+          message: '很抱歉,上传失败,请重试',
           type: "error"
         });
       },
@@ -343,11 +408,15 @@
       postData(url, data).then((res) => {
         console.log(res);
         this.resData = res.Data;
-        this.resData.Items.forEach((item) => {
-          this.$set(item, 'showFiles', false);
-          this.$set(item, 'isLoading', false);
-          this.$set(item, 'isLoading2', false);
-        })
+        ['showFiles', 'isLoading', 'isLoading2', 'Medias'].map((key) => {
+          let theValue = key === 'Medias' ? [] : false;
+          this.$set(this.resData, key, theValue);
+        });
+        for (let item of this.resData.Items) {
+          this.$set(item, 'showFiles', false);// 显示已上传文件列表的开关
+          this.$set(item, 'isLoading', false);// 上传广告素材按钮的loading状态
+          this.$set(item, 'isLoading2', false);// 查看素材按钮的loading状态
+        }
       });
     },
 
@@ -399,8 +468,19 @@
       @include sc(.75rem, black);
       padding: .5rem;
     }
-    .data-head:nth-child(3) {
+    .action-all {
       border-bottom: 5px solid #f5f5f5;
+
+    }
+    .up-box-all {
+      display: flex;
+      justify-content: flex-end;
+      /*justify-content: space-between;*/
+      /*padding: .3rem;*/
+      padding: 16px;
+    }
+    .data-head:nth-child(3) {
+      /*border-bottom: 5px solid #f5f5f5;*/
     }
     .food_list_ul {
 
@@ -431,7 +511,7 @@
         }
 
         .img-box {
-          @include wh(4rem,4rem);
+          @include wh(4rem, 4rem);
           margin-right: .5rem;
           img {
             width: 100%;
@@ -473,7 +553,7 @@
     /*padding: .5rem;*/
     /*text-align: right;*/
     /*span {*/
-      /*color: #ffffff;*/
+    /*color: #ffffff;*/
     /*}*/
 
     .up-icon {
