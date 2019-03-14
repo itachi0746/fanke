@@ -32,6 +32,7 @@
                       {{item.BusinessName}}
                     </p>
                     <p class="order_name2">{{item.PsName}}</p>
+                    <p class="">播放日期:{{item.OrderDate}}</p>
                   </div>
                   <div>
                     <p class="order_amount">¥{{item.Price}}</p>
@@ -323,6 +324,7 @@
             display: flex;
             flex: 1;
             justify-content:space-between;
+            font-size: 0.65rem;
           }
           .order_name {
             display: flex;

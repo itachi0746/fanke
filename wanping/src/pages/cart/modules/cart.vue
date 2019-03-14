@@ -1,12 +1,13 @@
 <template>
   <!--购物车 开始-->
   <div class="shopping-cart">
-    <Header :headName="headName" :editState="delFlag" @onEdit="handleEdit"></Header>
+    <Header :headName="headName" :editState="delFlag" @onEdit="handleEdit"
+            @headerHeight="getHeight" :a="oktoGetH"></Header>
 
     <section v-if="cart.length === 0" class="empty-states">
       <span>这里是空的，快去逛逛吧</span>
     </section>
-    <section v-else class="items">
+    <section v-else class="items" ref="wrapper" id="wrapper">
       <ul>
         <li class="item" v-for="(item,index) in cart" :key="item.ItemId">
           <div class="shop">
@@ -62,7 +63,7 @@
       </ul>
     </section>
     <div class="fillBtm"></div>
-    <section class="confrim-order">
+    <section class="confrim-order" ref="confirmOrder">
       <div class="ft-cb" @click="selAll">
         <i class="icon iconfont icon-unchecked" v-show="!checkAllFlag"></i>
         <i class="icon iconfont icon-checked" v-show="checkAllFlag"></i>
@@ -89,7 +90,7 @@
       </div>
     </section>
     <Loading v-show="isLoading"></Loading>
-    <Footer :page="page"></Footer>
+    <Footer :page="page" @footerHeight="getHeight" :a="oktoGetH"></Footer>
   </div>
   <!--购物车 结束-->
 </template>
@@ -100,6 +101,7 @@
   import Loading from '../../../components/common/loading.vue'
   import {postData} from '@/server'
   import {getUrlParms,IOSConfig} from '@/config/utils'
+  import BScroll from 'better-scroll'
 
   export default {
     data() {
@@ -110,7 +112,21 @@
         checkAllFlag: false,  // 是不是全选了
         selectedNum: 0,
         delFlag: false,
-        isLoading : false
+        isLoading : false,
+        WH: null, // 窗口高度
+        times: 0,
+        oktoGetH: false,
+        options: {
+          //开启点击事件 默认为false
+          click: true,
+//            probeType: 3,
+          pullUpLoad: {
+            threshold: -20 // 当上拉距离超过20px时触发 pullingUp 事件
+          },
+          scrollbar: {
+            fade: true
+          }
+        }
       }
     },
 
@@ -147,11 +163,49 @@
       postData(url).then((res) => {
           console.log(res);
           this.cart = res.Data;
+
+          this.$nextTick(() => {
+            this.init_scroll();
+          });
+          this.oktoGetH = true;
         }
       )
     },
 
     methods: {
+      //获取窗口可视范围的高度
+      getClientHeight() {
+        let clientHeight = 0;
+        if (document.body.clientHeight && document.documentElement.clientHeight) {
+          clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+        } else {
+          clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+        }
+        return clientHeight;
+      },
+      /**
+       * @method 用窗口高度减去头部脚部高度 计算主要内容wrapper的高度
+       * @param {String} h 高度
+       */
+      getHeight(h) {
+        this.times++;
+        console.log(h);
+        this.WH -= h;
+        if (this.times === 2) {
+          let confirmOrderH = this.$refs.confirmOrder.offsetHeight;
+//          console.log(confirmOrderH);
+          this.$refs.wrapper.style.height = this.WH - confirmOrderH + 'px';
+        }
+      },
+      init_scroll() {
+        if (!this.scroll) {
+          this.scroll = new BScroll('#wrapper', this.options);
+        } else {
+          this.scroll.refresh();
+        }
+
+        console.log(this.scroll);
+      },
       /**
        * @method 选择商品
        * @param {Object} e 事件对象
@@ -273,6 +327,7 @@
     },
 
     mounted() {
+      this.WH = this.getClientHeight();
     },
 
     beforeDestroy() {

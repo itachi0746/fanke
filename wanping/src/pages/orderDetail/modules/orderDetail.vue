@@ -71,12 +71,10 @@
               <img :src="item.Img" alt="商品图">
             </div>
             <div class="font-box">
-              <p class="food_name ellipsis" @click="toScreen(item.PDtlId)">
-                <span>
-                  {{item.PsName}}
-                </span>
+              <div class="food_name" @click="toScreen(item.PDtlId)">
+                <p class="food_name_span">{{item.PsName}}</p>
                 <i class="el-icon-arrow-right"></i>
-              </p>
+              </div>
               <div class="quantity_price">
                 <div>
                   <span>广告播放日期: {{item.OrderDate}}</span>
@@ -492,8 +490,16 @@
         border-bottom: 5px solid #f5f5f5;
         .food_name {
           @include sc(.8rem, #000);
-          /*display: flex;*/
+          display: flex;
+          align-items: center;
+          width: 100%;
           /*align-items: flex-start;*/
+        }
+        .food_name_span {
+          /*display: inline-block;*/
+          word-wrap: normal;
+          max-width: 95%;
+          /*flex: 1;*/
         }
         .quantity_price {
           display: flex;
@@ -520,6 +526,7 @@
         }
         .font-box {
           flex: 1;
+          /*width: 13.5rem;*/
         }
         .up-box {
           display: flex;

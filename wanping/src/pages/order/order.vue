@@ -17,5 +17,7 @@
 
 <style lang="scss">
   @import 'src/style/common';
-
+  .bscroll-vertical-scrollbar {
+    width: 5px!important;
+  }
 </style>
