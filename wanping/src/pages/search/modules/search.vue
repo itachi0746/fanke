@@ -68,7 +68,7 @@
   import Footer from '../../../components/footer/footer.vue'
   import Header from '../../../components/header/header.vue'
   import Loading from '../../../components/common/loading.vue'
-  import {MessageBox} from 'element-ui'
+  import {MessageBox,Message} from 'element-ui'
   import {getStore, setStore} from '../../../config/store'
   import {postData} from '../../../server/index'
   import {getUrlParms} from '@/config/utils'
@@ -234,7 +234,11 @@
         });
 
       } else {
-        console.log('没有bizid')
+        console.log('没有bizid');
+        Message({
+          type: 'error',
+          message: '获取店铺信息失败!'
+        });
       }
     },
 

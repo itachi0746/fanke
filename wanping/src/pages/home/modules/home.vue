@@ -8,12 +8,19 @@
     <aFilter ref="af" :isShowCity="showCity" @sort="handleSort" @fenlei2="handleFenLei" @change-city="handleChangeCity"></aFilter>
     <div class="fill-div"></div>
     <!--轮播图 开始-->
-    <swiper :options="swiperOption" ref="mySwiper" v-if="Ads.length">
-      <swiper-slide v-for="(item, index) in Ads" :key="item.Index">
-        <img :src="item.ImageUrl" alt="广告轮播图" @click="clickBanner(item.LinkAddress)">
-      </swiper-slide>
-      <div class="swiper-pagination"  slot="pagination"></div>
-    </swiper>
+    <!--<swiper :options="swiperOption" ref="mySwiper" v-if="Ads.length">-->
+      <!--<swiper-slide v-for="(item, index) in Ads" :key="item.Index">-->
+        <!--<img :src="item.ImageUrl" alt="广告轮播图" @click="clickBanner(item.LinkAddress)">-->
+      <!--</swiper-slide>-->
+      <!--<div class="swiper-pagination"  slot="pagination"></div>-->
+    <!--</swiper>-->
+    <div v-if="Ads.length">
+      <el-carousel height="10rem">
+        <el-carousel-item v-for="(item,index) in Ads" :key="item.Index">
+          <img :src="item.ImageUrl" alt="" @click="clickBanner(item.LinkAddress)">
+        </el-carousel-item>
+      </el-carousel>
+    </div>
     <!--轮播图 结束-->
 
     <!--推荐列表 开始-->
@@ -53,8 +60,8 @@
   import aFilter from './filter'
   import VDistpicker from '../../../components/city/Distpicker.vue'
   import {postData} from '@/server'
-  import { swiper, swiperSlide } from 'vue-awesome-swiper';
-  import 'swiper/dist/css/swiper.css'
+//  import { swiper, swiperSlide } from 'vue-awesome-swiper';
+//  import 'swiper/dist/css/swiper.css'
 
   export default {
     name: 'Home',
@@ -191,8 +198,8 @@
       aFilter,
       screenListAll,
       Footer,
-      swiper,
-      swiperSlide,
+//      swiper,
+//      swiperSlide,
       Loading,
       VDistpicker
 //      city

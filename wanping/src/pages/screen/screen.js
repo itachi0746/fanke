@@ -4,7 +4,14 @@ import Vue from 'vue'
 import App from './screen.vue'
 import BaiduMap from 'vue-baidu-map'
 import {Button,Switch,Row,Col} from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css';
+// import 'element-ui/lib/theme-chalk/index.css';
+import 'element-ui/lib/theme-chalk/message.css';
+import 'element-ui/lib/theme-chalk/message-box.css';
+import 'element-ui/lib/theme-chalk/button.css';
+import 'element-ui/lib/theme-chalk/switch.css';
+import 'element-ui/lib/theme-chalk/row.css';
+import 'element-ui/lib/theme-chalk/col.css';
+
 import '@/config/rem'
 import '@/style/font/iconfont.css'
 import axiosPlugin from '@/server'

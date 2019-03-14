@@ -4,7 +4,13 @@ import Vue from 'vue'
 import App from './upload.vue'
 
 import {Upload,Button} from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css';
+// import 'element-ui/lib/theme-chalk/index.css';
+import 'element-ui/lib/theme-chalk/message.css';
+import 'element-ui/lib/theme-chalk/message-box.css';
+import 'element-ui/lib/theme-chalk/upload.css';
+import 'element-ui/lib/theme-chalk/button.css';
+import 'element-ui/lib/theme-chalk/button-group.css';
+
 import '@/config/rem'
 import '@/style/font/iconfont.css'
 import axiosPlugin from '@/server'

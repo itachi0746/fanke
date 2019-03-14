@@ -4,7 +4,10 @@ import Vue from 'vue';
 import App from './order.vue';
 import '../../config/rem';
 import '@/style/font/iconfont.css';
-import 'element-ui/lib/theme-chalk/index.css';
+// import 'element-ui/lib/theme-chalk/index.css';
+import 'element-ui/lib/theme-chalk/message.css';
+import 'element-ui/lib/theme-chalk/message-box.css';
+import 'element-ui/lib/theme-chalk/button.css';
 // import {Button,Dialog,MessageBox} from 'element-ui';
 
 // import router from './router'

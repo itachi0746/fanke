@@ -1,6 +1,6 @@
 <template>
   <div id="shoplist">
-    <!--商家列表-->
+    <!--主页产品列表-->
     <ul class="shoplist-container">
       <li class="shoplist-item" v-for="(item) in screenList" :key="item.Id" @click="toScreen($event)"
           :data-pid="item.Id">
@@ -12,7 +12,6 @@
             <span class="ellipsis">
               {{ item.Name }}
             </span>
-
           </p>
           <div class="shop-data">
             <div class="shop-price">
@@ -42,14 +41,11 @@
           <!--</div>-->
           <!--</div>-->
         </div>
-
       </li>
-
     </ul>
     <p class="empty_data" v-if="!isEnd">加载更多</p>
     <p class="empty_data" v-else>没有更多了</p>
     <Loading v-show="isLoading"></Loading>
-
   </div>
 </template>
 
@@ -357,13 +353,13 @@
               this.isEnd = true;  // 没有更多了
               return;
             }
-            // 当滚动到最底部以上50像素时， 加载新内容
+            // 当滚动到最底部以上200像素时， 加载新内容
             // 核心代码
             let appH = document.getElementById("app").offsetHeight,
               wt = this.getScrollTop(),
               wh = this.getClientHeight();
 //            console.log(appH, wt, wh);
-            if (appH - wt - wh < 100) {
+            if (appH - wt - wh < 200) {
               this.$emit('loaded', false);
               this.page++;
               this.getData();

@@ -57,15 +57,15 @@ Axios.interceptors.request.use(
 Axios.interceptors.response.use(
   res => {
     //对响应数据做些事
-    if (res.Data && !res.Success) {
+    if (res.data.Data && !res.data.Success) {
       Message({
         //  饿了么的消息弹窗组件,类似toast
         showClose: true,
         // message: '请求失败',
-        message: res.ErrMsg,// 弹出错误信息
+        message: res.data.ErrMsg,// 弹出错误信息
         type: "error"
       });
-      return Promise.reject(res.ErrMsg);
+      return Promise.reject(res.data.ErrMsg);
     }
     return res;
   },
