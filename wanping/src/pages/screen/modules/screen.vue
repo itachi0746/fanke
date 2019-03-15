@@ -4,10 +4,17 @@
     <!--轮播图 开始-->
     <swiper :options="swiperOption" ref="mySwiper">
       <swiper-slide @click="" v-for="(item,index) in resData.Imgs" :key="index">
-        <img :src="item" alt="轮播图">
+        <img :src="item" alt="">
       </swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
     </swiper>
+    <!--<div v-if="Ads.length">-->
+      <!--<el-carousel height="10rem">-->
+        <!--<el-carousel-item v-for="(item,index) in Ads" :key="item.Index">-->
+          <!--<img :src="item" alt="" @click="">-->
+        <!--</el-carousel-item>-->
+      <!--</el-carousel>-->
+    <!--</div>-->
     <!--轮播图 结束-->
 
     <div class="screen-data">
@@ -203,6 +210,7 @@
         showMap: false,
         multiMode: false, // 多选模式
         hoverNum: -1, // 是否点中
+        Ads: [], // 轮播图s
         swiperOption: {
           pagination: {
             el: '.swiper-pagination'
@@ -530,13 +538,11 @@
       postData(url, data).then((res) => {
         console.log(res);
         this.resData = res.Data;
+//        this.Ads = this.resData.Imgs;
         this.days = res.Data.DayStates;  // 日期数组
         this.UP = this.days[0].Price;  // 今天的产品的单价
-
         this.curDayObj = this.days[0]  // 当前显示的天
       });
-
-
     },
 
     mounted() {

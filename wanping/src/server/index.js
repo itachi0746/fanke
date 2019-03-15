@@ -53,7 +53,7 @@ Axios.interceptors.request.use(
 );
 
 
-//返回状态判断(添加响应拦截器)
+//返回状态判断(添加响应拦截器), 统一处理响应
 Axios.interceptors.response.use(
   res => {
     //对响应数据做些事
@@ -69,7 +69,7 @@ Axios.interceptors.response.use(
     }
     return res;
   },
-  error => {
+  error => { // 拦截整体
     Message({
       //  饿了么的消息弹窗组件,类似toast
       showClose: true,
@@ -114,10 +114,11 @@ let postData = function (url, params = {}) {
   console.log("开始访问:" + theRequestUrl);
   return new Promise((resolve, reject) => {
     Axios.post(url, params)
-      .then(response => {
+      .then(response => { // 成功状态,把res的data传下去
+        // console.log(response);
         resolve(response.data);
       })
-      .catch((error) => {
+      .catch((error) => { // 出错的情况,把error传下去
         console.log(theRequestUrl + ':请求出错');
         reject(error);
       })

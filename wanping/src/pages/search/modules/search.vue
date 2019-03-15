@@ -235,10 +235,10 @@
 
       } else {
         console.log('没有bizid');
-        Message({
-          type: 'error',
-          message: '获取店铺信息失败!'
-        });
+//        Message({
+//          type: 'error',
+//          message: '获取店铺信息失败!'
+//        });
       }
     },
 

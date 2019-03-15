@@ -32,7 +32,7 @@
                       {{item.BusinessName}}
                     </p>
                     <p class="order_name2">{{item.PsName}}</p>
-                    <p class="">播放日期:{{item.OrderDate}}</p>
+                    <p class="">播放日期:{{item.PlayTime}}</p>
                   </div>
                   <div>
                     <p class="order_amount">¥{{item.Price}}</p>
@@ -65,7 +65,7 @@
 
     </div>
     <Loading v-show="isLoading"></Loading>
-    <div class="iosBtm" v-if="isIOS"></div>
+    <!--<div class="iosBtm" v-if="isIOS"></div>-->
 
     <Footer :page="page" @footerHeight="getHeight" :a="oktoGetH"></Footer>
   </div>

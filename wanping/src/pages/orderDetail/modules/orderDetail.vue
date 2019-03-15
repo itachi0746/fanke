@@ -77,7 +77,7 @@
               </div>
               <div class="quantity_price">
                 <div>
-                  <span>广告播放日期: {{item.OrderDate}}</span>
+                  <span>播放日期: {{item.PlayTime}}</span>
                 </div>
                 <div>
                   <span>合计</span>
@@ -288,6 +288,11 @@
               console.log(res);
               this.resData.Medias = res.Data;
               this.curItem.isLoading2 = false;
+            })
+            .catch((error) => {
+              console.log(error);
+              this.curItem.isLoading2 = false;
+//              reject(error);
             })
           }
           return

@@ -131,6 +131,7 @@
        * @method 请求获取数据
        */
       getData() {
+        const args = getUrlParms();
         this.isLoading = true;
         this.loadMoreSwitch = false;
         const url = '/GetProducts';
@@ -140,19 +141,26 @@
         } else {
           theId = '16167f6f559346ccb113aee153c88675'// 测试
         }
-        const data = {
-          'bizId': theId
-        };
-        postData(url, data).then((res) => {
-          console.log(res);
-          this.screenList = this.screenList.concat(res.Data.Models);
-          this.loadMoreSwitch = true;
-          this.sum = res.Data.PageCount;  // 总页数
-          console.log(this.sum);
+        if (theId) {
+          const data = {
+            'bizId': theId
+          };
+          postData(url, data).then((res) => {
+            console.log(res);
+            this.screenList = this.screenList.concat(res.Data.Models);
+            this.loadMoreSwitch = true;
+            this.sum = res.Data.PageCount;  // 总页数
+//          console.log(this.sum);
 //          this.$emit('loaded', true);
+            this.isLoading = false;
+            this.dateFormatting();
+          })
+        } else {
+          console.log('没有bizid');
           this.isLoading = false;
-          this.dateFormatting();
-        })
+          this.loadMoreSwitch = true
+        }
+
       },
     },
 

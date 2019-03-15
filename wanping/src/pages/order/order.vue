@@ -20,4 +20,7 @@
   .bscroll-vertical-scrollbar {
     width: 5px!important;
   }
+  .bscroll-indicator {
+    border: none!important;
+  }
 </style>

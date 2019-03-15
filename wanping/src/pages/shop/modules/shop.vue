@@ -1,13 +1,22 @@
 <template>
   <div class="shop">
     <Header :headName="headName"></Header>
+    <!--<div v-if="ads.length">-->
+      <!--<el-carousel height="10rem">-->
+        <!--<el-carousel-item v-for="(item,index) in ads" :key="index">-->
+          <!--&lt;!&ndash;<h3>{{ item }}</h3>&ndash;&gt;-->
+          <!--<img :src="item.ImageUrl" alt="">-->
+        <!--</el-carousel-item>-->
+      <!--</el-carousel>-->
+    <!--</div>-->
+
     <div v-if="ads.length">
-      <el-carousel height="10rem">
-        <el-carousel-item v-for="(item,index) in ads" :key="index">
-          <!--<h3>{{ item }}</h3>-->
+      <swiper :options="swiperOption" ref="mySwiper">
+        <swiper-slide @click="" v-for="(item,index) in ads" :key="index">
           <img :src="item.ImageUrl" alt="">
-        </el-carousel-item>
-      </el-carousel>
+        </swiper-slide>
+        <div class="swiper-pagination" slot="pagination"></div>
+      </swiper>
     </div>
 
     <div class="shopData">
@@ -27,23 +36,40 @@
   import {Message} from 'element-ui'
   import {getUrlParms,IOSConfig} from '@/config/utils'
   import {postData} from '../../../server'
+  import { swiper, swiperSlide } from 'vue-awesome-swiper';
+  import 'swiper/dist/css/swiper.css'
 
   export default {
     data() {
       return {
         headName: '商家详情',
         resData: {},
-        ads: []
+        ads: [],
+        swiperOption: {
+          pagination: {
+            el: '.swiper-pagination'
+          },
+//          loop: true,
+//          autoplay: {
+//            disableOnInteraction: false,
+//          },
+        },
       }
     },
 
     components: {
       ScreenList,
       Header,
-      Footer
+      Footer,
+      swiper,
+      swiperSlide
     },
 
-    computed: {},
+    computed: {
+      swiper() {
+        return this.$refs.mySwiper.swiper
+      }
+    },
 
     methods: {},
 
@@ -105,6 +131,19 @@
     img {
       width: 100%;
       height: 100%;
+    }
+  }
+  .swiper-container {
+    width: 100%;
+    position: relative;
+    height: 10rem;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+    .swiper-pagination-bullet-active {
+      background: #f9ce04!important;
     }
   }
 </style>
