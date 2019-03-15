@@ -84,41 +84,40 @@
                   <span>¥{{item.Amount}}</span>
                 </div>
               </div>
-              <div class="up-box">
-                <!--上传功能 :http-request="uploadReq" 开始-->
-                <!--data是要发送的数据-->
-                <el-upload
-                  ref="upload2"
-                  class="upload-demo"
-                  :show-file-list="false"
-                  :action="upUrl"
-                  :data="IDData"
-                  :before-upload="beforeUpload"
-                  :before-remove="handleRemove"
-                  :auto-upload="true"
-                  :on-error="handleError"
-                  :on-success="handleSuccess">
-                  <el-button slot="trigger" size="small" type="primary" @click.native="upload(index)"
-                             :loading="item.isLoading">
-                    上传广告素材
-                    <i class="el-icon-upload el-icon--right"></i>
-                  </el-button>
-
-                  <!--<el-button style="margin-left: 10px;" size="small" type="success" @click.native="submitUpload">上传到服务器</el-button>-->
-                  <!--<div slot="tip" class="el-upload__tip">上传图片(jpg/png)文件不超过2M,视频(mp4)文件不超过10M</div>-->
-
-                </el-upload>
-                <!--上传功能  结束-->
-                <el-button type="primary" size="small" @click="showFile($event,index)" :data-DtlId="item.DtlId"
-                           :loading="item.isLoading2">
-                  <label v-show="item.showFiles">隐藏已上传素材</label>
-                  <label v-show="!item.showFiles">查看已上传素材</label>
-                </el-button>
-              </div>
             </div>
 
           </div>
+          <div class="up-box">
+            <!--上传功能 :http-request="uploadReq" 开始-->
+            <!--data是要发送的数据-->
+            <el-upload
+              ref="upload2"
+              class="upload-demo"
+              :show-file-list="false"
+              :action="upUrl"
+              :data="IDData"
+              :before-upload="beforeUpload"
+              :before-remove="handleRemove"
+              :auto-upload="true"
+              :on-error="handleError"
+              :on-success="handleSuccess">
+              <el-button slot="trigger" size="small" type="primary" @click.native="upload(index)"
+                         :loading="item.isLoading">
+                上传广告素材
+                <i class="el-icon-upload el-icon--right"></i>
+              </el-button>
 
+              <!--<el-button style="margin-left: 10px;" size="small" type="success" @click.native="submitUpload">上传到服务器</el-button>-->
+              <!--<div slot="tip" class="el-upload__tip">上传图片(jpg/png)文件不超过2M,视频(mp4)文件不超过10M</div>-->
+
+            </el-upload>
+            <!--上传功能  结束-->
+            <el-button type="primary" size="small" @click="showFile($event,index)" :data-DtlId="item.DtlId"
+                       :loading="item.isLoading2">
+              <label v-show="item.showFiles">隐藏已上传素材</label>
+              <label v-show="!item.showFiles">查看已上传素材</label>
+            </el-button>
+          </div>
           <!--已上传文件列表 开始-->
           <section class="file-list">
             <ul>
@@ -466,6 +465,11 @@
         fill: #666;
       }
     }
+    .up-box {
+      display: flex;
+      justify-content: flex-end;
+      padding: .3rem;
+    }
     .data-head {
       @include fj;
       @include sc(.75rem, black);
@@ -503,7 +507,7 @@
         .food_name_span {
           /*display: inline-block;*/
           word-wrap: normal;
-          max-width: 95%;
+          /*max-width: 95%;*/
           /*flex: 1;*/
         }
         .quantity_price {
@@ -523,6 +527,7 @@
 
         .img-box {
           @include wh(4rem, 4rem);
+          min-width: 4rem;
           margin-right: .5rem;
           img {
             width: 100%;
@@ -533,11 +538,11 @@
           flex: 1;
           /*width: 13.5rem;*/
         }
-        .up-box {
-          display: flex;
-          justify-content: space-between;
-          padding: .3rem;
-        }
+        /*.up-box {*/
+          /*display: flex;*/
+          /*justify-content: space-between;*/
+          /*padding: .3rem;*/
+        /*}*/
       }
     }
     .deliver_fee {

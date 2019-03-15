@@ -38,7 +38,7 @@
       <p @click="placeOrder">确认下单</p>
     </section>
     <Loading v-show="isLoading"></Loading>
-    <!--<div class="iosBtm" v-if="isIOS"></div>-->
+    <div class="iosBtm" v-if="isIOS"></div>
 
   </div>
   <!--订单 结束-->

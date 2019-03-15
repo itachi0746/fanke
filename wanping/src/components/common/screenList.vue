@@ -9,9 +9,7 @@
         </div>
         <div class="desc-box">
           <p class="shop-name">
-            <span class="ellipsis">
-              {{ item.Name }}
-            </span>
+            <span>{{ item.Name }}</span>
           </p>
           <div class="shop-data">
             <div class="shop-price">

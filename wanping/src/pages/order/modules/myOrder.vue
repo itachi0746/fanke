@@ -313,6 +313,7 @@
           padding: .25rem 0;
           .order_img_box {
             @include wh(4rem, 4rem);
+            min-width: 4rem;
             margin-right: .5rem;
 
             img {
