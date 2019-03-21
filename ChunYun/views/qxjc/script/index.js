@@ -1610,7 +1610,8 @@ $(function () {
                 if (theEndDate.getTime() < theCurrentDate.getTime()) {
                     theCurrentDate = theEndDate;
                 }
-                if(theMaxDate.getTime()>theEndDate.getTime()){
+                //debugger;
+                if(theMaxDate.getTime()>theCurrentDate.getTime()){
                     theCurrentDate = theMaxDate;
                 }
                 while (theBeginDate.getTime() <= theCurrentDate.getTime()) {
@@ -1687,7 +1688,9 @@ $(function () {
                         theArrays.push(theDate);
                     }
                 }
-                console.error("缺少日期数据:"+JSON.stringify(theArrays));
+                console.error("缺少日期数据:"+JSON.stringify(theArrays.map(function(m){
+                    return m.getFullYear()+"-"+(m.getMonth()+1)+'-'+m.getDate()+" "+m.getHours()+":"+m.getMinutes()+":"+m.getSeconds();
+                })));
             }
             else {
                 console.log("loadCurrent错误:" + data);

@@ -6,8 +6,8 @@ if(window.location.hostname==='localhost') {
 } else {
     //serviceBase = "http://123.207.31.17/gdcnymot/";
     // hostbase="http://123.207.31.17";
-    serviceBase = "http://14.23.164.13:7001/gdcnymot/";
-    hostbase="http://14.23.164.13:7001";
+    serviceBase = "http://serv.gdcmcc.com:23203/gdcnymot/";
+    hostbase="http://serv.gdcmcc.com:23203";
 }
 $(function () {
     Array.prototype.min = function (compare) {
