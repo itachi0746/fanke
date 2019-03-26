@@ -2920,6 +2920,7 @@ $(function () {
       var theLi = stationLiArr[i];
       $(theLi).on('click', function () {
         var theLiName = $(this).text();
+        theLiName = theLiName === '广州白云国际机场T2航站楼' ? '广州白云国际机场' : theLiName;
         goToPointByName(theLiName);
         curPosition = theLiName;
         var curPosDataBox = $('#cur-pos-data-box');
@@ -2982,6 +2983,7 @@ $(function () {
   function addTab0Station() {
     var stationDom;
     var markerArr = pointControl.markes;
+    // debugger
     var sb1 = $('#station-box-1');
     var sb2 = $('#station-box-2');
     var sb3 = $('#station-box-3');
@@ -3025,6 +3027,7 @@ $(function () {
         sb2.find('ul').append(stationDom);
       }
     }
+    sb3.find('ul').append($('<li>' + '广州白云国际机场T2航站楼' + '</li>'));
     stationLiBindClick();
   }
 

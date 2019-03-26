@@ -149,7 +149,7 @@ function PlacePointView(theMap) {
       "一级分类": theItem[0],
       "枢纽类别": theItem[1],
       "枢纽名称": theItem[2],
-      "地址": theItem[3],
+      "地址": theItem[3]
     }
     theDataObject.push(theData);
   }
