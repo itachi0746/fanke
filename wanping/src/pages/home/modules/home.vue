@@ -152,7 +152,7 @@
         GoToPage('screen','screen.html',{'pid':targetId})
       },
       handleLoad(loaded) {
-        this.isLoading = !loaded
+//        this.isLoading = !loaded
       },
       /**
        * @method 排序

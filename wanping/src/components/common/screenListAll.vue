@@ -2,7 +2,7 @@
   <div id="shoplist">
     <!--主页产品列表-->
     <ul class="shoplist-container">
-      <li class="shoplist-item" v-for="(item) in screenList" :key="item.Id" @click="toScreen($event)"
+      <li class="shoplist-item" v-for="(item,index) in screenList" :key="item.index" @click="toScreen($event)"
           :data-pid="item.Id">
         <div class="img-box">
           <img :src="item.Img" alt="">
@@ -261,10 +261,8 @@
           this.screenList = this.screenList.concat(res.Data.Models);
           this.loadMoreSwitch = true;
           this.sum = res.Data.PageCount;  // 总页数
-//          console.log(this.sum)
-//          this.$emit('loaded', true);
           this.isLoading = false;
-
+          console.log(this.isLoading)
           this.dateFormatting();
         })
       },
@@ -357,7 +355,7 @@
               wt = this.getScrollTop(),
               wh = this.getClientHeight();
 //            console.log(appH, wt, wh);
-            if (appH - wt - wh < 200) {
+            if (appH - wt - wh < 100) {
               this.$emit('loaded', false);
               this.page++;
               this.getData();
