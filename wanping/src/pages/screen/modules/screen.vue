@@ -19,11 +19,11 @@
 
     <div class="screen-data">
       <h5>{{resData.Name}}</h5>
-      <p class="screen-desc">{{resData.Desc}}</p>
+      <!--<p class="screen-desc">{{resData.Desc}}</p>-->
 
-      <p class="screen-desc">Step1: 点击日期查看屏幕的剩余广告位</p>
-      <p class="screen-desc">Step2: 选择广告位数量, 点击添加</p>
-      <p class="screen-desc">Step3: 点击下方的购买按钮</p>
+      <p class="screen-desc mt5">步骤1: 点击日期查看屏幕的剩余广告位</p>
+      <p class="screen-desc">步骤2: 选择广告位数量, 点击添加</p>
+      <p class="screen-desc">步骤3: 点击下方的购买按钮</p>
       <!--<p class="screen-desc">备注: </p>-->
     </div>
     <div class="action-bar">
@@ -493,6 +493,10 @@
        * @method 购买下单,跳转订单确认
        */
       handleOrder() {
+        if (!this.selected.length) {
+          console.log('没选商品')
+          return
+        }
         this.isLoading = true;
 //        const url = '/ConfirmOrder';
         const url = '/PlaceOrder';
@@ -584,8 +588,11 @@
       color: #000;
     }
 
-    .screen-desc:nth-child(3) {
-      margin-top: .5rem;
+    /*.screen-desc:nth-child(3) {*/
+      /*margin-top: .5rem;*/
+    /*}*/
+    .mt5 {
+      margin-top: 0.5rem;
     }
   }
 
@@ -647,6 +654,8 @@
       font-size: .8rem;
       line-height: 25px;
       padding-top: 5px;
+      overflow-x: scroll;
+      -webkit-overflow-scrolling: touch;/* 解决ios滑动不流畅问题 */
 
       /deep/ * {
         padding: 0;

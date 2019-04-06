@@ -327,13 +327,14 @@
         const isPNG = ft === 'image/png';
         const isMP4 = ft === 'video/mp4';
         const isMOv = ft === 'video/mov';
+        const isMOv2 = ft === 'video/quicktime';
         const fileSize = file.size / 1024 / 1024;  // w文件的大小 M
-        console.log(fileSize)
+        console.log(fileSize,ft)
 
         const isLt2M = fileSize < 2;
         const isLt10M = fileSize < 10;
 
-        if (!isJPG && !isMP4 && !isPNG && !isMOv) {
+        if (!isJPG && !isMP4 && !isPNG && !isMOv && !isMOv2) {
           Message({
             showClose: true,
             message: '视频或图片的格式错误',
@@ -351,7 +352,7 @@
           this.curItem.isLoading = false;
           return false
         }
-        if ((isMP4 || isMOv) && !isLt10M) {
+        if ((isMP4 || isMOv || isMOv2) && !isLt10M) {
           Message({
             showClose: true,
             message: '上传视频大小不能超过 10MB!',

@@ -10,7 +10,7 @@
     <!--轮播图 开始-->
     <swiper :options="swiperOption" ref="mySwiper" v-if="Ads.length">
       <swiper-slide v-for="(item, index) in Ads" :key="item.Index">
-        <img :src="item.ImageUrl" alt="广告轮播图" @click="clickBanner(item.LinkAddress)">
+        <img :src="item.ImageUrl" alt="" @click="clickBanner(item.LinkAddress)">
       </swiper-slide>
       <div class="swiper-pagination"  slot="pagination"></div>
     </swiper>
@@ -34,9 +34,12 @@
             <div>
               <img :src="item.Img" alt="">
             </div>
-            <p class="ellipsis">
+            <!--<p class="ellipsis">-->
+              <!--{{item.Name}}-->
+            <!--</p>-->
+            <div class="item-name">
               {{item.Name}}
-            </p>
+            </div>
           </div>
         </div>
       </div>
@@ -71,7 +74,7 @@
         page: 'Home',
         isLoading: false,
         Recommends: [],
-        sortObj: {'id':'1','sortType':'0'},  // 排序对象
+        sortObj: {'id':'1','sortType':'1'},  // 排序对象
         fenleiObj: {'ClsId': ''},
         showCity: false,
         theExtH: 0,
@@ -231,7 +234,7 @@
   .recommend-container {
     width: 100%;
     margin-top: .5rem;
-    height: 10rem;
+    /*height: 10rem;*/
     overflow: hidden;
   }
 
@@ -319,7 +322,14 @@
     z-index: 999999;
     background-color: #fff;
   }
-
+  .item-name {
+    word-wrap: break-word;
+    word-break: normal;
+    font-size: .75rem;
+    padding-left: .2rem;
+    text-align: center;
+    /*height: 3rem;*/
+  }
 
 
 </style>

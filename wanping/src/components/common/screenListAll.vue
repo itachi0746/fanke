@@ -72,7 +72,7 @@
       sortObj: {
         type: Object,
         default: function () {
-          return {'id': '1', 'sortType': '0'}
+          return {'id': '1', 'sortType': '1'}
         }
       },
       fenleiObj: {

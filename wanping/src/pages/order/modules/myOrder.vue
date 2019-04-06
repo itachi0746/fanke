@@ -15,12 +15,23 @@
                   </h4>
                   <p class="order_time">{{order.OrderDate}}</p>
                 </section>
-                <p class="order_status" v-if="order.RefundStatus">
-                  {{order.RefundStatusText}}
-                </p>
-                <p class="order_status" v-else>
-                  {{order.OrderStatus}}
-                </p>
+                <div style="text-align: center;">
+                  <div class="order_status" v-if="order.RefundStatus">
+                    {{order.RefundStatusText}}
+                  </div>
+                  <div class="order_status" v-else>
+                    {{order.OrderStatus}}
+                  </div>
+                  <div v-if="order.PaySign">
+                    <p class="refund"
+                    v-if="order.RefundStatus===null || order.RefundStatus==='BD0909'"
+                    @click.stop="clickRefund($event,order.OrderId)">退款</p>
+                    <p class="refund"
+                    v-if="order.RefundStatus!==null && order.RefundStatus!=='BD0909'"
+                    @click="clickCheckRefund($event,order.OrderId)">查看退款</p>
+                  </div>
+                </div>
+
               </header>
               <section class="order_basket" v-for="(item) in order.Items">
                 <div class="order_img_box">
@@ -37,14 +48,14 @@
                   <div>
                     <p class="order_amount">¥{{item.Price}}</p>
                     <p class="order_total">×{{item.Total}}</p>
-                    <div v-if="order.PaySign">
-                      <p class="refund"
-                         v-if="order.RefundStatus===null || order.RefundStatus==='BD0909'"
-                         @click="clickRefund($event,order.OrderId,item.Price)">退款</p>
-                      <p class="refund"
-                         v-if="order.RefundStatus!==null && order.RefundStatus!=='BD0909'"
-                         @click="clickCheckRefund($event,order.OrderId)">查看退款</p>
-                    </div>
+                    <!--<div v-if="order.PaySign">-->
+                      <!--<p class="refund"-->
+                         <!--v-if="order.RefundStatus===null || order.RefundStatus==='BD0909'"-->
+                         <!--@click="clickRefund($event,order.OrderId,item.Price)">退款</p>-->
+                      <!--<p class="refund"-->
+                         <!--v-if="order.RefundStatus!==null && order.RefundStatus!=='BD0909'"-->
+                         <!--@click="clickCheckRefund($event,order.OrderId)">查看退款</p>-->
+                    <!--</div>-->
                   </div>
                 </div>
               </section>
@@ -80,6 +91,7 @@
   import {postData} from '@/server'
   import BScroll from 'better-scroll'
   import {Button,MessageBox,Message} from 'element-ui';
+  import {getUrlParms,IOSConfig} from '@/config/utils'
 
   export default {
     data() {
@@ -95,7 +107,7 @@
         WH: null, // 窗口高度
         times: 0,
         oktoGetH: false,
-
+        orderType: null, // 订单类型
         options: {
           //开启点击事件 默认为false
           click: true,
@@ -156,7 +168,8 @@
         const url = '/GetOrders';
         this.pageNum++;
         const data = {
-          pageindex: this.pageNum
+          pageindex: this.pageNum,
+          ordertype: this.orderType
         };
         postData(url, data).then((res) => {
           console.log(res);
@@ -230,6 +243,12 @@
       }
     },
     created() {
+      let args = getUrlParms();
+      if (args.ordertype) {
+        this.orderType = args.ordertype
+      } else {
+        console.log('没有orderType')
+      }
       this.getData();
     },
     mounted() {
@@ -351,7 +370,7 @@
             @include sc(.6rem, #a5a4a4);
             border: 1px solid #a5a4a4;
             border-radius: .8rem;
-            padding: .1rem .3rem;
+            padding: .2rem .5rem;
             white-space: nowrap;
           }
         }
@@ -409,5 +428,11 @@
     color: #AEB0B7;
     text-align: center;
   }
-
+  .refund {
+    @include sc(.6rem, #a5a4a4);
+    border: 1px solid #a5a4a4;
+    border-radius: .8rem;
+    padding: .2rem .5rem;
+    white-space: nowrap;
+  }
 </style>

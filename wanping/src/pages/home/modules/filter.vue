@@ -115,7 +115,7 @@
 
         let id = event.currentTarget.getAttribute("data-id");
         let sortType = event.currentTarget.getAttribute("data-sortType");
-
+        console.log(sortType)
         this.activeIndex = id;
         this.$emit('sort', {'id': id, 'sortType': sortType});
         sortType = sortType === '0' ? '1' : '0';

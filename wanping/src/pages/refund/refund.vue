@@ -19,5 +19,7 @@
 
 <style lang="scss">
   @import 'src/style/common';
-
+  .el-message-box__btns button:nth-child(2) {
+    margin-left: 40px;
+  }
 </style>

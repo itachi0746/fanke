@@ -85,43 +85,42 @@
 
   .head {
     width: 100%;
+  }
+  .head i {
+    font-size: 1rem;
+    color: #fff;
+  }
+  .head header {
+    width: 100%;
+    padding: .3rem .5rem;
+    border-bottom: 0.05rem solid #f5f5f5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #000000;
 
-    header {
-      width: 100%;
-      padding: .3rem .5rem;
-      border-bottom: 0.05rem solid #f5f5f5;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #000000;
+  }
 
-      .back {
-        overflow: hidden;
-        flex: 1;
-      }
-      .head-font {
-        flex: 3;
-        color: #fff;
-        text-align: center;
+  .head .back {
+    overflow: hidden;
+    flex: 1;
+  }
+  .head .head-font {
+    flex: 3;
+    color: #fff;
+    text-align: center;
+  }
+  .head-font span {
+    font-weight: bold;
+    color: #fff;
+  }
+  .head .edit {
+    flex: 1;
+    font-size: .7rem;
+    text-align: right;
 
-        span {
-          font-weight: bold;
-          color: #fff;
-        }
-      }
-      .edit {
-        flex: 1;
-        font-size: .7rem;
-        text-align: right;
-        span {
-          color: #d4d4d4;
-        }
-      }
-    }
-
-    i {
-      font-size: 1rem;
-      color: #fff;
-    }
+  }
+  .edit span {
+    color: #d4d4d4;
   }
 </style>

@@ -2,9 +2,9 @@
   <div>
     <Header :headName="headName"></Header>
     <div class="line1">
-    <div class="line-header">退款金额</div>
-    <div class="line1-2">￥{{thePrice}}</div>
-  </div>
+      <!--<div class="line-header">退款金额</div>-->
+      <!--<div class="line1-2">￥{{thePrice}}</div>-->
+    </div>
     <div class="line2">
       <div class="line-header">
         退款说明
@@ -16,7 +16,6 @@
     <div class="line3">
       <el-button type="info" @click="clickSubmit">提交申请</el-button>
       <el-button type="info" @click="clickBack">返回到订单</el-button>
-
     </div>
     <div class="line4" v-if="false">
       <div class="line-header">
@@ -74,15 +73,21 @@
           postData('/ApplyRebund',data).then((res)=> {
             console.log(res);
 //            debugger
-            MessageBox.alert('已提交退款申请,即将返回到订单', '提示', {
-              confirmButtonText: '确定',
-              callback: () => {
-                GoToPage('order','order.html',{})
-              }
-            })
+//            MessageBox.alert('已提交退款申请,即将返回到订单', '提示', {
+//              confirmButtonText: '确定',
+//              callback: () => {
+//                GoToPage('order','order.html',{})
+//              }
+//            })
+            Message({
+              type: 'info',
+              message: '已提交退款申请'
+            });
+            setTimeout(() => {
+              GoToPage('order','order.html',{})
+            },2000)
           });
 //          debugger
-
         }).catch(() => {
           Message({
             type: 'info',
@@ -98,7 +103,7 @@
     created() {
       const params = getUrlParms();
       this.orderId = params.orderid;
-      this.thePrice = params.price;
+//      this.thePrice = params.price;
     },
 
     mounted() {
@@ -151,6 +156,8 @@
       font-size: .75rem;
     }
   }
-
+  .el-message-box__btns button:nth-child(2) {
+    margin-left: 40px;
+  }
 
 </style>
