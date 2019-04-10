@@ -72,9 +72,9 @@
     computed: {},
 
     methods: {
-      toScreen() {
-        GoToPage("screen","screen.html",{});
-       // window.location.href = 'screen.html'
+      toScreen(event) {
+        const targetId = event.currentTarget.getAttribute('data-pid');
+        GoToPage("screen", "screen.html", {'pid': targetId});
       },
       /**
        * @method 格式化数据

@@ -58,7 +58,7 @@
               </li>
             </ul>
             <div slot="tip" class="el-upload__tip">统一上传, 屏幕将使用同一素材</div>
-            <div slot="tip" class="el-upload__tip">图片(jpg/png)文件不超过2M,视频(mp4/mov)文件不超过10M</div>
+            <div slot="tip" class="el-upload__tip">图片(jpg/png)文件不超过10M,视频(mp4/mov)文件不超过50M</div>
           </section>
           <!--已上传文件列表 结束-->
         </div>
@@ -133,7 +133,7 @@
                 <i class="el-icon-close-tip">按 delete 键可删除</i>
               </li>
             </ul>
-            <div slot="tip" class="el-upload__tip">图片(jpg/png)文件不超过2M,视频(mp4/mov)文件不超过10M</div>
+            <div slot="tip" class="el-upload__tip">图片(jpg/png)文件不超过10M,视频(mp4/mov)文件不超过50M</div>
           </section>
           <!--已上传文件列表 结束-->
         </li>
@@ -331,8 +331,8 @@
         const fileSize = file.size / 1024 / 1024;  // w文件的大小 M
         console.log(fileSize,ft)
 
-        const isLt2M = fileSize < 2;
-        const isLt10M = fileSize < 10;
+        const isLt2M = fileSize < 10;
+        const isLt10M = fileSize < 50;
 
         if (!isJPG && !isMP4 && !isPNG && !isMOv && !isMOv2) {
           Message({
@@ -346,7 +346,7 @@
         if ((isJPG || isPNG) && !isLt2M) {
           Message({
             showClose: true,
-            message: '上传图片大小不能超过 2MB!',
+            message: '上传图片大小不能超过 10MB!',
             type: "error"
           });
           this.curItem.isLoading = false;
@@ -355,7 +355,7 @@
         if ((isMP4 || isMOv || isMOv2) && !isLt10M) {
           Message({
             showClose: true,
-            message: '上传视频大小不能超过 10MB!',
+            message: '上传视频大小不能超过 50MB!',
             type: "error"
           });
           this.curItem.isLoading = false;
