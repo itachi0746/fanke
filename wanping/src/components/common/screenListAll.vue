@@ -108,7 +108,6 @@
         this.getData();
       },
       cityName(n,o) {
-        console.log('4141')
         console.log(n, o);
         this.screenList = [];
         this.getData();

@@ -331,8 +331,8 @@
         const fileSize = file.size / 1024 / 1024;  // w文件的大小 M
         console.log(fileSize,ft)
 
-        const isLt2M = fileSize < 10;
-        const isLt10M = fileSize < 50;
+        const isLt10M = fileSize < 10;
+        const isLt50M = fileSize < 50;
 
         if (!isJPG && !isMP4 && !isPNG && !isMOv && !isMOv2) {
           Message({
@@ -343,7 +343,7 @@
           this.curItem.isLoading = false;
           return false
         }
-        if ((isJPG || isPNG) && !isLt2M) {
+        if ((isJPG || isPNG) && !isLt10M) {
           Message({
             showClose: true,
             message: '上传图片大小不能超过 10MB!',
@@ -352,7 +352,7 @@
           this.curItem.isLoading = false;
           return false
         }
-        if ((isMP4 || isMOv || isMOv2) && !isLt10M) {
+        if ((isMP4 || isMOv || isMOv2) && !isLt50M) {
           Message({
             showClose: true,
             message: '上传视频大小不能超过 50MB!',

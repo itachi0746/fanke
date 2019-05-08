@@ -17,15 +17,15 @@
       <el-button type="info" @click="clickSubmit">提交申请</el-button>
       <el-button type="info" @click="clickBack">返回到订单</el-button>
     </div>
-    <div class="line4" v-if="false">
-      <div class="line-header">
-        退款进度
-      </div>
-      <div class="line1-2">
-        {{theState}}
-      </div>
+    <!--<div class="line4" v-if="false">-->
+      <!--<div class="line-header">-->
+        <!--退款进度-->
+      <!--</div>-->
+      <!--<div class="line1-2">-->
+        <!--{{theState}}-->
+      <!--</div>-->
 
-    </div>
+    <!--</div>-->
   </div>
 </template>
 
