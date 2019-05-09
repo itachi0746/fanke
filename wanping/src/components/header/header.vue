@@ -4,7 +4,7 @@
     <section class="head" ref="head" id="head">
       <header>
         <div class="back" @click="goBack">
-          <i class="icon iconfont icon-zuojiantou"></i>
+          <i class="icon iconfont icon-zuojiantou" v-show="isBack"></i>
         </div>
         <div class="head-font">
           <span>{{ title }}</span>
@@ -28,7 +28,8 @@
     props: {
       headName: String,
       editState: Boolean,
-      a: Boolean
+      a: Boolean,
+      isBack: Boolean
     },
     data() {
       return {

@@ -1,7 +1,7 @@
 <template>
   <!--  开始-->
   <div>
-    <Header :headName="headName"></Header>
+    <Header :headName="headName" :isBack="isBack"></Header>
 
     <section class="food_list">
       <a href="javascript:void(0)" class="food_list_header">
@@ -15,54 +15,54 @@
       <p class="data-head">
         <span>订单日期: {{resData.OrderDate}}</span>
       </p>
-      <div class="action-all">
-        <div class="up-box-all">
-          <!--整体上传功能 :http-request="uploadReq" 开始-->
-          <!--data是要发送的数据-->
-          <el-upload
-            ref=""
-            :show-file-list="false"
-            class="upload-demo"
-            :action="upUrl"
-            :data="IDData"
-            :before-upload="beforeUpload"
-            :before-remove="handleRemove"
-            :auto-upload="true"
-            :on-error="handleError"
-            :on-success="handleSuccess"
-          >
-            <el-button slot="trigger" size="small" type="primary" @click.native="upload()" :loading="resData.isLoading">
-              统一上传
-              <i class="el-icon-upload el-icon--right"></i>
-            </el-button>
-          </el-upload>
-          <!--整体上传功能  结束-->
-          <el-button type="primary" size="small" @click="showFile($event)" :loading="resData.isLoading2">
-            <label v-show="resData.showFiles">隐藏已上传素材</label>
-            <label v-show="!resData.showFiles">查看已上传素材</label>
-          </el-button>
-        </div>
-        <div class="file-list-all">
-          <!--已上传文件列表 开始-->
-          <section class="file-list">
-            <ul>
-              <li tabindex="0" v-if="resData.showFiles" v-for="(i,index2) in resData.Medias" :key="i.MediaId" class="el-upload-list__item is-success" style="text-align: left;">
-              <a class="el-upload-list__item-name">
-              <i class="el-icon-document"></i>{{i.MediaName}}
-              </a>
-              <label class="el-upload-list__item-status-label">
-              <i class="el-icon-upload-success el-icon-circle-check"></i>
-              </label>
-              <i class="el-icon-close" @click="handleRemove2($event, -1, index2)" :data-Mid="i.MediaId"></i>
-              <i class="el-icon-close-tip">按 delete 键可删除</i>
-              </li>
-            </ul>
-            <div slot="tip" class="el-upload__tip">统一上传, 屏幕将使用同一素材</div>
-            <div slot="tip" class="el-upload__tip">图片(jpg/png)文件不超过10M,视频(mp4/mov)文件不超过50M</div>
-          </section>
-          <!--已上传文件列表 结束-->
-        </div>
-      </div>
+      <!--<div class="action-all">-->
+        <!--<div class="up-box-all">-->
+          <!--&lt;!&ndash;整体上传功能 :http-request="uploadReq" 开始&ndash;&gt;-->
+          <!--&lt;!&ndash;data是要发送的数据&ndash;&gt;-->
+          <!--<el-upload-->
+            <!--ref=""-->
+            <!--:show-file-list="false"-->
+            <!--class="upload-demo"-->
+            <!--:action="upUrl"-->
+            <!--:data="IDData"-->
+            <!--:before-upload="beforeUpload"-->
+            <!--:before-remove="handleRemove"-->
+            <!--:auto-upload="true"-->
+            <!--:on-error="handleError"-->
+            <!--:on-success="handleSuccess"-->
+          <!--&gt;-->
+            <!--<el-button slot="trigger" size="small" type="primary" @click.native="upload()" :loading="resData.isLoading">-->
+              <!--统一上传-->
+              <!--<i class="el-icon-upload el-icon&#45;&#45;right"></i>-->
+            <!--</el-button>-->
+          <!--</el-upload>-->
+          <!--&lt;!&ndash;整体上传功能  结束&ndash;&gt;-->
+          <!--<el-button type="primary" size="small" @click="showFile($event)" :loading="resData.isLoading2">-->
+            <!--<label v-show="resData.showFiles">隐藏已上传素材</label>-->
+            <!--<label v-show="!resData.showFiles">查看已上传素材</label>-->
+          <!--</el-button>-->
+        <!--</div>-->
+        <!--<div class="file-list-all">-->
+          <!--&lt;!&ndash;已上传文件列表 开始&ndash;&gt;-->
+          <!--<section class="file-list">-->
+            <!--<ul>-->
+              <!--<li tabindex="0" v-if="resData.showFiles" v-for="(i,index2) in resData.Medias" :key="i.MediaId" class="el-upload-list__item is-success" style="text-align: left;">-->
+              <!--<a class="el-upload-list__item-name">-->
+              <!--<i class="el-icon-document"></i>{{i.MediaName}}-->
+              <!--</a>-->
+              <!--<label class="el-upload-list__item-status-label">-->
+              <!--<i class="el-icon-upload-success el-icon-circle-check"></i>-->
+              <!--</label>-->
+              <!--<i class="el-icon-close" @click="handleRemove2($event, -1, index2)" :data-Mid="i.MediaId"></i>-->
+              <!--<i class="el-icon-close-tip">按 delete 键可删除</i>-->
+              <!--</li>-->
+            <!--</ul>-->
+            <!--<div slot="tip" class="el-upload__tip">统一上传, 屏幕将使用同一素材</div>-->
+            <!--<div slot="tip" class="el-upload__tip">图片(jpg/png)文件不超过10M,视频(mp4/mov)文件不超过50M</div>-->
+          <!--</section>-->
+          <!--&lt;!&ndash;已上传文件列表 结束&ndash;&gt;-->
+        <!--</div>-->
+      <!--</div>-->
 
       <ul class="food_list_ul">
         <li v-for="(item,index) in resData.Items" :key="item.OrderDate" class="food_list_ul_li">
@@ -90,56 +90,56 @@
           <div class="up-box">
             <!--上传功能 :http-request="uploadReq" 开始-->
             <!--data是要发送的数据-->
-            <el-upload
-              ref="upload2"
-              class="upload-demo"
-              :show-file-list="false"
-              :action="upUrl"
-              :data="IDData"
-              :before-upload="beforeUpload"
-              :before-remove="handleRemove"
-              :auto-upload="true"
-              :on-error="handleError"
-              :on-success="handleSuccess">
-              <el-button slot="trigger" size="small" type="primary" @click.native="upload(index)"
-                         :loading="item.isLoading">
-                上传广告素材
-                <i class="el-icon-upload el-icon--right"></i>
-              </el-button>
-
-              <!--<el-button style="margin-left: 10px;" size="small" type="success" @click.native="submitUpload">上传到服务器</el-button>-->
-              <!--<div slot="tip" class="el-upload__tip">上传图片(jpg/png)文件不超过2M,视频(mp4)文件不超过10M</div>-->
-
-            </el-upload>
+            <!--<el-upload-->
+              <!--ref="upload2"-->
+              <!--class="upload-demo"-->
+              <!--:show-file-list="false"-->
+              <!--:action="upUrl"-->
+              <!--:data="IDData"-->
+              <!--:before-upload="beforeUpload"-->
+              <!--:before-remove="handleRemove"-->
+              <!--:auto-upload="true"-->
+              <!--:on-error="handleError"-->
+              <!--:on-success="handleSuccess">-->
+              <!--<el-button slot="trigger" size="small" type="primary" @click.native="upload(index)"-->
+                         <!--:loading="item.isLoading">-->
+                <!--上传广告素材-->
+                <!--<i class="el-icon-upload el-icon&#45;&#45;right"></i>-->
+              <!--</el-button>-->
+            <!--</el-upload>-->
             <!--上传功能  结束-->
             <el-button type="primary" size="small" @click="showFile($event,index)" :data-DtlId="item.DtlId"
                        :loading="item.isLoading2">
-              <label v-show="item.showFiles">隐藏已上传素材</label>
-              <label v-show="!item.showFiles">查看已上传素材</label>
+              <label v-show="item.showFiles">隐藏素材</label>
+              <label v-show="!item.showFiles">查看素材</label>
             </el-button>
           </div>
           <!--已上传文件列表 开始-->
           <section class="file-list">
             <ul>
               <li tabindex="0" v-if="item.showFiles" v-for="(i,index2) in item.Medias" :key="i.MediaId"
-                  class="el-upload-list__item is-success" style="text-align: left;">
+                  class="el-upload-list__item is-success" @click="clickMedia(i.MediaSource)" style="text-align: left;">
                 <a class="el-upload-list__item-name">
                   <i class="el-icon-document"></i>{{i.MediaName}}
                 </a>
                 <label class="el-upload-list__item-status-label">
                   <i class="el-icon-upload-success el-icon-circle-check"></i>
                 </label>
-                <i class="el-icon-close" @click="handleRemove2($event,index,index2)" :data-Mid="i.MediaId"></i>
-                <i class="el-icon-close-tip">按 delete 键可删除</i>
+                <!--<i class="el-icon-close" @click="handleRemove2($event,index,index2)" :data-Mid="i.MediaId"></i>-->
+                <!--<i class="el-icon-close-tip">按 delete 键可删除</i>-->
               </li>
             </ul>
-            <div slot="tip" class="el-upload__tip">图片(jpg/png)文件不超过10M,视频(mp4/mov)文件不超过50M</div>
+            <!--<div slot="tip" class="el-upload__tip">图片(jpg/png)文件不超过10M,视频(mp4/mov)文件不超过50M</div>-->
+            <div slot="tip" class="el-upload__tip">友情提示: 点击素材可查看具体内容</div>
           </section>
           <!--已上传文件列表 结束-->
         </li>
 
       </ul>
-
+      <div class="action-box" v-if="showAction">
+        <el-button type="success" @click.native="clickOK(item.OrderId)">审核通过</el-button>
+        <el-button type="danger" @click.native="clickNG(item.OrderId)">审核不通过</el-button>
+      </div>
       <div class="pay_ment">{{resData.OrderStatus}}</div>
 
     </section>
@@ -157,7 +157,7 @@
   export default {
     data() {
       return {
-        headName: '订单详情',
+        headName: '订单审核',
         resData: {},
         IDData: {},  // 上传文件时要传的data
         OrderId: '',
@@ -166,7 +166,8 @@
         fileList: [],  // 已上传文件列表
         file: null,  // 文件对象
         curItem: null, // 当前选中的对象
-
+        isBack: false, // 没后退按钮
+        showAction: true // 显示审核操作按钮
       }
     },
 
@@ -177,96 +178,9 @@
     computed: {},
 
     methods: {
-
-      /**
-       * @method 删除已上传文件
-       * @param {Object} e 事件对象
-       * @param {Number} itemIndex 产品下标
-       * @param {Number} MediaIndex 媒体文件下标
-       */
-      handleRemove2(e, itemIndex, MediaIndex) {
-//        debugger
-        let mid = e.currentTarget.getAttribute('data-Mid');
-        let url = '/DeleteFile';
-        let data = {
-          FileId: mid
-        };
-        MessageBox.confirm('确定移除？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-          center: true
-        }).then(() => {
-//          debugger
-          postData(url, data).then((res) => {
-//            debugger
-            console.log(res);
-            if (itemIndex === -1) {
-              this.resData.Medias.splice(MediaIndex, 1);
-            } else {
-              this.resData.Items[itemIndex].Medias.splice(MediaIndex, 1);
-            }
-            Message({
-              type: 'success',
-              message: '删除成功!'
-            });
-          });
-        }).catch(() => {
-          Message({
-            type: 'info',
-            message: '已取消删除'
-          });
-        });
+      toScreen(psid) {
+        GoToPage("screen", "screen.html", {'pid': psid});
       },
-      /**
-       * @method 获取明细id
-       * @param {String} i index
-       */
-      upload(i) {
-        if (i === undefined) { // 如果没下标,就是统一上传
-          this.DtlId = '';
-          this.curItem = this.resData;
-        } else {
-          this.DtlId = this.resData.Items[i].DtlId;
-          this.curItem = this.resData.Items[i];
-        }
-        this.IDData = {
-          'OrderId': this.resData.OrderId,
-          'DetailId': this.DtlId
-        };
-      },
-
-      /**
-       * @method 删除文件
-       * @param {String} file 文件对象
-       */
-      handleRemove(file) {
-        console.log(file)
-
-//        debugger
-        if (file.status === 'success') {  // 状态为success表示这是已经上传成功的文件,因为上传格式错误的文件也会自动调用这个方法
-          const url = '/DeleteFile';
-          const data = {
-            FileId: this.file.MediaId
-          };
-
-          postData(url, data).then((res) => {
-            console.log(res);
-            if (res.Success) {
-              Message({
-                type: 'success',
-                message: '删除成功!'
-              });
-            } else {
-              Message({
-                type: 'error',
-                message: '删除失败!'
-              });
-            }
-          });
-        }
-      },
-
       /**
        * @method 显示出已上传文件
        * @param {Object} e 事件对象
@@ -288,11 +202,11 @@
               this.resData.Medias = res.Data;
               this.curItem.isLoading2 = false;
             })
-            .catch((error) => {
-              console.log(error);
-              this.curItem.isLoading2 = false;
-//              reject(error);
-            })
+              .catch((error) => {
+                console.log(error);
+                this.curItem.isLoading2 = false;
+                //              reject(error);
+              })
           }
           return
         }
@@ -312,98 +226,81 @@
           })
         }
       },
-      handleChange(file, fileList) {
-//      this.fileList3 = fileList.slice(-3);
+      /**
+       * 点击媒体
+       * url String 媒体路径
+       */
+      clickMedia (url) {
+        window.location.href = url
       },
       /**
-       * @method 上传前,判断文件类型和大小
-       * @param {object} file 文件对象
+       * 审核不通过
        */
-      beforeUpload(file) {
-        this.curItem.isLoading = true;
-        console.log(file.type)
-        const ft = file.type.toLowerCase();
-        const isJPG = ft === 'image/jpeg';
-        const isPNG = ft === 'image/png';
-        const isMP4 = ft === 'video/mp4';
-        const isMOv = ft === 'video/mov';
-        const isMOv2 = ft === 'video/quicktime';
-        const fileSize = file.size / 1024 / 1024;  // w文件的大小 M
-        console.log(fileSize,ft)
+      clickNG (id, note = '') {
+        const url = '/DoCancelOrder';
+        const data = {
+          OrderId: this.OrderId,
+          Note: note
+        };
 
-        const isLt10M = fileSize < 10;
-        const isLt50M = fileSize < 50;
-
-        if (!isJPG && !isMP4 && !isPNG && !isMOv && !isMOv2) {
-          Message({
-            showClose: true,
-            message: '视频或图片的格式错误',
-            type: "error"
+        MessageBox.confirm('审核不通过,订单将会被取消', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        }).then(() => {
+          postData(url, data).then((res) => {
+            console.log(res);
+            Message({
+              type: 'success',
+              message: '操作成功!订单已取消'
+            });
           });
-          this.curItem.isLoading = false;
-          return false
-        }
-        if ((isJPG || isPNG) && !isLt10M) {
+          this.showAction = false
+        }).catch(() => {
           Message({
-            showClose: true,
-            message: '上传图片大小不能超过 10MB!',
-            type: "error"
+            type: 'info',
+            message: '已取消操作'
           });
-          this.curItem.isLoading = false;
-          return false
-        }
-        if ((isMP4 || isMOv || isMOv2) && !isLt50M) {
-          Message({
-            showClose: true,
-            message: '上传视频大小不能超过 50MB!',
-            type: "error"
-          });
-          this.curItem.isLoading = false;
-          return false
-        }
-        return true
-      },
-      handleSuccess(res, file, fileList) {
-//        console.log(res, file, fileList)
-        if (res.Success) {
-          console.log('上传成功', res);
-          this.file = res.Data;
-          this.curItem.Medias.unshift(this.file);
-
-          Message({
-            showClose: true,
-            message: '上传成功!',
-            type: "success"
-          });
-        } else {
-          console.log('上传失败');
-          Message({
-            showClose: true,
-            message: '上传失败,请重试',
-            type: "error"
-          });
-        }
-        this.curItem.isLoading = false;
-      },
-      // 上传错误
-      handleError(response, file, fileList) {
-        console.log('上传失败，请重试！');
-        Message({
-          showClose: true,
-          message: '很抱歉,上传失败,请重试',
-          type: "error"
         });
       },
-      toScreen(psid) {
-//        console.log(psid)
-        GoToPage("screen", "screen.html", {'pid': psid});
+      /**
+       * 审核通过
+       */
+      clickOK (id, note = '') {
+        const url = '/DoConfirmOrder';
+        const data = {
+          OrderId: this.OrderId,
+          Note: note
+        };
+
+        MessageBox.confirm('确认审核通过', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        }).then(() => {
+          postData(url, data).then((res) => {
+            console.log(res);
+            Message({
+              type: 'success',
+              message: '操作成功!订单审核通过'
+            });
+            this.showAction = false
+          });
+        }).catch(() => {
+          Message({
+            type: 'info',
+            message: '已取消操作'
+          });
+        });
       }
     },
     created() {
       const args = getUrlParms();
       this.OrderId = args.orderid || args.billid;
 
-      const url = '/OrderDetail';
+      const url = '/GetOrderDetail';
       const data = {
         OrderId: this.OrderId
       };
@@ -606,11 +503,19 @@
       width: 100%;
     }
   }
+  .action-box {
+    padding: .5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 5px solid #f5f5f5;
+  }
 
   .el-upload__tip {
     text-align: right;
   }
-
+  .el-upload-list__item .el-icon-upload-success {
+    display: none;
+  }
 
 </style>
 

@@ -7,10 +7,10 @@
     </div>
     <div class="line2">
       <div class="line-header">
-        退款说明
+        退款理由
       </div>
       <div>
-        <textarea v-model="theReasonText" :readonly="isReadOnly" name="退款说明" id="tuikuanshoming" cols="" rows="" placeholder="请填写退款说明"></textarea>
+        <textarea v-model="theReasonText" :readonly="isReadOnly" name="退款理由" id="tuikuanshoming" cols="" rows="" placeholder="请填写退款理由"></textarea>
       </div>
     </div>
     <div class="line3">
@@ -96,7 +96,8 @@
         });
       },
       clickBack() {
-        GoToPage('order','order.html',{})
+//        GoToPage('order','order.html',{})
+        window.history.back()
       }
     },
 
