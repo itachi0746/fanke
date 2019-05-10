@@ -15,55 +15,6 @@
       <p class="data-head">
         <span>订单日期: {{resData.OrderDate}}</span>
       </p>
-      <!--<div class="action-all">-->
-        <!--<div class="up-box-all">-->
-          <!--&lt;!&ndash;整体上传功能 :http-request="uploadReq" 开始&ndash;&gt;-->
-          <!--&lt;!&ndash;data是要发送的数据&ndash;&gt;-->
-          <!--<el-upload-->
-            <!--ref=""-->
-            <!--:show-file-list="false"-->
-            <!--class="upload-demo"-->
-            <!--:action="upUrl"-->
-            <!--:data="IDData"-->
-            <!--:before-upload="beforeUpload"-->
-            <!--:before-remove="handleRemove"-->
-            <!--:auto-upload="true"-->
-            <!--:on-error="handleError"-->
-            <!--:on-success="handleSuccess"-->
-          <!--&gt;-->
-            <!--<el-button slot="trigger" size="small" type="primary" @click.native="upload()" :loading="resData.isLoading">-->
-              <!--统一上传-->
-              <!--<i class="el-icon-upload el-icon&#45;&#45;right"></i>-->
-            <!--</el-button>-->
-          <!--</el-upload>-->
-          <!--&lt;!&ndash;整体上传功能  结束&ndash;&gt;-->
-          <!--<el-button type="primary" size="small" @click="showFile($event)" :loading="resData.isLoading2">-->
-            <!--<label v-show="resData.showFiles">隐藏已上传素材</label>-->
-            <!--<label v-show="!resData.showFiles">查看已上传素材</label>-->
-          <!--</el-button>-->
-        <!--</div>-->
-        <!--<div class="file-list-all">-->
-          <!--&lt;!&ndash;已上传文件列表 开始&ndash;&gt;-->
-          <!--<section class="file-list">-->
-            <!--<ul>-->
-              <!--<li tabindex="0" v-if="resData.showFiles" v-for="(i,index2) in resData.Medias" :key="i.MediaId" class="el-upload-list__item is-success" style="text-align: left;">-->
-              <!--<a class="el-upload-list__item-name">-->
-              <!--<i class="el-icon-document"></i>{{i.MediaName}}-->
-              <!--</a>-->
-              <!--<label class="el-upload-list__item-status-label">-->
-              <!--<i class="el-icon-upload-success el-icon-circle-check"></i>-->
-              <!--</label>-->
-              <!--<i class="el-icon-close" @click="handleRemove2($event, -1, index2)" :data-Mid="i.MediaId"></i>-->
-              <!--<i class="el-icon-close-tip">按 delete 键可删除</i>-->
-              <!--</li>-->
-            <!--</ul>-->
-            <!--<div slot="tip" class="el-upload__tip">统一上传, 屏幕将使用同一素材</div>-->
-            <!--<div slot="tip" class="el-upload__tip">图片(jpg/png)文件不超过10M,视频(mp4/mov)文件不超过50M</div>-->
-          <!--</section>-->
-          <!--&lt;!&ndash;已上传文件列表 结束&ndash;&gt;-->
-        <!--</div>-->
-      <!--</div>-->
-
       <ul class="food_list_ul">
         <li v-for="(item,index) in resData.Items" :key="item.OrderDate" class="food_list_ul_li">
           <div class="li-div">
@@ -134,11 +85,14 @@
           </section>
           <!--已上传文件列表 结束-->
         </li>
-
       </ul>
       <div class="action-box" v-if="showAction">
-        <el-button type="success" @click.native="clickOK(item.OrderId)">审核通过</el-button>
-        <el-button type="danger" @click.native="clickNG(item.OrderId)">审核不通过</el-button>
+        <div class="mb10 btn-line" v-if="resData.OrderStatusVal==='BD0901'">
+          <el-button type="success" @click.native="clickOK(OrderId)">审核通过</el-button>
+        </div>
+        <div class="btn-line" v-if="resData.OrderStatusVal!=='BD0905' && resData.OrderStatusVal!=='BD0909'">
+          <el-button type="danger" @click.native="clickNG(OrderId)">审核不通过</el-button>
+        </div>
       </div>
       <div class="pay_ment">{{resData.OrderStatus}}</div>
 
@@ -251,10 +205,13 @@
         }).then(() => {
           postData(url, data).then((res) => {
             console.log(res);
-            Message({
-              type: 'success',
-              message: '操作成功!订单已取消'
-            });
+            if (res.Success) {
+              Message({
+                type: 'success',
+                message: '操作成功!订单已取消'
+              });
+            }
+//              this.showAction = false
           });
           this.showAction = false
         }).catch(() => {
@@ -282,11 +239,13 @@
         }).then(() => {
           postData(url, data).then((res) => {
             console.log(res);
-            Message({
-              type: 'success',
-              message: '操作成功!订单审核通过'
-            });
-            this.showAction = false
+            if (res.Success) {
+              Message({
+                type: 'success',
+                message: '操作成功!订单通过审核'
+              });
+            }
+//            this.showAction = false
           });
         }).catch(() => {
           Message({
@@ -504,9 +463,9 @@
     }
   }
   .action-box {
-    padding: .5rem 3rem;
-    display: flex;
-    justify-content: space-between;
+    padding: .5rem;
+    /*display: flex;*/
+    /*justify-content: space-between;*/
     border-bottom: 5px solid #f5f5f5;
   }
 
@@ -515,6 +474,16 @@
   }
   .el-upload-list__item .el-icon-upload-success {
     display: none;
+  }
+  .mb10 {
+    margin-bottom: 10px;
+  }
+  .btn-line {
+    button {
+      width: 100%;
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
   }
 
 </style>
