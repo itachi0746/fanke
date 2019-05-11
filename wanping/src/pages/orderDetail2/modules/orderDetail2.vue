@@ -1,7 +1,7 @@
 <template>
   <!--  订单详情简单版 只供查看 没操作 -->
   <div>
-    <Header :headName="headName"></Header>
+    <Header :headName="headName" :isBack="false"></Header>
 
     <section class="food_list">
       <a href="javascript:void(0)" class="food_list_header">
@@ -39,7 +39,7 @@
             </div>
 
           </div>
-          <!--<div class="up-box">-->
+          <div class="up-box">
             <!--&lt;!&ndash;上传功能 :http-request="uploadReq" 开始&ndash;&gt;-->
             <!--&lt;!&ndash;data是要发送的数据&ndash;&gt;-->
             <!--<el-upload-->
@@ -64,29 +64,29 @@
 
             <!--</el-upload>-->
             <!--&lt;!&ndash;上传功能  结束&ndash;&gt;-->
-            <!--<el-button type="primary" size="small" @click="showFile($event,index)" :data-DtlId="item.DtlId"-->
-                       <!--:loading="item.isLoading2">-->
-              <!--<label v-show="item.showFiles">隐藏已上传素材</label>-->
-              <!--<label v-show="!item.showFiles">查看已上传素材</label>-->
-            <!--</el-button>-->
-          <!--</div>-->
+            <el-button type="primary" size="small" @click="showFile($event,index)" :data-DtlId="item.DtlId"
+                       :loading="item.isLoading2">
+              <label v-show="item.showFiles">隐藏已上传素材</label>
+              <label v-show="!item.showFiles">查看已上传素材</label>
+            </el-button>
+          </div>
           <!--已上传文件列表 开始-->
-          <!--<section class="file-list">-->
-            <!--<ul>-->
-              <!--<li tabindex="0" v-if="item.showFiles" v-for="(i,index2) in item.Medias" :key="i.MediaId"-->
-                  <!--class="el-upload-list__item is-success" style="text-align: left;">-->
-                <!--<a class="el-upload-list__item-name">-->
-                  <!--<i class="el-icon-document"></i>{{i.MediaName}}-->
-                <!--</a>-->
-                <!--<label class="el-upload-list__item-status-label">-->
-                  <!--<i class="el-icon-upload-success el-icon-circle-check"></i>-->
-                <!--</label>-->
+          <section class="file-list">
+            <ul>
+              <li tabindex="0" v-if="item.showFiles" v-for="(i,index2) in item.Medias" :key="i.MediaId"
+                  class="el-upload-list__item is-success" style="text-align: left;">
+                <a class="el-upload-list__item-name">
+                  <i class="el-icon-document"></i>{{i.MediaName}}
+                </a>
+                <label class="el-upload-list__item-status-label">
+                  <i class="el-icon-upload-success el-icon-circle-check"></i>
+                </label>
                 <!--<i class="el-icon-close" @click="handleRemove2($event,index,index2)" :data-Mid="i.MediaId"></i>-->
                 <!--<i class="el-icon-close-tip">按 delete 键可删除</i>-->
-              <!--</li>-->
-            <!--</ul>-->
-            <!--<div slot="tip" class="el-upload__tip">图片(jpg/png)文件不超过10M,视频(mp4/mov)文件不超过50M</div>-->
-          <!--</section>-->
+              </li>
+            </ul>
+            <div slot="tip" class="el-upload__tip">图片(jpg/png)文件不超过10M,视频(mp4/mov)文件不超过50M</div>
+          </section>
           <!--已上传文件列表 结束-->
         </li>
 
@@ -131,13 +131,58 @@
     methods: {
       toScreen(psid) {
         GoToPage("screen", "screen.html", {'pid': psid});
+      },
+      /**
+       * @method 显示出已上传文件
+       * @param {Object} e 事件对象
+       * @param {Number} i 下标
+       */
+      showFile(e, i) {
+        if (i === undefined) { // 如果不传下标,就是统一上传
+          this.resData.showFiles = !this.resData.showFiles;
+          if (this.resData.showFiles) {
+            this.curItem = this.resData;
+            this.curItem.isLoading2 = true;
+            const url = '/GetFiles';
+            const data = {
+              'OrderId': this.resData.OrderId,
+              'DetailId': '',
+            };
+            postData(url, data).then((res) => {
+              console.log(res);
+              this.resData.Medias = res.Data;
+              this.curItem.isLoading2 = false;
+            })
+              .catch((error) => {
+                console.log(error);
+                this.curItem.isLoading2 = false;
+                //              reject(error);
+              })
+          }
+          return
+        }
+        const dtlId = e.currentTarget.getAttribute('data-DtlId');
+        this.resData.Items[i].showFiles = !this.resData.Items[i].showFiles;
+        if (this.resData.Items[i].showFiles) {
+          this.curItem = this.resData.Items[i];
+          this.curItem.isLoading2 = true;
+          const url = '/GetFiles';
+          const data = {
+            DetailId: dtlId
+          };
+          postData(url, data).then((res) => {
+            console.log(res);
+            this.resData.Items[i].Medias = res.Data;
+            this.curItem.isLoading2 = false;
+          })
+        }
       }
     },
     created() {
       const args = getUrlParms();
       this.OrderId = args.orderid || args.billid;
 
-      const url = '/OrderDetail';
+      const url = '/GetOrderDetail';
       const data = {
         OrderId: this.OrderId
       };

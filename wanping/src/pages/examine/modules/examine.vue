@@ -1,7 +1,7 @@
 <template>
   <!--  开始-->
   <div>
-    <Header :headName="headName" :isBack="isBack"></Header>
+    <Header :headName="headName" :isBack="false"></Header>
 
     <section class="food_list">
       <a href="javascript:void(0)" class="food_list_header">
@@ -120,7 +120,6 @@
         fileList: [],  // 已上传文件列表
         file: null,  // 文件对象
         curItem: null, // 当前选中的对象
-        isBack: false, // 没后退按钮
         showAction: true // 显示审核操作按钮
       }
     },

@@ -29,7 +29,10 @@
       headName: String,
       editState: Boolean,
       a: Boolean,
-      isBack: Boolean
+      isBack: {
+        type: Boolean,
+        default: true
+      }
     },
     data() {
       return {
