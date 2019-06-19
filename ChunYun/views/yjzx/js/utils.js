@@ -294,3 +294,17 @@ function canRefresh(timeStamp, interval) {
   var result = curTime - timeStamp;
   return result > interval
 }
+
+/**
+ * 时间戳转日期字符串
+ * @param stamp
+ * @returns {string}
+ */
+function stampToDate(stamp) {
+  y = stamp.getFullYear();
+  m = stamp.getMonth() + 1;
+  d = stamp.getDate();
+  m=m<10?'0'+m:m;
+  d=d<10?'0'+d:d;
+  return y + '-' + m + '-' + d;
+}

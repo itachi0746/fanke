@@ -53,7 +53,7 @@ $(function(){
     var theAjax = $.ajax({
       type: "post",
       data: data,
-      timeout: 20000,          // 设置超时时间
+      timeout: 200000,          // 设置超时时间
       url: serviceBase + url,
       dataType: "json",
       success: function(d){

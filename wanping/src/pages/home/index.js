@@ -2,10 +2,6 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './index.vue'
-// import {Carousel, CarouselItem} from 'element-ui'
-// import 'element-ui/lib/theme-chalk/index.css';
-// import 'element-ui/lib/theme-chalk/carousel-item.css';
-// import 'element-ui/lib/theme-chalk/carousel.css';
 import 'element-ui/lib/theme-chalk/message.css';
 import '@/config/rem'
 import '@/style/font/iconfont.css'

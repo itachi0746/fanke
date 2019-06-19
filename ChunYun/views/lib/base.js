@@ -161,7 +161,10 @@ NumbersEffect.prototype.end = function () {
 }
 
 
-
+//设置初始化的日期
+function getInitDate(type,defatulFunc){
+    return new Date('2019-05-02');
+}
 
 function checkLogin(e){
     var theName = 'admin';

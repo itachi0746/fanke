@@ -116,15 +116,20 @@ $(function () {
    */
   function init() {
     checkLS();
-    myTime = tab0Time = tab1Time = new Date();
+    // myTime = tab0Time = tab1Time = new Date();
+    myTime = tab0Time = tab1Time = getInitDate();
 
     moment.locale('zh-cn');
     console.log('切换到:', nowTab);
     // console.log('map:', theMap);
     // 设置洞察部分默认日期
-    tab2Li2DefaultDate = returnDate(1);  // 枢纽
-    tab3Li2DefaultDate = returnDate(1);  // 服务区
-    tab4Li2DefaultDate = returnDate(1);  // 场站
+    // tab2Li2DefaultDate = returnDate(1);  // 枢纽
+    // tab3Li2DefaultDate = returnDate(1);  // 服务区
+    // tab4Li2DefaultDate = returnDate(1);  // 场站
+    var theDate2019 = stampToDate(getInitDate());
+    tab2Li2DefaultDate = theDate2019;  // 枢纽
+    tab3Li2DefaultDate = theDate2019;  // 服务区
+    tab4Li2DefaultDate = theDate2019;  // 场站
 
     // 点击标题
     title.on('click', function () {
@@ -876,6 +881,7 @@ $(function () {
     var treDate2 = $('#tre-date2');
     var treDate3 = $('#tre-date3');
     var nowDate = moment().format('YYYY/MM/DD');
+    // var nowDate = stampToDate(getInitDate())
     treDate.text(nowDate);
     treDate2.text(nowDate);
     treDate3.text(nowDate);
@@ -1580,7 +1586,8 @@ $(function () {
       });
 
       // 服务区 旅客洞察日历
-      $('#tab-li4-cld2').val(returnDate(1));
+      // $('#tab-li4-cld2').val(returnDate(1));
+      $('#tab-li4-cld2').val(stampToDate(getInitDate()));
       lay('#tab-li4-cld2-box').on('click', function (e) {
         laydate.render({
           elem: '#tab-li4-cld2'
@@ -3606,7 +3613,7 @@ $(function () {
       success: function (data) {
         // console.log('reqRoadData',data)
         // clearYjUL();
-        tab0Time = new Date();
+        // tab0Time = new Date();
         TerminalWarningList = [];
         if (data && data.isSuccess) {
           var yongji = $('#yongji');
@@ -3756,7 +3763,7 @@ $(function () {
       success: function (data) {
         // console.log('reqRoadData',data)
         // clearYjUL();
-        tab1Time = new Date();
+        // tab1Time = new Date();
         ServiceAreaWarningList = [];
         if (data && data.isSuccess) {
 
@@ -3823,69 +3830,6 @@ $(function () {
         }
       }
     });
-
-    // $.axpost(url, {}, function (data) {
-    //   // console.log('reqRoadData',data)
-    //   // clearYjUL();
-    //   tab1Time = new Date();
-    //   ServiceAreaWarningList = [];
-    //   if (data && data.isSuccess) {
-    //
-    //     var yongji = $('#yongji');
-    //     var shizhong = $('#shizhong');
-    //     var shushi = $('#shushi');
-    //     var ss = {
-    //       name: '舒适',
-    //       dom: shushi,
-    //       icon: 'top3-icon3',
-    //       pointClass: 'point3',
-    //       data: data.data[keyName + '_ss'],
-    //     };
-    //     var sz = {
-    //       name: '适中',
-    //       dom: shizhong,
-    //       icon: 'top3-icon2',
-    //       pointClass: 'point2',
-    //       data: data.data[keyName + '_sz'],
-    //
-    //     };
-    //     var yj = {
-    //       name: '拥挤',
-    //       dom: yongji,
-    //       icon: 'top3-icon1',
-    //       pointClass: 'point1',
-    //       data: data.data[keyName + '_yj']
-    //     };
-    //
-    //     var dataArr = [ss, sz, yj];
-    //     ServiceAreaWarningList = dataArr;
-    //     if (nowTab === tabArr[1]) {
-    //       // debugger
-    //       pointControl.showPoints(nowTab, dataArr); // 刷新了markers
-    //       markerBindClick();
-    //       addStation2();
-    //     }
-    //
-    //     for (var i = 0; i < dataArr.length; i++) {
-    //       var item = dataArr[i];
-    //       // debugger
-    //       for (var j = 0; j < item.data.length; j++) {
-    //         var temp = item.data[j];
-    //         temp.userCnt = toWan2(temp[theNumKey]);
-    //       }
-    //       if (nowTab === tabArr[1]) {
-    //         // debugger
-    //         addYjLi(item)
-    //       }
-    //     }
-    //     var isLoaded = YJIsLoaded();
-    //     // debugger
-    //     if (isLoaded) {
-    //
-    //       layer.closeAll()
-    //     }
-    //   }
-    // })
 
   }
 
