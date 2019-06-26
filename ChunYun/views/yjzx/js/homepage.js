@@ -75,6 +75,13 @@ $(function () {
   var tabBoxesArr = [tabBoxes2, tabBoxes3, tabBoxes4, tabBoxes5];
   var isHideStation = true;
   var isDefaultView = true;  // 默认视角
+
+  var theDate2019; // 初始时间
+  var theStartDate2019; // 初始时间减去7天
+  var theDuration; // 初始时间减去7天 到 初始时间
+  var theDate2019Obj = {}; // 时间对象
+
+
   // console.log(tabBoxes2)
   window.mapbase = new MapBase();
   var title = $('#title');
@@ -126,7 +133,13 @@ $(function () {
     // tab2Li2DefaultDate = returnDate(1);  // 枢纽
     // tab3Li2DefaultDate = returnDate(1);  // 服务区
     // tab4Li2DefaultDate = returnDate(1);  // 场站
-    var theDate2019 = stampToDate(getInitDate());
+    theDate2019 = stampToDate(getInitDate());
+    theStartDate2019 = stampToDate(getStartDate());
+    // theDuration = returnDate(7) + " - " + returnDate(1);
+    theDuration = theStartDate2019 + ' - ' + theDate2019;
+    theDate2019Obj.start = theStartDate2019;
+    theDate2019Obj.end = theDate2019;
+
     tab2Li2DefaultDate = theDate2019;  // 枢纽
     tab3Li2DefaultDate = theDate2019;  // 服务区
     tab4Li2DefaultDate = theDate2019;  // 场站
@@ -880,8 +893,8 @@ $(function () {
     var treDate = $('#tre-date');
     var treDate2 = $('#tre-date2');
     var treDate3 = $('#tre-date3');
-    var nowDate = moment().format('YYYY/MM/DD');
-    // var nowDate = stampToDate(getInitDate())
+    // var nowDate = moment().format('YYYY/MM/DD');
+    var nowDate = theDate2019;
     treDate.text(nowDate);
     treDate2.text(nowDate);
     treDate3.text(nowDate);
@@ -1507,7 +1520,8 @@ $(function () {
     if (nowTab === tabArr[0]) {
 
       // 交通枢纽 实时客流
-      $('#tab2-li2-cld').val(returnDate());
+      // $('#tab2-li2-cld').val(returnDate());
+      $('#tab2-li2-cld').val(theDate2019);
       lay('#SSKL-cld-box').on('click', function (e) { //假设 test1 是一个按钮
         laydate.render({
           elem: '#tab2-li2-cld'
@@ -1543,12 +1557,12 @@ $(function () {
       })
 
       // 交通枢纽 旅客趋势
-      $('#tab2-li3-cld').val(returnDate(7) + " - " + returnDate(1));
+      $('#tab2-li3-cld').val(theDuration);
       lay('#tab2-li3-cld-box').on('click', function (e) {
         laydate.render({
           elem: '#tab2-li3-cld-1'
           // ,range: true
-          // ,value: returnDate(7) + ' - ' + returnDate(1)
+          // ,value: theDuration
           // ,min: -8 //7天前
           , max: 0 //禁止选未来日期
           , show: true //直接显示
@@ -1566,12 +1580,12 @@ $(function () {
     }
     if (nowTab === tabArr[1]) {
       // 服务区
-      $('#tab3-li3-cld2').val(returnDate(7) + ' - ' + returnDate(1));
+      $('#tab3-li3-cld2').val(theDuration);
       lay('#tab3-li3-cld2-box').on('click', function (e) {
         laydate.render({
           elem: '#tab3-li3-cld2-1'
           // ,range: true
-          // ,value: returnDate(7) + ' - ' + returnDate(1)
+          // ,value: theDuration
           // ,min: -8 //7天前
           , max: 0 //禁止选未来日期
           , show: true //直接显示
@@ -1587,7 +1601,7 @@ $(function () {
 
       // 服务区 旅客洞察日历
       // $('#tab-li4-cld2').val(returnDate(1));
-      $('#tab-li4-cld2').val(stampToDate(getInitDate()));
+      $('#tab-li4-cld2').val(theDate2019);
       lay('#tab-li4-cld2-box').on('click', function (e) {
         laydate.render({
           elem: '#tab-li4-cld2'
@@ -1606,7 +1620,8 @@ $(function () {
       });
 
 
-      $('#sskl-cld2').val(returnDate());
+      // $('#sskl-cld2').val(returnDate());
+      $('#sskl-cld2').val(theDate2019);
       lay('#tab3-cld1-box').on('click', function (e) {
         laydate.render({
           elem: '#sskl-cld2'
@@ -1659,7 +1674,7 @@ $(function () {
       //   ,type:'date'//默认为date
       //   ,trigger:'click'//默认为click，即点击后出现日历框
       //   ,range: true
-      //   ,value: returnDate(7) + ' - ' + returnDate(1)
+      //   ,value: theDuration
       //   ,done: function(value, date, endDate){
       //     if(date) {
       //       var dateObj = {
@@ -1675,12 +1690,12 @@ $(function () {
       //   }
       // })
 
-      $('#tab4-big-cld').val(returnDate(7) + ' - ' + returnDate(1));
+      $('#tab4-big-cld').val(theDuration);
       lay('#tab4-big-cld-box').on('click', function (e) {
         laydate.render({
           elem: '#tab4-big-cld-1'
           // ,range: true
-          // ,value: returnDate(7) + ' - ' + returnDate(1)
+          // ,value: theDuration
           // ,min: -8 //7天前
           , max: 0 //禁止选未来日期
           , show: true //直接显示
@@ -1724,14 +1739,14 @@ $(function () {
     //     })
     //   });
     //
-    //   $('#tab5-big-cld').val(returnDate(7) + ' - ' + returnDate(1));
+    //   $('#tab5-big-cld').val(theDuration);
     //   lay('#tab5-big-cld-box').on('click').on('click',function (e) {
     //     laydate.render({
     //       elem:'#tab5-big-cld-1'
     //       ,type:'date'//默认为date
     //       ,trigger:'click'//默认为click，即点击后出现日历框
     //       // ,range: true
-    //       // ,value: returnDate(7) + ' - ' + returnDate(1)
+    //       // ,value: theDuration
     //       // ,min: -8 //7天前
     //       ,max: 0 //禁止选未来日期
     //       ,show: true //直接显示
@@ -4921,7 +4936,8 @@ $(function () {
       ]
     };
 
-    tab2Li2Echart1reqData(returnDate());
+    // tab2Li2Echart1reqData(returnDate());
+    tab2Li2Echart1reqData(theDate2019);
 
     if (option && typeof option === "object") {
       tab2Li2Echart1.setOption(option, true);
@@ -5097,7 +5113,8 @@ $(function () {
       ]
     };
 
-    tab2Li2Echart2reqData(returnDate());
+    // tab2Li2Echart2reqData(returnDate());
+    tab2Li2Echart2reqData(theDate2019);
 
     if (option && typeof option === "object") {
       tab2Li2Echart2.setOption(option, true);
@@ -5249,7 +5266,7 @@ $(function () {
       ]
     };
 
-    tab2Li4EchartReqData();
+    tab2Li4EchartReqData(theDate2019Obj);
 
     if (option && typeof option === "object") {
       tab2Li4Echart.setOption(option, true);
@@ -5412,7 +5429,7 @@ $(function () {
       ]
     };
 
-    tab2Li4Echart2ReqData();
+    tab2Li4Echart2ReqData(theDate2019Obj);
 
     if (option && typeof option === "object") {
       tab2Li4Echart2.setOption(option, true);
@@ -6202,7 +6219,8 @@ $(function () {
         }]
     };
 
-    tab3Li2Echart2reqData();
+    // tab3Li2Echart2reqData();
+    tab3Li2Echart2reqData(theDate2019);
 
     if (option && typeof option === "object") {
       tab3Li2Echart2.setOption(option, true);
@@ -6378,7 +6396,8 @@ $(function () {
 
       ]
     };
-    tab3Li2Echart1reqData();
+    // tab3Li2Echart1reqData();
+    tab3Li2Echart1reqData(theDate2019);
 
     tab3Li2Echart1.setOption(option);
   }

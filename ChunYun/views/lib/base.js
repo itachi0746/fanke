@@ -4,7 +4,8 @@ if(window.location.hostname==='localhost') {
     serviceBase = "http://localhost/gdcnymot/";///gdcnymot/";
     hostbase="http://localhost";
 } else {
-    //serviceBase = "http://123.207.31.17/gdcnymot/";
+    // serviceBase = "http://123.207.31.17/gdcnymot/";
+    // serviceBase = "http://14.23.164.13:7001";
     // hostbase="http://123.207.31.17";
     serviceBase = "http://serv.gdcmcc.com:23203/gdcnymot/";
     hostbase="http://serv.gdcmcc.com:23203";
@@ -164,6 +165,9 @@ NumbersEffect.prototype.end = function () {
 //设置初始化的日期
 function getInitDate(type,defatulFunc){
     return new Date('2019-05-02');
+}
+function getStartDate(type,defatulFunc){
+    return new Date('2019-04-26');
 }
 
 function checkLogin(e){
