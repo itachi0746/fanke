@@ -3,7 +3,7 @@
   <div class="order">
     <Header :headName="headName"></Header>
 
-    <section class="order-data" v-if="orderData" v-for="(item) in orderData">
+    <section class="order-data" v-if="orderData" v-for="(item,index1) in orderData" :key="index1">
       <header>
         订单信息
       </header>
@@ -32,9 +32,26 @@
         <span>待支付 ¥{{item.Amount}}</span>
       </section>
     </section>
+    <div class="cp-box" v-if="couponData">
+      <van-collapse v-model="activeNames">
+        <van-collapse-item name="1">
+          <div slot="title" class="titleClass">
+            <span>商家优惠</span>
+            <i>{{couponFont}}</i>
+          </div>
+          <van-radio-group v-model="radio">
+            <van-cell-group>
+              <van-cell v-for="(item,index) in couponData" :key="index" :title="item.ReferenceValues.CC05_COUPON_ID" clickable @click="handleClickCell(item,index)">
+                <van-radio :name="index" />
+              </van-cell>
+            </van-cell-group>
+          </van-radio-group>
+        </van-collapse-item>
+      </van-collapse>
+    </div>
 
     <section class="confrim-order">
-      <p>待支付 ¥{{totalPrice}}</p>
+      <p>待支付 ¥{{totalPriceResult}}</p>
       <p @click="placeOrder">确认下单</p>
     </section>
     <Loading v-show="isLoading"></Loading>
@@ -56,7 +73,16 @@
         headName: '确认订单',
         orderData: [],
         fromBasket: false,  // 是否来自购物车
-        isLoading: false
+        isLoading: false,
+        activeNames: [],
+        titleName: '商家优惠',
+        radio: null, // 记录单选
+        couponData: null, // 优惠券数据
+        couponId: null, // 优惠券id
+        couponFont: '', // 优惠券文字
+        totalPrice: 0, // 总价
+        couponVal: 0, // 优惠券金额
+        totalPriceResult: 0 // 显示的总价
       }
     },
 
@@ -66,23 +92,49 @@
     },
 
     computed: {
-      totalPrice() {
-        let result = 0;
-        this.orderData.forEach((item) => {
-          result += item.Amount;
-        });
-        return result
-      },
+
       isIOS() {
         let userAgent = navigator.userAgent;
         if (userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('Mac') > -1) {
           console.log('on iphone/mac');
           return true
         }
+      },
+      businessId () { // 商家id
+        let arr = [];
+        for (let obj of this.orderData) {
+          arr.push(obj.BusinessId)
+        }
+        let resultArr = [];
+        for (let obj of arr) {
+          let have = false; // 是否已有
+          for (let robj of resultArr) {
+            if (obj === robj) {
+              have = true;
+              break
+            }
+          }
+          if (!have) {
+            resultArr.push(obj)
+          }
+        }
+        return resultArr.join(',')
       }
     },
 
     methods: {
+      /**
+       * 计算总价
+       */
+      calTotalPrice() {
+        let result = 0;
+        this.orderData.forEach((item) => {
+          result += item.Amount;
+        });
+        this.totalPrice = result
+        this.totalPriceResult = this.totalPrice - this.couponVal
+
+      },
       /**
        * @method 确认下单 跳转
        */
@@ -91,7 +143,8 @@
         const url = '/ConfirmOrder';
         const data = {
           "FromBasket": this.fromBasket,
-          "items": this.handleItems()
+          "items": this.handleItems(),
+          "CouponId": this.couponId
         };
         console.log('data',data);
         postData(url, data).then((res) => {
@@ -116,20 +169,59 @@
         });
         console.log('arr',arr);
         return arr
+      },
+      /**
+       * 请求订单信息
+       */
+      getOrderData () {
+        const data = getUrlParms();
+        this.fromBasket = data.frombasket;
+
+        const url = '/GetPlaceOrder';
+        postData(url,data.id).then((res) => {
+          console.log(res);
+          this.orderData = res.Data;
+          this.getCouponData()
+          this.calTotalPrice()
+        })
+      },
+      /**
+       * 请求优惠券信息
+       */
+      getCouponData () {
+        const bId = this.businessId;
+        const url = '/GetMyBizUsingCoupons';
+        const data = {
+          AcctIds: bId
+        }
+        postData(url,data).then((res) => {
+          console.log(res);
+          this.couponData = res.Data
+        })
+
+      },
+      /**
+       * 点击优惠券, 重新计算总价
+       */
+      handleClickCell (item,index) {
+        this.radio = index;
+        this.couponId = item.CC05_COUPON_ID;
+        this.couponFont = item.ReferenceValues.CC05_COUPON_ID
+        const url = '/CalMyBizUsingCoupons'
+        const data = {
+          CouponId: this.couponId,
+          Money: this.totalPrice
+        }
+        this.isLoading = true;
+        postData(url,data).then((res) => {
+          console.log(res);
+          this.isLoading = false;
+          this.totalPriceResult = this.totalPrice - res.Data // 重新计算总价
+        })
       }
     },
     created() {
-//      IOSConfig();
-      const data = getUrlParms();
-      this.fromBasket = data.frombasket;
-//      console.log(data)
-//      console.log(this.fromBasket)
-//      console.log(data);
-      const url = '/GetPlaceOrder';
-      postData(url,data.id).then((res) => {
-        console.log(res);
-        this.orderData = res.Data;
-      })
+      this.getOrderData()
 
     },
 
@@ -230,5 +322,18 @@
   .iosBtm {
     width: 100%;
     height: 3.5rem;
+  }
+  .titleClass {
+    /*display: flex;*/
+    /*align-items: center;*/
+    font-size: 0.8rem;
+    i {
+      font-size: 12px;
+      color: red;
+      margin-left: 5px;
+    }
+  }
+  .cp-box {
+    margin-top: 0.5rem;
   }
 </style>

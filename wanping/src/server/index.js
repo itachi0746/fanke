@@ -6,6 +6,7 @@ let ROOT, ROOT2;
 if (process.env.NODE_ENV === 'development') {
   //开发环境下的代理地址，解决本地跨域跨域，配置在config目录下的index.js dev.proxyTable中
   ROOT = "/api"; // MallService 控制器
+  // ROOT = 'http://mockjs.com'
   ROOT2 = "/api2" // Mall 控制器
 } else {
   //生产环境下的地址

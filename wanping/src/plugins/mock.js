@@ -1,5 +1,10 @@
 const Mock = require('mockjs');
 const Random = Mock.Random;
+const domain = 'http://mockjs.com' // 定义默认域名，随便写
+let dataObj = { // 默认返回对象
+  Data: null,
+  Success: true
+}
 let arr = {
   lower: "abcdefghijklmnopqrstuvwxyz",
   upper: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
@@ -163,5 +168,26 @@ const cart = function () {
 Mock.mock('http://www.bai.com/GetBaskets', {
   'Data': cart(),
 });
+
+const produceNewsData = function () {
+  let articles = []
+  for (let i = 0; i < 1; i++) {
+    let newArticleObject = {
+      BusinessName: Random.csentence(5, 8), //  Random.csentence( min, max )
+      PsName: Random.csentence(5, 8), //  Random.csentence( min, max )
+      Price: Random.natural(500, 800), //  Random.csentence( min, max )
+      Amount: Random.natural(10000, 100000), //  Random.csentence( min, max )
+      Count: Random.natural(1, 10), //  Random.csentence( min, max )
+      Date: Random.date() + ' ' + Random.time() // Random.date()指示生成的日期字符串的格式,默认为yyyy-MM-dd；Random.time() 返回一个随机的时间字符串
+    }
+    articles.push(newArticleObject)
+  }
+
+  dataObj.Data = articles
+  return dataObj
+}
+
+// Mock.mock( url, post/get , 返回的数据)；
+Mock.mock(`${domain}/GetPlaceOrder`, produceNewsData)
 
 export default Mock
