@@ -205,7 +205,7 @@
        */
       handleClickCell (item,index) {
         this.radio = index;
-        this.couponId = item.CC05_COUPON_ID;
+        this.couponId = item.CC05_RCD_ID;
         this.couponFont = item.ReferenceValues.CC05_COUPON_ID
         const url = '/CalMyBizUsingCoupons'
         const data = {
